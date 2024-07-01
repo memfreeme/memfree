@@ -1,0 +1,16 @@
+{
+  "name": "demo",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@lancedb/lancedb": "^0.5.1",
+    "@langchain/textsplitters": "^0.0.2",
+    "@upstash/redis": "^1.31.5"
+  }
+}
