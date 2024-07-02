@@ -1,0 +1,16 @@
+{
+  "name": "memfree-queue",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@axiomhq/js": "^1.0.0",
+    "@upstash/redis": "^1.31.5",
+    "p-limit": "^5.0.0"
+  }
+}
