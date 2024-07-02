@@ -27,7 +27,7 @@ describe("vector test", () => {
       "what is fastembed-js licensed",
       "fastembed-js is licensed under MIT ",
       "memfree is a ai search engine",
-      "hybird ai search engine",
+      "hybrid ai search engine",
     ];
 
     console.time("embeddings");

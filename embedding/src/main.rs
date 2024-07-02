@@ -170,15 +170,15 @@ mod tests {
             "what is fastembed-js licensed",
             "fastembed-js is licensed under MIT ",
             "memfree is a ai search engine",
-            "hybird ai search engine",
+            "hybrid ai search engine",
             "what is fastembed-js licensed",
             "fastembed-js is licensed under MIT ",
             "memfree is a ai search engine",
-            "hybird ai search engine",
+            "hybrid ai search engine",
             "what is fastembed-js licensed",
             "fastembed-js is licensed under MIT ",
             "memfree is a ai search engine",
-            "hybird ai search engine",
+            "hybrid ai search engine",
             ];
 
         let embeddings = model.embed(documents, None).unwrap();
@@ -226,13 +226,13 @@ mod tests {
         println!("distance {}", distance);
         assert!(distance > 0.9);
 
-        let documents: [&str; 2] = ["memfree is a hybird ai search engine", "what is memfree"];
+        let documents: [&str; 2] = ["memfree is a hybrid ai search engine", "what is memfree"];
         let embeddings = model.embed(documents.to_vec(), None).unwrap();
         let distance = cosine_similarity(&embeddings[0], &embeddings[1]);
         println!("distance {}", distance);
         assert!(distance > 0.8);
 
-        let documents: [&str; 2] = ["google is a hybird ai search engine", "what is google"];
+        let documents: [&str; 2] = ["google is a hybrid ai search engine", "what is google"];
         let embeddings = model.embed(documents.to_vec(), None).unwrap();
         let distance = cosine_similarity(&embeddings[0], &embeddings[1]);
         println!("distance {}", distance);
