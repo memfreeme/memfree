@@ -1,0 +1,31 @@
+.flot-btn {
+  position: fixed;
+  right: 0px;
+  bottom: 200px;
+  z-index: 1000;
+  width: 60px;
+  height: 30px;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  color: #fff;
+  font-size: 14px;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: transform 250ms ease-in-out;
+  transform: translateX(20px);
+  background: linear-gradient(90deg, #6366f1, rgba(168, 85, 247, 0.8));
+  margin: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 25px;
+
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+.flot-btn:hover {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
