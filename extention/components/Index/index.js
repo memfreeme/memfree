@@ -256,16 +256,15 @@ export default function Index() {
       </div>
 
       {progressPercentage > 0 && (
-        <div className="progress-bar w-full h-10 bg-gray-300 mt-4 rounded relative overflow-hidden">
+        <div className="progress-bar w-full h-10 bg-gray-300 mt-4 rounded relative overflow-hidden flex items-center justify-center">
           <div
             className="progress bg-indigo-500 absolute top-0 left-0 h-full"
             style={{
               width: `${progressPercentage}%`,
               transition: "width 0.4s",
             }}
-          >
-            <span className="text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">{`Index Progress: ${progressPercentage}%`}</span>
-          </div>
+          ></div>
+          <span className="text-white z-10">{`Index Progress: ${progressPercentage}%`}</span>
         </div>
       )}
 
