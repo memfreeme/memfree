@@ -1,0 +1,31 @@
+{
+  "name": "MemFree",
+  "version": "1.0.0",
+  "description": "MemFree",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run prep",
+    "prep": "npm run exp && node out.js",
+    "exp": "next build && next export",
+    "run": "next start",
+    "dev": "next dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "glob": "^10.2.3",
+    "next": "^13.4.1",
+    "react": "^18.2.0",
+    "react-checkbox-tree": "^1.8.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.4"
+  }
+}
