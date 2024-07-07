@@ -1,0 +1,42 @@
+---
+title: Hybrid AI Search 2 -- How to build Serverless Vector Search with LanceDB
+description: why One user one LanceDB;Why LanceDB;How to build Serverless Vector Search with LanceDB
+image: /images/blog/blog-post-3.jpg
+date: '2024-07-02'
+authors:
+    - MemFree
+---
+
+## 1 One user one LanceDB
+
+I want to build a Hybrid AI Search, Each user needs to build a separate vectorized index, One user one db is very suitable for this scenario.
+
+One user one db has good user isolation, which facilitates data synchronization and migration of a single user (from the cloud to local, between different S3 storages), and is easy to manage: different DBs are created according to userId, the schema of the tables under each DB is the same, and the file structure under S3 is the same.
+
+Sqlite, Duckdb, [LanceDB](https://lancedb.github.io/lancedb/) are all suitable for the One user one db architecture.
+
+## 2 Why LanceDB
+
+1. **High-Performance Column Store**: Vectorized search naturally requires column storage
+2. **Native vector support**: LanceDB is designed specifically for AI scenarios, treating vectors as first-class citizens with specialized optimizations.
+3. **Native Lake Support**: LanceDB seamlessly reads and writes to S3 storage, making it straightforward to implement serverless vector search service.
+4. **Ease of Use and Maintenance**: No complex installation or deployment procedures are required. You can quickly begin development and testing using local files.
+5. **Written in Rust**: The vector search capabilities are incredibly fast due to Rust's performance.
+
+## 3 How to build Serverless Vector Search with LanceDB
+
+1. **S3 Express One Zone**: Local Storage has the fastest vector search performance, but is hard to serverless. In order to reduce maintenance costs, serverless is very important, which is also the first goal of my design. However, using ordinary S3 storage will result in high latency. So in order to achieve serverless and maintain high performance, I used S3 Express One Zone.
+2. **Reduce network latency**: I tested the vector search performance of S3 Express One Zone on fly.io and zeabur and found that the fastest one took **more than 100 milliseconds**. Finally, when I accessed it from an EC2 machine in the same region as S3 Express One Zone, I got a latency of **40 milliseconds**. I speculate that the reason why the latency cannot reach 10 milliseconds is that LanceDB initiates multiple IO requests to S3 Express.
+3. **Fast local embedding**: Embedding is the pre-step of vector search. In order to obtain the overall low latency of vector search, the latency of embedding must also be very low. In my previous blog, I introduced how to build an emebeeding service with **a few milliseconds**. [Hybrid AI Search 1 -- how to build fast embedding service](https://www.memfree.me/blog/fast-local-embedding-service)
+4. **Timely compaction**: In LanceDB, each import generates a new version. Similar to all column-based databases, to achieve the best query performance, we need to compact small files in a timely manner. The problem here is that Lancedb does not officially expose an API for the number of versions. To solve this problem, I introduced **upstash redis**. It can also count the number of queries and index builds for each user. Using redis's counter, I can know when to trigger the compaction of Lancedb.
+5. **Fast HTTP Service**: In order to encapsulate lancedb into a service, we need an HTTP service. Since the main language of my entire project is TS, I naturally chose Bun. So far, Bun, like lancedb, has given me a good experience.
+6. **Convert Url to markdown**: I use the [Jina-Ai Reader](https://www.memfree.me/blog/fast-local-embedding-service) the convert url to the markdown. This is very easy to use, but the cost may not be low, and the performance is not very good. I may consider implementing it myself later.
+7. **Split markdown to chunk**: I use `langchain/textsplitters` to split the markdown to chunk. This step also has a relatively large impact on the quality of the final vectorized search, and I will continue to optimize it.
+
+## 4 The code is open source
+
+The code repository is https://github.com/memfreeme/memfree
+
+The vector service code is under vector dir.
+
+Welcome to give a star, thanks.

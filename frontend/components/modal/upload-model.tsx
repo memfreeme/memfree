@@ -1,0 +1,67 @@
+'use client';
+
+import { Modal } from '@/components/shared/modal';
+import { Textarea } from '@/components/ui/textarea';
+import { useUploadModal } from '@/hooks/use-upload-modal';
+import { useState } from 'react';
+import { LoadingButton } from '../ui/loading-button';
+import { useUser } from '@/hooks/use-user';
+
+export const UploadModal = () => {
+    const [url, setUrl] = useState('');
+    const [islLoading, setLoading] = useState(false);
+    const uploadModal = useUploadModal();
+
+    const user = useUser();
+
+    const handleIndex = async () => {
+        try {
+            const indexUrl = `/api/index`;
+            setLoading(true);
+            const resp = await fetch(indexUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    urls: [url],
+                    userId: user.id,
+                }),
+            });
+            setLoading(false);
+
+            if (resp.ok) {
+                const res = await resp.json();
+                console.log('index result: ', res);
+            }
+            uploadModal.onClose();
+        } catch (e) {
+            setLoading(false);
+            uploadModal.onClose();
+            console.log('search failed: ', e);
+        }
+    };
+
+    return (
+        <Modal
+            showModal={uploadModal.isOpen}
+            setShowModal={uploadModal.onClose}
+        >
+            <div className="grid w-full gap-10 my-10 p-10">
+                <Textarea
+                    placeholder="Please input the url you want to index"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                />
+
+                <LoadingButton
+                    variant="default"
+                    loading={islLoading}
+                    onClick={handleIndex}
+                >
+                    Index This Url
+                </LoadingButton>
+            </div>
+        </Modal>
+    );
+};

@@ -1,0 +1,60 @@
+---
+title: MemFree Build Story 3 -- Clarity vs Google Analytics vs Vercel Analytics vs Plausible Vs Umami
+description: why choose Clarity as web
+image: /images/blog/blog-post-2.jpg
+date: '2024-06-14'
+authors:
+    - MemFree
+---
+
+Web page analysis is necessary for any website, so we must choose a powerful, easy-to-use, cost-effective web page analysis tool from Iverson.
+After using and evaluating multiple web analytics tools, memfree finally chose Clarity
+
+## Why MemFree choose Clarity
+
+1. Which is free
+2. The UI is simple and clear
+
+## Why not Google Analytics
+
+1. The UI is complex and difficult to use
+
+## Why not Vercel Analytics, Plausible and Umami
+
+1. Which isn't free and cost is high
+
+## How clarity integrated with NextJS
+
+Add the following code to your layout.tsx file in app root dir.
+
+```js
+<Script id="clarity-script" strategy="afterInteractive">
+    {`
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}");
+          `}
+</Script>
+```
+
+<Callout type="warning">
+    Updated on June 15th: After a few days of trying Clarity, I found that
+    Clarity's data was not updated in a timely manner, so I finally tried
+    Cloudflare Web Analytics. Because the analysis indicators provided by
+    Cloudflare Web Analytics are enough for me, the data is updated in a timely
+    manner, and it is also free.
+</Callout>
+
+## How Cloudflare Web Analytics integrated with NextJS 14
+
+Only need to add the following code to your layout.tsx file in app root dir.
+
+```js
+<Script
+    defer
+    src="https://static.cloudflareinsights.com/beacon.min.js"
+    data-cf-beacon='{"token": "xxxxx"}'
+></Script>
+```

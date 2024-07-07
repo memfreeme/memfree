@@ -1,0 +1,92 @@
+import '@/styles/globals.css';
+
+import { fontHeading, fontSans, fontUrban } from '@/assets/fonts';
+import { ModalProvider } from '@/components/modal-provider';
+import { TailwindIndicator } from '@/components/tailwind-indicator';
+import { Toaster } from '@/components/ui/toaster';
+import { siteConfig } from '@/config/site';
+import { cn } from '@/lib/utils';
+import { ThemeProvider } from 'next-themes';
+import Script from 'next/script';
+
+interface RootLayoutProps {
+    children: React.ReactNode;
+}
+
+export const metadata = {
+    title: {
+        default: siteConfig.name,
+        template: `%s | ${siteConfig.name}`,
+    },
+    description: siteConfig.description,
+    keywords: [
+        'AI Search',
+        'AI Hyper Search',
+        'AI Search Engine',
+        'AI bookmark manager',
+        'AI bookmark search',
+        'AI document search',
+        'AI ask everything',
+    ],
+    authors: [
+        {
+            name: 'MemFree',
+        },
+    ],
+    creator: 'MemFree',
+    metadataBase: new URL(siteConfig.url),
+    openGraph: {
+        type: 'website',
+        locale: 'en_US',
+        url: siteConfig.url,
+        title: siteConfig.name,
+        description: siteConfig.description,
+        siteName: siteConfig.name,
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: siteConfig.name,
+        description: siteConfig.description,
+        images: [siteConfig.ogImage],
+        creator: '@MemFree',
+    },
+    icons: {
+        icon: '/favicon.ico',
+        shortcut: '/favicon-16x16.png',
+        apple: '/apple-touch-icon.png',
+    },
+    manifest: `${siteConfig.url}/site.webmanifest`,
+};
+
+export default function RootLayout({ children }: RootLayoutProps) {
+    return (
+        <html lang="en" suppressHydrationWarning>
+            <head />
+            <body
+                className={cn(
+                    'min-h-screen bg-background font-sans antialiased',
+                    fontSans.variable,
+                    fontUrban.variable,
+                    fontHeading.variable,
+                )}
+            >
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    {children}
+                    <Toaster />
+                    <ModalProvider />
+                    <TailwindIndicator />
+                </ThemeProvider>
+                <Script
+                    defer
+                    src="https://static.cloudflareinsights.com/beacon.min.js"
+                    data-cf-beacon={`{"token": "${process.env.NEXT_PUBLIC_CLOUDFLARE_INSIGHTS_TOKEN}"}`}
+                ></Script>
+            </body>
+        </html>
+    );
+}

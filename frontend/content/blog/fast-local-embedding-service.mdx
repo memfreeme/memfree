@@ -1,0 +1,95 @@
+---
+title: Hybrid AI Search 1 -- how to build fast embedding service
+description: Hybrid AI Search 1 -- how to build fast embedding service, Why Not use openai embedding API
+image: /images/blog/blog-post-3.jpg
+date: '2024-06-30'
+authors:
+    - MemFree
+---
+
+## Why Not use openai embedding API
+
+Memfree initially used the openai embedding API, which is very easy to use, and the latest text-embedding-3-large model also supports custom dimensions. The only problem is latency. Even for very short inputs, the openai API latency takes 100 to 200 milliseconds.
+
+When you only need to build vector indexes and search services, a latency of more than 100 milliseconds is acceptable. However, when you need a rerank service, a latency of several hundred milliseconds is unacceptable, because the Internet search engine before rerank takes 500 to 1000 milliseconds.
+
+The process of Hybrid AI search is as follows:
+
+1. **Search**: Get answers to user questions from Internet search engines and vectorized databases in parallel
+2. **Rerank**: Sort all relevant contexts according to user similarity and provide the most similar top contexts to LLM
+3. **Answer**: LLM gives the most accurate answer possible based on the context of the search
+
+We hope that the latency of rerank is within tens of milliseconds, so the latency of a single embedding needs to be around a few milliseconds, because the input of rerank is more than 10 vectors.
+
+## How to build fast local embedding service
+
+### 1 First Try fastembed-js
+
+I have tested the rust version of the fastembed library before, and I know that I can achieve a few milliseconds of latency. But my entire project is currently built on TS. So I first tried the js version of fastembed https://github.com/Anush008/fastembed-js
+
+The results are in line with my theoretical expectations. Fastembed-js takes more than 40 milliseconds to embed once.
+
+### 2. Try fastembed-rs WASM
+
+So I can only choose the rust version of fastembed: https://github.com/Anush008/fastembed-rs. There are two ways to integrate the rust version of the code with my TS project: WASM and local HTTP service
+
+But when I compiled fastembed-rs into WASM version, I encountered many compilation errors, so I temporarily gave up the WASM method.
+
+### 3. fastembed-rs local HTTP service
+
+Finally, I built a simple embedding service based on fastembed-rs and axum. **The core code is only a few dozen lines, and a single embedding takes only a few milliseconds.**
+
+```rust
+async fn embed_handler(
+    Extension(model): Extension<Arc<TextEmbedding>>,
+    Json(payload): Json<EmbedRequest>
+) -> Result<Json<EmbedResponse>, String> {
+    match model.embed(payload.documents, None) {
+        Ok(embeddings) => {
+            Ok(Json(EmbedResponse {
+                embeddings,
+            }))
+        },
+        Err(err) => Err(format!("Failed to generate embeddings: {}", err)),
+    }
+}
+
+async fn main() -> Result<()> {
+    let model = TextEmbedding::try_new(InitOptions {
+    model_name: EmbeddingModel::AllMiniLML6V2,
+    show_download_progress: true,
+    ..Default::default()
+    })?;
+
+    let model = Arc::new(model);
+
+    let app = Router::new()
+        .route("/embed", post(embed_handler))
+        .route("/rerank", post(rerank_handler))
+        .layer(middleware::from_fn(require_auth))
+        .layer(axum::extract::Extension(model));
+
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3003));
+    println!("Listening on http://{}", addr);
+
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
+        .await?;
+
+    Ok(())
+}
+```
+
+**The complete code is now open source**: https://github.com/memfreeme/memfree
+
+### 4. How to choose embedding model
+
+The key points of choosing an embedding model: accuracy, model memory usage and calculation speed, dimension size, and multi-language support.
+
+After testing and trade off these points, I finally chose the sentence-transformers/all-MiniLM-L6-v2 model supported by fastembed.
+
+**Welcome to star, the complete project will be open sourced soon**：
+
+https://github.com/memfreeme/memfree
+
+Feel free to reach out if you have any questions or feedback!

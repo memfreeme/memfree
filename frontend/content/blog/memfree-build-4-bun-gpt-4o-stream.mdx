@@ -1,0 +1,317 @@
+---
+title: MemFree Build Story 4 -- Bun stream response for gpt-4o image input
+description: Bun stream response for gpt-4o image input
+image: /images/blog/blog-post-3.jpg
+date: '2024-06-15'
+authors:
+    - MemFree
+---
+
+MemFree's backend interface is built on Bun. It is very simple to use Bun to build a web API. This article introduces how to use Bun to build a gpt-4o web API that accepts images as input and returns results in a stream format.
+
+## 1 Bun Stream return result example
+
+In the following examples, the openai library is used and the model is gpt-3.5.
+
+```ts
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY!,
+});
+
+type Message = OpenAI.Chat.Completions.ChatCompletionMessageParam;
+
+export async function OpenAIStream(userInput: string) {
+    const messages: Message[] = [
+        {
+            role: 'system',
+            content:
+                'You are a helpful assistant and you always address users as friend and you havily use emojies.',
+        },
+    ];
+    messages.push({
+        role: 'user',
+        content: userInput,
+    });
+
+    const res = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: messages,
+        max_tokens: 1024,
+        stream: true,
+        temperature: 0.3,
+    });
+
+    return new ReadableStream({
+        async start(controller) {
+            for await (const chunk of res) {
+                if (chunk.choices[0].delta.content) {
+                    controller.enqueue(chunk.choices[0].delta.content);
+                } else if (chunk.choices[0].finish_reason != null) {
+                    controller.close();
+                    break;
+                }
+            }
+        },
+    });
+}
+```
+
+## 2 Bun local image for gpt-4o Input
+
+The following code will read the image file in the local directory, convert it into base64 format, use it as input for gpt-4o, and return the result in stream mode.
+
+```ts
+import OpenAI from 'openai';
+
+import { readFile, readdir } from 'node:fs/promises';
+import { dirname, join, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY!,
+});
+
+async function readImageFile(filePath: string) {
+    const baseDir = dirname(fileURLToPath(import.meta.url));
+    return await readFile(join(baseDir, filePath));
+}
+
+export async function chatImage() {
+    const inputsDir = join(dirname(fileURLToPath(import.meta.url)), '/input');
+
+    const filePaths = await readdir(inputsDir).then((fileNames) =>
+        fileNames.map(
+            (fileName) =>
+                `/${relative(dirname(inputsDir), join(inputsDir, fileName))}`,
+        ),
+    );
+
+    const base64Image = await readImageFile(filePaths[0]).then((file) =>
+        file.toString('base64'),
+    );
+
+    const res = await openai.chat.completions.create({
+        model: 'gpt-4o',
+        messages: [
+            {
+                role: 'system',
+                content: `Please extract the text in the image`,
+            },
+            {
+                role: 'user',
+                content: [
+                    {
+                        type: 'image_url',
+                        image_url: {
+                            url: `data:image/jpeg;base64,${base64Image}`,
+                        },
+                    },
+                ],
+            },
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.3,
+        stream: true,
+    });
+
+    return new ReadableStream({
+        async start(controller) {
+            for await (const chunk of res) {
+                if (chunk.choices[0].delta.content) {
+                    console.log('chunk delta ', chunk.choices[0].delta.content);
+                    controller.enqueue(chunk.choices[0].delta.content);
+                } else if (chunk.choices[0].finish_reason != null) {
+                    controller.close();
+                    break;
+                }
+            }
+        },
+    });
+}
+```
+
+## 3 Bun handle FormData with image
+
+The following code processes the image uploaded by the browser client. It is also converted to base64 format first and then used as the input of gpt-4o.
+
+```ts
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY!,
+});
+
+export async function chatImageIdea(req: Request) {
+    const formData = await req.formData();
+    const number = formData.get('number');
+    const question = formData.get('question');
+    const language = formData.get('language') as string;
+    const file = formData.get('image') as File;
+    const ab = await file.arrayBuffer();
+    const baseImage = Buffer.from(ab).toString('base64');
+
+    const prompt = `xxxx`;
+
+    const res = await openai.chat.completions.create({
+        model: 'gpt-4o',
+        messages: [
+            {
+                role: 'system',
+                content: prompt,
+            },
+            {
+                role: 'user',
+                content: [
+                    {
+                        type: 'image_url',
+                        image_url: {
+                            url: `data:image/jpeg;base64,${baseImage}`,
+                        },
+                    },
+                ],
+            },
+        ],
+        temperature: 0.3,
+        stream: true,
+    });
+
+    const stream = new ReadableStream({
+        async start(controller) {
+            for await (const chunk of res) {
+                if (chunk.choices[0].delta.content) {
+                    console.log('chunk delta ', chunk.choices[0].delta.content);
+                    controller.enqueue(chunk.choices[0].delta.content);
+                } else if (chunk.choices[0].finish_reason != null) {
+                    controller.close();
+                    break;
+                }
+            }
+        },
+    });
+    return new Response(stream);
+}
+```
+
+## 4 Bun handle CORS
+
+which is very easy:
+
+```ts
+const response = new Response(stream);
+response.headers.set('Access-Control-Allow-Origin', '*');
+response.headers.set(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, DELETE, OPTIONS',
+);
+return response;
+```
+
+## 5 Bun request gpt-4o directly with HTTP
+
+If you don't want to introduce the `openai` dependence, you could directly request gpt-4o by HTTP. You just need to do some extra encoding and decoding, you need to a new dependence: `eventsource-parser`
+
+```ts
+import {
+    createParser,
+    type ParsedEvent,
+    type ReconnectInterval,
+} from 'eventsource-parser';
+
+const apiKey = process.env.OPENAI_API_KEY;
+const host = process.env.OPEN_AI_URL || 'api.openai.com';
+const model = 'gpt-4o';
+
+export default async function chatHttpImageIdea(req: Request) {
+    const formData = await req.formData();
+    const number = formData.get('number');
+    const question = formData.get('question');
+    const language = formData.get('language') as string;
+    const file = formData.get('image') as File;
+
+    const ab = await file.arrayBuffer();
+    const baseImage = Buffer.from(ab).toString('base64');
+
+    const prompt = `xxx`;
+
+    const res = await fetch(`https://${host}/v1/chat/completions`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+        },
+        method: 'POST',
+        body: JSON.stringify({
+            model: model,
+            messages: [
+                {
+                    role: 'system',
+                    content: prompt,
+                },
+                {
+                    role: 'user',
+                    content: [
+                        {
+                            type: 'image_url',
+                            image_url: {
+                                url: `data:image/jpeg;base64,${baseImage}`,
+                            },
+                        },
+                    ],
+                },
+            ],
+            temperature: 0.3,
+            stream: true,
+        }),
+    });
+
+    console.log('res', res);
+
+    let counter = 0;
+    const encoder = new TextEncoder();
+    const decoder = new TextDecoder();
+
+    const stream = new ReadableStream({
+        async start(controller) {
+            function onParse(event: ParsedEvent | ReconnectInterval) {
+                if (event.type === 'event') {
+                    const data = event.data;
+                    if (data === '[DONE]') {
+                        controller.close();
+                        return;
+                    }
+                    try {
+                        const json = JSON.parse(data);
+                        const text = json.choices[0].delta?.content || '';
+                        if (counter < 1 && (text.match(/\n/) || []).length) {
+                            // this is a prefix character (i.e., "\n\n"), do nothing
+                            return;
+                        }
+                        const queue = encoder.encode(text);
+                        controller.enqueue(queue);
+                        counter++;
+                    } catch (e) {
+                        controller.error(e);
+                    }
+                }
+            }
+
+            const parser = createParser(onParse);
+            for await (const chunk of res.body as any) {
+                console.log('chunk ', chunk);
+                parser.feed(decoder.decode(chunk));
+            }
+        },
+    });
+
+    const response = new Response(stream);
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PUT, DELETE, OPTIONS',
+    );
+    return response;
+}
+```
+
+I hope this article is useful to you. I will continue to share it.

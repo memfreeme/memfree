@@ -2,6 +2,10 @@
 
 AI search and ask everything with MemFree
 
+## Overview
+
+## Highlights
+
 ## MemFree Public Build
 
 - [MemFree Build Story 1 -- Why I Build MemFree](https://www.memfree.me/blog/memfree-build-1-why)
@@ -11,4 +15,23 @@ AI search and ask everything with MemFree
 - [Hybrid AI Search 1 -- how to build fast embedding service](https://www.memfree.me/blog/fast-local-embedding-service)
 - [Hybrid AI Search 2 -- How to build Serverless Vector Search with LanceDB](https://www.memfree.me/blog/serverless-vector-search-lancedb)
 
-The code will be published soon.
+## Installation
+
+### Frontend
+
+```
+bun i
+
+bun run dev
+```
+
+## One-Click Deployment
+
+## Roadmap
+
+## Help and Support
+
+## Credits
+
+- [next-saas-stripe-starter](https://github.com/mickasmt/next-saas-stripe-starter) – Open-source SaaS Starter with User Roles & Admin Panel.
+-
