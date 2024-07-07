@@ -1,0 +1,91 @@
+---
+title: Hybrid AI Search 3 -- The Full Tech Stack
+description: The Full Tech Stack of Hybrid AI Search
+image: /images/blog/blog-post-2.jpg
+date: '2024-07-08'
+authors:
+    - MemFree
+---
+
+## Programming Language: TS + Rust
+
+There is no doubt that TS(JS) is already the first language for front-end development. The key is how to choose a back-end development language, With the help of AI, learning and using a language is not difficult, What matters is how to develop efficiently. To achieve efficient development, you need to be familiar with the common frameworks, compilation tools, testing tools, deployment tools, and deployment platforms of the corresponding programming languages. Although many problems are not difficult, they all take up our precious time. **Our precious time should be spent on the most important things.**
+
+As a backend developer with 10 years of programming experience, who has deeply used C++, Java, Python, and Node, and has used Python to develop AI backend API for a year, **I decided to use TS for backend development to keep the front-end and back-end languages ​​consistent.**
+
+**For the few scenarios that do require high performance computing, I would use Rust.**
+
+So you will find that the main language of the [MemFree](https://github.com/memfreeme/memfree) memfree project is TS, but the embedding sub-project that requires high-performance computing uses Rust
+
+## TP DataBase: Upstash Redis
+
+I have tried many databases, and the reason why I finally chose Upstash Redis is:
+
+-   Fast
+-   ServerLess
+-   Easy-to-Use
+-   Cost-Effective
+
+## Vector DataBase: LanceDB
+
+I have tried many databases, and also built a vectorized search service based on Faiss index. the reason why I finally chose LanceDB is:
+
+-   High-Performance Column Store
+-   Native vector Support
+-   Native Lake Support
+-   Native Serverless
+-   Ease of Use and Maintenance
+-   Written in Rust and High Performance
+
+## Frontend Stack
+
+-   [NextJS](https://github.com/memfreeme/memfree)
+-   [React](https://github.com/facebook/react)
+-   [Shadcn-UI](https://github.com/shadcn-ui/ui)
+-   [Tailwindcss](https://github.com/tailwindlabs/tailwindcss)
+-   [Prettier](https://github.com/prettier/prettier) : Code Formatter
+-   [Stripe](https://github.com/stripe/stripe-node) : Payment
+-   [Contentlayer](https://github.com/contentlayerdev/contentlayer) : The easiest way to build blogs and documentation for your website
+
+Why?
+
+Because they are the most popular and powerful front-end frameworks, when you encounter problems, most of them can quickly find solutions. **When you choose a framework, the ecosystem is the first thing you should consider**
+
+## TS Runtime：Bun
+
+https://github.com/oven-sh/bun
+
+I won't explain too much, I'll just say that if you haven't used bun yet, I highly recommend you spend a few minutes with it.
+
+## Auth：Auth.js
+
+https://github.com/nextauthjs/next-auth
+
+-   Powerful ecosystem
+-   You should own your users’ authentication data and should not put it in other people’s hands
+
+## Object Storage: Cloudflare R2 + AWS S3 Express
+
+Cloudflare R2 is cheap but fast, AWS S3 Express is fast but expensive.
+
+So if you want to store some images, files, you could use Cloudflare R2,
+if you want to store database files, you should use AWS S3 Express
+
+## Search API: SearXNG + Serper
+
+[SearXNG](https://github.com/searxng/searxng) is cheap but slow and need to slef-host, [Serper](https://serper.dev/) is fast but expensive.
+
+You could refer to [MemFree](https://github.com/memfreeme/memfree) Mixed use
+
+## Deploy Platform：Vercel + Zeabur
+
+-   [Vercel](https://vercel.com/home) is for next.js project Deployment
+-   [Zeabur](https://zeabur.com?referralCode=memfree) is for backend stateful project Deployment
+
+## Log System: Axiom
+
+-   [Axiom](https://axiom.co/) : High performance and Cost-Effective
+
+## Web Analytics: Cloudflare Web Analytics
+
+-   [Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/) : Free and easy-to-use
