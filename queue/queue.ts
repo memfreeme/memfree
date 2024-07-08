@@ -21,9 +21,6 @@ const redis = new Redis({
 
 const indexUrl = process.env.INDEX_URL as string;
 
-const intervalTimeStr = process.env.INTERVAL_TIME;
-const intervalTime = intervalTimeStr ? parseInt(intervalTimeStr, 10) : 60000;
-
 const concurrencyStr = process.env.CONCURRENCY;
 const concurrency = concurrencyStr ? parseInt(concurrencyStr, 10) : 5;
 const limit = pLimit(concurrency);
@@ -149,6 +146,11 @@ async function processPendingTasks(pendingTasks: string[]) {
   // await Promise.all(promises);
 }
 
+const intervalTimeStr = process.env.INTERVAL_TIME;
+const MIN_INTERVAL = 1000;
+const MAX_INTERVAL = intervalTimeStr ? parseInt(intervalTimeStr, 10) : 60000;
+let currentInterval = MIN_INTERVAL;
+
 export async function processTasks() {
   while (true) {
     // TODO: improve this
@@ -160,10 +162,13 @@ export async function processTasks() {
       axiom.ingest("memfree", [
         { service: "queue", pendingTasks: pendingTasks.length },
       ]);
+      currentInterval = MIN_INTERVAL;
+    } else {
+      currentInterval = Math.min(currentInterval * 2, MAX_INTERVAL);
     }
 
     await processPendingTasks(pendingTasks);
-    await sleep(intervalTime);
+    await sleep(currentInterval);
   }
 }
 
