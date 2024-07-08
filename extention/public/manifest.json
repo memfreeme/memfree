@@ -10,7 +10,7 @@
     "48": "/icons/icon.png",
     "192": "/icons/icon.png"
   },
-  "permissions": ["scripting", "bookmarks", "storage", "notifications"],
+  "permissions": ["bookmarks", "storage", "notifications"],
   "background": {
     "service_worker": "background.js",
     "type": "module"

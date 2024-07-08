@@ -219,7 +219,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
           request.items.bookmarks
         );
         console.log("Processed bookmarks:", simplifiedBookmarks);
-        await sendBookmarksInBatches(simplifiedBookmarks, 5);
+        await sendBookmarksInBatches(simplifiedBookmarks, 10);
 
         console.log("Bookmarks index finished");
 

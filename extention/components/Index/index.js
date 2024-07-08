@@ -219,8 +219,12 @@ export default function Index() {
     );
   };
 
-  const isIndexing = () => {
-    return isProcessing || (progressPercentage > 0 && progressPercentage < 100);
+  const isDisabled = () => {
+    return (
+      !userInfo ||
+      isProcessing ||
+      (progressPercentage > 0 && progressPercentage < 100)
+    );
   };
 
   return (
@@ -234,7 +238,7 @@ export default function Index() {
       {!userInfo && (
         <button
           id="login-button"
-          className="bg-indigo-500 w-ful text-white px-4 py-2 mt-4 rounded hover:bg-indigo-600 transition-colors"
+          className="bg-indigo-500 w-full text-white px-4 py-2 mt-4 rounded hover:bg-indigo-600 transition-colors"
           style={{ display: !userInfo ? "inline-block" : "none" }}
           onClick={() => window.open("https://www.memfree.me/login", "_blank")}
         >
@@ -245,10 +249,10 @@ export default function Index() {
       <div className="flex justify-center items-center">
         <button
           id="processBookmarksButton"
-          className={`bg-indigo-500 text-white px-4 w-full py-2 my-2 rounded ${
-            isIndexing() ? "bg-gray-400 cursor-not-allowed" : ""
+          className={`text-white px-4 w-full py-2 my-2 rounded ${
+            isDisabled() ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-500"
           }`}
-          disabled={isIndexing()}
+          disabled={isDisabled()}
           onClick={handleChooseookmarks}
         >
           Select Bookmarks To Index
