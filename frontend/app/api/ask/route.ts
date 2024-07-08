@@ -23,20 +23,20 @@ import util from 'util';
 const REFERENCE_COUNT = parseInt(process.env.REFERENCE_COUNT || '6', 10);
 
 export async function POST(req: Request) {
+    // TODO: add rata limit for anonymous User
     const session = await auth();
-    if (!session) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    let userId = '';
+    if (session) {
+        userId = session.user.id;
     }
-
-    const userId = session.user.id;
     const { query, useCache } = await req.json();
     try {
         const readableStream = new ReadableStream({
             async start(controller) {
                 await ask(
                     query,
-                    userId,
                     useCache,
+                    userId,
                     (message: string | null, done: boolean) => {
                         if (done) {
                             controller.close();
@@ -65,8 +65,8 @@ export async function POST(req: Request) {
 
 async function ask(
     query: string,
-    userId: string,
     useCache: boolean,
+    userId?: string,
     onStream?: (...args: any[]) => void,
     model = 'gpt-3.5-turbo',
     mode: AskMode = 'simple',
