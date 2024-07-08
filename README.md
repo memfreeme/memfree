@@ -1,10 +1,12 @@
 # MemFree
 
-AI search and ask everything with MemFree
-
 ## Overview
 
 MemFree is a hybrid AI search engine that simultaneously performs searches on your personal knowledge base (such as bookmarks, notes, documents, etc.) and the Internet.
+
+## Preview
+
+![MemFree - Hybrid AI Search](https://www.memfree.me/_next/image?url=%2Fimages%2Fchangelog%2Fai-search-web.png&w=1920&q=75)
 
 ## Highlights
 
