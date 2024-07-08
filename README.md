@@ -15,6 +15,10 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 - Full Code Open Source
 - One-Click Deployment On Production(Coming Soon)
 
+## Tech Stack
+
+- [Hybrid AI Search Full Tech Stack](https://www.memfree.me/blog/hybrid-ai-search-tech-stack)
+
 ## MemFree Public Build
 
 - [Hybrid AI Search 3 -- The Full Tech Stack](https://www.memfree.me/blog/hybrid-ai-search-tech-stack)
