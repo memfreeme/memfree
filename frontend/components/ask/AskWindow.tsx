@@ -10,6 +10,7 @@ import { Input } from '../ui/input';
 import { useDebouncedCallback } from 'use-debounce';
 import { useSearchParams } from 'next/navigation';
 import { ImageSource, WebSource } from '@/lib/types';
+import { useSigninModal } from '@/hooks/use-signin-modal';
 
 export function AskWindow() {
     const messageContainerRef = useRef<HTMLDivElement | null>(null);
@@ -19,6 +20,8 @@ export function AskWindow() {
 
     const hasSentMessageRef = useRef(false);
     const searchParams = useSearchParams();
+
+    const signInModal = useSigninModal();
 
     const q = searchParams.get('q');
     useEffect(() => {
@@ -181,6 +184,17 @@ export function AskWindow() {
                 openWhenHidden: true,
                 onerror(err) {
                     throw err;
+                },
+                async onopen(response) {
+                    if (response.ok && response.status === 200) {
+                    } else if (response.status === 429) {
+                        signInModal.onOpen();
+                        return;
+                    } else {
+                        console.error(
+                            `Received unexpected status code: ${response.status}`,
+                        );
+                    }
                 },
                 onclose() {
                     setChatHistory((prevChatHistory) => [

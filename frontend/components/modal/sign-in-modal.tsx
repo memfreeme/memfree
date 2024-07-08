@@ -24,10 +24,7 @@ export const SignInModal = () => {
                         <Icons.brain className="size-10 text-primary" />
                     </a>
                     <h3 className="font-urban text-2xl font-bold">MemFree</h3>
-                    <p className="text-sm text-gray-500">
-                        By signing up, you agree to our Terms of Service and
-                        Privacy Policy.
-                    </p>
+                    <p className="text-md">Sign in to unlock more features</p>
                 </div>
 
                 <div className="flex flex-col space-y-4 bg-secondary/50 px-4 py-8 md:px-16">

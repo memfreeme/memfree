@@ -17,17 +17,40 @@ import {
     WebSource,
     ImageSource,
 } from '@/lib/types';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import util from 'util';
+
+import { Ratelimit } from '@upstash/ratelimit';
+import { RATE_LIMIT_KEY, redisDB } from '@/lib/db';
+
+const ratelimit = new Ratelimit({
+    redis: redisDB,
+    limiter: Ratelimit.slidingWindow(3, '1 d'),
+    prefix: RATE_LIMIT_KEY,
+    analytics: true,
+});
 
 const REFERENCE_COUNT = parseInt(process.env.REFERENCE_COUNT || '6', 10);
 
-export async function POST(req: Request) {
-    // TODO: add rata limit for anonymous User
+export async function POST(req: NextRequest) {
     const session = await auth();
     let userId = '';
     if (session) {
         userId = session.user.id;
+    } else {
+        const ip = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').split(
+            ',',
+        )[0];
+        console.log('ip', ip);
+        const { success } = await ratelimit.limit(ip);
+        if (!success) {
+            return NextResponse.json(
+                {
+                    error: 'Rate limit exceeded',
+                },
+                { status: 429 },
+            );
+        }
     }
     const { query, useCache } = await req.json();
     try {
@@ -170,7 +193,6 @@ async function ask(
 
     if (!images.length) {
         images = fetchedImages;
-        // If images were not available initially but are now retrieved
         await streamFormattedData({ images: fetchedImages }, onStream);
     }
 
@@ -189,24 +211,6 @@ async function ask(
     };
     await setCache(query, cachedResult);
     onStream?.(null, true);
-
-    // console.time('rerank');
-    // const documents = formatContexts.map((item) => item.content);
-    // const rerankedResults = await rerank(query, documents);
-    // const rerankContexts = rerankedResults
-    //     .slice(0, 5)
-    //     .map((rerankedDoc) => {
-    //         const originalContext = formatContexts.find(
-    //             (ctx) => ctx.content === rerankedDoc.document,
-    //         );
-    //         return {
-    //             title: originalContext.title,
-    //             url: originalContext.url,
-    //             content: originalContext.content,
-    //             site: originalContext.site,
-    //         };
-    //     });
-    // console.timeEnd('rerank');
 }
 
 async function streamFormattedData(
