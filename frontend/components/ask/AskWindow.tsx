@@ -1,16 +1,15 @@
 'use client';
 
-import React, { useRef, useState, KeyboardEvent, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { ChatMessageBubble, Message } from './AskMessageBubble';
 import { marked } from 'marked';
 import { Renderer } from 'marked';
 
 import { fetchEventSource } from '@microsoft/fetch-event-source';
-import { Input } from '../ui/input';
-import { useDebouncedCallback } from 'use-debounce';
 import { useSearchParams } from 'next/navigation';
 import { ImageSource, WebSource } from '@/lib/types';
 import { useSigninModal } from '@/hooks/use-signin-modal';
+import SearchBar from '../Search';
 
 export function AskWindow() {
     const messageContainerRef = useRef<HTMLDivElement | null>(null);
@@ -20,7 +19,6 @@ export function AskWindow() {
 
     const hasSentMessageRef = useRef(false);
     const searchParams = useSearchParams();
-
     const signInModal = useSigninModal();
 
     const q = searchParams.get('q');
@@ -35,25 +33,6 @@ export function AskWindow() {
     const [chatHistory, setChatHistory] = useState<
         { human: string; ai: string }[]
     >([]);
-
-    const handleInputChange = useDebouncedCallback((value) => {
-        setInput(value);
-    }, 100);
-
-    const handleClick = () => {
-        sendMessage(input);
-    };
-
-    const handleInputKeydown = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.code === 'Enter' && !e.shiftKey) {
-            if (e.keyCode !== 229) {
-                e.preventDefault();
-
-                const target = e.target as HTMLInputElement;
-                if (target) sendMessage(target.value);
-            }
-        }
-    };
 
     const sendMessage = async (
         message?: string,
@@ -254,6 +233,7 @@ export function AskWindow() {
                 className="my-10 flex w-3/4 flex-col-reverse overflow-auto p-10"
                 ref={messageContainerRef}
             >
+                <SearchBar handleSearch={sendMessage} />
                 {messages.length > 0 ? (
                     [...messages]
                         .reverse()
@@ -268,42 +248,6 @@ export function AskWindow() {
                 ) : (
                     <></>
                 )}
-            </div>
-            <div className="mx-auto w-full max-w-2xl flex items-center relative mb-20">
-                <Input
-                    type="text"
-                    className="flex-2 p-4 border-2 rounded-3xl"
-                    placeholder="Ask me anything"
-                    // value={input}
-                    onChange={(e) => {
-                        handleInputChange(e.target.value);
-                    }}
-                    onKeyDown={handleInputKeydown}
-                />
-
-                <span className="absolute inset-y-0 end-0 grid w-10 place-content-center">
-                    <button
-                        type="button"
-                        className="text-gray-600 hover:text-gray-700"
-                        onClick={handleClick}
-                    >
-                        <span className="sr-only">Search</span>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="size-5"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                            />
-                        </svg>
-                    </button>
-                </span>
             </div>
         </div>
     );

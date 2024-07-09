@@ -1,18 +1,27 @@
 'use client';
 
 import { HeroLanding } from '@/components/sections/hero-landing';
-import Search from '@/components/Search';
-import { SearchResult } from '@/types';
-import { useState } from 'react';
+import SearchBar from '@/components/Search';
+import { useRouter } from 'next/navigation';
 
 export default function IndexPage() {
-    const [results, setResults] = useState<SearchResult[]>([]);
-    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+
+    const handleSearch = async (key: string) => {
+        if (!key) {
+            return;
+        }
+
+        if (key.trim() !== '') {
+            router.push('/ask?q=' + key);
+            return;
+        }
+    };
 
     return (
         <>
             <HeroLanding />
-            <Search setResults={setResults} setLoading={setLoading} />
+            <SearchBar handleSearch={handleSearch} />
         </>
     );
 }

@@ -49,7 +49,7 @@ export const UploadModal = () => {
         >
             <div className="grid w-full gap-10 my-10 p-10">
                 <Textarea
-                    placeholder="Please input the url you want to index"
+                    placeholder="Please enter the URL of the web pages you value. Memfree will create an AI index for this page."
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
                 />
@@ -59,7 +59,7 @@ export const UploadModal = () => {
                     loading={islLoading}
                     onClick={handleIndex}
                 >
-                    Index This Url
+                    Index This Web Page
                 </LoadingButton>
             </div>
         </Modal>
