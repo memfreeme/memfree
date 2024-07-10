@@ -10,6 +10,11 @@
     <changefreq>daily</changefreq>
   </url>
   <url>
+    <loc>https://www.memfree.me/pricing</loc>
+    <lastmod>2024-07-10</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
     <loc>https://www.memfree.me/changelog</loc>
     <lastmod>2024-07-10</lastmod>
     <changefreq>daily</changefreq>
