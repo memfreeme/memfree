@@ -71,7 +71,7 @@ export function AskWindow() {
             return text + '\n';
         };
         renderer.list = (text) => {
-            return `${text}\n\n`;
+            return `${text}\n`;
         };
         renderer.listitem = (text) => {
             return `\n• ${text}`;

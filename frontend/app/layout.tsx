@@ -2,7 +2,6 @@ import '@/styles/globals.css';
 
 import { fontHeading, fontSans, fontUrban } from '@/assets/fonts';
 import { ModalProvider } from '@/components/modal-provider';
-import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { Toaster } from '@/components/ui/toaster';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
@@ -77,7 +76,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     {children}
                     <Toaster />
                     <ModalProvider />
-                    <TailwindIndicator />
                 </ThemeProvider>
                 <Script
                     defer

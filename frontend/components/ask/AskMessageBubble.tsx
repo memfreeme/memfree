@@ -51,7 +51,10 @@ const createAnswerElements = (content: string, sources: WebSource[]) => {
 
         if (match.index !== null) {
             const html = content.slice(prevIndex, match.index);
-            const updatedHtml = html.replace(/<h3>/g, '<h3 className="prose">');
+            const updatedHtml = html.replace(
+                /<h3>/g,
+                '<h3 style="font-size: 1.125rem; font-weight: 700;">',
+            );
             elements.push(
                 <span
                     key={`content:${prevIndex}`}

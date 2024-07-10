@@ -16,21 +16,17 @@ const userStore = create<UserState>((set) => ({
 
     initializeUser: async () => {
         if (userStore.getState().loading) {
-            console.log('Initialization in progress, skipping...');
             return;
         }
 
         set((state) => ({ ...state, loading: true }));
-        console.log('set loading to true');
+
         let fetchedUser: User | null = loadFromLocalStorage();
-        console.log('local User:', fetchedUser);
 
         if (!fetchedUser) {
-            console.log('will fecth user:');
             try {
                 const response = await fetch('/api/auth/session');
                 const session = await response.json();
-                console.log('session:', session);
                 fetchedUser = session?.user || null;
             } catch (error) {
                 console.error('Failed to fetch user info:', error);
@@ -44,10 +40,8 @@ const userStore = create<UserState>((set) => ({
     },
 
     logoutUser: () => {
-        console.log('logging out user');
         localStorage.removeItem('user');
         set({ user: null });
-        console.log('logging out user done');
     },
 }));
 
