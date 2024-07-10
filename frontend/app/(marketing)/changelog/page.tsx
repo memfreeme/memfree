@@ -14,7 +14,7 @@ import {
 import { formatDate } from '@/lib/utils';
 
 export const metadata = {
-    title: 'MemFree Changelog -- AI Search and Ask Everything',
+    title: 'MemFree Changelog -- Hybrid AI Search',
 };
 
 export default async function ChangeLog() {

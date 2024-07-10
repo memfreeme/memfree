@@ -15,15 +15,13 @@ interface RootLayoutProps {
 
 export const metadata = {
     title: {
-        default: siteConfig.name,
+        default: 'MemFree - Hybrid AI Search',
         template: `%s | ${siteConfig.name}`,
     },
     description: siteConfig.description,
     keywords: [
-        'AI Search',
-        'AI Hyper Search',
-        'AI Search Engine',
-        'AI bookmark manager',
+        'Hybrid AI Search',
+        'Hybrid AI Ask',
         'AI bookmark search',
         'AI document search',
         'AI ask everything',

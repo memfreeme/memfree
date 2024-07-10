@@ -4,7 +4,7 @@ import { compareDesc } from 'date-fns';
 import { BlogPosts } from '@/components/blog-posts';
 
 export const metadata = {
-    title: 'MemFree Blog -- AI Search and Ask Everything',
+    title: 'MemFree Blog -- Hybrid AI Search',
 };
 
 export default async function BlogPage() {
