@@ -56,7 +56,7 @@ export default function SearchBar({ handleSearch }: Props) {
                         type="text"
                         value={content}
                         className="flex-2 p-4 border-2 rounded-3xl"
-                        placeholder="Ask Anything"
+                        placeholder="Search Anything"
                         onChange={(e) => {
                             handleInputChange(e.target.value);
                         }}
