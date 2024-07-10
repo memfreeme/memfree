@@ -1,70 +1,59 @@
-import { SubscriptionPlan } from "types"
+import { SubscriptionPlan } from 'types';
 
 export const pricingData: SubscriptionPlan[] = [
-  {
-    title: 'Starter',
-    description: 'For Beginners',
-    benefits: [
-      'Up to 100 monthly posts',
-      'Basic analytics and reporting',
-      'Access to standard templates',
-    ],
-    limitations: [
-      'No priority access to new features.',
-      'Limited customer support',
-      'No custom branding',
-      'Limited access to business resources.',
-    ],
-    prices: {
-      monthly: 0,
-      yearly: 0,
+    {
+        title: 'Free',
+        description: 'For Beginners',
+        benefits: [
+            'Up to 10 searchs per day',
+            'Up to 10 bookmarks and web pages to index',
+            'Support GPT-3.5 AI Model',
+            'Support web and chrome extension',
+        ],
+        limitations: [],
+        prices: {
+            monthly: 0,
+            yearly: 0,
+        },
+        stripeIds: {
+            monthly: null,
+            yearly: null,
+        },
     },
-    stripeIds: {
-      monthly: null,
-      yearly: null,
+    {
+        title: 'Pro',
+        description: 'Unlock Advanced Features',
+        benefits: [
+            'Up to 100 searchs per day',
+            'Up to 1000 bookmarks and web pages to index',
+            'Support GPT-3.5 and GPT-4o AI Model',
+        ],
+        limitations: [],
+        prices: {
+            monthly: 10,
+            yearly: 96,
+        },
+        stripeIds: {
+            monthly: process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID,
+            yearly: process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PLAN_ID,
+        },
     },
-  },
-  {
-    title: 'Pro',
-    description: 'Unlock Advanced Features',
-    benefits: [
-      'Up to 500 monthly posts',
-      'Advanced analytics and reporting',
-      'Access to business templates',
-      'Priority customer support',
-      'Exclusive webinars and training.',
-    ],
-    limitations: [
-      'No custom branding',
-      'Limited access to business resources.',
-    ],
-    prices: {
-      monthly: 15,
-      yearly: 144,
+    {
+        title: 'Premium',
+        description: 'For Power Users',
+        benefits: [
+            'Unlimited searchs per day',
+            'Unlimited bookmarks and web pages to index',
+            'Priority customer support',
+        ],
+        limitations: [],
+        prices: {
+            monthly: 30,
+            yearly: 288,
+        },
+        stripeIds: {
+            monthly: process.env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PLAN_ID,
+            yearly: process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PLAN_ID,
+        },
     },
-    stripeIds: {
-      monthly: process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID,
-      yearly: process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PLAN_ID,
-    },
-  },
-  {
-    title: 'Business',
-    description: 'For Power Users',
-    benefits: [
-      'Unlimited posts',
-      'Real-time analytics and reporting',
-      'Access to all templates, including custom branding',
-      '24/7 business customer support',
-      'Personalized onboarding and account management.',
-    ],
-    limitations: [],
-    prices: {
-      monthly: 30,
-      yearly: 300,
-    },
-    stripeIds: {
-      monthly: process.env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PLAN_ID,
-      yearly: process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PLAN_ID,
-    },
-  },
 ];
