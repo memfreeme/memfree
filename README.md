@@ -36,22 +36,28 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 ### Frontend
 
 ```
+cd frontend
+
 bun i
 
 bun run dev
 ```
 
-### Vector
+### Vector Service
 
 ```
+cd vector
+
 bun i
 
 bun run index.ts
 ```
 
-### Queue
+### Queue Service
 
 ```
+cd queue
+
 bun i
 
 bun run index.ts
@@ -60,15 +66,19 @@ bun run index.ts
 ### Extension
 
 ```
+cd extension
+
 bun i
 
 bun run build
 ```
 
-### Embedding
+### Embedding Service
 
 ```
 Install Rust: (optional)  curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+
+cd embedding
 
 cargo build --release
 
