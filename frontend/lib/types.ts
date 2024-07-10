@@ -54,6 +54,11 @@ export enum ESearXNGCategory {
     MUSIC = 'music',
 }
 
+export interface ScoredURL {
+    value: string;
+    score: number;
+}
+
 export interface StreamHandler {
     (message: string | null, done: boolean): void;
 }

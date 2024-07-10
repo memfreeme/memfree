@@ -1,10 +1,11 @@
 import { redirect } from 'next/navigation';
 
 import { DashboardNav } from '@/components/layout/nav';
-import { SiteFooter } from '@/components/layout/site-footer';
 import { dashboardConfig } from '@/config/dashboard';
 import { getCurrentUser } from '@/lib/session';
 import SiteHeader from '@/components/layout/site-header';
+import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
+import { marketingConfig } from '@/config/marketing';
 
 interface DashboardLayoutProps {
     children?: React.ReactNode;
@@ -23,7 +24,7 @@ export default async function DashboardLayout({
         <div className="flex min-h-screen flex-col space-y-6">
             <SiteHeader
                 user={user}
-                items={dashboardConfig.mainNav}
+                items={marketingConfig.mainNav}
                 scroll={false}
             />
 
@@ -35,7 +36,7 @@ export default async function DashboardLayout({
                     {children}
                 </main>
             </div>
-            <SiteFooter className="border-t" />
+            <SimpleSiteFooter />
         </div>
     );
 }

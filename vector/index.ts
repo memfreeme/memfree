@@ -1,5 +1,4 @@
 import { search } from "./db";
-import { incSearchCount } from "./redis";
 import { isValidUrl } from "./util";
 import { build_vector_for_url } from "./web";
 
@@ -24,13 +23,6 @@ export async function handleRequest(req: Request): Promise<Response> {
     const { query, userId } = await req.json();
     try {
       const result = await search(query, userId);
-      // Without awaiting incSearchCount to avoid blocking response time
-      incSearchCount(userId).catch((error) => {
-        console.error(
-          `Failed to increment search count for user ${userId}:`,
-          error
-        );
-      });
       return Response.json(result);
     } catch (unknownError) {
       let errorMessage: string | null = null;

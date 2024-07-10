@@ -54,13 +54,6 @@ export async function incIndexCount(userId: string): Promise<void> {
   ]);
 }
 
-export async function incSearchCount(userId: string): Promise<void> {
-  const result = await Promise.all([
-    redis.incr(SEARCH_COUNT_KEY + userId),
-    redis.incr(TOTAL_SEARCH_COUNT_KEY),
-  ]);
-}
-
 export async function getIndexCount(userId: string): Promise<number> {
   return getCount(INDEX_COUNT_KEY + userId);
 }

@@ -46,34 +46,4 @@ describe("Redis Client Integration Tests", () => {
     expect(await redis.getIndexCount(userId)).toBe(2);
     expect(await redis.getTotalIndexCount()).toBe(initialTotalIndexCount + 2);
   });
-
-  it("should increment search count correctly", async () => {
-    const initialTotalSearchCount = await redis.getTotalSearchCount();
-    await redis.incSearchCount(userId);
-
-    const userSearchCount = await redis.getSearchCount(userId);
-    const totalSearchCount = await redis.getTotalSearchCount();
-
-    expect(userSearchCount).toBe(1);
-    expect(totalSearchCount).toBe(initialTotalSearchCount + 1);
-
-    await redis.incSearchCount(userId);
-
-    expect(await redis.getSearchCount(userId)).toBe(2);
-    expect(await redis.getTotalSearchCount()).toBe(initialTotalSearchCount + 2);
-  });
-
-  it("should get counts accurately", async () => {
-    const initialTotalIndexCount = await redis.getTotalIndexCount();
-    const initialTotalSearchCount = await redis.getTotalSearchCount();
-
-    await redis.incIndexCount(userId);
-    await redis.incIndexCount(userId);
-    await redis.incSearchCount(userId);
-
-    expect(await redis.getIndexCount(userId)).toBe(2);
-    expect(await redis.getTotalIndexCount()).toBe(initialTotalIndexCount + 2);
-    expect(await redis.getSearchCount(userId)).toBe(1);
-    expect(await redis.getTotalSearchCount()).toBe(initialTotalSearchCount + 1);
-  });
 });

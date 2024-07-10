@@ -38,6 +38,13 @@ export function formatDate(input: string | number): string {
     });
 }
 
+export function formatDateTime(input: string | number): string {
+    const date = new Date(input);
+    const formattedDate = date.toLocaleDateString('en-US');
+    const formattedTime = date.toLocaleTimeString('en-US', { hour12: false });
+    return `${formattedDate}, ${formattedTime}`;
+}
+
 export function absoluteUrl(path: string) {
     return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
 }

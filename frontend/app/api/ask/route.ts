@@ -21,7 +21,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import util from 'util';
 
 import { Ratelimit } from '@upstash/ratelimit';
-import { RATE_LIMIT_KEY, redisDB } from '@/lib/db';
+import { incSearchCount, RATE_LIMIT_KEY, redisDB } from '@/lib/db';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -105,6 +105,16 @@ async function ask(
                 onStream,
             );
             onStream?.(null, true);
+
+            if (userId) {
+                // Without awaiting incSearchCount to avoid blocking response time
+                incSearchCount(userId).catch((error) => {
+                    console.error(
+                        `Failed to increment search count for user ${userId}:`,
+                        error,
+                    );
+                });
+            }
             return;
         }
     }
@@ -209,7 +219,20 @@ async function ask(
         answer: fullAnswer,
         related: fullRelated,
     };
-    await setCache(query, cachedResult);
+
+    if (userId) {
+        // Without awaiting incSearchCount and setCache to avoid blocking response time
+        incSearchCount(userId).catch((error) => {
+            console.error(
+                `Failed to increment search count for user ${userId}:`,
+                error,
+            );
+        });
+    }
+
+    setCache(query, cachedResult).catch((error) => {
+        console.error(`Failed to set cache for query ${query}:`, error);
+    });
     onStream?.(null, true);
 }
 

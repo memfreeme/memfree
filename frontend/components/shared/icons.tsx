@@ -20,13 +20,13 @@ import {
     Moon,
     MoreVertical,
     Plus,
-    Puzzle,
     Search,
     Settings,
     SunMedium,
     Trash,
     User,
     X,
+    BarChart4,
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -85,6 +85,7 @@ export const Icons = {
     moon: Moon,
     page: File,
     post: FileText,
+    barChart: BarChart4,
     search: Search,
     settings: Settings,
     spinner: Loader2,
