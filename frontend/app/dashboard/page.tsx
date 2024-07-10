@@ -77,7 +77,7 @@ export default async function page() {
                                 <CardHeader>
                                     <CardTitle>Recent Indexed Urls</CardTitle>
                                     <CardDescription>
-                                        Recent bookmarks and web pages you've
+                                        Recent bookmarks and web pages you have
                                         indexed
                                     </CardDescription>
                                 </CardHeader>
