@@ -33,7 +33,7 @@ export default function SearchBar({ handleSearch }: Props) {
     const handleClick = () => {
         if (content.trim() === '') {
             toast({
-                description: 'Please input your questions!',
+                description: 'Please input your question!',
             });
             return;
         }

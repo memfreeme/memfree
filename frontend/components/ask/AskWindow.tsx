@@ -23,7 +23,6 @@ export function AskWindow() {
 
     const q = searchParams.get('q');
     useEffect(() => {
-        console.log('q', q);
         if (q && !hasSentMessageRef.current) {
             sendMessage(q as string);
             hasSentMessageRef.current = true;
@@ -37,6 +36,7 @@ export function AskWindow() {
     const sendMessage = async (
         message?: string,
         messageIdToUpdate?: string,
+        mode: string = 'simple',
     ) => {
         if (messageContainerRef.current) {
             messageContainerRef.current.classList.add('grow');
@@ -45,7 +45,7 @@ export function AskWindow() {
             return;
         }
         const messageValue = message ?? input;
-        console.log('messageValue', messageValue);
+
         if (messageValue === '') return;
         if (!messageIdToUpdate) {
             setInput('');
@@ -159,6 +159,7 @@ export function AskWindow() {
                 body: JSON.stringify({
                     query: messageValue,
                     useCache: !messageIdToUpdate,
+                    mode: mode,
                 }),
                 openWhenHidden: true,
                 onerror(err) {
@@ -205,7 +206,7 @@ export function AskWindow() {
 
                     if (parsedData.answer) {
                         accumulatedMessage += parsedData.answer;
-                        updateMessages(accumulatedMessage);
+                        updateMessages(marked.parse(accumulatedMessage));
                     }
                 },
             });
@@ -223,8 +224,12 @@ export function AskWindow() {
         await sendMessage(question);
     };
 
-    const resendMessage = async (question: string, msgId: string) => {
+    const resendQuestion = async (question: string, msgId: string) => {
         await sendMessage(question, msgId);
+    };
+
+    const deepIntoQuestion = async (question: string, msgId: string) => {
+        await sendMessage(question, msgId, 'deep');
     };
 
     return (
@@ -242,7 +247,8 @@ export function AskWindow() {
                                 key={m.id}
                                 message={{ ...m }}
                                 onSelect={sendSelectedQuestion}
-                                resendMessage={resendMessage}
+                                resendQuestion={resendQuestion}
+                                deepIntoQuestion={deepIntoQuestion}
                             ></ChatMessageBubble>
                         ))
                 ) : (

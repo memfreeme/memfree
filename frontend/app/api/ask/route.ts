@@ -30,8 +30,6 @@ const ratelimit = new Ratelimit({
     analytics: true,
 });
 
-const REFERENCE_COUNT = parseInt(process.env.REFERENCE_COUNT || '6', 10);
-
 export async function POST(req: NextRequest) {
     const session = await auth();
     let userId = '';
@@ -41,7 +39,7 @@ export async function POST(req: NextRequest) {
         const ip = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').split(
             ',',
         )[0];
-        console.log('ip', ip);
+
         const { success } = await ratelimit.limit(ip);
         if (!success) {
             return NextResponse.json(
@@ -52,7 +50,8 @@ export async function POST(req: NextRequest) {
             );
         }
     }
-    const { query, useCache } = await req.json();
+    const { query, useCache, mode } = await req.json();
+
     try {
         const readableStream = new ReadableStream({
             async start(controller) {
@@ -68,6 +67,7 @@ export async function POST(req: NextRequest) {
                             controller.enqueue(payload);
                         }
                     },
+                    mode,
                 );
             },
             cancel() {
@@ -91,8 +91,8 @@ async function ask(
     useCache: boolean,
     userId?: string,
     onStream?: (...args: any[]) => void,
-    model = 'gpt-3.5-turbo',
     mode: AskMode = 'simple',
+    model = 'gpt-3.5-turbo',
 ) {
     let cachedResult: CachedResult | null = null;
     if (useCache) {

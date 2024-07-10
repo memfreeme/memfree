@@ -10,6 +10,7 @@ import {
     TextSearchIcon,
     Copy,
     ThumbsDown,
+    ZoomIn,
 } from 'lucide-react';
 import { ImageSource, WebSource } from '@/lib/types';
 import { useToast } from '@/components/ui/use-toast';
@@ -49,11 +50,13 @@ const createAnswerElements = (content: string, sources: WebSource[]) => {
         const sourceNum = parseInt(match[1], 10);
 
         if (match.index !== null) {
+            const html = content.slice(prevIndex, match.index);
+            const updatedHtml = html.replace(/<h3>/g, '<h3 className="prose">');
             elements.push(
                 <span
                     key={`content:${prevIndex}`}
                     dangerouslySetInnerHTML={{
-                        __html: content.slice(prevIndex, match.index),
+                        __html: updatedHtml,
                     }}
                 ></span>,
             );
@@ -79,11 +82,13 @@ const createAnswerElements = (content: string, sources: WebSource[]) => {
 export function ChatMessageBubble(props: {
     message: Message;
     onSelect: (question: string) => void;
-    resendMessage: (question: string, msgId: string) => void;
+    resendQuestion: (question: string, msgId: string) => void;
+    deepIntoQuestion: (question: string, msgId: string) => void;
 }) {
     const { id, role, content, related, question } = props.message;
     const onSelect = props.onSelect;
-    const resendMessage = props.resendMessage;
+    const resendMessage = props.resendQuestion;
+    const deepIntoQuestion = props.deepIntoQuestion;
     const isUser = role === 'user';
 
     const sources = props.message.sources ?? [];
@@ -150,9 +155,9 @@ export function ChatMessageBubble(props: {
                                     <button
                                         onClick={handleCopyClick}
                                         title="Copy"
-                                        className="p-2 border-2 border-dashed rounded-full text-primary"
+                                        className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"
                                     >
-                                        <Copy size={20} />
+                                        <Copy size={24} />
                                     </button>
                                 </TooltipTrigger>
                                 <TooltipContent>
@@ -166,9 +171,9 @@ export function ChatMessageBubble(props: {
                                             resendMessage(question, id)
                                         }
                                         title="Reload"
-                                        className="p-2 border-2 border-dashed rounded-full text-primary"
+                                        className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"
                                     >
-                                        <RefreshCcw size={20} />
+                                        <RefreshCcw size={24} />
                                     </button>
                                 </TooltipTrigger>
                                 <TooltipContent>
@@ -178,11 +183,27 @@ export function ChatMessageBubble(props: {
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <button
+                                        onClick={() =>
+                                            deepIntoQuestion(question, id)
+                                        }
+                                        title="Deep Into"
+                                        className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"
+                                    >
+                                        <ZoomIn size={24} />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Go deep into, get more detail answer</p>
+                                </TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button
                                         onClick={() => feedback(props.message)}
                                         title="Feedback"
-                                        className="p-2 border-2 border-dashed rounded-full text-primary"
+                                        className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"
                                     >
-                                        <ThumbsDown size={20} />
+                                        <ThumbsDown size={24} />
                                     </button>
                                 </TooltipTrigger>
                                 <TooltipContent>
