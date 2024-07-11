@@ -25,6 +25,8 @@ export async function build_vector_for_url(url: string, userId: string) {
     appendChunkOverlapHeader: false,
   });
 
+  console.log(`Adding vectors for ${url} (${documents.length} documents)`);
+
   console.time("addVectors");
   const data = await addVectors("", title, url, documents);
   console.timeEnd("addVectors");
@@ -43,6 +45,20 @@ export async function build_vector_for_url(url: string, userId: string) {
   }
 }
 
+async function embedBatch(
+  texts: string[],
+  batchSize: number = 10
+): Promise<number[][]> {
+  const batches = [];
+  for (let i = 0; i < texts.length; i += batchSize) {
+    const batch = texts.slice(i, i + batchSize);
+    const embeddings = await embed(batch);
+    batches.push(embeddings);
+  }
+
+  return batches.flat();
+}
+
 async function addVectors(
   image: string,
   title: string,
@@ -54,7 +70,15 @@ async function addVectors(
     return [];
   }
 
-  const embeddings = await embed(texts);
+  const embeddings = await embedBatch(texts);
+
+  console.log(
+    "embeddings length",
+    embeddings.length,
+    texts.length,
+    documents.length
+  );
+
   const data: Array<Record<string, unknown>> = [];
   for (let i = 0; i < documents.length; i += 1) {
     const record = {
