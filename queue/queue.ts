@@ -40,10 +40,21 @@ async function build_vector_for_url(
     body: JSON.stringify({ url, userId }),
   });
 
-  if (!response.ok) {
+  if (response.status === 400) {
+    console.warn(`Bad Request for URL ${url}: ${response.statusText}`);
+  } else if (!response.ok) {
     throw new Error(
       `Failed to fetch vector for URL ${url}: ${response.statusText}`
     );
+  }
+}
+
+function isValidUrl(input: string): boolean {
+  try {
+    new URL(input);
+    return true;
+  } catch (_) {
+    return false;
   }
 }
 
@@ -51,6 +62,22 @@ async function processUrl(url: string, userId: string, taskId: string) {
   let retryCount = 0;
   const maxRetries = 5;
   const taskKey = `${TASK_KEY}${taskId}`;
+
+  if (!isValidUrl(url)) {
+    // TODO: use RPOPLPUSH later
+    axiom.ingest("memfree", [
+      {
+        service: "queue",
+        time: 0,
+        success: false,
+        url: url,
+        userId: userId,
+        taskId: taskId,
+      },
+    ]);
+    await redis.lpop(taskKey);
+    return;
+  }
 
   while (retryCount < maxRetries) {
     try {
@@ -107,6 +134,7 @@ async function processUrl(url: string, userId: string, taskId: string) {
 async function processTask(taskId: string) {
   const [userId, batchId] = taskId.split(":");
   const taskKey = `${TASK_KEY}${taskId}`;
+
   while (true) {
     const urls = await redis.lrange(taskKey, 0, -1);
 
