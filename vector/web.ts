@@ -19,7 +19,7 @@ export async function build_vector_for_url(url: string, userId: string) {
   // const imageUrl = await getImage(url);
   // const image = await uploadImage(imageUrl, url);
   // TODO: Extract image from markdown
-  const title = await extractTitle(markdown);
+  const title = await extractTitle(markdown, url);
 
   const documents = await splitter.createDocuments([markdown], [], {
     appendChunkOverlapHeader: false,
@@ -71,12 +71,12 @@ async function addVectors(
   return data;
 }
 
-async function extractTitle(markdown: string): Promise<string> {
+async function extractTitle(markdown: string, url: string): Promise<string> {
   const titlePattern = /^Title: (.+)$/m;
   const match = markdown.match(titlePattern);
   if (match && match[1]) {
     return match[1].trim();
   }
 
-  throw new Error("Title not found in the given markdown");
+  return url;
 }
