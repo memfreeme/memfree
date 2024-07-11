@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "MemFree",
   "short_name": "MemFree",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Hybrid AI search and ask",
   "icons": {
     "16": "/icons/icon.png",
