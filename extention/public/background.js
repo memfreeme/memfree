@@ -48,7 +48,7 @@ function splitArrayIntoChunks(array, chunkSize) {
 async function handleStartup() {
   try {
     const remainingChunks = await getItem("remainingChunks");
-    const userId = getUserId();
+    const userId = await getUserId();
 
     if (!remainingChunks || !userId) {
       return;
@@ -68,6 +68,19 @@ async function handleStartup() {
   } catch (error) {
     console.error("Error during startup:", error);
   }
+}
+
+function notifyUser(status, reason = "") {
+  const options = {
+    type: "basic",
+    iconUrl: "icons/icon.png",
+    title: "Bookmark Processing Status",
+    message:
+      status === "success"
+        ? "Bookmarks indexed successfully!"
+        : `Failed to process bookmarks: ${reason}`,
+  };
+  chrome.notifications.create(options);
 }
 
 chrome.runtime.onStartup.addListener(() => {
@@ -191,19 +204,6 @@ async function sendBookmarksInBatches(bookmarks, batchSize = 10) {
   } catch (error) {
     console.error("Error processing bookmarks:", error);
   }
-}
-
-function notifyUser(status, reason = "") {
-  const options = {
-    type: "basic",
-    iconUrl: "icons/icon.png",
-    title: "Bookmark Processing Status",
-    message:
-      status === "success"
-        ? "Bookmarks indexed successfully!"
-        : `Failed to process bookmarks: ${reason}`,
-  };
-  chrome.notifications.create(options);
 }
 
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {

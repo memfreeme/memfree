@@ -1,4 +1,4 @@
-export function setItem(key, value) {
+export async function setItem(key, value) {
   return new Promise((resolve, reject) => {
     chrome.storage.local.set({ [key]: value }, () => {
       if (chrome.runtime.lastError) {
@@ -10,7 +10,7 @@ export function setItem(key, value) {
   });
 }
 
-export function getItem(key) {
+export async function getItem(key) {
   return new Promise((resolve, reject) => {
     chrome.storage.local.get([key], (result) => {
       if (chrome.runtime.lastError) {
@@ -27,7 +27,7 @@ export async function getUserId() {
   return user && user.id ? user.id : null;
 }
 
-export function incrementItem(key, incrementBy = 1) {
+export async function incrementItem(key, incrementBy = 1) {
   return getItem(key).then((currentValue) => {
     const newValue = (currentValue || 0) + incrementBy;
     return setItem(key, newValue).then(() => newValue);

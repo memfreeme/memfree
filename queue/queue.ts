@@ -118,7 +118,7 @@ async function processUrl(url: string, userId: string, taskId: string) {
 
       if (retryCount >= maxRetries) {
         // dead-letter queue
-        await redis.rpush(`${taskId}:dlq`, url);
+        await redis.rpush(`dlq:${taskId}`, url);
         console.warn(
           `URL ${url} pushed to DLQ after ${maxRetries} failed retries`
         );
