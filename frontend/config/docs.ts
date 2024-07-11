@@ -1,62 +1,37 @@
-import { DocsConfig } from "@/types";
+import { DocsConfig } from '@/types';
 
 export const docsConfig: DocsConfig = {
-  mainNav: [
-    {
-      title: "Documentation",
-      href: "/docs",
-    },
-    {
-      title: "Guides",
-      href: "/guides",
-    },
-  ],
-  sidebarNav: [
-    {
-      title: "Getting Started",
-      items: [
+    mainNav: [
         {
-          title: "Introduction",
-          href: "/docs",
+            title: 'Pricing',
+            href: '/pricing',
         },
         {
-          title: "Installation",
-          href: "/docs/installation",
-        },
-      ],
-    },
-    {
-      title: "Configuration",
-      items: [
-        {
-          title: "Database",
-          href: "/docs/configuration/database",
+            title: 'Docs',
+            href: '/docs',
         },
         {
-          title: "Subscriptions",
-          href: "/docs/configuration/subscriptions",
+            title: 'Blog',
+            href: '/blog',
         },
         {
-          title: "Config files",
-          href: "/docs/configuration/config-files",
+            title: 'Changelog',
+            href: '/changelog',
         },
+    ],
+    sidebarNav: [
         {
-          title: "Markdown files",
-          href: "/docs/configuration/markdown-files",
+            title: 'Getting Started',
+            items: [
+                {
+                    title: 'Introduction',
+                    href: '/docs',
+                },
+                {
+                    title: 'Chrome Extension',
+                    href: '/docs/extension-user-guide',
+                },
+            ],
         },
-        {
-          title: "Authentification",
-          href: "/docs/configuration/authentification",
-        },
-        {
-          title: "Email",
-          href: "/docs/configuration/email",
-        },
-        {
-          title: "Components",
-          href: "/docs/configuration/components",
-        },
-      ],
-    },
-  ],
+    ],
 };
