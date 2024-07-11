@@ -1,12 +1,32 @@
 # MemFree
 
-## Overview
+<a href="https://www.memfree.me">
+  <img alt="memfree – Hybrid AI Search Engine: Instantly Get Accurate Answers from the Internet, Bookmarks, Notes, and Docs" src=".assets/memfree-preview.gif" width="100%">
+  <h1 align="center">MemFree</h1>
+  <p align="center"><b>An Open Source Hybrid AI Search Engine</b></p>
+</a>
+
+<h4 align="center">
+  <a href="https://twitter.com/ahaapple2023">
+    <img src="https://img.shields.io/twitter/follow/llmreport?style=flat&label=%40ahaapple&logo=twitter&color=0bf&logoColor=fff" alt="Twitter" />
+  </a>
+  <a href="https://github.com/memfreeme/memfree/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/memfreeme/memfree?label=license&logo=github&color=f80&logoColor=fff" alt="License" />
+  </a>
+  <a href="https://github.com/memfreeme/memfree/issues">
+    <img src="https://img.shields.io/github/commit-activity/m/memfreeme/memfree" alt="git commit activity" />
+  </a>
+  <a href="https://discord.com/invite/7QqyMSTaRq">
+    <img src="https://img.shields.io/badge/chat-on%20Discord-blueviolet" alt="Discord Channel" />
+  </a>
+
+</h4>
+
+<br/>
+
+## Introduction
 
 MemFree is a hybrid AI search engine that simultaneously performs searches on your personal knowledge base (such as bookmarks, notes, documents, etc.) and the Internet.
-
-## Preview
-
-![MemFree - Hybrid AI Search](https://www.memfree.me/_next/image?url=%2Fimages%2Fchangelog%2Fai-search-web.png&w=1920&q=75)
 
 ## Highlights
 
@@ -31,7 +51,7 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 - [MemFree Build Story 3 -- Clarity vs Google Analytics vs Vercel Analytics vs Plausible Vs Umami](https://www.memfree.me/blog/memfree-build-3-clarity)
 - [MemFree Build Story 4 -- Bun stream response for gpt-4o image input](https://www.memfree.me/blog/memfree-build-4-bun-gpt-4o-stream)
 
-## Installation
+## Self-Hosted Installation
 
 ### Frontend
 
