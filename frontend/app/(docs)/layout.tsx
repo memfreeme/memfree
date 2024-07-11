@@ -2,12 +2,12 @@ import Link from 'next/link';
 
 import { DocsSearch } from '@/components/docs/search';
 import { DocsSidebarNav } from '@/components/docs/sidebar-nav';
-import { SiteFooter } from '@/components/layout/site-footer';
 import { Icons } from '@/components/shared/icons';
 import { docsConfig } from '@/config/docs';
 import { siteConfig } from '@/config/site';
 import { getCurrentUser } from '@/lib/session';
 import SiteHeader from '@/components/layout/site-header';
+import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
 
 interface DocsLayoutProps {
     children: React.ReactNode;
@@ -47,7 +47,7 @@ export default async function DocsLayout({ children }: DocsLayoutProps) {
                 <DocsSidebarNav items={docsConfig.sidebarNav} />
             </SiteHeader>
             <div className="container flex-1">{children}</div>
-            <SiteFooter className="border-t" />
+            <SimpleSiteFooter />
         </div>
     );
 }
