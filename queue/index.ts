@@ -50,10 +50,9 @@ export async function handleRequest(req: Request): Promise<Response> {
     }
   }
 
-  if (path === "/api/task-status" && method === "GET") {
+  if (path === "/api/task-status" && method === "POST") {
     const start = Date.now();
-    const { searchParams } = new URL(req.url);
-    const { taskId } = Object.fromEntries(searchParams);
+    const { taskId } = await req.json();
     const status = await getTaskStatus(taskId);
     axiom.ingest("memfree", [
       {
