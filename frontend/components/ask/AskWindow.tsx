@@ -36,7 +36,7 @@ export function AskWindow() {
     const sendMessage = async (
         message?: string,
         messageIdToUpdate?: string,
-        mode: string = 'simple',
+        mode: string = 'deep',
     ) => {
         if (messageContainerRef.current) {
             messageContainerRef.current.classList.add('grow');

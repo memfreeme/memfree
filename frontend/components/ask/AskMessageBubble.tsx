@@ -182,7 +182,7 @@ export function ChatMessageBubble(props: {
                                     <p>Reload</p>
                                 </TooltipContent>
                             </Tooltip>
-                            <Tooltip>
+                            {/* <Tooltip>
                                 <TooltipTrigger asChild>
                                     <button
                                         onClick={() =>
@@ -197,7 +197,7 @@ export function ChatMessageBubble(props: {
                                 <TooltipContent>
                                     <p>Go deep into, get more detail answer</p>
                                 </TooltipContent>
-                            </Tooltip>
+                            </Tooltip> */}
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <button
