@@ -20,6 +20,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
+import ImageGallery from './ImageGallery';
 
 export type Message = {
     id: string;
@@ -239,23 +240,7 @@ export function ChatMessageBubble(props: {
                                 Images
                             </h3>
                         </div>
-                        <div className="flex max-w-full space-x-2.5 overflow-auto">
-                            {images.map((image, index) => (
-                                <a
-                                    key={index}
-                                    href={image.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="aspect-video size-full overflow-hidden hover:scale-[1.03] duration-150 rounded-lg transition-all shadow-md"
-                                >
-                                    <img
-                                        src={image.image}
-                                        alt={image.title}
-                                        className="size-full object-cover object-top max-h-[80vh]"
-                                    />
-                                </a>
-                            ))}
-                        </div>
+                        <ImageGallery initialImages={images}></ImageGallery>
                     </div>
 
                     <div className="flex w-full flex-col items-start space-y-2.5">

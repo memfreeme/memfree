@@ -30,6 +30,8 @@ const ratelimit = new Ratelimit({
     analytics: true,
 });
 
+const IMAGE_LIMIT = 8;
+
 export async function POST(req: NextRequest) {
     const session = await auth();
     let userId = '';
@@ -191,7 +193,10 @@ async function ask(
             ? searchSearxng(query, {
                   categories: [ESearXNGCategory.IMAGES],
               }).then((imageResults) =>
-                  imageResults.results.slice(0, 6).map(formatImage),
+                  imageResults.results
+                      .filter((img) => img.img_src.startsWith('https'))
+                      .slice(0, IMAGE_LIMIT)
+                      .map(formatImage),
               )
             : Promise.resolve(images);
 
