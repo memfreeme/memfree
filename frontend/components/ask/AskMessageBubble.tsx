@@ -85,12 +85,10 @@ const createAnswerElements = (content: string, sources: WebSource[]) => {
 export function ChatMessageBubble(props: {
     message: Message;
     onSelect: (question: string) => void;
-    resendQuestion: (question: string, msgId: string) => void;
     deepIntoQuestion: (question: string, msgId: string) => void;
 }) {
     const { id, role, content, related, question } = props.message;
     const onSelect = props.onSelect;
-    const resendMessage = props.resendQuestion;
     const deepIntoQuestion = props.deepIntoQuestion;
     const isUser = role === 'user';
 
@@ -171,7 +169,7 @@ export function ChatMessageBubble(props: {
                                 <TooltipTrigger asChild>
                                     <button
                                         onClick={() =>
-                                            resendMessage(question, id)
+                                            deepIntoQuestion(question, id)
                                         }
                                         title="Reload"
                                         className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"

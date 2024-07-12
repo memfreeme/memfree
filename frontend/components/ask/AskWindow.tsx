@@ -224,10 +224,6 @@ export function AskWindow() {
         await sendMessage(question);
     };
 
-    const resendQuestion = async (question: string, msgId: string) => {
-        await sendMessage(question, msgId);
-    };
-
     const deepIntoQuestion = async (question: string, msgId: string) => {
         await sendMessage(question, msgId, 'deep');
     };
@@ -247,7 +243,6 @@ export function AskWindow() {
                                 key={m.id}
                                 message={{ ...m }}
                                 onSelect={sendSelectedQuestion}
-                                resendQuestion={resendQuestion}
                                 deepIntoQuestion={deepIntoQuestion}
                             ></ChatMessageBubble>
                         ))
