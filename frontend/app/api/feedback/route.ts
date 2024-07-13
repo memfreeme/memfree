@@ -7,17 +7,14 @@ const axiom = new Axiom({
 });
 
 export async function POST(req: Request) {
-    const session = await auth();
-    if (!session) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    const { message } = await req.json();
     try {
+        const { message } = await req.json();
+        const session = await auth();
         axiom.ingest('memfree', [
             {
                 service: 'search',
                 action: 'feedack',
-                userId: session.user.id,
+                userId: session?.user.id,
                 message: message,
             },
         ]);
