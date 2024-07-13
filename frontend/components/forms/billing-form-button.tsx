@@ -6,7 +6,6 @@ import { SubscriptionPlan, UserSubscriptionPlan } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/shared/icons';
-import { tree } from 'next/dist/build/templates/app-page';
 
 interface BillingFormButtonProps {
     offer: SubscriptionPlan;
@@ -36,7 +35,7 @@ export function BillingFormButton({
         <Button
             rounded="full"
             className="w-full"
-            disabled={true}
+            disabled={isPending}
             onClick={stripeSessionAction}
         >
             {isPending ? (

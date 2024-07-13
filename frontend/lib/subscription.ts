@@ -13,9 +13,10 @@ export async function getUserSubscriptionPlan(
         throw new Error('User not found');
     }
 
+    const periodEnd = new Date(user.stripeCurrentPeriodEnd || 0);
+
     const isPaid =
-        user.stripePriceId &&
-        user.stripeCurrentPeriodEnd?.getTime() + 86_400_000 > Date.now()
+        user.stripePriceId && periodEnd.getTime() + 86_400_000 > Date.now()
             ? true
             : false;
 
@@ -48,7 +49,7 @@ export async function getUserSubscriptionPlan(
     return {
         ...plan,
         ...user,
-        stripeCurrentPeriodEnd: user.stripeCurrentPeriodEnd?.getTime(),
+        stripeCurrentPeriodEnd: periodEnd.getTime(),
         isPaid,
         interval,
         isCanceled,

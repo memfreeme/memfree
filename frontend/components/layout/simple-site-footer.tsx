@@ -19,11 +19,7 @@ export function SimpleSiteFooter({
                         </Link>
                     </li>
                     <li className="mx-4">
-                        <Link
-                            href="/docs/extension-user-guide"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
+                        <Link href="/docs/extension-user-guide" target="_blank">
                             <Icons.chrome className="size-5 hover:text-primary" />
                         </Link>
                     </li>

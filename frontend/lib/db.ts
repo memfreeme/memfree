@@ -27,6 +27,7 @@ export const redisDB = new Redis({
 
 // user
 export const USER_KEY = 'user:';
+export const USER_EMAIL_KEY = 'user:email:';
 
 export const getUserById = async (id: string) => {
     try {
@@ -39,8 +40,19 @@ export const getUserById = async (id: string) => {
 };
 
 export async function updateUser(id: string, data) {
-    const userKey = `${USER_KEY}:${id}`;
+    const userKey = `${USER_KEY}${id}`;
     await redisDB.set(userKey, JSON.stringify(data));
+}
+
+export async function getUserIdByEmail(email: string) {
+    try {
+        const userId: string | null = await redisDB.get(
+            `${USER_EMAIL_KEY}${email}`,
+        );
+        return userId;
+    } catch {
+        return null;
+    }
 }
 
 export async function incSearchCount(userId: string): Promise<void> {

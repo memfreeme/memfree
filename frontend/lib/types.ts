@@ -3,6 +3,10 @@ export interface User {
     name: string;
     email?: string;
     image?: string;
+    stripePriceId?: string;
+    stripeSubscriptionId?: string;
+    stripeCustomerId?: string;
+    stripeCurrentPeriodEnd?: Date;
 }
 
 export interface SearxngSearchOptions {
