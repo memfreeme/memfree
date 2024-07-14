@@ -1,4 +1,4 @@
-import userStore from '@/lib/store';
+import { userStore } from '@/lib/store';
 import { useEffect } from 'react';
 
 export const useUser = () => {
@@ -7,7 +7,6 @@ export const useUser = () => {
 
     useEffect(() => {
         if (!user) {
-            console.log('initializing user');
             initializeUser();
         }
     }, [user, initializeUser]);

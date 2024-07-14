@@ -9,7 +9,7 @@ type UserState = {
     logoutUser: () => void;
 };
 
-const userStore = create<UserState>((set) => ({
+export const userStore = create<UserState>((set) => ({
     user: null,
     loading: false,
     setUser: (user: User) => set({ user }),
@@ -45,8 +45,6 @@ const userStore = create<UserState>((set) => ({
     },
 }));
 
-export default userStore;
-
 const loadFromLocalStorage = (): User | null => {
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
@@ -55,3 +53,35 @@ const loadFromLocalStorage = (): User | null => {
 const saveToLocalStorage = (user: User) => {
     localStorage.setItem('user', JSON.stringify(user));
 };
+
+type ConfigState = {
+    model: string;
+    language: string;
+    colorScheme: 'light' | 'dark';
+    setModel: (model: string) => void;
+    initModel: () => string;
+};
+
+export const configStore = create<ConfigState>()((set) => ({
+    model: 'gpt-3.5',
+    language: 'en',
+    colorScheme: 'light',
+    setModel: (model: string) => {
+        set({ model });
+        localStorage.setItem('model', model);
+    },
+    initModel: () => {
+        const model = localStorage.getItem('model');
+        if (model) {
+            set({ model });
+        }
+        return model || 'gpt-3.5';
+    },
+}));
+
+export const useConfigStore = () =>
+    configStore((state) => ({
+        model: state.model,
+        setModel: state.setModel,
+        initModel: state.initModel,
+    }));

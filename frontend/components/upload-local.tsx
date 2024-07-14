@@ -20,7 +20,6 @@ export function UploadLocal() {
             >
                 <Button
                     onClick={() => {
-                        console.log('click run');
                         if (!user) {
                             signInModal.onOpen();
                         } else {

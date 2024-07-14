@@ -13,7 +13,7 @@ export default function IndexPage() {
         }
 
         if (key.trim() !== '') {
-            router.push('/ask?q=' + key);
+            router.push('/search?q=' + key);
             return;
         }
     };

@@ -1,5 +1,5 @@
-import { SourceBubble } from '@/components/ask/SourceBubble';
-import { InlineCitation } from '@/components/ask/InlineCitation';
+import { SourceBubble } from '@/components/search/SourceBubble';
+import { InlineCitation } from '@/components/search/InlineCitation';
 import {
     BookKey,
     Images,
@@ -83,7 +83,7 @@ const createAnswerElements = (content: string, sources: WebSource[]) => {
     return elements;
 };
 
-export function ChatMessageBubble(props: {
+export function SearchMessageBubble(props: {
     message: Message;
     onSelect: (question: string) => void;
     deepIntoQuestion: (question: string, msgId: string) => void;

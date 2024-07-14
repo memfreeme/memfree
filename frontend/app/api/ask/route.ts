@@ -32,6 +32,15 @@ const ratelimit = new Ratelimit({
 
 const IMAGE_LIMIT = 8;
 
+const formatModel = (model: string) => {
+    switch (model) {
+        case 'gpt-3.5':
+            return 'gpt-3.5-turbo';
+        case 'gpt4':
+            return 'gpt-4o';
+    }
+};
+
 export async function POST(req: NextRequest) {
     const session = await auth();
     let userId = '';
@@ -52,7 +61,7 @@ export async function POST(req: NextRequest) {
             );
         }
     }
-    const { query, useCache, mode } = await req.json();
+    const { query, useCache, mode, model } = await req.json();
 
     try {
         const readableStream = new ReadableStream({
@@ -70,6 +79,7 @@ export async function POST(req: NextRequest) {
                         }
                     },
                     mode,
+                    formatModel(model),
                 );
             },
             cancel() {
@@ -96,6 +106,7 @@ async function ask(
     mode: AskMode = 'simple',
     model = 'gpt-3.5-turbo',
 ) {
+    // console.log('Ask:', query, 'Mode:', mode, 'Model:', model, 'User:', userId);
     let cachedResult: CachedResult | null = null;
     if (useCache) {
         query = query.trim();

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
-import { ChatMessageBubble, Message } from './AskMessageBubble';
+import { SearchMessageBubble, Message } from './SearchMessageBubble';
 import { marked } from 'marked';
 import { Renderer } from 'marked';
 
@@ -10,8 +10,9 @@ import { useSearchParams } from 'next/navigation';
 import { ImageSource, WebSource } from '@/lib/types';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '../Search';
+import { configStore } from '@/lib/store';
 
-export function AskWindow() {
+export function SearchWindow() {
     const messageContainerRef = useRef<HTMLDivElement | null>(null);
     const [messages, setMessages] = useState<Array<Message>>([]);
     const [input, setInput] = useState('');
@@ -29,9 +30,9 @@ export function AskWindow() {
         }
     }, [q]);
 
-    const [chatHistory, setChatHistory] = useState<
-        { human: string; ai: string }[]
-    >([]);
+    // const [chatHistory, setChatHistory] = useState<
+    //     { human: string; ai: string }[]
+    // >([]);
 
     const sendMessage = async (
         message?: string,
@@ -148,6 +149,7 @@ export function AskWindow() {
             if (messageIdToUpdate) {
                 resetMessages(messageIdToUpdate);
             }
+            const model = configStore.getState().model;
 
             const url = `/api/ask`;
             await fetchEventSource(url, {
@@ -160,6 +162,7 @@ export function AskWindow() {
                     query: messageValue,
                     useCache: !messageIdToUpdate,
                     mode: mode,
+                    model: model,
                 }),
                 openWhenHidden: true,
                 onerror(err) {
@@ -177,10 +180,10 @@ export function AskWindow() {
                     }
                 },
                 onclose() {
-                    setChatHistory((prevChatHistory) => [
-                        ...prevChatHistory,
-                        { human: messageValue, ai: accumulatedMessage },
-                    ]);
+                    // setChatHistory((prevChatHistory) => [
+                    //     ...prevChatHistory,
+                    //     { human: messageValue, ai: accumulatedMessage },
+                    // ]);
                     setIsLoading(false);
                     // console.log('related ', accumulatedRelated);
                     // console.log('message ', accumulatedMessage);
@@ -239,12 +242,12 @@ export function AskWindow() {
                     [...messages]
                         .reverse()
                         .map((m, index) => (
-                            <ChatMessageBubble
+                            <SearchMessageBubble
                                 key={m.id}
                                 message={{ ...m }}
                                 onSelect={sendSelectedQuestion}
                                 deepIntoQuestion={deepIntoQuestion}
-                            ></ChatMessageBubble>
+                            ></SearchMessageBubble>
                         ))
                 ) : (
                     <></>

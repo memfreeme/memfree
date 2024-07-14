@@ -1,7 +1,6 @@
 'use client';
 
 import { KeyboardEvent, useState } from 'react';
-import { Input } from '@/components/ui/input';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { useUser } from '@/hooks/use-user';
 import { Link, SendHorizontal } from 'lucide-react';
@@ -13,6 +12,8 @@ import {
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useToast } from './ui/use-toast';
+import { Textarea } from './ui/textarea';
+import { ModelSelection } from './search/ModelSelection';
 
 interface Props {
     handleSearch: (key: string) => void;
@@ -41,7 +42,7 @@ export default function SearchBar({ handleSearch }: Props) {
         setContent('');
     };
 
-    const handleInputKeydown = (e: KeyboardEvent<HTMLInputElement>) => {
+    const handleInputKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.code === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleClick();
@@ -49,27 +50,29 @@ export default function SearchBar({ handleSearch }: Props) {
     };
 
     return (
-        <section className="relatve my-10">
-            <div className="mx-auto w-full max-w-2xl px-4 text-center">
+        <section className="relatve my-5">
+            <div className="mx-auto w-full max-w-2xl px-10 text-center">
                 <div className="flex items-center relative mx-auto w-full max-w-2xl">
-                    <Input
-                        type="text"
+                    <Textarea
                         value={content}
-                        className="flex-2 p-4 border-2 rounded-3xl"
-                        placeholder="Search Anything"
+                        className="flex-2 p-4 border-2 rounded-xl min-h-24"
                         onChange={(e) => {
                             handleInputChange(e.target.value);
                         }}
                         onKeyDown={handleInputKeydown}
                     />
 
-                    <div className="absolute inset-y-0 end-0 flex items-center space-x-2 pr-2">
+                    <div className="absolute bottom-0 left-0 mb-2 ml-2 flex space-x-2">
+                        <ModelSelection></ModelSelection>
+                    </div>
+
+                    <div className="absolute bottom-0 right-0 mb-2 mr-2 flex space-x-2">
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <button
                                         type="button"
-                                        className="text-gray-700 hover:text-primary pr-2"
+                                        className="text-gray-500 hover:text-primary pr-2"
                                         onClick={() => {
                                             if (!user) {
                                                 signInModal.onOpen();
@@ -93,7 +96,7 @@ export default function SearchBar({ handleSearch }: Props) {
                                 <TooltipTrigger asChild>
                                     <button
                                         type="button"
-                                        className="text-gray-700 hover:text-primary pr-2"
+                                        className="text-gray-500 hover:text-primary pr-2"
                                         onClick={handleClick}
                                     >
                                         <span className="sr-only">Search</span>

@@ -13,7 +13,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { UserAvatar } from '@/components/shared/user-avatar';
-import userStore from '@/lib/store';
+import { userStore } from '@/lib/store';
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
     user: Pick<User, 'name' | 'image' | 'email'>;
