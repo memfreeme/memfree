@@ -12,6 +12,39 @@ import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '../Search';
 import { configStore } from '@/lib/store';
 
+import hljs from 'highlight.js';
+import 'highlight.js/styles/monokai-sublime.css';
+import { useToast } from '../ui/use-toast';
+
+function getMarkdownRenderer() {
+    let renderer = new Renderer();
+    renderer.paragraph = (text) => {
+        return text + '\n';
+    };
+    renderer.list = (text) => {
+        return `${text}\n`;
+    };
+    renderer.listitem = (text) => {
+        return `\n• ${text}`;
+    };
+    renderer.code = (code, language) => {
+        const validLanguage = hljs.getLanguage(language || '')
+            ? language
+            : 'plaintext';
+        const highlightedCode = hljs.highlight(validLanguage, code).value;
+        const id = Math.random().toString(36).substr(2, 9);
+
+        return `
+        <pre class="hljs px-2 rounded-lg overflow-auto relative">
+                <button data-codeid="${id}" class="absolute right-5 top-1  text-white text-xs px-2 py-1 rounded-xl hover:bg-gray-600"> Copy </button>
+                <code data-id="${id}">${highlightedCode}</code>
+        </pre>
+    `;
+    };
+    marked.setOptions({ renderer });
+    return marked;
+}
+
 export function SearchWindow() {
     const messageContainerRef = useRef<HTMLDivElement | null>(null);
     const [messages, setMessages] = useState<Array<Message>>([]);
@@ -33,6 +66,29 @@ export function SearchWindow() {
     // const [chatHistory, setChatHistory] = useState<
     //     { human: string; ai: string }[]
     // >([]);
+    const { toast } = useToast();
+    const copyToClipboard = (event) => {
+        const button = event.target;
+        const pre = button.parentElement;
+        const code = pre.querySelector('code').innerText;
+
+        navigator.clipboard
+            .writeText(code)
+            .then(() => {
+                button.textContent = 'Copied!';
+                toast({
+                    description: 'Copied to clipboard successfully!',
+                });
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                }, 2000);
+            })
+            .catch((err) => {
+                console.error('Failed to copy: ', err);
+            });
+    };
+
+    const marked = getMarkdownRenderer();
 
     const sendMessage = async (
         message?: string,
@@ -66,18 +122,6 @@ export function SearchWindow() {
         let accumulatedRelated = '';
         let runId: string | undefined = undefined;
         let messageIndex: number | null = null;
-
-        let renderer = new Renderer();
-        renderer.paragraph = (text) => {
-            return text + '\n';
-        };
-        renderer.list = (text) => {
-            return `${text}\n`;
-        };
-        renderer.listitem = (text) => {
-            return `\n• ${text}`;
-        };
-        marked.setOptions({ renderer });
 
         const resetMessages = (messageIdToUpdate: string) => {
             setMessages((prevMessages) => {
@@ -236,6 +280,13 @@ export function SearchWindow() {
             <div
                 className="my-10 flex w-3/4 flex-col-reverse overflow-auto p-10"
                 ref={messageContainerRef}
+                onLoad={() => {
+                    document
+                        .querySelectorAll('button[data-codeid]')
+                        .forEach((button) =>
+                            button.addEventListener('click', copyToClipboard),
+                        );
+                }}
             >
                 <SearchBar handleSearch={sendMessage} />
                 {messages.length > 0 ? (
