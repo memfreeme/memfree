@@ -51,6 +51,16 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 - [MemFree Build Story 3 -- Clarity vs Google Analytics vs Vercel Analytics vs Plausible Vs Umami](https://www.memfree.me/blog/memfree-build-3-clarity)
 - [MemFree Build Story 4 -- Bun stream response for gpt-4o image input](https://www.memfree.me/blog/memfree-build-4-bun-gpt-4o-stream)
 
+## One-Click Deployment
+
+### Deploy Frontend with Vercel
+
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree&env=UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,OPENAI_API_KEY,SERPER_API_KEY,AUTH_SECRET&envDescription=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree%2Fblob%2Fmain%2Ffrontend%2Fenv-example&project-name=memfree&repository-name=memfree&demo-title=MemFree&demo-description=MemFree – Hybrid AI Search Engine&demo-url=https%3A%2F%2Fwww.memfree.me%2F&demo-image=https%3A%2F%2Fwww.memfree.me%2Fog.png&root-directory=frontend"><img src="https://vercel.com/button" alt="Deploy with Vercel"/></a>
+
+### Deploy Backend
+
+Coming Soon
+
 ## Self-Hosted Installation
 
 ### Prerequisites
@@ -126,8 +136,6 @@ cargo build --release
 
 ./target/release/memfree-embedding
 ```
-
-## One-Click Deployment
 
 ## Contributing
 
