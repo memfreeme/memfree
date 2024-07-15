@@ -6,9 +6,6 @@ import {
 } from './types';
 
 const searxngURL = process.env.SEARXNG_URL || '';
-if (!searxngURL) {
-    throw new Error('search url is not defined');
-}
 
 const defaultOptions: SearxngSearchOptions = {
     pageno: 1,
@@ -59,6 +56,13 @@ export const searchSearxng = async (
     query: string,
     opts?: SearxngSearchOptions,
 ): Promise<{ results: SearxngSearchResult[]; suggestions: string[] }> => {
+    // Let one click deploy work without SEARXNG_URL
+    if (!searxngURL) {
+        return {
+            results: [],
+            suggestions: [],
+        };
+    }
     const options = { ...defaultOptions, ...opts };
 
     const url = buildURLWithParams(
