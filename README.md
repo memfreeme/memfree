@@ -53,12 +53,34 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 
 ## Self-Hosted Installation
 
+### Prerequisites
+
+#### Intsall Bun
+
+```
+curl -fsSL https://bun.sh/install | bash
+```
+
+#### Upstash Redis
+
+Create a Redis compatible database in seconds: [Upstash Redis](https://upstash.com/docs/redis/overall/getstarted)
+
+#### Serper Dev API Key
+
+Get a Serper Dev API Key: [Serper Dev](https://serper.dev)
+
+#### OpenAI API Key
+
+Get an OpenAI API Key: [OpenAI](https://platform.openai.com)
+
 ### Frontend
 
 ```
 cd frontend
 
 bun i
+
+cp env.example .env
 
 bun run dev
 ```

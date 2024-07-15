@@ -1,0 +1,58 @@
+
+# Upstash Redis (Required)
+# https://upstash.com/docs/redis/overall/getstarted
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+
+
+
+# Auth (Required)
+AUTH_SECRET=
+# Auth Providers (Optional)
+AUTH_GITHUB_ID=
+AUTH_GITHUB_SECRET=
+# Auth Providers (Optional)
+AUTH_GOOGLE_ID=
+AUTH_GOOGLE_SECRET=
+
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+
+
+
+# Basical internet search
+
+# https://zeabur.com/templates/77FSH6
+SEARXNG_URL=
+# https://serper.dev/
+SERPER_API_KEY=
+# https://platform.openai.com
+OPENAI_API_KEY=
+
+
+
+
+# Hyride AI search
+
+# the vector service host
+VECTOR_HOST=
+# the quque service host
+QUEUE_URL="https://xxx.com/api/"
+# the api token for the vector, quque and embedding service
+API_TOKEN=
+
+
+
+
+# subscription (optional)
+BUTTONDOWN_API_KEY =
+
+# Axiom log (optional)
+AXIOM_TOKEN=
+
+# Stripe (optional)
+STRIPE_API_KEY =
+STRIPE_WEBHOOK_SECRET =
+NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID =
+NEXT_PUBLIC_STRIPE_PRO_YEARLY_PLAN_ID =
+NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PLAN_ID =
+NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PLAN_ID =
