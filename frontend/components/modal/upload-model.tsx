@@ -6,6 +6,8 @@ import { useUploadModal } from '@/hooks/use-upload-modal';
 import { useState } from 'react';
 import { LoadingButton } from '../ui/loading-button';
 import { useUser } from '@/hooks/use-user';
+import { isValidUrl } from '@/lib/utils';
+import { useToast } from '../ui/use-toast';
 
 export const UploadModal = () => {
     const [url, setUrl] = useState('');
@@ -13,9 +15,16 @@ export const UploadModal = () => {
     const uploadModal = useUploadModal();
 
     const user = useUser();
+    const { toast } = useToast();
 
     const handleIndex = async () => {
         try {
+            if (!isValidUrl(url)) {
+                toast({
+                    description: 'Please enter a valid URL',
+                });
+                return;
+            }
             const indexUrl = `/api/index`;
             setLoading(true);
             const resp = await fetch(indexUrl, {
@@ -59,7 +68,7 @@ export const UploadModal = () => {
                     loading={islLoading}
                     onClick={handleIndex}
                 >
-                    Index This Web Page
+                    Index Web Page
                 </LoadingButton>
             </div>
         </Modal>

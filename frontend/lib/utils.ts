@@ -53,3 +53,12 @@ export function extractDomain(url) {
     const match = url.match(/^https?:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
     return match && match[1];
 }
+
+export function isValidUrl(input: string): boolean {
+    try {
+        new URL(input);
+        return true;
+    } catch (_) {
+        return false;
+    }
+}
