@@ -28,6 +28,10 @@ export const docsConfig: DocsConfig = {
                     href: '/docs',
                 },
                 {
+                    title: 'Index BookMarks',
+                    href: '/docs/index-bookmarks',
+                },
+                {
                     title: 'Chrome Extension',
                     href: '/docs/extension-user-guide',
                 },
