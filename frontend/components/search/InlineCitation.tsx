@@ -3,11 +3,11 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from '@/components/ui/hover-card';
-import { WebSource } from '@/lib/types';
+import { TextSource } from '@/lib/search/search';
 import Link from 'next/link';
 
 export function InlineCitation(props: {
-    source: WebSource;
+    source: TextSource;
     sourceNumber: number;
 }) {
     const { source, sourceNumber } = props;

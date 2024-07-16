@@ -56,19 +56,27 @@ const saveToLocalStorage = (user: User) => {
 
 type ConfigState = {
     model: string;
+    source: string;
     language: string;
     colorScheme: 'light' | 'dark';
     setModel: (model: string) => void;
+    setSource: (source: string) => void;
     initModel: () => string;
+    initSource: () => string;
 };
 
 export const configStore = create<ConfigState>()((set) => ({
     model: 'gpt-3.5',
+    source: 'all',
     language: 'en',
     colorScheme: 'light',
     setModel: (model: string) => {
         set({ model });
         localStorage.setItem('model', model);
+    },
+    setSource: (source: string) => {
+        set({ source });
+        localStorage.setItem('source', source);
     },
     initModel: () => {
         const model = localStorage.getItem('model');
@@ -77,6 +85,13 @@ export const configStore = create<ConfigState>()((set) => ({
         }
         return model || 'gpt-3.5';
     },
+    initSource() {
+        const source = localStorage.getItem('source');
+        if (source) {
+            set({ source });
+        }
+        return source || 'all';
+    },
 }));
 
 export const useConfigStore = () =>
@@ -84,4 +99,8 @@ export const useConfigStore = () =>
         model: state.model,
         setModel: state.setModel,
         initModel: state.initModel,
+
+        source: state.source,
+        setSource: state.setSource,
+        initSource: state.initSource,
     }));

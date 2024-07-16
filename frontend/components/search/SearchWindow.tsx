@@ -7,7 +7,6 @@ import { Renderer } from 'marked';
 
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useSearchParams } from 'next/navigation';
-import { ImageSource, WebSource } from '@/lib/types';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '../Search';
 import { configStore } from '@/lib/store';
@@ -15,6 +14,7 @@ import { configStore } from '@/lib/store';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/monokai-sublime.css';
 import { useToast } from '../ui/use-toast';
+import { ImageSource, TextSource } from '@/lib/search/search';
 
 function getMarkdownRenderer() {
     let renderer = new Renderer();
@@ -148,7 +148,7 @@ export function SearchWindow() {
 
         const updateMessages = (
             parsedResult?: string,
-            newSources?: WebSource[],
+            newSources?: TextSource[],
             newImages?: ImageSource[],
             newRelated?: string,
         ) => {
@@ -194,6 +194,7 @@ export function SearchWindow() {
                 resetMessages(messageIdToUpdate);
             }
             const model = configStore.getState().model;
+            const source = configStore.getState().source;
 
             const url = `/api/ask`;
             await fetchEventSource(url, {
@@ -207,6 +208,7 @@ export function SearchWindow() {
                     useCache: !messageIdToUpdate,
                     mode: mode,
                     model: model,
+                    source: source,
                 }),
                 openWhenHidden: true,
                 onerror(err) {

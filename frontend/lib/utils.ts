@@ -50,8 +50,13 @@ export function absoluteUrl(path: string) {
 }
 
 export function extractDomain(url) {
-    const match = url.match(/^https?:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
-    return match && match[1];
+    try {
+        const match = url.match(/^https?:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+        return match && match[1];
+    } catch (error) {
+        console.error('Failed to extract domain:', error, url);
+        return '';
+    }
 }
 
 export function isValidUrl(input: string): boolean {

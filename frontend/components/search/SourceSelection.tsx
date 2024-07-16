@@ -7,34 +7,40 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Box } from 'lucide-react';
+import { Box, Globe } from 'lucide-react';
 import { useConfigStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { useUser } from '@/hooks/use-user';
+import { SearchCategory } from '@/lib/search/search';
 
-type Model = {
+type Source = {
     name: string;
     description: string;
     value: string;
 };
 
-export const modelMap: Record<string, Model> = {
-    'gpt-3.5': {
-        name: 'GPT-3.5',
-        description: 'Default',
-        value: 'gpt3',
+export const sourceMap: Record<string, Source> = {
+    all: {
+        name: 'All',
+        description: 'Entire Internet',
+        value: SearchCategory.ALL,
     },
-    'gpt4': {
-        name: 'GPT-4o',
-        description: 'Powerful',
-        value: 'gpt4',
+    academic: {
+        name: 'Academic',
+        description: 'Academic Papers',
+        value: SearchCategory.ACADEMIC,
+    },
+    news: {
+        name: 'News',
+        description: 'Hot News',
+        value: SearchCategory.NEWS,
     },
 };
 
-const ModelItem: React.FC<{ model: Model }> = ({ model }) => (
+const SourceItem: React.FC<{ source: Source }> = ({ source }) => (
     <SelectItem
-        key={model.value}
-        value={model.value}
+        key={source.value}
+        value={source.value}
         className="w-full p-2 block"
     >
         <div className="flex w-full space-x-5 justify-between">
@@ -42,21 +48,21 @@ const ModelItem: React.FC<{ model: Model }> = ({ model }) => (
                 className="font-bold text-primary"
                 style={{ whiteSpace: 'nowrap' }}
             >
-                {model.description}
+                {source.description}
             </span>
-            <span className="text-muted-foreground">{model.name}</span>
+            <span className="text-muted-foreground">{source.name}</span>
         </div>
     </SelectItem>
 );
 
-export function ModelSelection() {
-    const { model, setModel, initModel } = useConfigStore();
-    const selectedModel = modelMap[model] ?? modelMap['gpt-3.5'];
+export function SourceSelection() {
+    const { source, setSource, initSource } = useConfigStore();
+    const selectedSource = sourceMap[source] ?? sourceMap['all'];
 
     React.useEffect(() => {
-        const initialModel = initModel();
-        if (initialModel && initialModel !== model) {
-            setModel(initialModel);
+        const initialSource = initSource();
+        if (initialSource && initialSource !== source) {
+            setSource(initialSource);
         }
     }, []);
 
@@ -65,32 +71,32 @@ export function ModelSelection() {
 
     return (
         <Select
-            defaultValue={model}
-            value={model}
+            key={source}
+            value={source}
             onValueChange={(value) => {
                 if (value) {
                     if (!user) {
                         signInModal.onOpen();
                     } else {
-                        setModel(value);
+                        setSource(value);
                     }
                 }
             }}
         >
-            <SelectTrigger className="focus:ring-0 border-none outline-none min-w-32">
+            <SelectTrigger className="focus:ring-0 border-none outline-none">
                 <SelectValue>
                     <div className="flex items-center space-x-1">
-                        <Box></Box>
+                        <Globe></Globe>
                         <span className="font-semibold">
                             {' '}
-                            {selectedModel.name}
+                            {selectedSource.name}
                         </span>
                     </div>
                 </SelectValue>
             </SelectTrigger>
             <SelectContent className="w-full">
-                {Object.values(modelMap).map((model) => (
-                    <ModelItem key={model.value} model={model} />
+                {Object.values(sourceMap).map((item) => (
+                    <SourceItem key={item.name} source={item} />
                 ))}
             </SelectContent>
         </Select>

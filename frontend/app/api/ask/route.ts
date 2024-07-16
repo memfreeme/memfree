@@ -7,21 +7,18 @@ import {
     RagQueryPrompt,
 } from '@/lib/prompt';
 import { rerank, searchVector } from '@/lib/search-vector';
-import { searchSearxng, searchSerper } from '@/lib/search-web';
-import {
-    ESearXNGCategory,
-    AskMode,
-    StreamHandler,
-    SearxngSearchResult,
-    CachedResult,
-    WebSource,
-    ImageSource,
-} from '@/lib/types';
+import { AskMode, StreamHandler, CachedResult } from '@/lib/types';
 import { NextRequest, NextResponse } from 'next/server';
 import util from 'util';
 
 import { Ratelimit } from '@upstash/ratelimit';
 import { incSearchCount, RATE_LIMIT_KEY, redisDB } from '@/lib/db';
+import {
+    getSearchEngine,
+    ImageSource,
+    SearchCategory,
+    TextSource,
+} from '@/lib/search/search';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -61,7 +58,7 @@ export async function POST(req: NextRequest) {
             );
         }
     }
-    const { query, useCache, mode, model } = await req.json();
+    const { query, useCache, mode, model, source } = await req.json();
 
     try {
         const readableStream = new ReadableStream({
@@ -80,6 +77,7 @@ export async function POST(req: NextRequest) {
                     },
                     mode,
                     formatModel(model),
+                    source,
                 );
             },
             cancel() {
@@ -105,15 +103,15 @@ async function ask(
     onStream?: (...args: any[]) => void,
     mode: AskMode = 'simple',
     model = 'gpt-3.5-turbo',
+    source = 'all',
 ) {
-    // console.log('Ask:', query, 'Mode:', mode, 'Model:', model, 'User:', userId);
     let cachedResult: CachedResult | null = null;
     if (useCache) {
         query = query.trim();
         let cachedResult: CachedResult = await getCache(query);
         if (cachedResult) {
             const { webs, images, answer, related } = cachedResult;
-            await streamFormattedData(
+            await streamResponse(
                 { sources: webs, images, answer, related },
                 onStream,
             );
@@ -132,12 +130,16 @@ async function ask(
         }
     }
 
-    let webs: WebSource[] = [];
+    let texts: TextSource[] = [];
     let images: ImageSource[] = [];
+    const searchOptions = {
+        categories: [source],
+    };
 
-    if (userId) {
+    if (userId && source === SearchCategory.ALL) {
         const vectorSearchPromise = searchVector(userId, query);
-        const serperSearchPromise = searchSerper(query);
+        const serperSearchPromise =
+            getSearchEngine(searchOptions).search(query);
 
         console.time('search');
         const [vectorResponse, serperResponse] = await Promise.all([
@@ -156,7 +158,7 @@ async function ask(
             }));
 
         if (filteredResults.length) {
-            webs = filteredResults;
+            texts = filteredResults;
         }
 
         // TODO: use vector image
@@ -177,38 +179,36 @@ async function ask(
         //         }));
         //     webs = filteredResults;
         // }
-        const { webs: serperWebs, images: serperImages = [] } = serperResponse;
+        const { texts: serperWebs, images: serperImages = [] } = serperResponse;
 
-        webs = [...webs, ...serperWebs];
+        texts = [...texts, ...serperWebs];
         images = [...images, ...serperImages];
     }
 
-    if (!webs.length) {
-        // step 1: get web sources and stream initial data
-        const { webs: serperWebs, images: serperImages = [] } =
-            await searchSerper(query);
-        webs = serperWebs;
-        images = serperImages;
+    if (!texts.length) {
+        ({ texts, images } =
+            await getSearchEngine(searchOptions).search(query));
     }
 
-    await streamFormattedData({ sources: webs, images }, onStream);
+    await streamResponse({ sources: texts, images }, onStream);
 
     let fullAnswer = '';
-    const llmAnswerPromise = getLLMAnswer(model, query, webs, mode, (msg) => {
+    const llmAnswerPromise = getLLMAnswer(model, query, texts, mode, (msg) => {
         fullAnswer += msg;
         onStream?.(JSON.stringify({ answer: msg }));
     });
 
     const imageFetchPromise =
         images.length === 0
-            ? searchSearxng(query, {
-                  categories: [ESearXNGCategory.IMAGES],
-              }).then((imageResults) =>
-                  imageResults.results
-                      .filter((img) => img.img_src.startsWith('https'))
-                      .slice(0, IMAGE_LIMIT)
-                      .map(formatImage),
-              )
+            ? getSearchEngine({
+                  categories: [SearchCategory.IMAGES],
+              })
+                  .search(query)
+                  .then((results) =>
+                      results.images
+                          .filter((img) => img.image.startsWith('https'))
+                          .slice(0, IMAGE_LIMIT),
+                  )
             : Promise.resolve(images);
 
     // step 2: get llm answer and step 3: get images sources
@@ -219,18 +219,18 @@ async function ask(
 
     if (!images.length) {
         images = fetchedImages;
-        await streamFormattedData({ images: fetchedImages }, onStream);
+        await streamResponse({ images: fetchedImages }, onStream);
     }
 
     let fullRelated = '';
     // step 4: get related questions
-    await getRelatedQuestions(model, query, webs, (msg) => {
+    await getRelatedQuestions(model, query, texts, (msg) => {
         fullRelated += msg;
         onStream?.(JSON.stringify({ related: msg }));
     });
 
     cachedResult = {
-        webs: webs,
+        webs: texts,
         images: images,
         answer: fullAnswer,
         related: fullRelated,
@@ -252,7 +252,7 @@ async function ask(
     onStream?.(null, true);
 }
 
-async function streamFormattedData(
+async function streamResponse(
     data: Record<string, any>,
     onStream?: (...args: any[]) => void,
 ) {
@@ -261,18 +261,10 @@ async function streamFormattedData(
     }
 }
 
-function formatImage(context: SearxngSearchResult) {
-    return {
-        image: context.img_src,
-        title: context.title,
-        url: context.url,
-    };
-}
-
 async function getLLMAnswer(
     model: string,
     query: string,
-    contexts: WebSource[],
+    contexts: TextSource[],
     mode: AskMode = 'simple',
     onStream: StreamHandler,
 ) {
@@ -297,7 +289,7 @@ async function getLLMAnswer(
 async function getRelatedQuestions(
     model: string,
     query: string,
-    contexts: WebSource[],
+    contexts: TextSource[],
     onStream: StreamHandler,
 ) {
     try {

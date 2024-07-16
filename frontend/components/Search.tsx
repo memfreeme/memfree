@@ -14,6 +14,7 @@ import {
 import { useToast } from './ui/use-toast';
 import { Textarea } from './ui/textarea';
 import { ModelSelection } from './search/ModelSelection';
+import { SourceSelection } from './search/SourceSelection';
 
 interface Props {
     handleSearch: (key: string) => void;
@@ -62,8 +63,9 @@ export default function SearchBar({ handleSearch }: Props) {
                         onKeyDown={handleInputKeydown}
                     />
 
-                    <div className="absolute bottom-0 left-0 mb-2 ml-2 flex space-x-2">
+                    <div className="absolute bottom-0 left-0 mb-2 ml-1 flex">
                         <ModelSelection></ModelSelection>
+                        <SourceSelection></SourceSelection>
                     </div>
 
                     <div className="absolute bottom-0 right-0 mb-2 mr-2 flex space-x-2">

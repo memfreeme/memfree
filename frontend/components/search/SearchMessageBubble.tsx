@@ -10,9 +10,7 @@ import {
     TextSearchIcon,
     Copy,
     ThumbsDown,
-    ZoomIn,
 } from 'lucide-react';
-import { ImageSource, WebSource } from '@/lib/types';
 import { useToast } from '@/components/ui/use-toast';
 import {
     Tooltip,
@@ -21,6 +19,7 @@ import {
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import ImageGallery from './ImageGallery';
+import { ImageSource, TextSource } from '@/lib/search/search';
 
 export type Message = {
     id: string;
@@ -28,7 +27,7 @@ export type Message = {
     question: string;
     content: string;
     role: 'system' | 'user' | 'assistant' | 'function';
-    sources?: WebSource[];
+    sources?: TextSource[];
     related?: string;
     images?: ImageSource[];
 };
@@ -41,7 +40,7 @@ export type Feedback = {
     comment?: string;
 };
 
-const createAnswerElements = (content: string, sources: WebSource[]) => {
+const createAnswerElements = (content: string, sources: TextSource[]) => {
     const matches = Array.from(content.matchAll(/\[citation:(\d+)\]/g));
 
     const elements: JSX.Element[] = [];
