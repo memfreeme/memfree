@@ -1,6 +1,5 @@
 use axum::{
-    routing::post,
-    Router, Json, Extension, http::{StatusCode},
+    http::StatusCode, routing::{get, post}, Extension, Json, Router
 };
 use fastembed::{TextEmbedding, InitOptions, EmbeddingModel};
 use serde::{Deserialize, Serialize};
@@ -107,11 +106,12 @@ async fn require_auth<B>(req: Request<B>, next: Next<B>) -> impl axum::response:
     Result::<_, StatusCode>::Err(StatusCode::UNAUTHORIZED)
 }
 
+async fn root_handler() -> &'static str {
+    "welcome"
+}
+
 #[tokio::main]
 async fn main() -> Result<()> {
-    // https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/baai_general_embedding
-
-
     let model = TextEmbedding::try_new(InitOptions {
     model_name: EmbeddingModel::AllMiniLML6V2,
     show_download_progress: true,
@@ -120,13 +120,25 @@ async fn main() -> Result<()> {
 
     let model = Arc::new(model);
 
-    let app = Router::new()
-        .route("/embed", post(embed_handler))
-        .route("/rerank", post(rerank_handler))
-        .layer(middleware::from_fn(require_auth))
-        .layer(axum::extract::Extension(model));
+    let open_routes = Router::new()
+    .route("/", get(root_handler));
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3003));
+    let protected_routes = Router::new()
+    .route("/embed", post(embed_handler))
+    .route("/rerank", post(rerank_handler))
+    .layer(middleware::from_fn(require_auth))
+    .layer(axum::extract::Extension(model));
+
+    let app = Router::new()
+    .nest("/", open_routes)
+    .nest("/", protected_routes);
+
+    let port: u16 = std::env::var("PORT")
+        .unwrap_or_else(|_| "3003".to_string())
+        .parse()
+        .expect("Failed to parse the PORT environment variable");
+
+    let addr = SocketAddr::from(([0, 0, 0, 0], port));
     println!("Listening on http://{}", addr);
 
     axum::Server::bind(&addr)
