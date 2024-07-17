@@ -10,9 +10,9 @@ import Link from 'next/link';
 
 import { absoluteUrl, cn, formatDate } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
-import { Icons } from '@/components/shared/icons';
 import { Newsletter } from '@/components/Newsletter';
 import { siteConfig } from '@/config/site';
+import { GitHubButton } from '@/components/shared/github-button';
 
 interface PostPageProps {
     params: {
@@ -143,13 +143,17 @@ export default async function PostPage({ params }: PostPageProps) {
                 />
             )}
             <Mdx code={post.body.code} />
-            <hr className="mt-12" />
-            <div className="flex justify-center py-6 lg:py-10">
+
+            <GitHubButton />
+
+            <div className="flex justify-center py-6">
                 <Link
                     href="/blog"
-                    className={cn(buttonVariants({ variant: 'ghost' }))}
+                    className={cn(
+                        buttonVariants({ size: 'lg', rounded: 'full' }),
+                        'gap-2',
+                    )}
                 >
-                    <Icons.chevronLeft className="mr-2 size-4" />
                     See all posts
                 </Link>
             </div>

@@ -46,8 +46,7 @@ export const Newsletter = () => {
 
     return (
         <section id="newsletter">
-            {/* <hr className="w-11/12 mx-auto" /> */}
-            <div className="container py-24 sm:py-32">
+            <div className="container py-24">
                 <h3 className="text-center text-4xl md:text-5xl font-bold">
                     Join Our{' '}
                     <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
@@ -73,8 +72,6 @@ export const Newsletter = () => {
                     <Button>Subscribe</Button>
                 </form>
             </div>
-
-            {/* <hr className="w-11/12 mx-auto" /> */}
         </section>
     );
 };

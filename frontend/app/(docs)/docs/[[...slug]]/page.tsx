@@ -13,6 +13,7 @@ import { Metadata } from 'next';
 
 import { absoluteUrl } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
+import { GitHubButton } from '@/components/shared/github-button';
 
 interface DocPageProps {
     params: {
@@ -102,6 +103,7 @@ export default async function DocPage({ params }: DocPageProps) {
                     <DashboardTableOfContents toc={toc} />
                 </div>
             </div>
+            <GitHubButton />
         </main>
     );
 }
