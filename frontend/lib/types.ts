@@ -11,19 +11,6 @@ export interface User {
     stripeCurrentPeriodEnd?: Date;
 }
 
-export interface SearxngSearchResult {
-    title: string;
-    url: string;
-    engine?: string;
-    img_src?: string;
-    thumbnail_src?: string;
-    thumbnail?: string;
-    content?: string;
-    parsed_url?: string[];
-    author?: string;
-    iframe_src?: string;
-}
-
 export interface CachedResult {
     webs: TextSource[];
     images: ImageSource[];

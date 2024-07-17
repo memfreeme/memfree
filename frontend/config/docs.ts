@@ -35,6 +35,10 @@ export const docsConfig: DocsConfig = {
                     title: 'Chrome Extension',
                     href: '/docs/extension-user-guide',
                 },
+                {
+                    title: 'Search Engine',
+                    href: '/docs/search-engine',
+                },
             ],
         },
     ],

@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://www.memfree.me/docs</loc>
-    <lastmod>2024-07-15</lastmod>
+    <lastmod>2024-07-17</lastmod>
     <changefreq>daily</changefreq>
   </url>
   <url>
@@ -17,6 +17,11 @@
   <url>
     <loc>https://www.memfree.me/docs/extension-user-guide</loc>
     <lastmod>2024-07-15</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://www.memfree.me/docs/search-engine</loc>
+    <lastmod>2024-07-17</lastmod>
     <changefreq>daily</changefreq>
   </url>
   <url>
