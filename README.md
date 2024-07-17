@@ -39,7 +39,7 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 
 ## Update
 
-- 2024-07-17: Make search results more beautiful, Support mathematical formula and code highlighting, Use react-markdown instead of marked
+- **2024-07-17**: Make search results more beautiful, Support mathematical formula and code highlighting, Use react-markdown instead of marked
 
 ## Tech Stack
 
@@ -142,11 +142,13 @@ Here's how you can contribute:
 - [Open an issue](https://github.com/memfreeme/memfree/issues) if you believe you've encountered a bug.
 - Make a [pull request](https://github.com/memfreeme/memfree/pulls) to add new features/make quality-of-life improvements/fix bugs.
 
-## Roadmap
-
 ## Help and Support
 
 - [MemFree Discord](https://discord.com/invite/7QqyMSTaRq)
+
+## License
+
+MemFree is backed by [MemFree](https://www.memfree.me/) and licensed under [MIT](https://github.com/memfreeme/memfree/blob/main/LICENSE).
 
 ## Credits
 
