@@ -2,6 +2,7 @@ import { auth } from '@/auth';
 import { getCache, setCache } from '@/lib/cache';
 import { Message, chatStream } from '@/lib/chat';
 import {
+    AcademicPrompet,
     DeepQueryPrompt,
     MoreQuestionsPrompt,
     RagQueryPrompt,
@@ -105,7 +106,7 @@ async function ask(
     onStream?: (...args: any[]) => void,
     mode: AskMode = 'simple',
     model = 'gpt-3.5-turbo',
-    source = 'all',
+    source = SearchCategory.ALL,
 ) {
     let cachedResult: CachedResult | null = null;
     if (useCache) {
@@ -163,10 +164,17 @@ async function ask(
     await streamResponse({ sources: texts, images }, onStream);
 
     let fullAnswer = '';
-    const llmAnswerPromise = getLLMAnswer(model, query, texts, mode, (msg) => {
-        fullAnswer += msg;
-        onStream?.(JSON.stringify({ answer: msg }));
-    });
+    const llmAnswerPromise = getLLMAnswer(
+        source,
+        model,
+        query,
+        texts,
+        mode,
+        (msg) => {
+            fullAnswer += msg;
+            onStream?.(JSON.stringify({ answer: msg }));
+        },
+    );
 
     const imageFetchPromise =
         images.length === 0
@@ -194,7 +202,7 @@ async function ask(
 
     let fullRelated = '';
     // step 4: get related questions
-    await getRelatedQuestions(model, query, texts, (msg) => {
+    await getRelatedQuestions(query, texts, (msg) => {
         fullRelated += msg;
         onStream?.(JSON.stringify({ related: msg }));
     });
@@ -232,6 +240,7 @@ async function streamResponse(
 }
 
 async function getLLMAnswer(
+    source: SearchCategory,
     model: string,
     query: string,
     contexts: TextSource[],
@@ -239,7 +248,13 @@ async function getLLMAnswer(
     onStream: StreamHandler,
 ) {
     try {
-        const { messages } = paramsFormatter(query, mode, contexts, 'answer');
+        const { messages } = paramsFormatter(
+            source,
+            query,
+            mode,
+            contexts,
+            'answer',
+        );
         await chatStream(
             messages,
             (msg: string | null, done: boolean) => {
@@ -257,26 +272,40 @@ async function getLLMAnswer(
 }
 
 async function getRelatedQuestions(
-    model: string,
     query: string,
     contexts: TextSource[],
     onStream: StreamHandler,
 ) {
     try {
         const { messages } = paramsFormatter(
+            SearchCategory.ALL,
             query,
             undefined,
             contexts,
             'related',
         );
-        await chatStream(messages, onStream, model);
+        await chatStream(messages, onStream, 'gpt-3.5-turbo');
     } catch (err) {
         console.error('[LLM Error]:', err);
         return [];
     }
 }
 
+function choosePrompt(source: SearchCategory, type: 'answer' | 'related') {
+    if (source === SearchCategory.ACADEMIC) {
+        return AcademicPrompet;
+    }
+    if (type === 'answer') {
+        return DeepQueryPrompt;
+    }
+    if (type === 'related') {
+        return MoreQuestionsPrompt;
+    }
+    return MoreQuestionsPrompt;
+}
+
 function paramsFormatter(
+    source: SearchCategory,
     query: string,
     mode: AskMode = 'simple',
     contexts: any[],
@@ -285,11 +314,7 @@ function paramsFormatter(
     const context = contexts
         .map((item, index) => `[citation:${index + 1}] ${item.content}`)
         .join('\n\n');
-    let prompt = type === 'answer' ? RagQueryPrompt : MoreQuestionsPrompt;
-
-    if (mode === 'deep' && type === 'answer') {
-        prompt = DeepQueryPrompt;
-    }
+    let prompt = choosePrompt(source, type);
 
     const system = util.format(prompt, context);
     const messages: Message[] = [

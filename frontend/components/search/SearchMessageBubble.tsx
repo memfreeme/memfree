@@ -1,5 +1,4 @@
 import { SourceBubble } from '@/components/search/SourceBubble';
-import { InlineCitation } from '@/components/search/InlineCitation';
 import {
     BookKey,
     Images,
@@ -20,6 +19,7 @@ import {
 } from '@/components/ui/tooltip';
 import ImageGallery from './ImageGallery';
 import { ImageSource, TextSource } from '@/lib/search/search';
+import MyMarkdown from './Markdown';
 
 export type Message = {
     id: string;
@@ -40,48 +40,6 @@ export type Feedback = {
     comment?: string;
 };
 
-const createAnswerElements = (content: string, sources: TextSource[]) => {
-    const matches = Array.from(content.matchAll(/\[citation:(\d+)\]/g));
-
-    const elements: JSX.Element[] = [];
-    let prevIndex = 0;
-
-    matches.forEach((match) => {
-        const sourceNum = parseInt(match[1], 10);
-
-        if (match.index !== null) {
-            const html = content.slice(prevIndex, match.index);
-            const updatedHtml = html.replace(
-                /<h3>/g,
-                '<h3 style="font-size: 1.125rem; font-weight: 700;">',
-            );
-            elements.push(
-                <span
-                    key={`content:${prevIndex}`}
-                    dangerouslySetInnerHTML={{
-                        __html: updatedHtml,
-                    }}
-                ></span>,
-            );
-            elements.push(
-                <InlineCitation
-                    key={`citation:${prevIndex}`}
-                    source={sources[sourceNum - 1]}
-                    sourceNumber={sourceNum}
-                />,
-            );
-            prevIndex = (match?.index ?? 0) + match[0].length;
-        }
-    });
-    elements.push(
-        <span
-            key={`content:${prevIndex}`}
-            dangerouslySetInnerHTML={{ __html: content.slice(prevIndex) }}
-        ></span>,
-    );
-    return elements;
-};
-
 export function SearchMessageBubble(props: {
     message: Message;
     onSelect: (question: string) => void;
@@ -94,9 +52,6 @@ export function SearchMessageBubble(props: {
 
     const sources = props.message.sources ?? [];
     const images = props.message.images ?? [];
-
-    const answerElements =
-        role === 'assistant' ? createAnswerElements(content, sources) : [];
 
     const { toast } = useToast();
 
@@ -147,7 +102,9 @@ export function SearchMessageBubble(props: {
                             Answer
                         </h3>
                     </div>
-                    <div className="whitespace-pre-wrap">{answerElements}</div>
+                    <div className="prose">
+                        <MyMarkdown content={content} sources={sources} />
+                    </div>
 
                     <div className="flex space-x-4 mt-2">
                         <TooltipProvider>

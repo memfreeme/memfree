@@ -2,8 +2,6 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { SearchMessageBubble, Message } from './SearchMessageBubble';
-import { marked } from 'marked';
-import { Renderer } from 'marked';
 
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useSearchParams } from 'next/navigation';
@@ -11,39 +9,8 @@ import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '../Search';
 import { configStore } from '@/lib/store';
 
-import hljs from 'highlight.js';
-import 'highlight.js/styles/monokai-sublime.css';
 import { useToast } from '../ui/use-toast';
 import { ImageSource, TextSource } from '@/lib/search/search';
-
-function getMarkdownRenderer() {
-    let renderer = new Renderer();
-    renderer.paragraph = (text) => {
-        return text + '\n';
-    };
-    renderer.list = (text) => {
-        return `${text}\n`;
-    };
-    renderer.listitem = (text) => {
-        return `\n• ${text}`;
-    };
-    renderer.code = (code, language) => {
-        const validLanguage = hljs.getLanguage(language || '')
-            ? language
-            : 'plaintext';
-        const highlightedCode = hljs.highlight(validLanguage, code).value;
-        const id = Math.random().toString(36).substr(2, 9);
-
-        return `
-        <pre class="hljs px-2 rounded-lg overflow-auto relative">
-                <button data-codeid="${id}" class="absolute right-5 top-1  text-white text-xs px-2 py-1 rounded-xl hover:bg-gray-600"> Copy </button>
-                <code data-id="${id}">${highlightedCode}</code>
-        </pre>
-    `;
-    };
-    marked.setOptions({ renderer });
-    return marked;
-}
 
 export function SearchWindow() {
     const messageContainerRef = useRef<HTMLDivElement | null>(null);
@@ -87,8 +54,6 @@ export function SearchWindow() {
                 console.error('Failed to copy: ', err);
             });
     };
-
-    const marked = getMarkdownRenderer();
 
     const sendMessage = async (
         message?: string,
@@ -255,7 +220,7 @@ export function SearchWindow() {
 
                     if (parsedData.answer) {
                         accumulatedMessage += parsedData.answer;
-                        updateMessages(marked.parse(accumulatedMessage));
+                        updateMessages(accumulatedMessage);
                     }
                 },
             });
