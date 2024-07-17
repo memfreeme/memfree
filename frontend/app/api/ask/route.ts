@@ -6,7 +6,6 @@ import {
     MoreQuestionsPrompt,
     RagQueryPrompt,
 } from '@/lib/prompt';
-import { rerank, searchVector } from '@/lib/search-vector';
 import { AskMode, StreamHandler, CachedResult } from '@/lib/types';
 import { NextRequest, NextResponse } from 'next/server';
 import util from 'util';
@@ -15,6 +14,7 @@ import { Ratelimit } from '@upstash/ratelimit';
 import { incSearchCount, RATE_LIMIT_KEY, redisDB } from '@/lib/db';
 import {
     getSearchEngine,
+    getVectorSearch,
     ImageSource,
     SearchCategory,
     TextSource,
@@ -139,52 +139,20 @@ async function ask(
     };
 
     if (userId && source === SearchCategory.ALL) {
-        const vectorSearchPromise = searchVector(userId, query);
-        const serperSearchPromise =
-            getSearchEngine(searchOptions).search(query);
+        const vectorSearchPromise = getVectorSearch(userId).search(query);
+        const webSearchPromise = getSearchEngine(searchOptions).search(query);
 
-        console.time('search');
-        const [vectorResponse, serperResponse] = await Promise.all([
+        const [vectorResponse, webResponse] = await Promise.all([
             vectorSearchPromise,
-            serperSearchPromise,
+            webSearchPromise,
         ]);
-        console.timeEnd('search');
 
-        const filteredResults = vectorResponse
-            .filter((item) => item._distance <= 0.15)
-            .map((item) => ({
-                title: item.title,
-                content: item.text,
-                url: item.url,
-                image: item.image,
-            }));
+        ({ texts } = vectorResponse);
 
-        if (filteredResults.length) {
-            texts = filteredResults;
-        }
+        const { texts: webTexts, images: webImages = [] } = webResponse;
 
-        // TODO: use vector image
-        // if (filteredResults.length) {
-        //     const seenImageUrls = new Set();
-        //     images = filteredResults
-        //         .filter((item) => {
-        //             if (!seenImageUrls.has(item.image)) {
-        //                 seenImageUrls.add(item.image);
-        //                 return true;
-        //             }
-        //             return false;
-        //         })
-        //         .map((item) => ({
-        //             image: item.image,
-        //             title: item.title,
-        //             url: item.url,
-        //         }));
-        //     webs = filteredResults;
-        // }
-        const { texts: serperWebs, images: serperImages = [] } = serperResponse;
-
-        texts = [...texts, ...serperWebs];
-        images = [...images, ...serperImages];
+        texts = [...texts, ...webTexts];
+        images = [...images, ...webImages];
     }
 
     if (!texts.length) {

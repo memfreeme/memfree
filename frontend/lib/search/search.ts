@@ -1,11 +1,11 @@
 import { SearxngSearch } from './searxng';
 import { SerperSearch } from './serper';
+import { VectorSearch } from './vector';
 
 export interface SearchOptions {
     categories?: string[];
     engines?: string[];
     language?: string;
-    pageno?: number;
 }
 
 export interface AnySource {
@@ -50,6 +50,10 @@ export interface SearchSource {
 
 export const searxngURL = process.env.SEARXNG_URL;
 export const SERPER_API_KEY = process.env.SERPER_API_KEY;
+
+export function getVectorSearch(userId: string): SearchSource {
+    return new VectorSearch(userId);
+}
 
 export function getSearchEngine(options: SearchOptions): SearchSource {
     // Let open source user could start more easily
