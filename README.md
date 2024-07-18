@@ -31,14 +31,17 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 ## Highlights
 
 - Hybrid AI Search Engine
+- One-Click Chrome Bookmarks Sync and Index
+- Support multiple traditional search engines as source
 - Self-hosted Super Fast Serverless Vector Database
 - Self-hosted Super Fast Local Embedding and Rerank Service
-- One-Click Chrome Bookmarks Index
 - Full Code Open Source
 - One-Click Deployment On Production
 
 ## Update
 
+- **2024-07-18**: Supports specialized Academic and News searches
+- **2024-07-18**: Backend one click deploy with Zeabur is available
 - **2024-07-17**: Make search results more beautiful, Support mathematical formula and code highlighting, Use react-markdown instead of marked
 
 ## Tech Stack

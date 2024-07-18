@@ -5,7 +5,7 @@ import {
     AcademicPrompet,
     DeepQueryPrompt,
     MoreQuestionsPrompt,
-    RagQueryPrompt,
+    NewsPrompt,
 } from '@/lib/prompt';
 import {
     AskMode,
@@ -296,13 +296,16 @@ function choosePrompt(source: SearchCategory, type: 'answer' | 'related') {
     if (source === SearchCategory.ACADEMIC) {
         return AcademicPrompet;
     }
+    if (source === SearchCategory.NEWS) {
+        return NewsPrompt;
+    }
     if (type === 'answer') {
         return DeepQueryPrompt;
     }
     if (type === 'related') {
         return MoreQuestionsPrompt;
     }
-    return MoreQuestionsPrompt;
+    return DeepQueryPrompt;
 }
 
 function paramsFormatter(
