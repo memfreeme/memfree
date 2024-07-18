@@ -37,8 +37,6 @@ if (process.env.MEMFREE_HOST) {
     throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
 }
 
-console.log('searxngHost:', searxngHost);
-
 export const SERPER_API_KEY = process.env.SERPER_API_KEY;
 
 export function getVectorSearch(userId: string): SearchSource {

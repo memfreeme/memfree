@@ -1,0 +1,47 @@
+---
+title: One Click Deploy You Own Hybrid AI Search Engine
+description: How to one click deploy MemFree
+---
+
+## What could you do with Open Source MemFree
+
+-   You could deploy **your own Hybrid AI Search Engine** bases on your bookmarks, notes, and docs
+-   You can start by indexing the best resources on a topic and then build a **domain-specific AI search engine**
+-   You can first index all the documents of a website, and then build an **intelligent answer assistant for a website**
+
+## How to One Click Deploy
+
+<Steps>
+
+### Deploy Backend with Zeabur
+
+<a href="https://zeabur.com/templates/CE71SC?referralCode=memfree">
+    <img src="https://zeabur.com/button.svg" alt="Deploy on Zeabur" />
+</a>
+
+-   You could get `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` from [Upstash Redis](https://upstash.com/docs/redis/overall/getstarted)
+-   You could get AWS variables Refer to [How To Create S3 Express Bucket](https://www.memfree.me/search?q=How%20To%20Create%20S3%20Express%20One%20zone%20Bucket%20and%20get%20ACCESS_KEY,%20SECRET%20KEY%20and%20BUCKET%20name)
+-   You could use `openssl rand -base64 32` to generate a random string for API Token
+
+### Deploy Frontend with Vercel
+
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree&env=UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,OPENAI_API_KEY,SERPER_API_KEY,AUTH_SECRET&envDescription=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree%2Fblob%2Fmain%2Ffrontend%2Fenv-example&project-name=memfree&repository-name=memfree&demo-title=MemFree&demo-description=MemFree – Hybrid AI Search Engine&demo-url=https%3A%2F%2Fwww.memfree.me%2F&demo-image=https%3A%2F%2Fwww.memfree.me%2Fog.png&root-directory=frontend">
+    <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+</a>
+
+-   You could get `OPENAI_API_KEY` from [OpenAI](https://platform.openai.com)
+-   The MEMFREE_HOST is `https://${PUBLIC_DOMAIN}.zeabur.app`
+-   The AUTH_SECRET is a random string, you could use `openssl rand -base64 32` to generate it
+-   The API_TOKEN should be the same as the one you used in the backend
+
+### Some Optional variables
+
+-   To enable faster search, You could set `SERPER_API_KEY` in Vercel, you could get `SERPER_API_KEY` from [Serper Dev](https://serper.dev)
+-   To enable AXIOM log, you could set `AXIOM_TOKEN` in Vercel and Zeabur, you could get `AXIOM_TOKEN` from [Axiom](https://axiom.co)
+-   To enable faster web page parser, you could set `JINA_KEY` in Zeabur, you could get `JINA_KEY` from [Jina Reader](https://jina.ai/reader)
+
+### Feedback and help
+
+-   If you have any questions, please feel free to ask in [Discord](https://discord.com/invite/7QqyMSTaRq) or submit an issue in [GitHub](https://github.com/memfreeme/memfree/issues)
+
+</Steps>

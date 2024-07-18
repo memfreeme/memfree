@@ -41,5 +41,14 @@ export const docsConfig: DocsConfig = {
                 },
             ],
         },
+        {
+            title: 'Open Source',
+            items: [
+                {
+                    title: 'One Click Deployment',
+                    href: '/docs/one-click-deploy-ai-search',
+                },
+            ],
+        },
     ],
 };

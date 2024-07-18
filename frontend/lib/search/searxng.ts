@@ -19,8 +19,6 @@ if (process.env.MEMFREE_HOST) {
     throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
 }
 
-console.log('searxngHost:', searxngHost);
-
 export class SearxngSearch implements SearchSource {
     private options: SearchOptions;
 
