@@ -140,7 +140,11 @@ export default function MyMarkdown({
                                         </React.Fragment>
                                     );
                                 } else {
-                                    return <>{child}</>;
+                                    return (
+                                        <React.Fragment key={index}>
+                                            {child}
+                                        </React.Fragment>
+                                    );
                                 }
                             })}
                         </p>
@@ -164,7 +168,11 @@ export default function MyMarkdown({
                                         </React.Fragment>
                                     );
                                 } else {
-                                    return <>{child}</>;
+                                    return (
+                                        <React.Fragment key={index}>
+                                            {child}
+                                        </React.Fragment>
+                                    );
                                 }
                             })}
                         </li>
