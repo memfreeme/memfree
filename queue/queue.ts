@@ -4,6 +4,17 @@ import { fetchWithRetry, sleep } from "./utils";
 import { randomUUID } from "node:crypto";
 import { Axiom } from "@axiomhq/js";
 
+const memfreeHost = process.env.MEMFREE_HOST;
+let indexUrl = "";
+// Let open source users could one click deploy
+if (memfreeHost) {
+  indexUrl = `${memfreeHost}/vector/api/vector/callback`;
+} else if (process.env.INDEX_URL) {
+  indexUrl = process.env.INDEX_URL;
+} else {
+  throw new Error("Neither MEMFREE_HOST nor INDEX_URL is defined");
+}
+
 export const axiom = new Axiom({
   token: process.env.AXIOM_TOKEN || "",
 });
@@ -18,8 +29,6 @@ const redis = new Redis({
   token: token,
   enableAutoPipelining: true,
 });
-
-const indexUrl = process.env.INDEX_URL as string;
 
 const concurrencyStr = process.env.CONCURRENCY;
 const concurrency = concurrencyStr ? parseInt(concurrencyStr, 10) : 5;

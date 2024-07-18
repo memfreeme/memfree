@@ -7,21 +7,13 @@ describe("/api/vector/queue endpoint", () => {
   it("should return search results for a valid query", async () => {
     const response = await fetch(`${host}/api/enqueue`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: process.env.API_TOKEN || "",
+      },
       body: JSON.stringify({
         userId: testUser,
-        urls: [
-          "https://www.memfree.me/blog",
-          "https://www.memfree.me/",
-          "https://www.memfree.me/blog",
-          "https://www.memfree.me/",
-          "https://www.memfree.me/blog",
-          "https://www.memfree.me/",
-          "https://www.memfree.me/blog",
-          "https://www.memfree.me/",
-          "https://www.memfree.me/blog",
-          "https://www.memfree.me/",
-        ],
+        urls: ["https://www.memfree.me/blog", "https://www.memfree.me/"],
       }),
     });
 
@@ -29,6 +21,6 @@ describe("/api/vector/queue endpoint", () => {
 
     const responseBody = await response.json();
     console.log(responseBody);
-    expect(responseBody).toHaveProperty("taskKey");
+    expect(responseBody).toHaveProperty("taskId");
   }, 10000);
 });

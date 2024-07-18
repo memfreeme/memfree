@@ -37,6 +37,8 @@ spec:
       type: STRING
       name: what's your aws s3 bucket
       description: your aws s3 bucket
+    - key: MEMFREE_HOST
+      default: https://${PUBLIC_DOMAIN}.zeabur.app
 
   tags:
     - Database
