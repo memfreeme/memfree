@@ -1,4 +1,4 @@
-import { ImageSource as BaseImageSource } from '@/lib/search/search';
+import { ImageSource as BaseImageSource } from '@/lib/types';
 import React, { useEffect, useState } from 'react';
 
 interface ExtendedImageSource extends BaseImageSource {

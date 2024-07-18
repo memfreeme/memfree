@@ -3,7 +3,7 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from '@/components/ui/hover-card';
-import { TextSource } from '@/lib/search/search';
+import { TextSource } from '@/lib/types';
 import Link from 'next/link';
 
 export function InlineCitation(props: {
