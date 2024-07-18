@@ -3,7 +3,9 @@ kind: Template
 metadata:
   name: MemFree
 spec:
-  description: MemFree – Open Source Hybrid AI Search Engine
+  description: MemFree is an Open-Source, Hybrid AI Search Engine.
+  coverImage: https://www.memfree.me/og.png
+  icon: https://www.memfree.me/logo.png
   variables:
     - key: PUBLIC_DOMAIN
       type: DOMAIN
@@ -41,9 +43,9 @@ spec:
       default: https://${PUBLIC_DOMAIN}.zeabur.app
 
   tags:
-    - Database
-    - API
-    - Tool
+    - AI Search
+    - Vector Search
+    - Embedding Service
   readme: |-
     ## Introduction
 
