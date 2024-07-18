@@ -1,7 +1,17 @@
-const VECTOR_HOST = process.env.VECTOR_HOST;
+import 'server-only';
+
+let vectorHost = '';
+// Let open source users could one click deploy
+if (process.env.VECTOR_HOST) {
+    vectorHost = process.env.VECTOR_HOST;
+} else if (process.env.MEMFREE_HOST) {
+    vectorHost = process.env.MEMFREE_HOST;
+} else {
+    throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
+}
 
 export async function rerank(query: string, documents: string[]) {
-    const url = `${VECTOR_HOST}/embedding/rerank`;
+    const url = `${vectorHost}/embedding/rerank`;
     const response = await fetch(url, {
         method: 'POST',
         headers: {

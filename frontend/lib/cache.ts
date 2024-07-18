@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { createHash } from 'node:crypto';
 import { CachedResult } from './types';
 import { CACHE_KEY, redisDB } from './db';

@@ -5,7 +5,7 @@ import React, { useRef } from 'react';
 import RehypeKatex from 'rehype-katex';
 import '../../styles/highlight.css';
 import 'katex/dist/katex.min.css';
-import { TextSource } from '@/lib/search/search';
+import { TextSource } from '@/lib/types';
 import { InlineCitation } from './InlineCitation';
 import { useToast } from '../ui/use-toast';
 import { Copy } from 'lucide-react';

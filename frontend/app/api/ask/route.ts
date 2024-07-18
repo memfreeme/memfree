@@ -7,19 +7,20 @@ import {
     MoreQuestionsPrompt,
     RagQueryPrompt,
 } from '@/lib/prompt';
-import { AskMode, StreamHandler, CachedResult } from '@/lib/types';
+import {
+    AskMode,
+    StreamHandler,
+    CachedResult,
+    TextSource,
+    ImageSource,
+    SearchCategory,
+} from '@/lib/types';
 import { NextRequest, NextResponse } from 'next/server';
 import util from 'util';
 
 import { Ratelimit } from '@upstash/ratelimit';
 import { incSearchCount, RATE_LIMIT_KEY, redisDB } from '@/lib/db';
-import {
-    getSearchEngine,
-    getVectorSearch,
-    ImageSource,
-    SearchCategory,
-    TextSource,
-} from '@/lib/search/search';
+import { getSearchEngine, getVectorSearch } from '@/lib/search/search';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,

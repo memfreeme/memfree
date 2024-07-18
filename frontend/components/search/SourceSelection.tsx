@@ -11,7 +11,7 @@ import { Box, Globe } from 'lucide-react';
 import { useConfigStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { useUser } from '@/hooks/use-user';
-import { SearchCategory } from '@/lib/search/search';
+import { SearchCategory } from '@/lib/types';
 
 type Source = {
     name: string;

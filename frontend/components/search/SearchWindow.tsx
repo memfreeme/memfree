@@ -10,7 +10,7 @@ import SearchBar from '../Search';
 import { configStore } from '@/lib/store';
 
 import { useToast } from '../ui/use-toast';
-import { ImageSource, TextSource } from '@/lib/search/search';
+import { ImageSource, TextSource } from '@/lib/types';
 
 export function SearchWindow() {
     const messageContainerRef = useRef<HTMLDivElement | null>(null);

@@ -1,13 +1,25 @@
+import 'server-only';
+
 import {
     fetchWithTimeout,
-    ImageSource,
     SearchOptions,
     SearchResult,
     SearchSource,
-    TextSource,
     AnySource,
-    searxngURL,
 } from './search';
+import { ImageSource, TextSource } from '../types';
+
+let searxngHost = '';
+// Let open source users could one click deploy
+if (process.env.MEMFREE_HOST) {
+    searxngHost = process.env.MEMFREE_HOST;
+} else if (process.env.SEARXNG_HOST) {
+    searxngHost = process.env.SEARXNG_HOST;
+} else {
+    throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
+}
+
+console.log('searxngHost:', searxngHost);
 
 export class SearxngSearch implements SearchSource {
     private options: SearchOptions;
@@ -17,7 +29,7 @@ export class SearxngSearch implements SearchSource {
     }
 
     private formatUrl(query: string, options: SearchOptions) {
-        const url = new URL(`${searxngURL}/search?format=json`);
+        const url = new URL(`${searxngHost}/search?format=json`);
         url.searchParams.append('q', query);
         for (const key in options) {
             const value = options[key as keyof SearchOptions];

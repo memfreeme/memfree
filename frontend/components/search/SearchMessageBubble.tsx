@@ -18,7 +18,7 @@ import {
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import ImageGallery from './ImageGallery';
-import { ImageSource, TextSource } from '@/lib/search/search';
+import { ImageSource, TextSource } from '@/lib/types';
 import MyMarkdown from './Markdown';
 
 export type Message = {

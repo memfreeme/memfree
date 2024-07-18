@@ -1,11 +1,12 @@
+import 'server-only';
+
 import {
     fetchWithTimeout,
-    ImageSource,
     SearchResult,
     SearchSource,
     SERPER_API_KEY,
-    TextSource,
 } from './search';
+import { ImageSource, TextSource } from '../types';
 
 const serperUrl = 'https://google.serper.dev/';
 
