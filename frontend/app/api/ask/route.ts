@@ -112,7 +112,7 @@ async function ask(
     let cachedResult: CachedResult | null = null;
     if (useCache) {
         query = query.trim();
-        let cachedResult: CachedResult = await getCache(query);
+        let cachedResult: CachedResult = await getCache(query + source);
         if (cachedResult) {
             const { webs, images, answer, related } = cachedResult;
             await streamResponse(
@@ -225,7 +225,7 @@ async function ask(
         });
     }
 
-    setCache(query, cachedResult).catch((error) => {
+    setCache(query + source, cachedResult).catch((error) => {
         console.error(`Failed to set cache for query ${query}:`, error);
     });
     onStream?.(null, true);
