@@ -118,7 +118,7 @@ export function SearchMessageBubble(props: {
                                         <Copy size={24} />
                                     </button>
                                 </TooltipTrigger>
-                                <TooltipContent>
+                                <TooltipContent className="bg-black text-white">
                                     <p>Copy the answer</p>
                                 </TooltipContent>
                             </Tooltip>
@@ -134,7 +134,7 @@ export function SearchMessageBubble(props: {
                                         <RefreshCcw size={24} />
                                     </button>
                                 </TooltipTrigger>
-                                <TooltipContent>
+                                <TooltipContent className="bg-black text-white">
                                     <p>Reload</p>
                                 </TooltipContent>
                             </Tooltip>
@@ -164,7 +164,7 @@ export function SearchMessageBubble(props: {
                                         <ThumbsDown size={24} />
                                     </button>
                                 </TooltipTrigger>
-                                <TooltipContent>
+                                <TooltipContent className="bg-black text-white">
                                     <p>
                                         If you feel unsatisfied with the answer,
                                         feedback is welcome

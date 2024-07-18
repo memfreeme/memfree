@@ -87,7 +87,7 @@ export default function SearchBar({ handleSearch }: Props) {
                                         <Link size={24} strokeWidth={2} />
                                     </button>
                                 </TooltipTrigger>
-                                <TooltipContent>
+                                <TooltipContent className="bg-black text-white">
                                     <p>
                                         Enhance AI Search by Indexing the Web
                                         Pages You Value
@@ -108,7 +108,7 @@ export default function SearchBar({ handleSearch }: Props) {
                                         />
                                     </button>
                                 </TooltipTrigger>
-                                <TooltipContent>
+                                <TooltipContent className="bg-black text-white">
                                     <p>Send (Enter) </p>
                                 </TooltipContent>
                             </Tooltip>
