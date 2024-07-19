@@ -12,9 +12,9 @@ import {
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useToast } from './ui/use-toast';
-import { Textarea } from './ui/textarea';
 import { ModelSelection } from './search/ModelSelection';
 import { SourceSelection } from './search/SourceSelection';
+import TextareaAutosize from 'react-textarea-autosize';
 
 interface Props {
     handleSearch: (key: string) => void;
@@ -54,19 +54,16 @@ export default function SearchBar({ handleSearch }: Props) {
         <section className="relatve my-5">
             <div className="mx-auto w-full max-w-2xl px-10 text-center">
                 <div className="flex items-center relative mx-auto w-full max-w-2xl">
-                    <Textarea
+                    <TextareaAutosize
                         value={content}
-                        className="flex-2 p-4 border-2 rounded-xl min-h-24"
+                        minRows={2}
+                        maxRows={10}
+                        className="w-full border-input bg-transparent p-4 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50  overflow-y-auto resize-none overflow-hidden border-2 rounded-xl"
                         onChange={(e) => {
                             handleInputChange(e.target.value);
                         }}
                         onKeyDown={handleInputKeydown}
                     />
-
-                    <div className="absolute bottom-0 left-0 mb-2 ml-1 flex">
-                        <ModelSelection></ModelSelection>
-                        <SourceSelection></SourceSelection>
-                    </div>
 
                     <div className="absolute bottom-0 right-0 mb-2 mr-2 flex space-x-2">
                         <TooltipProvider>
@@ -113,6 +110,13 @@ export default function SearchBar({ handleSearch }: Props) {
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
+                    </div>
+                </div>
+
+                <div className="mt-2 flex justify-between">
+                    <div className="flex">
+                        <ModelSelection />
+                        <SourceSelection />
                     </div>
                 </div>
             </div>
