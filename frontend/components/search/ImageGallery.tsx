@@ -1,5 +1,5 @@
 import { ImageSource as BaseImageSource } from '@/lib/types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 
 interface ExtendedImageSource extends BaseImageSource {
     element: HTMLImageElement;
@@ -9,7 +9,7 @@ type ImageGalleryProps = {
     initialImages: BaseImageSource[];
 };
 
-const ImageGallery: React.FC<ImageGalleryProps> = ({ initialImages }) => {
+const ImageGallery: React.FC<ImageGalleryProps> = memo(({ initialImages }) => {
     const [images, setImages] = useState<ExtendedImageSource[]>([]);
 
     useEffect(() => {
@@ -45,7 +45,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ initialImages }) => {
                     href={image.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="aspect-video size-full overflow-hidden hover:scale-[1.1] duration-150 rounded-lg transition-all shadow-md"
+                    className="aspect-video size-full overflow-hidden hover:scale-110 duration-150 rounded-lg transition-all shadow-md"
                 >
                     <img
                         src={image.element.src}
@@ -56,6 +56,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ initialImages }) => {
             ))}
         </div>
     );
-};
+});
 
+ImageGallery.displayName = 'ImageGallery';
 export default ImageGallery;

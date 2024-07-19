@@ -1,7 +1,7 @@
 import ReactMarkdown from 'react-markdown';
 import RehypeHighlight from 'rehype-highlight';
 import RemarkMath from 'remark-math';
-import React, { useRef } from 'react';
+import React, { memo, useRef } from 'react';
 import RehypeKatex from 'rehype-katex';
 import '../../styles/highlight.css';
 import 'katex/dist/katex.min.css';
@@ -101,7 +101,9 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
     );
 };
 
-export default function MyMarkdown({
+const MemoizedCodeBlock = memo(CodeBlock);
+
+function MyMarkdown({
     content,
     sources,
 }: {
@@ -179,7 +181,7 @@ export default function MyMarkdown({
                     );
                 },
                 pre: ({ node, children, ...props }) => (
-                    <CodeBlock {...props}>{children}</CodeBlock>
+                    <MemoizedCodeBlock {...props}>{children}</MemoizedCodeBlock>
                 ),
             }}
         >
@@ -187,3 +189,5 @@ export default function MyMarkdown({
         </ReactMarkdown>
     );
 }
+
+export default memo(MyMarkdown);

@@ -19,7 +19,7 @@ const SourceBubble = ({ source }) => {
                             {site}
                         </p>
                     </div>
-                    <h3 className="whitespace-nowrap overflow-hidden overflow-ellipsis text-xs text-blue-500 font-medium pb-2">
+                    <h3 className="whitespace-nowrap overflow-hidden text-ellipsis text-xs text-blue-500 font-medium pb-2">
                         {source.title}
                     </h3>
                     <p
