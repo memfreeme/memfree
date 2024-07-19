@@ -21,6 +21,7 @@ import util from 'util';
 import { Ratelimit } from '@upstash/ratelimit';
 import { incSearchCount, RATE_LIMIT_KEY, redisDB } from '@/lib/db';
 import { getSearchEngine, getVectorSearch } from '@/lib/search/search';
+import { GPT_4o, GPT_4o_MIMI } from '@/lib/model';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -32,11 +33,14 @@ const ratelimit = new Ratelimit({
 const IMAGE_LIMIT = 8;
 
 const formatModel = (model: string) => {
+    // For compatibility with the old model
     switch (model) {
-        case 'gpt-3.5':
-            return 'gpt-3.5-turbo';
-        case 'gpt4':
-            return 'gpt-4o';
+        case GPT_4o_MIMI:
+            return GPT_4o_MIMI;
+        case GPT_4o:
+            return GPT_4o;
+        default:
+            return GPT_4o_MIMI;
     }
 };
 
@@ -106,7 +110,7 @@ async function ask(
     userId?: string,
     onStream?: (...args: any[]) => void,
     mode: AskMode = 'simple',
-    model = 'gpt-3.5-turbo',
+    model = GPT_4o_MIMI,
     source = SearchCategory.ALL,
 ) {
     let cachedResult: CachedResult | null = null;
@@ -285,7 +289,7 @@ async function getRelatedQuestions(
             contexts,
             'related',
         );
-        await chatStream(messages, onStream, 'gpt-3.5-turbo');
+        await chatStream(messages, onStream, GPT_4o_MIMI);
     } catch (err) {
         console.error('[LLM Error]:', err);
         return [];

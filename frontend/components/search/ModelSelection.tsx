@@ -8,9 +8,10 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Box } from 'lucide-react';
-import { useConfigStore } from '@/lib/store';
+import { useModelStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { useUser } from '@/hooks/use-user';
+import { GPT_4o, GPT_4o_MIMI } from '@/lib/model';
 
 type Model = {
     name: string;
@@ -19,15 +20,15 @@ type Model = {
 };
 
 export const modelMap: Record<string, Model> = {
-    'gpt-3.5': {
-        name: 'GPT-3.5',
+    [GPT_4o_MIMI]: {
+        name: 'GPT-4o-mini',
         description: 'Default',
-        value: 'gpt3',
+        value: GPT_4o_MIMI,
     },
-    'gpt4': {
+    [GPT_4o]: {
         name: 'GPT-4o',
         description: 'Powerful',
-        value: 'gpt4',
+        value: GPT_4o,
     },
 };
 
@@ -50,15 +51,15 @@ const ModelItem: React.FC<{ model: Model }> = ({ model }) => (
 );
 
 export function ModelSelection() {
-    const { model, setModel, initModel } = useConfigStore();
-    const selectedModel = modelMap[model] ?? modelMap['gpt-3.5'];
+    const { model, setModel, initModel } = useModelStore();
+    const selectedModel = modelMap[model] ?? modelMap[GPT_4o_MIMI];
 
     React.useEffect(() => {
         const initialModel = initModel();
         if (initialModel && initialModel !== model) {
             setModel(initialModel);
         }
-    }, []);
+    }, [model]);
 
     const signInModal = useSigninModal();
     const user = useUser();
@@ -71,7 +72,7 @@ export function ModelSelection() {
                 if (value) {
                     if (!user) {
                         signInModal.onOpen();
-                    } else {
+                    } else if (value !== model) {
                         setModel(value);
                     }
                 }

@@ -1,4 +1,4 @@
-import { SourceBubble } from '@/components/search/SourceBubble';
+import SourceBubble from '@/components/search/SourceBubble';
 import {
     BookKey,
     Images,
@@ -174,16 +174,16 @@ export function SearchMessageBubble(props: {
                         </TooltipProvider>
                     </div>
 
-                    <div className="flex w-full flex-col items-start space-y-2.5">
+                    <div className="flex w-full flex-col items-start space-y-2.5 py-4">
                         <div className="flex items-center space-x-2">
                             <TextSearchIcon className="text-primary size-22"></TextSearchIcon>
-                            <h3 className="py-2 text-lg font-medium text-primary">
+                            <h3 className="text-lg font-medium text-primary">
                                 Sources
                             </h3>
                         </div>
-                        <div className="flex max-w-full space-x-2.5 overflow-auto">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-full overflow-auto ">
                             {sources.map((source, index) => (
-                                <div key={index} className="w-60 shrink-0">
+                                <div key={index}>
                                     <SourceBubble source={source} />
                                 </div>
                             ))}

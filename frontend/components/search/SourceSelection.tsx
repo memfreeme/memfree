@@ -7,8 +7,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Box, Globe } from 'lucide-react';
-import { useConfigStore } from '@/lib/store';
+import { Globe } from 'lucide-react';
+import { useSourceStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { useUser } from '@/hooks/use-user';
 import { SearchCategory } from '@/lib/types';
@@ -56,15 +56,15 @@ const SourceItem: React.FC<{ source: Source }> = ({ source }) => (
 );
 
 export function SourceSelection() {
-    const { source, setSource, initSource } = useConfigStore();
-    const selectedSource = sourceMap[source] ?? sourceMap['all'];
+    const { source, setSource, initSource } = useSourceStore();
+    const selectedSource = sourceMap[source] ?? sourceMap[SearchCategory.ALL];
 
     React.useEffect(() => {
         const initialSource = initSource();
         if (initialSource && initialSource !== source) {
             setSource(initialSource);
         }
-    }, []);
+    }, [source]);
 
     const signInModal = useSigninModal();
     const user = useUser();
@@ -77,7 +77,7 @@ export function SourceSelection() {
                 if (value) {
                     if (!user) {
                         signInModal.onOpen();
-                    } else {
+                    } else if (value !== source) {
                         setSource(value);
                     }
                 }

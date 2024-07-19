@@ -1,6 +1,6 @@
 'use client';
 
-import { KeyboardEvent, useState } from 'react';
+import React, { KeyboardEvent, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { useUser } from '@/hooks/use-user';
 import { Link, SendHorizontal } from 'lucide-react';
@@ -20,7 +20,7 @@ interface Props {
     handleSearch: (key: string) => void;
 }
 
-export default function SearchBar({ handleSearch }: Props) {
+const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const [content, setContent] = useState<string>('');
     const signInModal = useSigninModal();
     const uploadModal = useUploadModal();
@@ -114,12 +114,12 @@ export default function SearchBar({ handleSearch }: Props) {
                 </div>
 
                 <div className="mt-2 flex justify-between">
-                    <div className="flex">
-                        <ModelSelection />
-                        <SourceSelection />
-                    </div>
+                    <ModelSelection />
+                    <SourceSelection />
                 </div>
             </div>
         </section>
     );
-}
+};
+
+export default React.memo(SearchBar);

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { User } from './types';
+import { GPT_4o_MIMI } from './model';
 
 type UserState = {
     user: User | null;
@@ -66,7 +67,7 @@ type ConfigState = {
 };
 
 export const configStore = create<ConfigState>()((set) => ({
-    model: 'gpt-3.5',
+    model: GPT_4o_MIMI,
     source: 'all',
     language: 'en',
     colorScheme: 'light',
@@ -83,7 +84,7 @@ export const configStore = create<ConfigState>()((set) => ({
         if (model) {
             set({ model });
         }
-        return model || 'gpt-3.5';
+        return model || GPT_4o_MIMI;
     },
     initSource() {
         const source = localStorage.getItem('source');
@@ -94,12 +95,15 @@ export const configStore = create<ConfigState>()((set) => ({
     },
 }));
 
-export const useConfigStore = () =>
+export const useModelStore = () =>
     configStore((state) => ({
         model: state.model,
         setModel: state.setModel,
         initModel: state.initModel,
+    }));
 
+export const useSourceStore = () =>
+    configStore((state) => ({
         source: state.source,
         setSource: state.setSource,
         initSource: state.initSource,

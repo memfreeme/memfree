@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { SearchMessageBubble, Message } from './SearchMessageBubble';
 
 import { fetchEventSource } from '@microsoft/fetch-event-source';
@@ -9,11 +9,9 @@ import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '../Search';
 import { configStore } from '@/lib/store';
 
-import { useToast } from '../ui/use-toast';
 import { ImageSource, TextSource } from '@/lib/types';
 
 export function SearchWindow() {
-    const messageContainerRef = useRef<HTMLDivElement | null>(null);
     const [messages, setMessages] = useState<Array<Message>>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -33,36 +31,12 @@ export function SearchWindow() {
     // const [chatHistory, setChatHistory] = useState<
     //     { human: string; ai: string }[]
     // >([]);
-    const { toast } = useToast();
-    const copyToClipboard = (event) => {
-        const button = event.target;
-        const pre = button.parentElement;
-        const code = pre.querySelector('code').innerText;
-
-        navigator.clipboard
-            .writeText(code)
-            .then(() => {
-                button.textContent = 'Copied!';
-                toast({
-                    description: 'Copied to clipboard successfully!',
-                });
-                setTimeout(() => {
-                    button.textContent = 'Copy';
-                }, 2000);
-            })
-            .catch((err) => {
-                console.error('Failed to copy: ', err);
-            });
-    };
 
     const sendMessage = async (
         message?: string,
         messageIdToUpdate?: string,
         mode: string = 'deep',
     ) => {
-        if (messageContainerRef.current) {
-            messageContainerRef.current.classList.add('grow');
-        }
         if (isLoading) {
             return;
         }
@@ -242,20 +216,14 @@ export function SearchWindow() {
         await sendMessage(question, msgId, 'deep');
     };
 
+    const stableHandleSearch = useCallback((key: string) => {
+        sendMessage(key);
+    }, []);
+
     return (
         <div className="flex max-h-full flex-col items-center rounded">
-            <div
-                className="my-10 flex w-3/4 flex-col-reverse overflow-auto p-10"
-                ref={messageContainerRef}
-                onLoad={() => {
-                    document
-                        .querySelectorAll('button[data-codeid]')
-                        .forEach((button) =>
-                            button.addEventListener('click', copyToClipboard),
-                        );
-                }}
-            >
-                <SearchBar handleSearch={sendMessage} />
+            <div className="my-10 flex w-3/4 flex-col-reverse overflow-auto p-10">
+                <SearchBar handleSearch={stableHandleSearch} />
                 {messages.length > 0 ? (
                     [...messages]
                         .reverse()

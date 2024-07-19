@@ -33,7 +33,7 @@ const processNodeWithCitations = (
         ) {
             elements.push(
                 <InlineCitation
-                    key={`inline-citation-${index}`}
+                    key={`citation-${index}`}
                     source={sources[citationNumber - 1]}
                     sourceNumber={citationNumber}
                 />,
