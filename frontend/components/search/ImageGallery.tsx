@@ -1,44 +1,42 @@
-import { ImageSource as BaseImageSource } from '@/lib/types';
-import React, { useEffect, useState, memo } from 'react';
-
-interface ExtendedImageSource extends BaseImageSource {
-    element: HTMLImageElement;
-}
+import { ImageSource } from '@/lib/types';
+import React, { useEffect, useState, memo, useMemo } from 'react';
 
 type ImageGalleryProps = {
-    initialImages: BaseImageSource[];
+    initialImages: ImageSource[];
 };
 
 const ImageGallery: React.FC<ImageGalleryProps> = memo(({ initialImages }) => {
-    const [images, setImages] = useState<ExtendedImageSource[]>([]);
+    const [images, setImages] = useState<ImageSource[]>([]);
+
+    const loadImage = (image: ImageSource): Promise<ImageSource | null> => {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+                resolve({ ...image });
+            };
+            img.onerror = (error) => {
+                console.error('Image load error:', error);
+                resolve(null);
+            };
+            img.src = image.image;
+        });
+    };
+
+    async function validateImages(imageList: ImageSource[]) {
+        const validImages = await Promise.all(imageList.map(loadImage));
+        setImages(
+            validImages.filter((image) => image !== null) as ImageSource[],
+        );
+    }
+
+    const memoizedInitialImages = useMemo(() => initialImages, [initialImages]);
 
     useEffect(() => {
-        const loadImage = (
-            image: BaseImageSource,
-        ): Promise<ExtendedImageSource | null> => {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.onload = () => resolve({ ...image, element: img });
-                img.onerror = () => resolve(null);
-                img.src = image.image;
-            });
-        };
-
-        async function validateImages(imageList: BaseImageSource[]) {
-            const validImages = await Promise.all(imageList.map(loadImage));
-
-            setImages(
-                validImages.filter(
-                    (image) => image !== null,
-                ) as ExtendedImageSource[],
-            );
-        }
-
-        validateImages(initialImages);
-    }, [initialImages]);
+        validateImages(memoizedInitialImages);
+    }, [memoizedInitialImages]);
 
     return (
-        <div className="flex max-w-full space-x-2.5 overflow-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {images.map((image, index) => (
                 <a
                     key={index}
@@ -48,9 +46,9 @@ const ImageGallery: React.FC<ImageGalleryProps> = memo(({ initialImages }) => {
                     className="aspect-video size-full overflow-hidden hover:scale-110 duration-150 rounded-lg transition-all shadow-md"
                 >
                     <img
-                        src={image.element.src}
+                        src={image.image}
                         alt={image.title}
-                        className="size-full object-cover object-top max-h-[80vh]"
+                        className="size-full object-cover max-h-[80vh]"
                     />
                 </a>
             ))}

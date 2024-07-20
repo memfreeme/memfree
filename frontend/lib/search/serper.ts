@@ -2,9 +2,11 @@ import 'server-only';
 
 import {
     fetchWithTimeout,
+    IMAGE_LIMIT,
     SearchResult,
     SearchSource,
     SERPER_API_KEY,
+    TEXT_LIMIT,
 } from './search';
 import { ImageSource, TextSource } from '../types';
 
@@ -97,6 +99,8 @@ export class SerperSearch implements SearchSource {
                     })),
                 );
             }
+            texts = texts.slice(0, TEXT_LIMIT);
+            images = images.slice(0, IMAGE_LIMIT);
             return { texts, images };
         } catch (error) {
             console.error(

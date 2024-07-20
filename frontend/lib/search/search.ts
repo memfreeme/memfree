@@ -27,6 +27,9 @@ export interface SearchSource {
     search(query: string): Promise<SearchResult>;
 }
 
+export const TEXT_LIMIT = 8;
+export const IMAGE_LIMIT = 8;
+
 let searxngHost = '';
 // Let open source users could one click deploy
 if (process.env.MEMFREE_HOST) {

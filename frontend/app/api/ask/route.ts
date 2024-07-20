@@ -20,7 +20,11 @@ import util from 'util';
 
 import { Ratelimit } from '@upstash/ratelimit';
 import { incSearchCount, RATE_LIMIT_KEY, redisDB } from '@/lib/db';
-import { getSearchEngine, getVectorSearch } from '@/lib/search/search';
+import {
+    getSearchEngine,
+    getVectorSearch,
+    IMAGE_LIMIT,
+} from '@/lib/search/search';
 import { GPT_4o, GPT_4o_MIMI } from '@/lib/model';
 
 const ratelimit = new Ratelimit({
@@ -29,8 +33,6 @@ const ratelimit = new Ratelimit({
     prefix: RATE_LIMIT_KEY,
     analytics: false,
 });
-
-const IMAGE_LIMIT = 8;
 
 const formatModel = (model: string) => {
     // For compatibility with the old model
