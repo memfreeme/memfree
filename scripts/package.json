@@ -1,0 +1,14 @@
+{
+  "name": "memfree-scripts",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.31.5"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

@@ -40,6 +40,7 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 
 ## Update
 
+- **2024-07-19**: Supports GPT-4o-mini AI model
 - **2024-07-18**: Supports specialized Academic and News searches
 - **2024-07-18**: Backend one click deploy with Zeabur is available
 - **2024-07-17**: Make search results more beautiful, Support mathematical formula and code highlighting, Use react-markdown instead of marked

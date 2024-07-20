@@ -27,7 +27,7 @@ const ratelimit = new Ratelimit({
     redis: redisDB,
     limiter: Ratelimit.slidingWindow(3, '1 d'),
     prefix: RATE_LIMIT_KEY,
-    analytics: true,
+    analytics: false,
 });
 
 const IMAGE_LIMIT = 8;
