@@ -20,7 +20,6 @@ description: How to one click deploy MemFree
 </a>
 
 -   You could get `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` from [Upstash Redis](https://upstash.com/docs/redis/overall/getstarted)
--   You could get AWS variables Refer to [How To Create S3 Express Bucket](https://www.memfree.me/search?q=How%20To%20Create%20S3%20Express%20One%20zone%20Bucket%20and%20get%20ACCESS_KEY,%20SECRET%20KEY%20and%20BUCKET%20name)
 -   You could use `openssl rand -base64 32` to generate a random string for API Token
 
 ### Deploy Frontend with Vercel
@@ -39,6 +38,17 @@ description: How to one click deploy MemFree
 -   To enable faster search, You could set `SERPER_API_KEY` in Vercel, you could get `SERPER_API_KEY` from [Serper Dev](https://serper.dev)
 -   To enable AXIOM log, you could set `AXIOM_TOKEN` in Vercel and Zeabur, you could get `AXIOM_TOKEN` from [Axiom](https://axiom.co)
 -   To enable faster web page parser, you could set `JINA_KEY` in Zeabur, you could get `JINA_KEY` from [Jina Reader](https://jina.ai/reader)
+
+#### 3.1 AWS S3 Express Bucket
+
+In order to facilitate developers to quickly deploy with one click, memfree's vector database will store data in a temporary local directory. **If you want to deploy in a production environment, please use AWS S3 Express Bucket**
+
+1. You could get AWS variables Refer to [How To Create S3 Express Bucket](https://www.memfree.me/search?q=How%20To%20Create%20S3%20Express%20One%20zone%20Bucket%20and%20get%20ACCESS_KEY,%20SECRET%20KEY%20and%20BUCKET%20name)
+2. You need to set the following variables in Zeabur Vector Service
+    - `AWS_ACCESS_KEY_ID`
+    - `AWS_SECRET_ACCESS_KEY`
+    - `AWS_REGION`
+    - `AWS_BUCKET`
 
 ### Feedback and help
 
