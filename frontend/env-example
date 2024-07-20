@@ -1,3 +1,7 @@
+# The details of the environment variables you could refer to
+
+# https://www.memfree.me/docs/one-click-deploy-ai-search
+
 # Upstash Redis (Required)
 
 # https://upstash.com/docs/redis/overall/getstarted
@@ -8,6 +12,24 @@ UPSTASH_REDIS_REST_TOKEN=
 # Auth (Required)
 
 AUTH_SECRET=
+
+# OpenAi (Required) https://platform.openai.com
+
+OPENAI_API_KEY=
+
+# MEMFREE_HOST (Required)
+
+# You could one click deploy the service in
+
+# https://zeabur.com/templates/CE71SC?referralCode=memfree
+
+MEMFREE_HOST=
+
+# API_TOKEN (Required)
+
+# should same with the API_TOKEN in the backend
+
+API_TOKEN=
 
 # Auth Providers (Optional)
 
@@ -21,29 +43,9 @@ AUTH_GOOGLE_SECRET=
 
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
-# Basical internet search
-
-# https://serper.dev/
+# https://serper.dev/ (Optional)
 
 SERPER_API_KEY=
-
-# https://platform.openai.com
-
-OPENAI_API_KEY=
-
-# Hyride AI search
-
-# the vector service host
-
-VECTOR_HOST=
-
-# the quque service host
-
-QUEUE_HOST="https://xxx.com"
-
-# the api token for the vector, quque and embedding service
-
-API_TOKEN=
 
 # subscription (optional)
 

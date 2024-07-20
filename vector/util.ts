@@ -49,16 +49,8 @@ export async function getMd(url: string) {
   const new_url = "https://r.jina.ai/" + url;
 
   try {
-    const res = await fetchWithRetry(
-      new_url,
-      {
-        headers: {
-          Authorization: `Bearer ${jinaToken}`,
-        },
-      },
-      3,
-      1000
-    );
+    const headers = jinaToken ? { Authorization: `Bearer ${jinaToken}` } : {};
+    const res = await fetchWithRetry(new_url, { headers }, 3, 1000);
     const text = await res.text();
     const md = removeImageLinksAndUrls(text);
     return md;
@@ -67,50 +59,3 @@ export async function getMd(url: string) {
     throw error; // Re-throw so that caller knows this failed
   }
 }
-
-export async function getImage(url: string) {
-  const new_url = "https://r.jina.ai/" + url;
-  try {
-    const res = await fetchWithRetry(
-      new_url,
-      {
-        headers: {
-          "x-respond-with": "screenshot",
-          Authorization: `Bearer ${jinaToken}`,
-        },
-      },
-      3,
-      1000
-    );
-    return res.url;
-  } catch (error) {
-    console.error("Failed to fetch image link:", error);
-    throw error; // Re-throw so that caller knows this failed
-  }
-}
-
-export function cosineSimilarity(vecA: Float32Array, vecB: Float32Array) {
-  let dotProduct = 0;
-  let magnitudeA = 0;
-  let magnitudeB = 0;
-
-  for (let i = 0; i < 384; i++) {
-    dotProduct += vecA[i] * vecB[i];
-    magnitudeA += vecA[i] ** 2;
-    magnitudeB += vecB[i] ** 2;
-  }
-
-  magnitudeA = Math.sqrt(magnitudeA);
-  magnitudeB = Math.sqrt(magnitudeB);
-
-  // shouldn't be zero, but just in case
-  return dotProduct / (magnitudeA * magnitudeB);
-}
-
-// const url = "https://www.memfree.me/blog/memfree-build-1-why";
-
-// console.time("getMd");
-// const markdown = await getMd(url);
-// console.timeEnd("getMd");
-
-// console.log(markdown);

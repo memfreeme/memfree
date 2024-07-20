@@ -75,10 +75,6 @@ curl -fsSL https://bun.sh/install | bash
 
 Create a Redis compatible database in seconds: [Upstash Redis](https://upstash.com/docs/redis/overall/getstarted)
 
-#### Serper Dev API Key
-
-Get a Serper Dev API Key: [Serper Dev](https://serper.dev)
-
 #### OpenAI API Key
 
 Get an OpenAI API Key: [OpenAI](https://platform.openai.com)
