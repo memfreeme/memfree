@@ -79,6 +79,14 @@ Create a Redis compatible database in seconds: [Upstash Redis](https://upstash.c
 
 Get an OpenAI API Key: [OpenAI](https://platform.openai.com)
 
+#### Searxng Search
+
+<a href="https://zeabur.com/templates/CE71SC?referralCode=memfree"><img src="https://zeabur.com/button.svg" alt="Deploy on Zeabur"/></a>
+
+You could one click get the Searxng Search Service.
+
+[MemFree One-Click Deployment guide](https://www.memfree.me/docs/one-click-deploy-ai-search)
+
 ### Frontend
 
 ```

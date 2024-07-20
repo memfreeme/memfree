@@ -1,7 +1,7 @@
 import { describe, it, expect } from "bun:test";
 
 const testUser = "localTest";
-const host = "http://localhost:3001";
+const host = process.env.TEST_VECTOR_HOST || "http://localhost:3001";
 const API_TOKEN = process.env.API_TOKEN!;
 
 describe("/api/vector/search endpoint", () => {
