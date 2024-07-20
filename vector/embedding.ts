@@ -3,10 +3,10 @@ const embeddingHost = process.env.EMBEDDING_HOST;
 
 let host = "";
 // Let open source users could one click deploy
-if (memfreeHost) {
-  host = `${memfreeHost}/embedding`;
-} else if (embeddingHost) {
+if (embeddingHost) {
   host = embeddingHost;
+} else if (memfreeHost) {
+  host = `${memfreeHost}/embedding`;
 } else {
   throw new Error("Neither MEMFREE_HOST nor EMBEDDING_HOST is defined");
 }

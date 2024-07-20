@@ -25,14 +25,20 @@ const schema = new Schema([
 
 async function getConnection() {
   const bucket = process.env.AWS_BUCKET || "";
-  return await lancedb.connect(bucket, {
-    storageOptions: {
-      awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
-      s3Express: "true",
-      region: process.env.AWS_REGION || "",
-      awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
-    },
-  });
+  if (bucket) {
+    return await lancedb.connect(bucket, {
+      storageOptions: {
+        awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+        s3Express: "true",
+        region: process.env.AWS_REGION || "",
+        awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+      },
+    });
+  } else {
+    // Let open source users could one click deploy
+    const localDirectory = process.cwd();
+    return await lancedb.connect(localDirectory);
+  }
 }
 
 async function getTable(db: any, tableName: string): Promise<lancedb.Table> {

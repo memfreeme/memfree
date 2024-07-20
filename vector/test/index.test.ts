@@ -2,6 +2,7 @@ import { describe, it, expect } from "bun:test";
 
 const testUser = "localTest";
 const host = "http://localhost:3001";
+const API_TOKEN = process.env.API_TOKEN!;
 
 describe("/api/vector/callback endpoint", () => {
   it("should respond with Success on valid request", async () => {
@@ -13,6 +14,7 @@ describe("/api/vector/callback endpoint", () => {
       }),
       headers: {
         "Content-Type": "application/json",
+        Authorization: API_TOKEN,
       },
     });
 
@@ -29,6 +31,7 @@ describe("/api/vector/callback endpoint", () => {
       body: JSON.stringify({ url: mockUrl, userId: testUser }),
       headers: {
         "Content-Type": "application/json",
+        Authorization: API_TOKEN,
       },
     });
 
