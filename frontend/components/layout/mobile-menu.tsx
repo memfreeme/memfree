@@ -6,15 +6,11 @@ import { Menu } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from '../ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '../ui/sheet';
 import Link from 'next/link';
 import { MainNavItem } from '@/types';
+import { Icons } from '../shared/icons';
+import { siteConfig } from '@/config/site';
 
 interface NavProps {
     items?: MainNavItem[];
@@ -43,31 +39,25 @@ export function MarketingMenu({ items }: NavProps) {
             </SheetTrigger>
             <SheetContent side="top" className="flex flex-col">
                 <SheetHeader>
-                    <SheetTitle className="ml-2 text-left">MemFree</SheetTitle>
+                    <Link href="/" className="items-center space-x-2 flex">
+                        <Icons.brain className="text-primary" />
+                        <span className="mx-2 font-urban text-xl font-bold">
+                            {siteConfig.name}
+                        </span>
+                    </Link>
                 </SheetHeader>
                 <div className="flex flex-1 flex-col justify-between gap-4">
                     <ul className="grid gap-1">
                         {items.map(({ href, title }) => {
-                            const isExternal = href.startsWith('http');
-                            const externalProps = isExternal
-                                ? { target: '_blank' }
-                                : {};
-                            const isActive = pathname.startsWith(href);
                             return (
-                                <Button
+                                <li
                                     key={title}
-                                    variant="link"
-                                    className={
-                                        isActive ? 'font-semibold' : undefined
-                                    }
-                                    asChild
+                                    className="border-b border-gray-200"
                                 >
-                                    <Link href={href} {...externalProps}>
-                                        <span className="text-black">
-                                            {title}
-                                        </span>
-                                    </Link>
-                                </Button>
+                                    <Button variant="link" asChild>
+                                        <Link href={href}>{title}</Link>
+                                    </Button>
+                                </li>
                             );
                         })}
                     </ul>

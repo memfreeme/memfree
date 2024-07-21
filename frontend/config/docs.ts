@@ -11,12 +11,12 @@ export const docsConfig: DocsConfig = {
             href: '/docs',
         },
         {
-            title: 'Blog',
-            href: '/blog',
-        },
-        {
             title: 'Changelog',
             href: '/changelog',
+        },
+        {
+            title: 'Dashboard',
+            href: '/dashboard',
         },
     ],
     sidebarNav: [

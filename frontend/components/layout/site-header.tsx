@@ -37,10 +37,10 @@ export default function SiteHeader({
         <header
             className={cn('grid w-full grid-cols-2 gap-2 md:grid-cols-5 py-5')}
         >
-            <div className="flex items-center md:col-span-1 mx-10">
-                <Link href="/" className="items-center space-x-2 md:flex">
+            <div className="flex items-center md:col-span-1 mx-5 md:mx-10">
+                <Link href="/" className="items-center space-x-2 flex">
                     <Icons.brain className="text-primary" />
-                    <span className="hidden mx-2 font-urban text-xl font-bold sm:inline-block">
+                    <span className=" mx-2 font-urban text-xl font-bold">
                         {siteConfig.name}
                     </span>
                 </Link>
@@ -66,10 +66,10 @@ export default function SiteHeader({
                     );
                 })}
             </div>
-            <div className="flex items-center gap-3 md:col-span-1">
-                <div className="block md:hidden">
-                    <MarketingMenu items={items} />
-                </div>
+            <div className="block md:hidden ml-auto mr-4">
+                <MarketingMenu items={items} />
+            </div>
+            <div className="hidden md:flex items-center  gap-3 md:col-span-1 pr-4 mr-0">
                 {user ? (
                     <UserAccountNav user={user} />
                 ) : (
