@@ -14,6 +14,43 @@ const openai = new OpenAI({
 });
 
 export class OpenAIChat implements LLMChat {
+    async chat(query: string, model: string, system?: string): Promise<string> {
+        let messages: Message[] = [
+            {
+                role: 'user',
+                content: `${query}`,
+            },
+        ];
+        if (system) {
+            messages = [
+                {
+                    role: 'system',
+                    content: system,
+                },
+                ...messages,
+            ];
+        }
+
+        try {
+            const response = await openai.chat.completions.create({
+                model: model,
+                messages: messages,
+                max_tokens: 1024,
+                temperature: 0.3,
+            });
+
+            if (response.choices && response.choices.length > 0) {
+                console.log('result: ', response.choices[0].message.content);
+                return response.choices[0].message.content;
+            } else {
+                throw new Error('No response choices available');
+            }
+        } catch (error) {
+            logError(error, 'llm-openai');
+            throw error;
+        }
+    }
+
     async chatStream(
         system: string,
         query: string,

@@ -1,5 +1,14 @@
 import 'server-only';
 
+export const RephrasePrompt = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
+
+Chat History:
+\`\`\`
+%s
+\`\`\`
+Follow Up Input: "%s"
+Standalone Question:`;
+
 export const NewsPrompt = `
 # Assistant Background
 

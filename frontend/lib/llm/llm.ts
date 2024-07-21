@@ -16,6 +16,8 @@ export interface StreamHandler {
 export const MAX_TOKENS = 1024;
 
 export interface LLMChat {
+    chat(query: string, model: string, system?: string): Promise<string>;
+
     chatStream(
         system: string,
         query: string,

@@ -8,6 +8,10 @@ import { MAX_TOKENS, Message, StreamHandler } from './llm';
 const anthropic = new Anthropic();
 
 export class AnthropicChat implements LLMChat {
+    async chat(query: string, model: string, system?: string): Promise<string> {
+        return '';
+    }
+
     async chatStream(
         system: string,
         query: string,

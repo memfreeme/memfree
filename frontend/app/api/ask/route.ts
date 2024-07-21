@@ -5,6 +5,7 @@ import {
     DeepQueryPrompt,
     MoreQuestionsPrompt,
     NewsPrompt,
+    RephrasePrompt,
 } from '@/lib/prompt';
 import {
     AskMode,
@@ -27,6 +28,7 @@ import { GPT_4o_MIMI, validModel } from '@/lib/model';
 import { logError } from '@/lib/log';
 import { getLLMChat, StreamHandler } from '@/lib/llm/llm';
 import { openaiChat } from '@/lib/llm/openai';
+import { checkIsPro } from '@/lib/user-utils';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -38,13 +40,15 @@ const ratelimit = new Ratelimit({
 export async function POST(req: NextRequest) {
     const session = await auth();
     let userId = '';
+    let isPro = false;
     if (session) {
         userId = session.user.id;
+        // isPro = checkIsPro(session.user);
+        // console.log('isPro ', isPro);
     } else {
         const ip = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').split(
             ',',
         )[0];
-
         const { success } = await ratelimit.limit(ip);
         if (!success) {
             return NextResponse.json(
@@ -55,7 +59,7 @@ export async function POST(req: NextRequest) {
             );
         }
     }
-    const { query, useCache, mode, model, source } = await req.json();
+    const { query, useCache, mode, model, source, history } = await req.json();
 
     if (!validModel(model)) {
         return NextResponse.json(
@@ -65,12 +69,18 @@ export async function POST(req: NextRequest) {
             { status: 400 },
         );
     }
+    let newQuery = query;
+    // TODO: only rephrase query if the user is pro
+    if (history && history.length > 0 && userId) {
+        newQuery = await rephraseQuery(query, history);
+    }
+    console.log('oldquery:', query, 'newQuery:', newQuery);
 
     try {
         const readableStream = new ReadableStream({
             async start(controller) {
                 await ask(
-                    query,
+                    newQuery,
                     useCache,
                     userId,
                     (message: string | null, done: boolean) => {
@@ -113,7 +123,7 @@ async function ask(
 ) {
     let cachedResult: CachedResult | null = null;
     if (useCache) {
-        query = query.trim();
+        query = query.trim().toLocaleLowerCase();
         let cachedResult: CachedResult = await getCache(model + source + query);
         if (cachedResult) {
             const { webs, images, answer, related } = cachedResult;
@@ -292,4 +302,9 @@ function promptFormatterRelated(contexts: any[]) {
         .join('\n\n');
     let prompt = choosePrompt(undefined, 'related');
     return util.format(prompt, context);
+}
+
+async function rephraseQuery(query: string, history: string) {
+    const prompt = util.format(RephrasePrompt, history, query);
+    return await openaiChat.chat(prompt, GPT_4o_MIMI);
 }

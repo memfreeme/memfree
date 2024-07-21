@@ -10,6 +10,8 @@ import SearchBar from '../Search';
 import { configStore } from '@/lib/store';
 
 import { ImageSource, TextSource } from '@/lib/types';
+import { useUser } from '@/hooks/use-user';
+import { formatChatHistoryAsString } from '@/lib/utils';
 
 export function SearchWindow() {
     const [messages, setMessages] = useState<Array<Message>>([]);
@@ -28,9 +30,14 @@ export function SearchWindow() {
         }
     }, [q]);
 
-    // const [chatHistory, setChatHistory] = useState<
-    //     { human: string; ai: string }[]
-    // >([]);
+    const user = useUser();
+
+    const [chatHistory, setChatHistory] = useState<[string, string][]>([]);
+    const chatHistoryRef = useRef(chatHistory);
+
+    useEffect(() => {
+        chatHistoryRef.current = chatHistory;
+    }, [chatHistory]);
 
     const sendMessage = async (
         message?: string,
@@ -128,12 +135,30 @@ export function SearchWindow() {
             });
         };
 
+        const updateChatHistory = () => {
+            setChatHistory((prevChatHistory) => {
+                const newChatHistory: [string, string][] = [
+                    ...prevChatHistory,
+                    ['user', messageValue],
+                    ['ai', accumulatedMessage],
+                ];
+                return newChatHistory.slice(-6);
+            });
+        };
+
         try {
             if (messageIdToUpdate) {
                 resetMessages(messageIdToUpdate);
             }
             const model = configStore.getState().model;
             const source = configStore.getState().source;
+
+            let chatHistoryString = formatChatHistoryAsString(
+                chatHistoryRef.current,
+            );
+
+            // TODO: only send chat history if user is pro
+            // const isPro = checkIsPro(user);
 
             const url = `/api/ask`;
             await fetchEventSource(url, {
@@ -148,6 +173,7 @@ export function SearchWindow() {
                     mode: mode,
                     model: model,
                     source: source,
+                    history: chatHistoryString,
                 }),
                 openWhenHidden: true,
                 onerror(err) {
@@ -165,10 +191,7 @@ export function SearchWindow() {
                     }
                 },
                 onclose() {
-                    // setChatHistory((prevChatHistory) => [
-                    //     ...prevChatHistory,
-                    //     { human: messageValue, ai: accumulatedMessage },
-                    // ]);
+                    updateChatHistory();
                     setIsLoading(false);
                     // console.log('related ', accumulatedRelated);
                     // console.log('message ', accumulatedMessage);
@@ -242,7 +265,7 @@ export function SearchWindow() {
 
     return (
         <div className="flex max-h-full flex-col items-center rounded">
-            <div className="my-10 flex w-full md:w-3/4 flex-col-reverse overflow-auto p-4 md:p-10">
+            <div className="my-10 flex w-full md:w-3/4 flex-col-reverse overflow-auto p-6 md:p-10">
                 <SearchBar handleSearch={stableHandleSearch} />
                 {messages.length > 0 ? (
                     [...messages]

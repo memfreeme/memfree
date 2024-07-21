@@ -10,6 +10,7 @@ function generateHash(key: string): string {
 }
 
 export async function setCache(key: string, value: CachedResult) {
+    console.log('setCache:', key);
     const hashKey = CACHE_KEY + generateHash(key);
     try {
         await redisDB.set(hashKey, JSON.stringify(value), { ex: 3600 * 7 });
@@ -19,6 +20,7 @@ export async function setCache(key: string, value: CachedResult) {
 }
 
 export async function getCache(key: string): Promise<CachedResult | null> {
+    console.log('getCache:', key);
     const hashKey = CACHE_KEY + generateHash(key);
     try {
         const cache = (await redisDB.get(hashKey)) as CachedResult;
