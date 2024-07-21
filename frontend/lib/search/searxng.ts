@@ -47,6 +47,8 @@ export class SearxngSearch implements SearchSource {
         // console.log('SearxngSearch:', url);
 
         let anySources: AnySource[] = [];
+        let texts: TextSource[] = [];
+        let images: ImageSource[] = [];
         try {
             const res = await fetchWithTimeout(url, { timeout: 10000 });
 
@@ -68,9 +70,6 @@ export class SearxngSearch implements SearchSource {
                     ...(c.img_src && { image: c.img_src }),
                 })),
             );
-
-            let texts: TextSource[] = [];
-            let images: ImageSource[] = [];
 
             anySources.forEach((source) => {
                 if (source.content !== undefined) {
@@ -94,7 +93,7 @@ export class SearxngSearch implements SearchSource {
             return { texts, images };
         } catch (error: any) {
             console.error('Failed to SearxngSearch', error);
-            throw new Error('Failed to SearxngSearch');
+            return { texts, images };
         }
     }
 }

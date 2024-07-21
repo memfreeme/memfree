@@ -17,6 +17,8 @@ export class SerperSearch implements SearchSource {
         const url = `${serperUrl}search`;
         // console.log('searchSerper:', url, query);
 
+        let texts: TextSource[] = [];
+        let images: ImageSource[] = [];
         let jsonResponse;
         try {
             const response = await fetchWithTimeout(url, {
@@ -37,9 +39,6 @@ export class SerperSearch implements SearchSource {
             console.error('Error making the request:', error);
             throw new Error('Failed to make the request)');
         }
-
-        let texts: TextSource[] = [];
-        let images: ImageSource[] = [];
 
         try {
             if (jsonResponse.knowledgeGraph) {
@@ -107,7 +106,7 @@ export class SerperSearch implements SearchSource {
                 'An error occurred while processing the search results.',
                 error,
             );
-            throw new Error('Failed to process search results.');
+            return { texts, images };
         }
     }
 }
