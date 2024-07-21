@@ -52,7 +52,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
 
     return (
         <section className="relatve my-5">
-            <div className="mx-auto w-full max-w-2xl px-10 text-center">
+            <div className="mx-auto w-full max-w-2xl px-2 md:px-10 text-center">
                 <div className="flex items-center relative mx-auto w-full max-w-2xl">
                     <TextareaAutosize
                         value={content}
@@ -113,7 +113,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                     </div>
                 </div>
 
-                <div className="mt-2 flex justify-between">
+                <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-2">
                     <ModelSelection />
                     <SourceSelection />
                 </div>

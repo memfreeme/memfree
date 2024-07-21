@@ -212,9 +212,12 @@ export function SearchWindow() {
         await sendMessage(question);
     }, []);
 
-    const deepIntoQuestion = useCallback(async (question: string, msgId: string) => {
-        await sendMessage(question, msgId, 'deep');
-    }, []);
+    const deepIntoQuestion = useCallback(
+        async (question: string, msgId: string) => {
+            await sendMessage(question, msgId, 'deep');
+        },
+        [],
+    );
 
     const scrollTo = (ref) => {
         ref.current?.scrollIntoView({ behavior: 'smooth' });
@@ -239,7 +242,7 @@ export function SearchWindow() {
 
     return (
         <div className="flex max-h-full flex-col items-center rounded">
-            <div className="my-10 flex w-3/4 flex-col-reverse overflow-auto p-10">
+            <div className="my-10 flex w-full md:w-3/4 flex-col-reverse overflow-auto p-4 md:p-10">
                 <SearchBar handleSearch={stableHandleSearch} />
                 {messages.length > 0 ? (
                     [...messages]
