@@ -30,12 +30,12 @@ export interface SearchSource {
 export const TEXT_LIMIT = 8;
 export const IMAGE_LIMIT = 8;
 
-let searxngHost = '';
+export let searxngHost = '';
 // Let open source users could one click deploy
-if (process.env.MEMFREE_HOST) {
-    searxngHost = process.env.MEMFREE_HOST;
-} else if (process.env.SEARXNG_HOST) {
+if (process.env.SEARXNG_HOST) {
     searxngHost = process.env.SEARXNG_HOST;
+} else if (process.env.MEMFREE_HOST) {
+    searxngHost = process.env.MEMFREE_HOST;
 } else {
     throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
 }

@@ -8,19 +8,10 @@ import {
     AnySource,
     TEXT_LIMIT,
     IMAGE_LIMIT,
+    searxngHost,
 } from './search';
 import { ImageSource, TextSource } from '../types';
 import { logError } from '../log';
-
-let searxngHost = '';
-// Let open source users could one click deploy
-if (process.env.MEMFREE_HOST) {
-    searxngHost = process.env.MEMFREE_HOST;
-} else if (process.env.SEARXNG_HOST) {
-    searxngHost = process.env.SEARXNG_HOST;
-} else {
-    throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
-}
 
 export class SearxngSearch implements SearchSource {
     private options: SearchOptions;
@@ -45,13 +36,15 @@ export class SearxngSearch implements SearchSource {
 
     async search(query: string): Promise<SearchResult> {
         const url = this.formatUrl(query, this.options);
-        // console.log('SearxngSearch:', url);
+        //console.log('SearxngSearch:', url);
 
         let anySources: AnySource[] = [];
         let texts: TextSource[] = [];
         let images: ImageSource[] = [];
         try {
+            console.time('SearxngSearch');
             const res = await fetchWithTimeout(url, { timeout: 10000 });
+            console.timeEnd('SearxngSearch');
             if (!res.ok) {
                 console.error(
                     `HTTP error! status: ${res.status} during fetching "${url}"`,

@@ -180,6 +180,4 @@ local_cache
 
 bun.lockb
 
-*.lance
-
 fly.toml
