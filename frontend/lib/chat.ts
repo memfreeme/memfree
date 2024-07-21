@@ -1,5 +1,8 @@
+import 'server-only';
+
 import OpenAI from 'openai';
 import type { StreamHandler } from './types';
+import { logError } from './log';
 
 const apiKey = process.env.OPENAI_API_KEY;
 if (!apiKey) {
@@ -45,10 +48,6 @@ export async function chatStream(
             }
         }
     } catch (error) {
-        console.error(
-            'Error occurred while fetching completion from OpenAI:',
-            error,
-        );
-        throw new Error('Failed to fetch completion from OpenAI API');
+        logError(error, 'llm');
     }
 }

@@ -2,6 +2,7 @@ import 'server-only';
 
 import { TextSource } from '../types';
 import { SearchResult, SearchSource } from './search';
+import { log, logError } from '../log';
 
 const memfreeHost = process.env.MEMFREE_HOST;
 let vectorHost = '';
@@ -55,7 +56,7 @@ export class VectorSearch implements SearchSource {
 
             return { texts, images: [] };
         } catch (error) {
-            console.error('fetch failed:', error);
+            logError(error, 'search-vector');
             return { texts: [], images: [] };
         }
     }

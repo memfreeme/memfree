@@ -26,6 +26,7 @@ import {
     IMAGE_LIMIT,
 } from '@/lib/search/search';
 import { GPT_4o, GPT_4o_MIMI } from '@/lib/model';
+import { logError } from '@/lib/log';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -101,7 +102,7 @@ export async function POST(req: NextRequest) {
             },
         });
     } catch (error) {
-        console.error('Request failed:', error);
+        logError(error, 'search');
         return NextResponse.json({ error: `${error}` }, { status: 500 });
     }
 }
@@ -270,11 +271,8 @@ async function getLLMAnswer(
             model,
         );
     } catch (err: any) {
-        console.error('[LLM Error]:', err);
-        const msg = `[Oops~ Some errors seem to have occurred]: ${
-            err?.message || 'Please check the console'
-        }`;
-        onStream?.(msg, true);
+        logError(err, 'llm');
+        onStream?.(`Some errors seem to have occurred, plase retry`, true);
     }
 }
 
@@ -293,7 +291,7 @@ async function getRelatedQuestions(
         );
         await chatStream(messages, onStream, GPT_4o_MIMI);
     } catch (err) {
-        console.error('[LLM Error]:', err);
+        logError(err, 'llm');
         return [];
     }
 }

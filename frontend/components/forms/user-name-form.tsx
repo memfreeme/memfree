@@ -1,11 +1,9 @@
 'use client';
 
 import { useTransition } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { cn } from '@/lib/utils';
-import { userNameSchema } from '@/lib/validations/user';
 import { buttonVariants } from '@/components/ui/button';
 import {
     Card,
@@ -36,7 +34,6 @@ export function UserNameForm({ user }: UserNameFormProps) {
         register,
         formState: { errors },
     } = useForm<FormData>({
-        resolver: zodResolver(userNameSchema),
         defaultValues: {
             name: user?.name || '',
         },

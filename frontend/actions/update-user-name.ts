@@ -2,7 +2,6 @@
 
 import { auth } from '@/auth';
 import { getUserById, updateUser } from '@/lib/db';
-import { userNameSchema } from '@/lib/validations/user';
 import { revalidatePath } from 'next/cache';
 
 export type FormData = {
@@ -17,8 +16,7 @@ export async function updateUserName(userId: string, data: FormData) {
             throw new Error('Unauthorized');
         }
 
-        const { name } = userNameSchema.parse(data);
-
+        const { name } = data;
         const user = await getUserById(userId);
         if (!user) {
             throw new Error('User not found');

@@ -9,6 +9,7 @@ import {
     TEXT_LIMIT,
 } from './search';
 import { ImageSource, TextSource } from '../types';
+import { log, logError } from '../log';
 
 const serperUrl = 'https://google.serper.dev/';
 
@@ -35,12 +36,6 @@ export class SerperSearch implements SearchSource {
             }
 
             jsonResponse = await response.json();
-        } catch (error) {
-            console.error('Error making the request:', error);
-            throw new Error('Failed to make the request)');
-        }
-
-        try {
             if (jsonResponse.knowledgeGraph) {
                 const url =
                     jsonResponse.knowledgeGraph.descriptionLink ||
@@ -102,10 +97,7 @@ export class SerperSearch implements SearchSource {
             images = images.slice(0, IMAGE_LIMIT);
             return { texts, images };
         } catch (error) {
-            console.error(
-                'An error occurred while processing the search results.',
-                error,
-            );
+            logError(error, 'search-serper');
             return { texts, images };
         }
     }

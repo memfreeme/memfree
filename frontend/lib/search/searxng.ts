@@ -10,6 +10,7 @@ import {
     IMAGE_LIMIT,
 } from './search';
 import { ImageSource, TextSource } from '../types';
+import { logError } from '../log';
 
 let searxngHost = '';
 // Let open source users could one click deploy
@@ -51,7 +52,6 @@ export class SearxngSearch implements SearchSource {
         let images: ImageSource[] = [];
         try {
             const res = await fetchWithTimeout(url, { timeout: 10000 });
-
             if (!res.ok) {
                 console.error(
                     `HTTP error! status: ${res.status} during fetching "${url}"`,
@@ -92,7 +92,7 @@ export class SearxngSearch implements SearchSource {
             images = images.slice(0, IMAGE_LIMIT);
             return { texts, images };
         } catch (error: any) {
-            console.error('Failed to SearxngSearch', error);
+            logError(error, 'search-searxng');
             return { texts, images };
         }
     }
