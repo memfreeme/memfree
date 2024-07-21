@@ -11,12 +11,15 @@ import Link from 'next/link';
 import { MainNavItem } from '@/types';
 import { Icons } from '../shared/icons';
 import { siteConfig } from '@/config/site';
+import { User } from 'next-auth';
+import { UserAccountNav } from './user-account-nav';
 
 interface NavProps {
     items?: MainNavItem[];
+    user: Pick<User, 'name' | 'image' | 'email'>;
 }
 
-export function MarketingMenu({ items }: NavProps) {
+export function MarketingMenu({ items, user }: NavProps) {
     const [open, setOpen] = React.useState(false);
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -46,8 +49,8 @@ export function MarketingMenu({ items }: NavProps) {
                         </span>
                     </Link>
                 </SheetHeader>
-                <div className="flex flex-1 flex-col justify-between gap-4">
-                    <ul className="grid gap-1">
+                <div className="flex flex-1 flex-col">
+                    <ul className="grid">
                         {items.map(({ href, title }) => {
                             return (
                                 <li
@@ -62,6 +65,13 @@ export function MarketingMenu({ items }: NavProps) {
                         })}
                     </ul>
                 </div>
+                {user ? (
+                    <UserAccountNav user={user} />
+                ) : (
+                    <Button className="rounded-full w-1/2">
+                        <Link href="login">Sign In</Link>
+                    </Button>
+                )}
             </SheetContent>
         </Sheet>
     );

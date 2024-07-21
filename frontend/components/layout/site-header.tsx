@@ -67,7 +67,7 @@ export default function SiteHeader({
                 })}
             </div>
             <div className="block md:hidden ml-auto mr-4">
-                <MarketingMenu items={items} />
+                <MarketingMenu items={items} user={user} />
             </div>
             <div className="hidden md:flex items-center  gap-3 md:col-span-1 pr-4 mr-0">
                 {user ? (

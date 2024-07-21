@@ -12,7 +12,7 @@ export const publicRoutes = [
 
 const protectedRoutes = ['/dashboard'];
 
-export const DEFAULT_REDIRECT = '/';
+export const DEFAULT_REDIRECT = '/login';
 
 export default async function middleware(request: NextRequest) {
     const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard');

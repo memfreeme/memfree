@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { siteConfig } from '@/config/site';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 
 export const SignInModal = () => {
     const signInModal = useSigninModal();
@@ -19,15 +20,17 @@ export const SignInModal = () => {
             setShowModal={signInModal.onClose}
         >
             <div className="w-full">
-                <div className="flex flex-col items-center justify-center space-y-3 border-b bg-background px-4 py-6 pt-8 text-center md:px-16">
+                <div className="flex flex-col items-center justify-center space-y-3 bg-background py-6 text-center md:px-16">
                     <a href={siteConfig.url}>
                         <Icons.brain className="size-10 text-primary" />
                     </a>
                     <h3 className="font-urban text-2xl font-bold">MemFree</h3>
-                    <p className="text-md">Sign in to unlock more features</p>
+                    <p className="text-md font-medium">
+                        Sign in to unlock more features
+                    </p>
                 </div>
 
-                <div className="flex flex-col space-y-4 bg-secondary/50 px-4 py-8 md:px-16">
+                <div className="flex flex-col space-y-4 p-4">
                     <Button
                         variant="outline"
                         disabled={signInClicked}
@@ -64,6 +67,25 @@ export const SignInModal = () => {
                         Sign In with Github
                     </Button>
                 </div>
+
+                <p className="p-4 text-center text-sm text-muted-foreground">
+                    By clicking continue, you agree to our{' '}
+                    <Link
+                        href="/terms"
+                        target="_blank"
+                        className="hover:text-brand underline underline-offset-4"
+                    >
+                        Terms of Service
+                    </Link>{' '}
+                    and{' '}
+                    <Link
+                        href="/privacy"
+                        target="_blank"
+                        className="hover:text-brand underline underline-offset-4"
+                    >
+                        Privacy Policy
+                    </Link>
+                </p>
             </div>
         </Modal>
     );
