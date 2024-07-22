@@ -1,0 +1,44 @@
+---
+title: One Command Deploy Searxng on Fly.io
+description: How to deploy Searxng on Fly.io
+---
+
+## How to deploy Searxng on Zeabur
+
+You could refer to [One Click Deploy You Own Hybrid AI Search Engine](/docs/one-click-deploy-ai-search)
+
+## How to deploy Searxng on Fly.io
+
+<Steps>
+
+### Get Fly.io Account (Optional)
+
+-   Go to [Fly.io](https://fly.io) and create an account.
+
+### Install Flyctl (Optional)
+
+-   Install `flyctl` by following the instructions [here](https://fly.io/docs/flyctl/install/).
+
+### Clone Searxng Config From GitHub
+
+```js
+git clone https://github.com/memfreeme/memfree.git
+```
+
+### Deploy Searxng
+
+```js
+cd searxng
+
+fly deploy
+```
+
+</Steps>
+
+## The Advantages of deploying Searxng on Fly.io
+
+1. **Ease of Deployment**：Deploying Searxng on Fly.io is as simple as running a single command.
+2. **Global Edge Computing**：With Fly.io's extensive global network of data centers, you can deploy Searxng in multiple regions around the world. This ensures that your instance is always close to your users, providing faster response times regardless of their location.
+3. **Auto Scaling**：Fly.io can automatically scale your Searxng instance based on the traffic. This means that when traffic is low, you don't have to pay. When traffic is high, fly io can start multiple nodes within 1 second to cope with high concurrency.
+4. **High Availability**：Fly.io can automatically migrate your Searxng instance to another node when the current node is down, ensuring that your Searxng instance is always available.
+5. **Log and Metrics**：Fly.io provides detailed logs and metrics for your Searxng instance, which can help you monitor the status of your Searxng instance in real time.

@@ -1,13 +1,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.memfree.me/</loc>
-    <lastmod>2024-07-15</lastmod>
+    <lastmod>2024-07-22</lastmod>
     <changefreq>daily</changefreq>
   </url>
   <url>
     <loc>https://www.memfree.me/docs</loc>
-    <lastmod>2024-07-20</lastmod>
+    <lastmod>2024-07-22</lastmod>
     <changefreq>daily</changefreq>
+  </url>
+    <url>
+    <loc>https://www.memfree.me/docs/deploy-searxng-fly-io</loc>
+    <lastmod>2024-07-22</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
   </url>
     <url>
     <loc>https://www.memfree.me/docs/one-click-deploy-ai-search</loc>
@@ -41,7 +47,7 @@
   </url>
   <url>
     <loc>https://www.memfree.me/changelog</loc>
-    <lastmod>2024-07-10</lastmod>
+    <lastmod>2024-07-22</lastmod>
     <changefreq>daily</changefreq>
   </url>
     <url>

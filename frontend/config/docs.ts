@@ -48,6 +48,10 @@ export const docsConfig: DocsConfig = {
                     title: 'One Click Deployment',
                     href: '/docs/one-click-deploy-ai-search',
                 },
+                {
+                    title: 'Deploy Searxng',
+                    href: '/docs/deploy-searxng-fly-io',
+                },
             ],
         },
     ],
