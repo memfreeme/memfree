@@ -230,7 +230,7 @@ export default function Index() {
   return (
     <div className="container p-4 bg-white rounded shadow-xl">
       {userInfo && (
-        <div className="user-info mb-4 text-lg font-bold">
+        <div className="flex justify-center mb-2 text-md font-medium">
           Welcome {userInfo.name}
         </div>
       )}
@@ -260,7 +260,7 @@ export default function Index() {
       </div>
 
       {progressPercentage > 0 && (
-        <div className="progress-bar w-full h-10 bg-gray-300 mt-4 rounded relative overflow-hidden flex items-center justify-center">
+        <div className="progress-bar w-full h-8 bg-gray-300 mt-4 rounded relative overflow-hidden flex items-center justify-center">
           <div
             className="progress bg-indigo-500 absolute top-0 left-0 h-full"
             style={{
@@ -273,7 +273,7 @@ export default function Index() {
       )}
 
       {totalUrlsIndexed > 0 && (
-        <div className="flex justify-center  items-center result-info text-indigo-500 mt-4 text-sm">
+        <div className="flex justify-center items-center result-info text-indigo-500 mt-4 text-sm font-medium">
           {`${totalUrlsIndexed} Bookmark Indexed`}
         </div>
       )}
@@ -292,7 +292,7 @@ export default function Index() {
           />
           <button
             id="syncSelectedBookmarksButton"
-            className="bg-indigo-500 text-white px-4 py-2 mt-4 rounded hover:bg-indigo-600 transition-colors"
+            className="bg-indigo-500 text-white w-full px-4 py-2 mt-4 rounded hover:bg-indigo-600 transition-colors"
             onClick={handleSyncSelectedBookmarks}
           >
             Index Selected Bookmarks

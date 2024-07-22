@@ -72,13 +72,6 @@ async function addVectors(
 
   const embeddings = await embedBatch(texts);
 
-  console.log(
-    "embeddings length",
-    embeddings.length,
-    texts.length,
-    documents.length
-  );
-
   const data: Array<Record<string, unknown>> = [];
   for (let i = 0; i < documents.length; i += 1) {
     const record = {

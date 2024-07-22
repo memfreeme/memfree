@@ -93,7 +93,6 @@ export async function POST(req: Request) {
         });
 
         const results = await Promise.all(requests);
-
         const successfulUrls = results.filter((r) => !r.error);
         const failedUrls = results.filter((r) => r.error);
 

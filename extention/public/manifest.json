@@ -2,15 +2,15 @@
   "manifest_version": 3,
   "name": "MemFree",
   "short_name": "MemFree",
-  "version": "1.0.2",
-  "description": "Hybrid AI search and ask",
+  "version": "1.0.3",
+  "description": "MemFree - Hybrid AI search engine",
   "icons": {
     "16": "/icons/icon.png",
     "32": "/icons/icon.png",
     "48": "/icons/icon.png",
     "192": "/icons/icon.png"
   },
-  "permissions": ["bookmarks", "storage", "notifications"],
+  "permissions": ["bookmarks", "storage"],
   "background": {
     "service_worker": "background.js",
     "type": "module"

@@ -60,62 +60,48 @@ export function splitArrayIntoChunks(array, chunkSize) {
   return result;
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export async function indexUrls(chunk, userId) {
   const urls = chunk.map((item) => item.url);
   const jsonString = JSON.stringify({ urls, userId });
   console.log("Sending bookmarks:", jsonString);
 
-  try {
-    const response = await fetch("https://www.memfree.me/api/index", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: jsonString,
-    });
+  const maxRetries = 3;
+  let attempt = 0;
+  let sleepTime = 1000;
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+  while (attempt < maxRetries) {
+    try {
+      const response = await fetch("https://www.memfree.me/api/index2", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: jsonString,
+      });
+
+      if (!response.ok) {
+        console.error("HTTP error! status:", response.status);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("index response:", data);
+      return true;
+    } catch (error) {
+      console.error("Error sending bookmarks:", error);
+      attempt++;
+      if (attempt < maxRetries) {
+        console.log(`Retrying in ${sleepTime / 1000} seconds...`);
+        await sleep(sleepTime);
+        sleepTime *= 2;
+      } else {
+        console.error("Max retries reached. Failed to send bookmarks.");
+        return false;
+      }
     }
-
-    const data = await response.json();
-    console.log("Task ID received:", data.taskId);
-    return data.taskId;
-  } catch (error) {
-    console.error("Error sending bookmarks:", error);
-    throw error;
   }
-}
 
-export async function checkTaskStatus(taskId) {
-  try {
-    const response = await fetch("https://www.memfree.me/api/status", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ taskId }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data.status;
-  } catch (error) {
-    console.error("Error checking task status:", error);
-    throw error;
-  }
-}
-
-export function notifyUser(status, reason = "") {
-  const options = {
-    type: "basic",
-    iconUrl: "icons/icon.png",
-    title: "Bookmark Processing Status",
-    message:
-      status === "success"
-        ? "Bookmarks indexed successfully!"
-        : `Failed to process bookmarks: ${reason}`,
-  };
-  chrome.notifications.create(options);
+  return false;
 }
