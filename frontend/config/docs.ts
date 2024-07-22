@@ -52,6 +52,10 @@ export const docsConfig: DocsConfig = {
                     title: 'Deploy Searxng',
                     href: '/docs/deploy-searxng-fly-io',
                 },
+                {
+                    title: 'Deploy MemFree On Fly.io',
+                    href: '/docs/deploy-memfree-fly-io',
+                },
             ],
         },
     ],
