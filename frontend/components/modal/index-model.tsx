@@ -2,7 +2,7 @@
 
 import { Modal } from '@/components/shared/modal';
 import { Textarea } from '@/components/ui/textarea';
-import { useUploadModal } from '@/hooks/use-upload-modal';
+import { useIndexModal } from '@/hooks/use-index-modal';
 import { useState } from 'react';
 import { LoadingButton } from '../ui/loading-button';
 import { useUser } from '@/hooks/use-user';
@@ -11,16 +11,23 @@ import { useToast } from '../ui/use-toast';
 import { buttonVariants } from '../ui/button';
 import Link from 'next/link';
 
-export const UploadModal = () => {
+export const IndexModal = () => {
     const [url, setUrl] = useState('');
-    const [islLoading, setLoading] = useState(false);
-    const uploadModal = useUploadModal();
+    const [isLoading, setLoading] = useState(false);
+    const uploadModal = useIndexModal();
 
     const user = useUser();
     const { toast } = useToast();
 
     const handleIndex = async () => {
         try {
+            setLoading(true);
+            if (!url.trim()) {
+                toast({
+                    description: 'Please enter the URL of the web page.',
+                });
+                return;
+            }
             const urls = url
                 .split('\n')
                 .map((u) => u.trim())
@@ -43,8 +50,8 @@ export const UploadModal = () => {
                 });
                 return;
             }
-            const indexUrl = `/api/index`;
-            setLoading(true);
+            const indexUrl = `/api/index2`;
+
             const resp = await fetch(indexUrl, {
                 method: 'POST',
                 headers: {
@@ -55,32 +62,67 @@ export const UploadModal = () => {
                     userId: user.id,
                 }),
             });
-            setLoading(false);
 
             if (resp.ok) {
                 const res = await resp.json();
-                console.log('index result: ', res);
-                setUrl('');
+
+                const { failedUrls } = res;
+                if (failedUrls.length === 0) {
+                    setUrl('');
+                    toast({
+                        description: (
+                            <>
+                                <div className="font-bold pb-2">
+                                    All URLs were successfully indexed!, you
+                                    could try to search them now.
+                                </div>
+                            </>
+                        ),
+                    });
+                } else {
+                    setUrl(failedUrls.map((f) => f.url).join('\n'));
+                    toast({
+                        description: (
+                            <>
+                                <div className="font-bold pb-2">
+                                    Some URLs failed to index.
+                                </div>
+                                <div>The following URLs failed:</div>
+                                <div className="font-bold pt-2">
+                                    {failedUrls.map((f) => f.url).join(', ')}
+                                </div>
+                                <div>You can try indexing them again.</div>
+                            </>
+                        ),
+                    });
+                }
+            } else {
+                const error = await resp.json();
                 toast({
                     description: (
                         <>
                             <div className="font-bold pb-2">
-                                It takes several minutes to index the entire
-                                content of a web page.
+                                Indexing failed, please try again.
                             </div>
-                            <div>You can check the indexing status at</div>
-                            <div className="font-bold pt-2">
-                                https://www.memfree.me/dashboard
-                            </div>
+                            <div>{error.error}</div>
                         </>
                     ),
                 });
             }
+            setLoading(false);
             uploadModal.onClose();
         } catch (e) {
             setLoading(false);
             uploadModal.onClose();
-            console.log('search failed: ', e);
+            console.log('index failed: ', e);
+            toast({
+                description: (
+                    <div className="font-bold pb-2">
+                        Indexing failed due to an unexpected error. please try
+                        again.
+                    </div>
+                ),
+            });
         }
     };
 
@@ -90,9 +132,14 @@ export const UploadModal = () => {
             setShowModal={uploadModal.onClose}
         >
             <div className="grid w-full gap-10 p-10">
-                <h3 className="font-semibold text-center">
-                    Enhance your search results with AI indexing
-                </h3>
+                <div>
+                    <h3 className="font-semibold text-center">
+                        Enhance your search results with AI indexing
+                    </h3>
+                    <p className="text-center text-xs pt-2 text-gray-500">
+                        It takes about a few seconds to index a web page.
+                    </p>
+                </div>
                 <Textarea
                     placeholder="Please enter the URL of the web pages you value. Memfree will let you search the content of these pages by AI."
                     rows={3}
@@ -102,7 +149,7 @@ export const UploadModal = () => {
 
                 <LoadingButton
                     className="rounded-full"
-                    loading={islLoading}
+                    loading={isLoading}
                     onClick={handleIndex}
                 >
                     Index Web Page

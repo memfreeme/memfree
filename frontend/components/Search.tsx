@@ -4,7 +4,7 @@ import React, { KeyboardEvent, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { useUser } from '@/hooks/use-user';
 import { Link, SendHorizontal } from 'lucide-react';
-import { useUploadModal } from '@/hooks/use-upload-modal';
+import { useIndexModal } from '@/hooks/use-index-modal';
 import {
     Tooltip,
     TooltipContent,
@@ -23,7 +23,7 @@ interface Props {
 const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const [content, setContent] = useState<string>('');
     const signInModal = useSigninModal();
-    const uploadModal = useUploadModal();
+    const uploadModal = useIndexModal();
     const user = useUser();
 
     const handleInputChange = (value) => {

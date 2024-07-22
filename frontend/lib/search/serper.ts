@@ -32,7 +32,10 @@ export class SerperSearch implements SearchSource {
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorDetails = await response.text();
+                throw new Error(
+                    `Fetch failed with status code: ${response.status} and Details: ${errorDetails}`,
+                );
             }
 
             jsonResponse = await response.json();

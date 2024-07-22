@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 
-interface useUploadModalStore {
+interface useIndexModalStore {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
 }
 
-export const useUploadModal = create<useUploadModalStore>((set) => ({
+export const useIndexModal = create<useIndexModalStore>((set) => ({
     isOpen: false,
     onOpen: () => set({ isOpen: true }),
     onClose: () => set({ isOpen: false }),

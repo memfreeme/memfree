@@ -46,11 +46,12 @@ export class SearxngSearch implements SearchSource {
             const res = await fetchWithTimeout(url, { timeout: 10000 });
             console.timeEnd('SearxngSearch');
             if (!res.ok) {
+                const errorDetails = await res.text();
                 console.error(
-                    `HTTP error! status: ${res.status} during fetching "${url}"`,
+                    `HTTP error! status: ${res.status} Details: ${errorDetails}`,
                 );
                 throw new Error(
-                    `Fetch failed with status code: ${res.status} and message: ${res.statusText}`,
+                    `Fetch failed with status code: ${res.status} and Details: ${errorDetails}`,
                 );
             }
 

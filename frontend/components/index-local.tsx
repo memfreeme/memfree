@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { useUploadModal } from '@/hooks/use-upload-modal';
+import { useIndexModal } from '@/hooks/use-index-modal';
 import { useUser } from '@/hooks/use-user';
 
-export function UploadLocal() {
-    const uploadModal = useUploadModal();
+export function IndexLocal() {
+    const uploadModal = useIndexModal();
     const signInModal = useSigninModal();
 
     const user = useUser();
