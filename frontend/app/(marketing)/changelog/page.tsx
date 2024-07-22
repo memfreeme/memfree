@@ -34,7 +34,7 @@ export default async function ChangeLog() {
                 {items.map((item) => (
                     <TimelineItem
                         key={item._id}
-                        className="w-3/4 md:w-full max-w-sm md:max-w-2xl border border-primary rounded-xl shadow-xl m-10 py-6"
+                        className="w-3/4 md:w-full md:max-w-2xl border border-primary rounded-xl shadow-xl m-10 py-6"
                     >
                         <TimelineHeader className="pb-5">
                             <TimelineTime>{formatDate(item.date)}</TimelineTime>
