@@ -111,11 +111,7 @@ const TimelineContent = React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-    <div
-        ref={ref}
-        className={cn('flex flex-col items-start ', className)}
-        {...props}
-    />
+    <div ref={ref} className={cn('flex flex-col', className)} {...props} />
 ));
 TimelineContent.displayName = 'TimelineContent';
 
