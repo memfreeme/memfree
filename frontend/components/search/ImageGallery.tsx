@@ -7,6 +7,7 @@ type ImageGalleryProps = {
 
 const ImageGallery: React.FC<ImageGalleryProps> = memo(({ initialImages }) => {
     const [images, setImages] = useState<ImageSource[]>([]);
+    const loadedImageUrls = useMemo(() => new Set<string>(), []);
 
     const loadImage = (image: ImageSource): Promise<ImageSource | null> => {
         return new Promise((resolve) => {
@@ -23,10 +24,15 @@ const ImageGallery: React.FC<ImageGalleryProps> = memo(({ initialImages }) => {
     };
 
     async function validateImages(imageList: ImageSource[]) {
-        const validImages = await Promise.all(imageList.map(loadImage));
-        setImages(
-            validImages.filter((image) => image !== null) as ImageSource[],
-        );
+        const imagePromises = imageList.map(loadImage);
+
+        imagePromises.forEach(async (imagePromise) => {
+            const result = await imagePromise;
+            if (result !== null && !loadedImageUrls.has(result.url)) {
+                loadedImageUrls.add(result.url);
+                setImages((prevImages) => [...prevImages, result]);
+            }
+        });
     }
 
     const memoizedInitialImages = useMemo(() => initialImages, [initialImages]);
