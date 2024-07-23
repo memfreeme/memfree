@@ -11,7 +11,7 @@ import { Box } from 'lucide-react';
 import { useModelStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { useUser } from '@/hooks/use-user';
-import { GPT_4o, GPT_4o_MIMI } from '@/lib/model';
+import { Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI } from '@/lib/model';
 
 type Model = {
     name: string;
@@ -29,6 +29,11 @@ export const modelMap: Record<string, Model> = {
         name: 'GPT-4o',
         description: 'Powerful',
         value: GPT_4o,
+    },
+    [Claude_35_Sonnet]: {
+        name: 'Claude-3.5-Sonnet',
+        description: 'Expert in Coding',
+        value: Claude_35_Sonnet,
     },
 };
 

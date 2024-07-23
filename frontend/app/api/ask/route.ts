@@ -1,6 +1,5 @@
 import { auth } from '@/auth';
 import { getCache, setCache } from '@/lib/cache';
-import { Message, chatStream } from '@/lib/chat';
 import {
     AcademicPrompet,
     DeepQueryPrompt,
@@ -9,7 +8,6 @@ import {
 } from '@/lib/prompt';
 import {
     AskMode,
-    StreamHandler,
     CachedResult,
     TextSource,
     ImageSource,
@@ -25,8 +23,10 @@ import {
     getVectorSearch,
     IMAGE_LIMIT,
 } from '@/lib/search/search';
-import { GPT_4o, GPT_4o_MIMI } from '@/lib/model';
+import { GPT_4o_MIMI, validModel } from '@/lib/model';
 import { logError } from '@/lib/log';
+import { getLLMChat, Message, StreamHandler } from '@/lib/llm/llm';
+import { openaiChat } from '@/lib/llm/openai';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -34,18 +34,6 @@ const ratelimit = new Ratelimit({
     prefix: RATE_LIMIT_KEY,
     analytics: false,
 });
-
-const formatModel = (model: string) => {
-    // For compatibility with the old model
-    switch (model) {
-        case GPT_4o_MIMI:
-            return GPT_4o_MIMI;
-        case GPT_4o:
-            return GPT_4o;
-        default:
-            return GPT_4o_MIMI;
-    }
-};
 
 export const maxDuration = 60;
 
@@ -71,6 +59,15 @@ export async function POST(req: NextRequest) {
     }
     const { query, useCache, mode, model, source } = await req.json();
 
+    if (!validModel(model)) {
+        return NextResponse.json(
+            {
+                error: 'Please choose a valid model',
+            },
+            { status: 400 },
+        );
+    }
+
     try {
         const readableStream = new ReadableStream({
             async start(controller) {
@@ -87,7 +84,7 @@ export async function POST(req: NextRequest) {
                         }
                     },
                     mode,
-                    formatModel(model),
+                    model,
                     source,
                 );
             },
@@ -119,7 +116,7 @@ async function ask(
     let cachedResult: CachedResult | null = null;
     if (useCache) {
         query = query.trim();
-        let cachedResult: CachedResult = await getCache(query + source);
+        let cachedResult: CachedResult = await getCache(model + source + query);
         if (cachedResult) {
             const { webs, images, answer, related } = cachedResult;
             await streamResponse(
@@ -232,7 +229,7 @@ async function ask(
         });
     }
 
-    setCache(query + source, cachedResult).catch((error) => {
+    setCache(model + source + query, cachedResult).catch((error) => {
         console.error(`Failed to set cache for query ${query}:`, error);
     });
     onStream?.(null, true);
@@ -263,7 +260,7 @@ async function getLLMAnswer(
             contexts,
             'answer',
         );
-        await chatStream(
+        await getLLMChat(model).chatStream(
             messages,
             (msg: string | null, done: boolean) => {
                 onStream?.(msg, done);
@@ -289,7 +286,7 @@ async function getRelatedQuestions(
             contexts,
             'related',
         );
-        await chatStream(messages, onStream, GPT_4o_MIMI);
+        await openaiChat.chatStream(messages, onStream, GPT_4o_MIMI);
     } catch (err) {
         logError(err, 'llm');
         return [];

@@ -45,8 +45,4 @@ export interface ScoredURL {
     score: number;
 }
 
-export interface StreamHandler {
-    (message: string | null, done: boolean): void;
-}
-
 export type AskMode = 'simple' | 'deep' | 'research';
