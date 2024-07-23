@@ -25,7 +25,7 @@ import {
 } from '@/lib/search/search';
 import { GPT_4o_MIMI, validModel } from '@/lib/model';
 import { logError } from '@/lib/log';
-import { getLLMChat, Message, StreamHandler } from '@/lib/llm/llm';
+import { getLLMChat, StreamHandler } from '@/lib/llm/llm';
 import { openaiChat } from '@/lib/llm/openai';
 
 const ratelimit = new Ratelimit({
@@ -34,8 +34,6 @@ const ratelimit = new Ratelimit({
     prefix: RATE_LIMIT_KEY,
     analytics: false,
 });
-
-export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
     const session = await auth();

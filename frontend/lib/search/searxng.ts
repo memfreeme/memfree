@@ -42,9 +42,7 @@ export class SearxngSearch implements SearchSource {
         let texts: TextSource[] = [];
         let images: ImageSource[] = [];
         try {
-            console.time('SearxngSearch');
             const res = await fetchWithTimeout(url, { timeout: 10000 });
-            console.timeEnd('SearxngSearch');
             if (!res.ok) {
                 const errorDetails = await res.text();
                 console.error(

@@ -29,7 +29,6 @@ function isValidUrl(input: string): boolean {
 export async function POST(req: Request) {
     const { urls, userId } = await req.json();
 
-    console.time('Index Total time');
     try {
         const invalidUrls = urls.filter((u) => !isValidUrl(u));
         if (invalidUrls.length > 0) {
@@ -62,7 +61,6 @@ export async function POST(req: Request) {
 
         const requests = urls.map((url) => {
             const timerLabel = `Index ${url}`;
-            console.time(timerLabel);
 
             return fetch(fullUrl, {
                 method: 'POST',
@@ -73,8 +71,6 @@ export async function POST(req: Request) {
                 body: JSON.stringify({ url, userId: user.id }),
             })
                 .then((response) => {
-                    console.timeEnd(timerLabel);
-
                     if (!response.ok) {
                         console.error(
                             `Index Error! status: ${response.status}`,
@@ -95,8 +91,6 @@ export async function POST(req: Request) {
         const results = await Promise.all(requests);
         const successfulUrls = results.filter((r) => !r.error);
         const failedUrls = results.filter((r) => r.error);
-
-        console.timeEnd('Index Total time');
 
         if (successfulUrls.length === 0) {
             return NextResponse.json(
