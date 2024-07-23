@@ -142,6 +142,16 @@ async function ask(
         categories: [source],
     };
 
+    const imageFetchPromise = getSearchEngine({
+        categories: [SearchCategory.IMAGES],
+    })
+        .search(query)
+        .then((results) =>
+            results.images
+                .filter((img) => img.image.startsWith('https'))
+                .slice(0, IMAGE_LIMIT),
+        );
+
     if (userId && source === SearchCategory.ALL) {
         const vectorSearchPromise = getVectorSearch(userId).search(query);
         const webSearchPromise = getSearchEngine(searchOptions).search(query);
@@ -167,44 +177,16 @@ async function ask(
     await streamResponse({ sources: texts, images }, onStream);
 
     let fullAnswer = '';
-    const llmAnswerPromise = getLLMAnswer(
-        source,
-        model,
-        query,
-        texts,
-        mode,
-        (msg) => {
-            fullAnswer += msg;
-            onStream?.(JSON.stringify({ answer: msg }));
-        },
-    );
+    await getLLMAnswer(source, model, query, texts, mode, (msg) => {
+        fullAnswer += msg;
+        onStream?.(JSON.stringify({ answer: msg }));
+    });
 
-    const imageFetchPromise =
-        images.length === 0
-            ? getSearchEngine({
-                  categories: [SearchCategory.IMAGES],
-              })
-                  .search(query)
-                  .then((results) =>
-                      results.images
-                          .filter((img) => img.image.startsWith('https'))
-                          .slice(0, IMAGE_LIMIT),
-                  )
-            : Promise.resolve(images);
-
-    // step 2: get llm answer and step 3: get images sources
-    const [, fetchedImages] = await Promise.all([
-        llmAnswerPromise,
-        imageFetchPromise,
-    ]);
-
-    if (!images.length) {
-        images = fetchedImages;
-        await streamResponse({ images: fetchedImages }, onStream);
-    }
+    const fetchedImages = await imageFetchPromise;
+    images = [...images, ...fetchedImages];
+    await streamResponse({ images: images }, onStream);
 
     let fullRelated = '';
-    // step 4: get related questions
     await getRelatedQuestions(query, texts, (msg) => {
         fullRelated += msg;
         onStream?.(JSON.stringify({ related: msg }));
