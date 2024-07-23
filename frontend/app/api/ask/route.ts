@@ -253,19 +253,14 @@ async function getLLMAnswer(
     onStream: StreamHandler,
 ) {
     try {
-        const { messages } = paramsFormatter(
-            source,
-            query,
-            mode,
-            contexts,
-            'answer',
-        );
+        const system = promptFormatterAnswer(source, contexts);
         await getLLMChat(model).chatStream(
-            messages,
+            system,
+            query,
+            model,
             (msg: string | null, done: boolean) => {
                 onStream?.(msg, done);
             },
-            model,
         );
     } catch (err: any) {
         logError(err, 'llm');
@@ -279,14 +274,8 @@ async function getRelatedQuestions(
     onStream: StreamHandler,
 ) {
     try {
-        const { messages } = paramsFormatter(
-            SearchCategory.ALL,
-            query,
-            undefined,
-            contexts,
-            'related',
-        );
-        await openaiChat.chatStream(messages, onStream, GPT_4o_MIMI);
+        const system = promptFormatterRelated(contexts);
+        await openaiChat.chatStream(system, query, GPT_4o_MIMI, onStream);
     } catch (err) {
         logError(err, 'llm');
         return [];
@@ -309,26 +298,18 @@ function choosePrompt(source: SearchCategory, type: 'answer' | 'related') {
     return DeepQueryPrompt;
 }
 
-function paramsFormatter(
-    source: SearchCategory,
-    query: string,
-    mode: AskMode = 'simple',
-    contexts: any[],
-    type: 'answer' | 'related',
-) {
+function promptFormatterAnswer(source: SearchCategory, contexts: any[]) {
     const context = contexts
         .map((item, index) => `[citation:${index + 1}] ${item.content}`)
         .join('\n\n');
-    let prompt = choosePrompt(source, type);
+    let prompt = choosePrompt(source, 'answer');
+    return util.format(prompt, context);
+}
 
-    const system = util.format(prompt, context);
-    const messages: Message[] = [
-        {
-            role: 'user',
-            content: `${system} ${query}`,
-        },
-    ];
-    return {
-        messages,
-    };
+function promptFormatterRelated(contexts: any[]) {
+    const context = contexts
+        .map((item, index) => `[citation:${index + 1}] ${item.content}`)
+        .join('\n\n');
+    let prompt = choosePrompt(undefined, 'related');
+    return util.format(prompt, context);
 }

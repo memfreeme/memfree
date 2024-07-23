@@ -9,12 +9,18 @@ const anthropic = new Anthropic();
 
 export class AnthropicChat implements LLMChat {
     async chatStream(
-        messages: Message[],
-        onMessage: StreamHandler,
+        system: string,
+        query: string,
         model: string,
-        system?: string,
+        onMessage: StreamHandler,
     ): Promise<void> {
         try {
+            let messages: Message[] = [
+                {
+                    role: 'user',
+                    content: `${query}`,
+                },
+            ];
             const stream = await anthropic.messages.create({
                 system: system,
                 max_tokens: MAX_TOKENS,
@@ -22,6 +28,7 @@ export class AnthropicChat implements LLMChat {
                 model: model,
                 stream: true,
             });
+
             for await (const message of stream) {
                 if (
                     message.type === 'content_block_delta' &&

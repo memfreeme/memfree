@@ -15,11 +15,17 @@ const openai = new OpenAI({
 
 export class OpenAIChat implements LLMChat {
     async chatStream(
-        messages: Message[],
-        onMessage: StreamHandler,
+        system: string,
+        query: string,
         model: string,
-        system?: string,
+        onMessage: StreamHandler,
     ): Promise<void> {
+        let messages: Message[] = [
+            {
+                role: 'user',
+                content: `${query}`,
+            },
+        ];
         if (system) {
             messages = [
                 {

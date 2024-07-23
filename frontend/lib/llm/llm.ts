@@ -17,10 +17,10 @@ export const MAX_TOKENS = 1024;
 
 export interface LLMChat {
     chatStream(
-        messages: Message[],
-        onMessage: StreamHandler,
+        system: string,
+        query: string,
         model: string,
-        system?: string,
+        onMessage: StreamHandler,
     ): Promise<void>;
 }
 
