@@ -16,10 +16,6 @@ export const TOTAL_INDEX_COUNT_KEY = 't_index_count:';
 export const SEARCH_COUNT_KEY = 's_count:';
 export const TOTAL_SEARCH_COUNT_KEY = 't_s_count:';
 
-// queue
-export const TASK_STATUS_KEY = 'task_status:';
-export const TASK_KEY = 'tasks:';
-
 export const redisDB = new Redis({
     url: process.env.UPSTASH_REDIS_REST_URL!,
     token: process.env.UPSTASH_REDIS_REST_TOKEN!,

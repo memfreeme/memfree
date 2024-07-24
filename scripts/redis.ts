@@ -14,6 +14,9 @@ export const redisDB = new Redis({
   token: redisToken,
 });
 
+export const TOTAL_INDEX_COUNT_KEY = "t_index_count:";
+export const TOTAL_SEARCH_COUNT_KEY = "t_s_count:";
+
 async function PrefixScan(prefix: string) {
   let cursor: string = "0";
   let totalCount = 0;
@@ -48,4 +51,19 @@ export async function getUserCount() {
   } catch (error) {
     console.error("Error getting user count:", error);
   }
+}
+
+async function getCount(key: string): Promise<number> {
+  const value = await redisDB.get(key);
+  return parseInt((value as string) || "0", 10);
+}
+
+export async function getTotalIndexCount() {
+  const count = await getCount(TOTAL_INDEX_COUNT_KEY);
+  console.log("Total index count:", count);
+}
+
+export async function getTotalSearchCount() {
+  const count = await getCount(TOTAL_SEARCH_COUNT_KEY);
+  console.log("Total search count:", count);
 }
