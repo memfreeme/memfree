@@ -178,8 +178,6 @@ database
 node_modules
 local_cache
 
-bun.lockb
-
 *.lance
 
 fly.toml
