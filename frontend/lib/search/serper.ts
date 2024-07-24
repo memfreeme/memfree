@@ -28,7 +28,7 @@ export class SerperSearch implements SearchSource {
                     'X-API-KEY': SERPER_API_KEY,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ q: query }),
+                body: JSON.stringify({ q: query.slice(0, 2000) }),
             });
 
             if (!response.ok) {

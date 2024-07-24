@@ -22,7 +22,7 @@ export class SearxngSearch implements SearchSource {
 
     private formatUrl(query: string, options: SearchOptions) {
         const url = new URL(`${searxngHost}/search?format=json`);
-        url.searchParams.append('q', query);
+        url.searchParams.append('q', query.slice(0, 2000));
         for (const key in options) {
             const value = options[key as keyof SearchOptions];
             if (Array.isArray(value)) {
