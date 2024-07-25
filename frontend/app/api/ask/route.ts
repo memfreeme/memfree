@@ -30,6 +30,7 @@ import { getLLMChat, StreamHandler } from '@/lib/llm/llm';
 import { openaiChat } from '@/lib/llm/openai';
 import { checkIsPro } from '@/lib/user-utils';
 import { rerank } from '@/lib/rerank';
+import { streamController, streamResponse } from '@/lib/server-utils';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -37,6 +38,26 @@ const ratelimit = new Ratelimit({
     prefix: RATE_LIMIT_KEY,
     analytics: false,
 });
+
+async function handleRephrasing(
+    query: string,
+    history: string,
+    userId: string,
+    controller: any,
+) {
+    let newQuery = query;
+    if (history && history.length > 0 && userId) {
+        newQuery = await rephraseQuery(query, history);
+        if (newQuery !== query) {
+            await streamResponse(
+                { rephrasedQuery: newQuery },
+                streamController(controller),
+            );
+            console.log('oldquery:', query, 'newQuery:', newQuery);
+        }
+    }
+    return newQuery;
+}
 
 export async function POST(req: NextRequest) {
     const session = await auth();
@@ -70,28 +91,21 @@ export async function POST(req: NextRequest) {
             { status: 400 },
         );
     }
-    let newQuery = query;
-    // TODO: only rephrase query if the user is pro
-    if (history && history.length > 0 && userId) {
-        newQuery = await rephraseQuery(query, history);
-    }
-    console.log('oldquery:', query, 'newQuery:', newQuery);
 
     try {
         const readableStream = new ReadableStream({
             async start(controller) {
+                const newQuery = await handleRephrasing(
+                    query,
+                    history,
+                    userId,
+                    controller,
+                );
                 await ask(
                     newQuery,
                     useCache,
                     userId,
-                    (message: string | null, done: boolean) => {
-                        if (done) {
-                            controller.close();
-                        } else {
-                            const payload = `data: ${message} \n\n`;
-                            controller.enqueue(payload);
-                        }
-                    },
+                    streamController(controller),
                     mode,
                     model,
                     source,
@@ -235,15 +249,6 @@ async function ask(
         console.error(`Failed to set cache for query ${query}:`, error);
     });
     onStream?.(null, true);
-}
-
-async function streamResponse(
-    data: Record<string, any>,
-    onStream?: (...args: any[]) => void,
-) {
-    for (const [key, value] of Object.entries(data)) {
-        onStream?.(JSON.stringify({ [key]: value }));
-    }
 }
 
 async function getLLMAnswer(

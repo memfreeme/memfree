@@ -9,6 +9,7 @@ import {
     TextSearchIcon,
     Copy,
     ThumbsDown,
+    CircleHelp,
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import {
@@ -25,6 +26,7 @@ export type Message = {
     id: string;
     createdAt?: Date;
     question: string;
+    rephrasedQuery?: string;
     content: string;
     role: 'system' | 'user' | 'assistant' | 'function';
     sources?: TextSource[];
@@ -51,6 +53,7 @@ const SearchMessageBubble = memo(
 
             const sources = props.message.sources ?? [];
             const images = props.message.images ?? [];
+            const rephrasedQuery = props.message.rephrasedQuery;
 
             const { toast } = useToast();
 
@@ -93,6 +96,19 @@ const SearchMessageBubble = memo(
 
             return (
                 <div className="flex flex-col items-start space-y-6 pb-10">
+                    {!isUser && rephrasedQuery && (
+                        <>
+                            <div className="flex items-center space-x-2">
+                                <CircleHelp className="text-primary size-22"></CircleHelp>
+                                <h3 className="py-2 text-lg font-medium text-primary">
+                                    Rewritten Query
+                                </h3>
+                            </div>
+                            <div className="prose font-urban text-lg font-medium">
+                                <p> {rephrasedQuery}</p>
+                            </div>
+                        </>
+                    )}
                     {!isUser && sources.length > 0 && (
                         <>
                             <div className="flex items-center space-x-2">

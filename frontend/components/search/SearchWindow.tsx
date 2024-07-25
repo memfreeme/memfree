@@ -82,6 +82,7 @@ export function SearchWindow() {
                 const newMessages = [...prevMessages];
                 newMessages[messageIndex] = {
                     ...newMessages[messageIndex],
+                    rephrasedQuery: '',
                     content: '',
                     sources: [],
                     images: [],
@@ -93,6 +94,7 @@ export function SearchWindow() {
         };
 
         const updateMessages = (
+            rephrasedQuery?: string,
             parsedResult?: string,
             newSources?: TextSource[],
             newImages?: ImageSource[],
@@ -112,6 +114,7 @@ export function SearchWindow() {
                         {
                             id: Math.random().toString(),
                             question: messageValue,
+                            rephrasedQuery: rephrasedQuery,
                             content: parsedResult ? parsedResult.trim() : '',
                             runId: runId,
                             sources: newSources || [],
@@ -125,6 +128,7 @@ export function SearchWindow() {
                 const newMessages = [...prevMessages];
                 const msg = newMessages[messageIndex];
 
+                if (rephrasedQuery) msg.rephrasedQuery = rephrasedQuery;
                 if (parsedResult) msg.content = parsedResult.trim();
                 if (newSources) msg.sources = newSources;
                 if (newImages) msg.images = newImages;
@@ -199,11 +203,27 @@ export function SearchWindow() {
                 },
                 onmessage(msg) {
                     const parsedData = JSON.parse(msg.data);
+                    if (parsedData.rephrasedQuery) {
+                        updateMessages(parsedData.rephrasedQuery);
+                    }
+                    if (parsedData.answer) {
+                        accumulatedMessage += parsedData.answer;
+                        updateMessages(undefined, accumulatedMessage);
+                    }
                     if (parsedData.sources) {
-                        updateMessages(undefined, parsedData.sources);
+                        updateMessages(
+                            undefined,
+                            undefined,
+                            parsedData.sources,
+                        );
                     }
                     if (parsedData.images) {
-                        updateMessages(undefined, undefined, parsedData.images);
+                        updateMessages(
+                            undefined,
+                            undefined,
+                            undefined,
+                            parsedData.images,
+                        );
                     }
                     if (parsedData.related) {
                         accumulatedRelated += parsedData.related;
@@ -211,13 +231,9 @@ export function SearchWindow() {
                             undefined,
                             undefined,
                             undefined,
+                            undefined,
                             accumulatedRelated,
                         );
-                    }
-
-                    if (parsedData.answer) {
-                        accumulatedMessage += parsedData.answer;
-                        updateMessages(accumulatedMessage);
                     }
                 },
             });
@@ -255,7 +271,7 @@ export function SearchWindow() {
         ) {
             setTimeout(() => {
                 scrollTo(scrollContainerRef);
-            }, 1000);
+            }, 2000);
         }
     }, [messages.length]);
 
