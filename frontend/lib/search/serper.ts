@@ -1,7 +1,6 @@
 import 'server-only';
 
 import {
-    fetchWithTimeout,
     IMAGE_LIMIT,
     SearchResult,
     SearchSource,
@@ -10,6 +9,7 @@ import {
 } from './search';
 import { ImageSource, TextSource } from '../types';
 import { log, logError } from '../log';
+import { fetchWithTimeout } from '../server-utils';
 
 const serperUrl = 'https://google.serper.dev/';
 

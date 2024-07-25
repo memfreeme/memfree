@@ -1,33 +1,39 @@
 import 'server-only';
+import { fetchWithTimeout } from './server-utils';
+import { logError } from './log';
 
-let vectorHost = '';
-// Let open source users could one click deploy
-if (process.env.VECTOR_HOST) {
-    vectorHost = process.env.VECTOR_HOST;
-} else if (process.env.MEMFREE_HOST) {
-    vectorHost = process.env.MEMFREE_HOST;
-} else {
-    throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
-}
+const JINA_KEY = process.env.JINA_KEY!;
+const RERANK_MODEL = 'jina-reranker-v2-base-multilingual';
 
-export async function rerank(query: string, documents: string[]) {
-    const url = `${vectorHost}/embedding/rerank`;
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': process.env.API_TOKEN!,
-        },
-        body: JSON.stringify({
-            query,
-            documents,
-        }),
-    });
+export async function rerank(query: string, documents: string[]): Promise<any> {
+    const url = 'https://api.jina.ai/v1/rerank';
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+        const response = await fetchWithTimeout(url, {
+            timeout: 2000,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${JINA_KEY}`,
+            },
+            body: JSON.stringify({
+                model: RERANK_MODEL,
+                query,
+                top_n: 8,
+                documents,
+            }),
+        });
+
+        if (!response.ok) {
+            const errorDetails = await response.text();
+            throw new Error(
+                `Fetch failed with status code: ${response.status} and Details: ${errorDetails}`,
+            );
+        }
+        const data = await response.json();
+        return data.results;
+    } catch (error) {
+        logError(error, 'rerank');
+        return documents.map((_, index) => ({ index }));
     }
-
-    const data = await response.json();
-    return data.top_docs;
 }

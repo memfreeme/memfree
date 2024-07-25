@@ -1,7 +1,6 @@
 import 'server-only';
 
 import {
-    fetchWithTimeout,
     SearchOptions,
     SearchResult,
     SearchSource,
@@ -12,6 +11,7 @@ import {
 } from './search';
 import { ImageSource, TextSource } from '../types';
 import { logError } from '../log';
+import { fetchWithTimeout } from '../server-utils';
 
 export class SearxngSearch implements SearchSource {
     private options: SearchOptions;

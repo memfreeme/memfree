@@ -29,6 +29,7 @@ import { logError } from '@/lib/log';
 import { getLLMChat, StreamHandler } from '@/lib/llm/llm';
 import { openaiChat } from '@/lib/llm/openai';
 import { checkIsPro } from '@/lib/user-utils';
+import { rerank } from '@/lib/rerank';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -177,14 +178,25 @@ async function ask(
 
         texts = [...texts, ...webTexts];
         images = [...images, ...webImages];
+
+        await streamResponse({ sources: texts, images }, onStream);
+
+        if (texts.length > 10) {
+            const documents = texts.map((item) => item.content);
+            const rerankedTexts = await rerank(query, documents);
+            texts = rerankedTexts.map((rerankedDoc) => {
+                return texts[rerankedDoc.index];
+            });
+            await streamResponse({ sources: texts }, onStream);
+        }
     }
 
     if (!texts.length) {
         ({ texts, images } =
             await getSearchEngine(searchOptions).search(query));
-    }
 
-    await streamResponse({ sources: texts, images }, onStream);
+        await streamResponse({ sources: texts, images }, onStream);
+    }
 
     let fullAnswer = '';
     await getLLMAnswer(source, model, query, texts, mode, (msg) => {
