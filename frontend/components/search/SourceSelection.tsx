@@ -35,6 +35,11 @@ export const sourceMap: Record<string, Source> = {
         description: 'Hot News',
         value: SearchCategory.NEWS,
     },
+    [SearchCategory.TWEET]: {
+        name: 'Twitter',
+        description: 'Tweets',
+        value: SearchCategory.TWEET,
+    },
 };
 
 const SourceItem: React.FC<{ source: Source }> = ({ source }) => (

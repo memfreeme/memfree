@@ -4,6 +4,7 @@ import { SearxngSearch } from './searxng';
 import { SerperSearch } from './serper';
 import { VectorSearch } from './vector';
 import { ImageSource, SearchCategory, TextSource } from '../types';
+import { EXASearch } from './exa';
 
 export interface SearchOptions {
     categories?: string[];
@@ -60,6 +61,8 @@ export function getSearchEngine(options: SearchOptions): SearchSource {
     switch (categories[0]) {
         case SearchCategory.ALL:
             return new SerperSearch();
+        case SearchCategory.TWEET:
+            return new EXASearch({ categories: [categories[0]] });
 
         case SearchCategory.ACADEMIC:
             return new SearxngSearch({
