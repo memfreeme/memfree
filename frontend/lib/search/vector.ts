@@ -2,7 +2,7 @@ import 'server-only';
 
 import { TextSource } from '../types';
 import { SearchResult, SearchSource } from './search';
-import { log, logError } from '../log';
+import { logError } from '../log';
 
 const memfreeHost = process.env.MEMFREE_HOST;
 let vectorHost = '';
@@ -45,7 +45,7 @@ export class VectorSearch implements SearchSource {
             const result = await response.json();
 
             result
-                .filter((item) => item._distance <= 0.15)
+                .filter((item) => item._distance <= 0.5)
                 .map((item) =>
                     texts.push({
                         title: item.title,
