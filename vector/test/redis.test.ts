@@ -46,4 +46,10 @@ describe("Redis Client Integration Tests", () => {
     expect(await redis.getIndexCount(userId)).toBe(2);
     expect(await redis.getTotalIndexCount()).toBe(initialTotalIndexCount + 2);
   });
+
+  it("should check if a URL exists", async () => {
+    await redis.addUrl(userId, url1);
+    expect(await redis.urlExists(userId, url1)).toBe(true);
+    expect(await redis.urlExists(userId, url2)).toBe(false);
+  });
 });

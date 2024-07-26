@@ -73,6 +73,12 @@ export async function update(tableName: string) {
   );
 }
 
+export async function deleteUrl(tableName: string, url: string) {
+  const db = await getConnection();
+  const table = await getTable(db, tableName);
+  await table.delete(`url == "${url}"`);
+}
+
 export async function version(tableName: string) {
   const db = await getConnection();
   const table = await getTable(db, tableName);
@@ -97,7 +103,7 @@ export async function search(query: string, table: string) {
   console.time("search");
   const results2 = await tbl
     .vectorSearch(query_embedding[0])
-    .select(["title", "text", "url", "image", "create_time"])
+    .select(["title", "text", "url", "image"])
     .distanceType("cosine")
     .limit(10)
     .toArray();

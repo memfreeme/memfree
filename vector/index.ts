@@ -1,4 +1,5 @@
-import { search } from "./db";
+import { deleteUrl, search } from "./db";
+import { urlExists } from "./redis";
 import { isValidUrl } from "./util";
 import { build_vector_for_url } from "./web";
 
@@ -53,6 +54,11 @@ export async function handleRequest(req: Request): Promise<Response> {
     try {
       if (!isValidUrl(url)) {
         return Response.json("Invalid URL format", { status: 400 });
+      }
+      if (await urlExists(userId, url)) {
+        console.log("url", url, "already exists for user", userId, "deleting");
+        await deleteUrl(userId, url);
+        console.log("url", url, "already exists for user", userId, "deleted");
       }
       await build_vector_for_url(url, userId);
       return Response.json("Success");

@@ -42,6 +42,11 @@ export async function getLatestUrl(userId: string): Promise<string | null> {
   return urls[0] as string;
 }
 
+export async function urlExists(userId: string, url: string): Promise<boolean> {
+  const score = await redis.zscore(URLS_KEY + userId, url);
+  return score !== null;
+}
+
 async function getCount(key: string): Promise<number> {
   const value = await redis.get(key);
   return parseInt((value as string) || "0", 10);
