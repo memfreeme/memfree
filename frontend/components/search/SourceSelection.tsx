@@ -15,29 +15,27 @@ import { SearchCategory } from '@/lib/types';
 
 type Source = {
     name: string;
-    description: string;
+    flag?: string;
     value: string;
 };
 
 export const sourceMap: Record<string, Source> = {
-    all: {
+    [SearchCategory.ALL]: {
         name: 'All',
-        description: 'Entire Internet',
         value: SearchCategory.ALL,
     },
-    academic: {
-        name: 'Academic',
-        description: 'Academic Papers',
-        value: SearchCategory.ACADEMIC,
-    },
-    news: {
+    [SearchCategory.NEWS]: {
         name: 'News',
-        description: 'Hot News',
         value: SearchCategory.NEWS,
+    },
+    [SearchCategory.ACADEMIC]: {
+        name: 'Paper',
+        flag: 'Pro',
+        value: SearchCategory.ACADEMIC,
     },
     [SearchCategory.TWEET]: {
         name: 'Twitter',
-        description: 'Tweets',
+        flag: 'Pro',
         value: SearchCategory.TWEET,
     },
 };
@@ -48,14 +46,13 @@ const SourceItem: React.FC<{ source: Source }> = ({ source }) => (
         value={source.value}
         className="w-full p-2 block"
     >
-        <div className="flex w-full space-x-5 justify-between">
+        <div className="flex w-full justify-between">
+            <span className="text-md mr-2">{source.name}</span>
             <span
-                className="font-bold text-primary"
-                style={{ whiteSpace: 'nowrap' }}
+                className={`text-xs flex items-center justify-center ${source.flag === 'Pro' ? ' text-primary bg-purple-300 rounded-xl px-2' : ''}`}
             >
-                {source.description}
+                {source.flag}
             </span>
-            <span className="text-muted-foreground">{source.name}</span>
         </div>
     </SelectItem>
 );

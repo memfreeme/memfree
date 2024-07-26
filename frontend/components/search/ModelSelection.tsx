@@ -15,24 +15,23 @@ import { Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI } from '@/lib/model';
 
 type Model = {
     name: string;
-    description: string;
     value: string;
+    flag?: string;
 };
 
 export const modelMap: Record<string, Model> = {
     [GPT_4o_MIMI]: {
-        name: 'GPT-4o-mini',
-        description: 'Default',
+        name: 'GPT-4o mini',
         value: GPT_4o_MIMI,
     },
     [GPT_4o]: {
         name: 'GPT-4o',
-        description: 'Powerful',
+        flag: 'Pro',
         value: GPT_4o,
     },
     [Claude_35_Sonnet]: {
-        name: 'Claude-3.5-Sonnet',
-        description: 'Expert in Coding',
+        name: 'Claude 3.5 Sonnet',
+        flag: 'Pro',
         value: Claude_35_Sonnet,
     },
 };
@@ -43,14 +42,13 @@ const ModelItem: React.FC<{ model: Model }> = ({ model }) => (
         value={model.value}
         className="w-full p-2 block"
     >
-        <div className="flex w-full space-x-5 justify-between">
+        <div className="flex w-full justify-between">
+            <span className="text-md">{model.name}</span>
             <span
-                className="font-bold text-primary"
-                style={{ whiteSpace: 'nowrap' }}
+                className={`text-xs flex items-center justify-center ${model.flag === 'Pro' ? ' text-primary bg-purple-300 rounded-xl px-2' : ''}`}
             >
-                {model.description}
+                {model.flag}
             </span>
-            <span className="text-muted-foreground">{model.name}</span>
         </div>
     </SelectItem>
 );
