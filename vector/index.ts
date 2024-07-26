@@ -1,4 +1,4 @@
-import { deleteUrl, search } from "./db";
+import { changeEmbedding, deleteUrl, search } from "./db";
 import { logError } from "./log";
 import { urlExists } from "./redis";
 import { isValidUrl } from "./util";
@@ -66,6 +66,17 @@ export async function handleRequest(req: Request): Promise<Response> {
     } catch (error) {
       logError(error as Error, "index");
       return Response.json("Failed to search", { status: 500 });
+    }
+  }
+
+  if (path === "/api/vector/change-embedding" && method === "POST") {
+    const { userId } = await req.json();
+    try {
+      await changeEmbedding(userId);
+      return Response.json("Success");
+    } catch (error) {
+      logError(error as Error, "change-embedding");
+      return Response.json("Failed to change embedding", { status: 500 });
     }
   }
 

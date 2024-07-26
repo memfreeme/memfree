@@ -2,7 +2,6 @@ import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
 
 import { append } from "./db";
-import { embed } from "./embedding";
 import { getMd } from "./util";
 import { addUrl } from "./redis";
 import { TABLE_COMPACT_THRESHOLD } from "./config";

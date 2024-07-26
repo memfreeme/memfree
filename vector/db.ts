@@ -49,6 +49,84 @@ async function getTable(db: any, tableName: string): Promise<lancedb.Table> {
   }
 }
 
+export async function deleteUrl(tableName: string, url: string) {
+  const db = await getConnection();
+  const table = await getTable(db, tableName);
+  await table.delete(`url == "${url}"`);
+}
+
+export async function append(tableName: string, data: lancedb.Data) {
+  const db = await getConnection();
+  const table = await getTable(db, tableName);
+  await table.add(data);
+  return table;
+}
+
+export async function search(query: string, table: string) {
+  const db = await getConnection();
+  const tbl = await db.openTable(table);
+
+  console.time("embedding");
+  const query_embedding = await getEmbedding().embedQuery(query);
+  console.timeEnd("embedding");
+
+  console.time("search");
+  const results = await tbl
+    .vectorSearch(query_embedding)
+    .select(["title", "text", "url", "image"])
+    .distanceType("cosine")
+    .limit(10)
+    .toArray();
+  console.timeEnd("search");
+  return results;
+}
+
+interface Document {
+  title: string;
+  url: string;
+  image: string;
+  create_time: number;
+  text: string;
+}
+
+export async function changeEmbedding(tableName: string) {
+  const db = await getConnection();
+  const table = await getTable(db, tableName);
+
+  console.time("select-text");
+  const documents: Document[] = (await table
+    .query()
+    .select(["title", "url", "image", "create_time", "text"])
+    .toArray()) as Document[];
+  console.timeEnd("select-text");
+  console.log("Embedding", documents.length);
+
+  const texts = documents.map((item) => item.text);
+
+  console.time("embedding");
+  const embeddings = await getEmbedding().embedDocuments(texts);
+  console.timeEnd("embedding");
+
+  const documentsWithVectors = documents.map((doc, i) => ({
+    ...doc,
+    vector: embeddings[i] as number[],
+  }));
+
+  console.time("createTable");
+  const newTable = await db.createTable(tableName, documentsWithVectors, {
+    mode: "overwrite",
+    schema: schema,
+  });
+  console.timeEnd("createTable");
+
+  console.log("Table size", await newTable.countRows());
+
+  await newTable.optimize({ cleanupOlderThan: new Date() });
+  return newTable;
+}
+
+// unused now:
+
 export async function size(tableName: string) {
   const db = await getConnection();
   const table = await getTable(db, tableName);
@@ -73,42 +151,10 @@ export async function update(tableName: string) {
   );
 }
 
-export async function deleteUrl(tableName: string, url: string) {
-  const db = await getConnection();
-  const table = await getTable(db, tableName);
-  await table.delete(`url == "${url}"`);
-}
-
 export async function version(tableName: string) {
   const db = await getConnection();
   const table = await getTable(db, tableName);
   return table.version();
-}
-
-export async function append(tableName: string, data: lancedb.Data) {
-  const db = await getConnection();
-  const table = await getTable(db, tableName);
-  await table.add(data);
-  return table;
-}
-
-export async function search(query: string, table: string) {
-  const db = await getConnection();
-  const tbl = await db.openTable(table);
-
-  console.time("embedding");
-  const query_embedding = await getEmbedding().embedQuery(query);
-  console.timeEnd("embedding");
-
-  console.time("search");
-  const results2 = await tbl
-    .vectorSearch(query_embedding[0])
-    .select(["title", "text", "url", "image"])
-    .distanceType("cosine")
-    .limit(10)
-    .toArray();
-  console.timeEnd("search");
-  return results2;
 }
 
 export async function selectDetail(table: string) {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "bun:test";
-import { DIMENSIONS, DIMENSIONS_v2 } from "../config";
+import { DIMENSIONS } from "../config";
 import { localEmbedding } from "../embedding/local";
 import { openaiEmbedding } from "../embedding/openai";
 
@@ -37,7 +37,7 @@ describe("openai embedding test", () => {
 
     expect(Array.isArray(query_embedding)).toBe(true);
 
-    expect(query_embedding.length).toBe(DIMENSIONS_v2);
+    expect(query_embedding.length).toBe(DIMENSIONS);
 
     let documents = [
       "what is fastembed-js licensed",
@@ -53,6 +53,6 @@ describe("openai embedding test", () => {
     }
 
     expect(embeddings.length).toBe(4);
-    expect(embeddings[0].length).toBe(DIMENSIONS_v2);
+    expect(embeddings[0].length).toBe(DIMENSIONS);
   });
 });
