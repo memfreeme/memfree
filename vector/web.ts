@@ -6,6 +6,7 @@ import { embed } from "./embedding";
 import { getMd } from "./util";
 import { addUrl } from "./redis";
 import { TABLE_COMPACT_THRESHOLD } from "./config";
+import { getEmbedding } from "./embedding/embedding";
 
 const splitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
   chunkSize: 400,
@@ -45,20 +46,6 @@ export async function build_vector_for_url(url: string, userId: string) {
   }
 }
 
-async function embedBatch(
-  texts: string[],
-  batchSize: number = 10
-): Promise<number[][]> {
-  const batches = [];
-  for (let i = 0; i < texts.length; i += batchSize) {
-    const batch = texts.slice(i, i + batchSize);
-    const embeddings = await embed(batch);
-    batches.push(embeddings);
-  }
-
-  return batches.flat();
-}
-
 async function addVectors(
   image: string,
   title: string,
@@ -70,7 +57,7 @@ async function addVectors(
     return [];
   }
 
-  const embeddings = await embedBatch(texts);
+  const embeddings = await getEmbedding().embedDocuments(texts);
 
   const data: Array<Record<string, unknown>> = [];
   for (let i = 0; i < documents.length; i += 1) {

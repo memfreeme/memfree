@@ -7,8 +7,8 @@ import {
   Utf8,
   Float64,
 } from "apache-arrow";
-import { embed } from "./embedding";
 import { DIMENSIONS } from "./config";
+import { getEmbedding } from "./embedding/embedding";
 
 const schema = new Schema([
   new Field("create_time", new Float64(), true),
@@ -97,7 +97,7 @@ export async function search(query: string, table: string) {
   const tbl = await db.openTable(table);
 
   console.time("embedding");
-  const query_embedding = await embed([query]);
+  const query_embedding = await getEmbedding().embedQuery(query);
   console.timeEnd("embedding");
 
   console.time("search");

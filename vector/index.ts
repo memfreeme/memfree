@@ -1,4 +1,5 @@
 import { deleteUrl, search } from "./db";
+import { logError } from "./log";
 import { urlExists } from "./redis";
 import { isValidUrl } from "./util";
 import { build_vector_for_url } from "./web";
@@ -42,7 +43,7 @@ export async function handleRequest(req: Request): Promise<Response> {
         return new Response(JSON.stringify([]), { status: 200 });
       }
 
-      console.error(unknownError);
+      logError(errorMessage || "unkown", "search");
       if (errorMessage)
         return Response.json("Failed to search", { status: 500 });
     }
@@ -63,7 +64,7 @@ export async function handleRequest(req: Request): Promise<Response> {
       await build_vector_for_url(url, userId);
       return Response.json("Success");
     } catch (error) {
-      console.error(error);
+      logError(error as Error, "index");
       return Response.json("Failed to search", { status: 500 });
     }
   }

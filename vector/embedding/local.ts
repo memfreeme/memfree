@@ -1,5 +1,5 @@
-const memfreeHost = process.env.MEMFREE_HOST;
-const embeddingHost = process.env.EMBEDDING_HOST;
+export const memfreeHost = process.env.MEMFREE_HOST;
+export const embeddingHost = process.env.EMBEDDING_HOST;
 
 let host = "";
 // Let open source users could one click deploy
@@ -11,7 +11,7 @@ if (embeddingHost) {
   throw new Error("Neither MEMFREE_HOST nor EMBEDDING_HOST is defined");
 }
 
-export async function embed(documents: string[]) {
+async function embed(documents: string[]) {
   const url = `${host}/embed`;
 
   try {
@@ -38,7 +38,7 @@ export async function embed(documents: string[]) {
   }
 }
 
-export async function rerank(query: string, documents: string[]) {
+async function rerank(query: string, documents: string[]) {
   const url = `${host}/rerank`;
 
   try {
@@ -67,3 +67,31 @@ export async function rerank(query: string, documents: string[]) {
     throw error;
   }
 }
+
+async function embedBatch(
+  texts: string[],
+  batchSize: number = 10
+): Promise<number[][]> {
+  const batches = [];
+  for (let i = 0; i < texts.length; i += batchSize) {
+    const batch = texts.slice(i, i + batchSize);
+    const embeddings = await embed(batch);
+    batches.push(embeddings);
+  }
+
+  return batches.flat();
+}
+
+import { type EmbeddingsInterface } from "@langchain/core/embeddings";
+
+export class LocalEmbedding implements EmbeddingsInterface {
+  async embedQuery(document: string): Promise<number[]> {
+    return (await embed([document]))[0];
+  }
+
+  async embedDocuments(documents: string[]): Promise<number[][]> {
+    return embedBatch(documents);
+  }
+}
+
+export const localEmbedding = new LocalEmbedding();
