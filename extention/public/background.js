@@ -96,35 +96,33 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   }
 });
 
-chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "sendURL") {
     const { urls, userId } = message.data;
 
-    try {
-      await keepAlive(true);
+    (async () => {
+      try {
+        await keepAlive(true);
 
-      fetch("https://www.memfree.me/api/index2", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ urls, userId }),
-      })
-        .then((response) =>
-          response.json().then((data) => ({ ok: response.ok, data }))
-        )
-        .then(({ ok, data }) => {
-          console.log("response:", data);
-          sendResponse({ ok, data });
-        })
-        .catch((error) => {
-          console.error("Error sending URL:", error);
-          sendResponse({ ok: false, error: `${error}` });
+        const response = await fetch("https://www.memfree.me/api/index2", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ urls, userId }),
         });
 
-      return true;
-    } finally {
-      await keepAlive(false);
-    }
+        const data = await response.json();
+        console.log("response:", data);
+        sendResponse({ ok: response.ok, data });
+      } catch (error) {
+        console.error("Error sending URL:", error);
+        sendResponse({ ok: false, error: `${error}` });
+      } finally {
+        await keepAlive(false);
+      }
+    })();
+
+    return true; // Keep the message channel open for sendResponse
   }
 });

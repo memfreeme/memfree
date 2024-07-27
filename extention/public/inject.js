@@ -75,3 +75,19 @@ const loadingButtonContent = `
 
   document.body.appendChild(button);
 })();
+
+window.addEventListener("message", (event) => {
+  if (event.source !== window) {
+    return;
+  }
+  console.log("event.data", event.data);
+  const user = event.data.user;
+  const hostname = window.location.hostname;
+
+  console.log("user", user);
+  console.log("hostname", hostname);
+
+  if (user && (hostname === "localhost" || hostname === "memfree.me")) {
+    chrome.storage.local.set({ user }, () => {});
+  }
+});
