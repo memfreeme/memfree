@@ -13,7 +13,6 @@ export default function IndexPage() {
     useEffect(() => {
         if (user) {
             window.postMessage({ user: user }, '*');
-            console.log('postMessage:', user);
         }
     }, [user]);
 

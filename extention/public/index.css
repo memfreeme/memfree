@@ -28,9 +28,18 @@
 .flot-btn:hover {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+  width: 210px;
 }
 
-.loader {
+.flot-btn:hover::after {
+  content: "Index This Web Page";
+  color: #fff;
+  padding-left: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.memfree-loader {
   animation: spin 1s linear infinite;
 }
 
