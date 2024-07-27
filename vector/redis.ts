@@ -47,6 +47,10 @@ export async function urlExists(userId: string, url: string): Promise<boolean> {
   return score !== null;
 }
 
+export async function clearUrls(userId: string): Promise<void> {
+  await redis.del(URLS_KEY + userId);
+}
+
 async function getCount(key: string): Promise<number> {
   const value = await redis.get(key);
   return parseInt((value as string) || "0", 10);

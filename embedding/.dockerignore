@@ -1,0 +1,4 @@
+fly.toml
+.git/
+target/
+.fastembed_cache

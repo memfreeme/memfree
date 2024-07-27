@@ -127,6 +127,16 @@ export async function changeEmbedding(tableName: string) {
 
 // unused now:
 
+export async function dropTable(tableName: string) {
+  const db = await getConnection();
+  await db.dropTable(tableName);
+}
+
+export async function createEmptyTable(tableName: string) {
+  const db = await getConnection();
+  return await db.createEmptyTable(tableName, schema);
+}
+
 export async function size(tableName: string) {
   const db = await getConnection();
   const table = await getTable(db, tableName);

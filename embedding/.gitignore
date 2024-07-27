@@ -3,3 +3,4 @@
 /target
 .fastembed_cache
 Cargo.lock
+fly.toml
