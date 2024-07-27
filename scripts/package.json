@@ -6,7 +6,8 @@
     "@types/bun": "latest"
   },
   "dependencies": {
-    "@upstash/redis": "^1.31.5"
+    "@upstash/redis": "^1.31.5",
+    "p-limit": "^6.1.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

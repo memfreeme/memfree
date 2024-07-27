@@ -1,0 +1,46 @@
+const host = process.env.VECTOR_HOST;
+const API_TOKEN = process.env.API_TOKEN!;
+
+async function sendRequest(userId: string): Promise<void> {
+  const response = await fetch(`${host}/api/vector/change-embedding`, {
+    method: "POST",
+    body: JSON.stringify({ userId }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: API_TOKEN,
+    },
+  });
+
+  const text = await response.json();
+  console.log(
+    `change-embedding response for userId: ${userId}`,
+    text,
+    " status ",
+    response.status
+  );
+  if (response.status !== 200 || text !== "Success") {
+    throw new Error(`Request failed for userId: ${userId}`);
+  }
+  console.log(`change-embedding completed for userId: ${userId}`);
+}
+
+import pLimit from "p-limit";
+const limiter = pLimit(5);
+
+async function processUserIds(userIds: string[]): Promise<void> {
+  const promises = userIds.map((userId) =>
+    limiter(() =>
+      sendRequest(userId).catch((error) => {
+        console.error(`Error processing userId: ${userId}`, error);
+      })
+    )
+  );
+
+  await Promise.all(promises);
+}
+
+const userIds = ["bf4b4429-69ba-44a7-acac-3d4f11d22892"];
+
+processUserIds(userIds)
+  .then(() => console.log("All requests completed successfully"))
+  .catch((error) => console.error("Error processing requests:", error));

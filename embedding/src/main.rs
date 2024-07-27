@@ -8,6 +8,7 @@ use std::{net::SocketAddr, sync::Arc};
 use dotenv::dotenv;
 use hyper::Request;
 use axum::middleware::{self, Next};
+use std::time::Instant;
 
 #[derive(Deserialize)]
 struct EmbedRequest {
@@ -83,13 +84,31 @@ async fn embed_handler(
     Extension(model): Extension<Arc<TextEmbedding>>,
     Json(payload): Json<EmbedRequest>
 ) -> Result<Json<EmbedResponse>, String> {
+    let start_time = Instant::now();
+    let document_count = payload.documents.len();
+
     match model.embed(payload.documents, None) {
         Ok(embeddings) => {
+            let duration = start_time.elapsed();
+            println!(
+                "Embedding completed in {:?} for {} documents",
+                duration,
+                document_count
+            );
             Ok(Json(EmbedResponse {
                 embeddings,
             }))
         },
-        Err(err) => Err(format!("Failed to generate embeddings: {}", err)),
+        Err(err) => {
+            let duration = start_time.elapsed();
+            println!(
+                "Failed to generate embeddings in {:?} for {} documents: {}",
+                duration,
+                document_count,
+                err
+            );
+            Err(format!("Failed to generate embeddings: {}", err))
+        },
     }
 }
 

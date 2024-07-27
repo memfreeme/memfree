@@ -70,13 +70,14 @@ async function rerank(query: string, documents: string[]) {
 
 async function embedBatch(
   texts: string[],
-  batchSize: number = 16
+  batchSize: number = 128
 ): Promise<number[][]> {
   const batches = [];
   for (let i = 0; i < texts.length; i += batchSize) {
     const batch = texts.slice(i, i + batchSize);
     const embeddings = await embed(batch);
     batches.push(embeddings);
+    console.log(`Embedded ${i + batch.length} documents`);
   }
 
   return batches.flat();
