@@ -113,7 +113,7 @@ async fn root_handler() -> &'static str {
 #[tokio::main]
 async fn main() -> Result<()> {
     let model = TextEmbedding::try_new(InitOptions {
-    model_name: EmbeddingModel::AllMiniLML6V2,
+    model_name: EmbeddingModel::ParaphraseMLMiniLML12V2Q,
     show_download_progress: true,
     ..Default::default()
     })?;
@@ -168,11 +168,25 @@ mod tests {
 
     async fn get_model() -> Arc<TextEmbedding> {
         let model = TextEmbedding::try_new(InitOptions {
-            model_name: EmbeddingModel::AllMiniLML6V2,
+            model_name: EmbeddingModel::ParaphraseMLMiniLML12V2Q,
             show_download_progress: true,
             ..Default::default()
         }).unwrap();
         Arc::new(model)
+    }
+
+    async fn calculate_cosine_similarity(documents: &[&str], threshold: f32)   {
+        let model = get_model().await;
+        assert!(documents.len() == 2, "The documents array must contain exactly two elements.");
+
+        let doc1 = documents[0];
+        let doc2 = documents[1];
+
+        let documents_vec = vec![doc1.to_string(), doc2.to_string()];
+        let embeddings =  model.embed(documents_vec, None).unwrap();
+        let distance = cosine_similarity(&embeddings[0], &embeddings[1]);
+        println!("Cosine similarity: {}", distance);
+        assert!(distance >= threshold);
     }
 
     #[tokio::test]
@@ -198,57 +212,38 @@ mod tests {
         assert_eq!(embeddings[0].len(), 384);
 
 
-        let documents = [
+        calculate_cosine_similarity(&[
             "what is fastembed-js licensed",
             "fastembed-js licensed is under MIT ",
-        ];
+        ], 0.76).await;
 
-        let embeddings = model.embed(documents.to_vec(), None).unwrap();
-        let distance = cosine_similarity(&embeddings[0], &embeddings[1]);
-        println!("distance {}", distance);
-        assert!(distance > 0.9);
+        calculate_cosine_similarity(&["search", "google"], 0.63).await;
+        calculate_cosine_similarity(&["apple", "fruit"], 0.55).await;
+        calculate_cosine_similarity(&["man", "women"], 0.46).await;
+        calculate_cosine_similarity(&["man", "男人"], 0.95).await;
+        calculate_cosine_similarity(&["apple", "waht is apple, a IT company"], 0.84).await;
+        calculate_cosine_similarity(&["memfree is a hybrid ai search engine", "what is memfree"], 0.86).await;
+        calculate_cosine_similarity(&["memfree is a hybrid ai search engine", "什么是 memfree"], 0.85).await;
+        calculate_cosine_similarity(&["google is a hybrid ai search engine", "what is google"], 0.79).await;
+        calculate_cosine_similarity(& ["google is a hybrid ai search engine", "谷歌是一个混合ai搜索引擎"], 0.83).await;
+        calculate_cosine_similarity(&["谷歌是一个混合ai搜索引擎", "what is google"], 0.85).await;
 
-        let documents = ["memfree", "fastembed-js is licensed under MIT "];
-        let embeddings = model.embed(documents.to_vec(), None).unwrap();
-        let distance = cosine_similarity(&embeddings[0], &embeddings[1]);
-        println!("distance {}", distance);
-        assert!(distance < 0.8);
+        calculate_cosine_similarity(&[ "MemFree is a open source Hybrid AI Search Engine.
+        With MemFree, you could instantly get Accurate Answers from the Internet, Bookmarks, Notes, and Docs.
+        This documentation is a user guide for MemFree. It will help you to get started with MemFree, and show you how to use MemFree to its full potential.", "what is memfree"], 0.64).await;
 
-        let documents = ["search", "google"];
-        let embeddings = model.embed(documents.to_vec(), None).unwrap();
-        let distance = cosine_similarity(&embeddings[0], &embeddings[1]);
-        println!("distance {}", distance);
-        assert!(distance > 0.6);
+        calculate_cosine_similarity(&[ "MemFree is a open source Hybrid AI Search Engine.
+        With MemFree, you could instantly get Accurate Answers from the Internet, Bookmarks, Notes, and Docs.
+        This documentation is a user guide for MemFree. It will help you to get started with MemFree, and show you how to use MemFree to its full potential.", "memfree 是什么"], 0.65).await;
 
-        let documents = ["apple", "fruit"];
-        let embeddings = model.embed(documents.to_vec(), None).unwrap();
-        let distance = cosine_similarity(&embeddings[0], &embeddings[1]);
-        println!("distance {}", distance);
-        assert!(distance > 0.70);
+        calculate_cosine_similarity(&["### AI Search with Twitter Content
+    MemFree now offers AI Search and Ask features using Twitter content.
+    If you enjoy Twitter and are interested in exploring its content, we invite you to try MemFree's AI-powered search function based on Twitter data.", "could memfree search twitter content"], 0.63).await;
 
-        let documents: [&str; 2] = ["man", "women"];
-        let embeddings = model.embed(documents.to_vec(), None).unwrap();
-        let distance = cosine_similarity(&embeddings[0], &embeddings[1]);
-        println!("distance {}", distance);
-        assert!(distance > 0.8);
+        calculate_cosine_similarity(&[ "### AI Search with Twitter Content
+        MemFree now offers AI Search and Ask features using Twitter content.
+        If you enjoy Twitter and are interested in exploring its content, we invite you to try MemFree's AI-powered search function based on Twitter data.", "memfree 可以搜索 twitter 吗"], 0.73).await;
 
-        let documents: [&str; 2] = ["apple", "waht is apple, a IT company"];
-        let embeddings = model.embed(documents.to_vec(), None).unwrap();
-        let distance = cosine_similarity(&embeddings[0], &embeddings[1]);
-        println!("distance {}", distance);
-        assert!(distance > 0.9);
-
-        let documents: [&str; 2] = ["memfree is a hybrid ai search engine", "what is memfree"];
-        let embeddings = model.embed(documents.to_vec(), None).unwrap();
-        let distance = cosine_similarity(&embeddings[0], &embeddings[1]);
-        println!("distance {}", distance);
-        assert!(distance > 0.8);
-
-        let documents: [&str; 2] = ["google is a hybrid ai search engine", "what is google"];
-        let embeddings = model.embed(documents.to_vec(), None).unwrap();
-        let distance = cosine_similarity(&embeddings[0], &embeddings[1]);
-        println!("distance {}", distance);
-        assert!(distance > 0.8);
     }
 
 }

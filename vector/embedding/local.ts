@@ -70,7 +70,7 @@ async function rerank(query: string, documents: string[]) {
 
 async function embedBatch(
   texts: string[],
-  batchSize: number = 10
+  batchSize: number = 16
 ): Promise<number[][]> {
   const batches = [];
   for (let i = 0; i < texts.length; i += batchSize) {
@@ -95,3 +95,19 @@ export class LocalEmbedding implements EmbeddingsInterface {
 }
 
 export const localEmbedding = new LocalEmbedding();
+
+// let documents = [
+//   "what is fastembed-js licensed",
+//   "fastembed-js is licensed under MIT ",
+//   "memfree is a ai search engine",
+//   "hybrid ai search engine",
+// ];
+
+// console.time("embedDocuments");
+// let embeddings = await localEmbedding.embedDocuments(documents);
+// console.timeEnd("embedDocuments");
+
+// let query = "what's the memfree";
+// console.time("embedQuery");
+// let query_embedding = await localEmbedding.embedQuery(query);
+// console.timeEnd("embedQuery");
