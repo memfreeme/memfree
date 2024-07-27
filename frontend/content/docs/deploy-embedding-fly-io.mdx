@@ -1,0 +1,56 @@
+---
+title: One Command Deploy Embedding Service on Fly.io
+description: How to deploy Embedding Service on Fly.io
+---
+
+## How to deploy Embedding Service on Zeabur
+
+You could refer to [One Click Deploy You Own Hybrid AI Search Engine](/docs/one-click-deploy-ai-search)
+
+## How to deploy Embedding Service on Zeabur on Fly.io
+
+<Steps>
+
+### Get Fly.io Account (Optional)
+
+-   Go to [Fly.io](https://fly.io) and create an account.
+
+### Install Flyctl (Optional)
+
+-   Install `flyctl` by following the instructions [here](https://fly.io/docs/flyctl/install/).
+
+### Clone MemFree Code From GitHub
+
+```js
+git clone https://github.com/memfreeme/memfree.git
+```
+
+### Deploy MemFree Vector Service
+
+```js
+cd embedding
+
+cp fly.example.toml fly.toml
+
+change the APP_NAME in fly.toml to your app name
+
+fly deploy
+
+fly secrets set API_TOKEN={your token}
+```
+
+</Steps>
+
+## The Advantages of deploying on Fly.io
+
+You could refer to [One Command Deploy Searxng on Fly.io](/docs/deploy-searxng-fly-io)
+
+## Why do you need to deploy your own embedding service?
+
+You could refer to [Hybrid AI Search 1 -- how to build fast embedding service](/blog/fast-local-embedding-service)
+
+The primary reason for deploying your own embedding service is performance. With a local embedding service, you can achieve results in **milliseconds**.
+
+For multilingual text embedding, I tested and found that the results of the `paraphrase-MiniLM-L6-v2` model are better than the openai `text-embedding-3-large` model.
+
+The last point is that your data privacy is more controllable.

@@ -73,7 +73,8 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 ### 3 One Command Backend with Fly.io
 
 - [One Command Deploy Searxng on Fly.io](https://www.memfree.me/docs/deploy-searxng-fly-io)
-- [One Command Deploy MemFree on Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
+- [One Command Deploy MemFree Vector on Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
+- [One Command Deploy MemFree Embedding on Fly.io](https://www.memfree.me/docs/deploy-embedding-fly-io)
 
 ## Self-Hosted Installation
 
@@ -172,4 +173,3 @@ MemFree is backed by [MemFree](https://www.memfree.me/) and licensed under [MIT]
 - [fastembed-rs](https://github.com/Anush008/fastembed-rs) – Library for generating vector embeddings, reranking in Rust
 - [next-saas-stripe-starter](https://github.com/mickasmt/next-saas-stripe-starter) – Open-source SaaS Starter with User Roles & Admin Panel.
 - [next-chrome-starter](https://github.com/ibnzUK/next-chrome-starter) – Next.js Chrome Extension Starter
-- [search_with_ai](https://github.com/yokingma/search_with_ai) – Free Search with AI

@@ -40,7 +40,6 @@ export class OpenAIChat implements LLMChat {
             });
 
             if (response.choices && response.choices.length > 0) {
-                console.log('result: ', response.choices[0].message.content);
                 return response.choices[0].message.content;
             } else {
                 throw new Error('No response choices available');

@@ -56,6 +56,10 @@ export const docsConfig: DocsConfig = {
                     title: 'Deploy MemFree On Fly.io',
                     href: '/docs/deploy-memfree-fly-io',
                 },
+                {
+                    title: 'Deploy Embedding On Fly.io',
+                    href: '/docs/deploy-embedding-fly-io',
+                },
             ],
         },
     ],
