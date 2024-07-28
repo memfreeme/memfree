@@ -44,6 +44,7 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 
 ## Update
 
+- **2024-07-26**: Support one command Embedding Service with fly.io
 - **2024-07-26**: Support AI Search with Twitter Content
 - **2024-07-25**: Support Rerank to get better answer when hybrid search
 - **2024-07-24**: Support context-based continuous search and questioning
