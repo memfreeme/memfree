@@ -61,11 +61,11 @@ const loadingButtonContent = `
         chrome.runtime.sendMessage(message, (response) => {
           console.log("response:", response);
           if (response.ok) {
-            alert(
-              "This web page indexed successfully! \nYou can now AI Search and Ask it's content on https://memfree.me"
+            showAlert(
+              'This Web Page Indexed successfully! <br>You can now AI Search and Ask its content on <a href="https://memfree.me" target="_blank">MemFree</a>'
             );
           } else {
-            alert("Failed to index web pages, please try again");
+            showAlert("Failed to index web pages, please try again");
           }
           button.innerHTML = svgButtonContent;
         });
@@ -74,6 +74,30 @@ const loadingButtonContent = `
   };
 
   document.body.appendChild(button);
+
+  const alertContainer = document.createElement("div");
+  alertContainer.id = "custom-alert-container";
+  alertContainer.innerHTML = `
+    <div id="custom-alert">
+      <div id="custom-alert-content">
+        <p id="custom-alert-message"></p>
+        <button id="custom-alert-ok">OK</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(alertContainer);
+
+  function showAlert(message) {
+    const alertContainer = document.getElementById("custom-alert-container");
+    const alertMessage = document.getElementById("custom-alert-message");
+    alertMessage.innerHTML = message;
+    alertContainer.style.display = "flex";
+
+    const alertOkButton = document.getElementById("custom-alert-ok");
+    alertOkButton.onclick = function () {
+      alertContainer.style.display = "none";
+    };
+  }
 })();
 
 window.addEventListener("message", (event) => {

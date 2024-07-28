@@ -51,3 +51,56 @@
     transform: rotate(360deg);
   }
 }
+
+#custom-alert-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+}
+
+#custom-alert {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 80%;
+  padding: 20px;
+  text-align: center;
+}
+
+#custom-alert-content p {
+  margin: 0 0 20px;
+}
+
+#custom-alert-ok {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 100%;
+  max-width: 100px;
+}
+
+#custom-alert-ok:hover {
+  background: #6d28d9;
+}
+
+#custom-alert-content a {
+  color: #8b5cf6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+#custom-alert-content a:hover {
+  text-decoration: underline;
+}
