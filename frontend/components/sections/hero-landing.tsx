@@ -25,7 +25,7 @@ export function HeroLanding() {
                     Notes, and Docs
                 </p>
 
-                <div className="flex justify-center py-4">
+                <div className="py-4">
                     <Link
                         href="https://chromewebstore.google.com/detail/memfree/dndjodcanbhkomcgihbhcejogiimdmpk"
                         target="_blank"
@@ -34,8 +34,10 @@ export function HeroLanding() {
                             buttonVariants({ size: 'lg', rounded: 'full' }),
                         )}
                     >
-                        <Icons.chrome className="mr-2 size-4" />
-                        <p>One Click Index Your Bookmarks and Web Pages</p>
+                        <Icons.chrome className="mr-2 size-4 md:size-4" />
+                        <p className="text-balance">
+                            One Click Index Your Bookmarks and Web Pages
+                        </p>
                     </Link>
                 </div>
             </div>

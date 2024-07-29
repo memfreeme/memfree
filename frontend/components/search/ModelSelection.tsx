@@ -11,6 +11,8 @@ import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI } from '@/lib/model';
+import { checkIsPro } from '@/lib/user-utils';
+import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
 type Model = {
     name: string;
@@ -64,6 +66,7 @@ export function ModelSelection() {
     }, [model]);
 
     const signInModal = useSigninModal();
+    const upgradeModal = useUpgradeModal();
     const user = useUserStore((state) => state.user);
 
     return (
@@ -74,6 +77,12 @@ export function ModelSelection() {
                 if (value) {
                     if (!user) {
                         signInModal.onOpen();
+                    } else if (modelMap[value].flag === 'Pro') {
+                        if (!checkIsPro(user)) {
+                            upgradeModal.onOpen();
+                        } else if (value !== model) {
+                            setModel(value);
+                        }
                     } else if (value !== model) {
                         setModel(value);
                     }

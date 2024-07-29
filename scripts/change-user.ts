@@ -15,6 +15,7 @@ async function updateUserPeriodEnd(email: string) {
   console.log("old user", user);
   const oneYearAgo = new Date();
   oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+  // oneYearAgo.setFullYear(oneYearAgo.getFullYear() + 1);
   user.stripeCurrentPeriodEnd = oneYearAgo;
   console.log("new user", user);
   await updateUser(userId, user);

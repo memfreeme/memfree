@@ -11,6 +11,8 @@ import { Globe } from 'lucide-react';
 import { useSourceStore, useUserStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { SearchCategory } from '@/lib/types';
+import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
+import { checkIsPro } from '@/lib/user-utils';
 
 type Source = {
     name: string;
@@ -68,6 +70,7 @@ export function SourceSelection() {
     }, [source]);
 
     const signInModal = useSigninModal();
+    const upgradeModal = useUpgradeModal();
     const user = useUserStore((state) => state.user);
 
     return (
@@ -78,6 +81,12 @@ export function SourceSelection() {
                 if (value) {
                     if (!user) {
                         signInModal.onOpen();
+                    } else if (sourceMap[value].flag === 'Pro') {
+                        if (!checkIsPro(user)) {
+                            upgradeModal.onOpen();
+                        } else if (value !== source) {
+                            setSource(value);
+                        }
                     } else if (value !== source) {
                         setSource(value);
                     }

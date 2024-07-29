@@ -12,16 +12,10 @@ export default async function MarketingLayout({
     children,
 }: MarketingLayoutProps) {
     const user = await getCurrentUser();
-
-    console.log('MarketingLayout user', user);
-
     return (
         <div className="flex min-h-screen flex-col">
             <Suspense fallback="...">
-                <SiteHeader
-                    user={user}
-                    items={marketingConfig.mainNav}
-                />
+                <SiteHeader user={user} items={marketingConfig.mainNav} />
             </Suspense>
             <main className="flex-1">{children}</main>
             <SimpleSiteFooter />

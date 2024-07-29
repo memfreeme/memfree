@@ -4,6 +4,7 @@ import { SignInModal } from '@/components/modal/sign-in-modal';
 import { SubscribeModal } from '@/components/modal/subscribe-model';
 import { useMounted } from '@/hooks/use-mounted';
 import { IndexModal } from './modal/index-model';
+import { UpgradeModal } from './modal/upgrade-model';
 
 export const ModalProvider = () => {
     const mounted = useMounted();
@@ -17,7 +18,7 @@ export const ModalProvider = () => {
             <SignInModal />
             <SubscribeModal />
             <IndexModal />
-            {/* add your own modals here... */}
+            <UpgradeModal />
         </>
     );
 };

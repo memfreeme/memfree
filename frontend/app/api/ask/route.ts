@@ -44,7 +44,11 @@ async function handleRephrasing(
     history: string,
     userId: string,
     controller: any,
+    isPro: boolean,
 ) {
+    if (!isPro) {
+        return query;
+    }
     let newQuery = query;
     if (history && history.length > 0 && userId) {
         newQuery = await rephraseQuery(query, history);
@@ -61,13 +65,14 @@ async function handleRephrasing(
 
 export async function POST(req: NextRequest) {
     const session = await auth();
-    console.log('ask session ', session);
     let userId = '';
     let isPro = false;
     if (session) {
         userId = session.user.id;
         isPro = checkIsPro(session.user);
-        console.log('isPro ', isPro);
+        if (isPro) {
+            console.log(session.user.id + ' is a pro user');
+        }
     } else {
         const ip = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').split(
             ',',
@@ -101,10 +106,13 @@ export async function POST(req: NextRequest) {
                     history,
                     userId,
                     controller,
+                    isPro,
                 );
+
                 await ask(
                     newQuery,
                     useCache,
+                    isPro,
                     userId,
                     streamController(controller),
                     mode,
@@ -131,6 +139,7 @@ export async function POST(req: NextRequest) {
 async function ask(
     query: string,
     useCache: boolean,
+    isPro: boolean,
     userId?: string,
     onStream?: (...args: any[]) => void,
     mode: AskMode = 'simple',
@@ -196,7 +205,7 @@ async function ask(
 
         await streamResponse({ sources: texts, images }, onStream);
 
-        if (texts.length > 10) {
+        if (texts.length > 10 && isPro) {
             const documents = texts.map((item) => item.content);
             const rerankedTexts = await rerank(query, documents);
             texts = rerankedTexts.map((rerankedDoc) => {

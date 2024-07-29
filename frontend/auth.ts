@@ -43,7 +43,6 @@ export const config = {
                     session.user.stripeCurrentPeriodEnd =
                         user.stripeCurrentPeriodEnd;
                 }
-                console.log('session user ', user);
             }
 
             return session;
