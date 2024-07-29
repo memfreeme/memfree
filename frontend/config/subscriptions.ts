@@ -5,7 +5,7 @@ export const pricingData: SubscriptionPlan[] = [
         title: 'Free',
         description: 'For Beginners',
         benefits: [
-            'Up to 10 Searches per day',
+            'Up to 10 Basic AI Searches per day',
             'Up to 10 bookmarks and web pages to index',
             'Support GPT-4o-mini AI Model',
             'Support Web and Chrome Extension',
@@ -24,7 +24,8 @@ export const pricingData: SubscriptionPlan[] = [
         title: 'Pro',
         description: 'Unlock Advanced Features',
         benefits: [
-            'Unlimited Basic AI Searches Per day',
+            'Unlimited Basic AI Searches Per Month',
+            'Up to 1000 Expert AI Searches Per Month',
             'Up to 1000 Bookmarks and Web Pages to Index',
             'Support GPT-4o & Claude-3.5-sonnet AI Model',
             'Support Context-based Continuous Search',
@@ -44,8 +45,8 @@ export const pricingData: SubscriptionPlan[] = [
         title: 'Premium',
         description: 'For Power Users',
         benefits: [
-            'Unlimited Basic AI Searches Per day',
-            'Unlimited Expert AI Searches Per day',
+            'Unlimited Basic AI Searches Per Month',
+            'Unlimited Expert AI Searches Per Month',
             'Unlimited Bookmarks and Web Pages to Index',
             'Priority customer support',
         ],
