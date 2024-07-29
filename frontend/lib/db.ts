@@ -16,6 +16,8 @@ export const TOTAL_INDEX_COUNT_KEY = 't_index_count:';
 export const SEARCH_COUNT_KEY = 's_count:';
 export const TOTAL_SEARCH_COUNT_KEY = 't_s_count:';
 
+const REDEEM_CODES_SET_KEY = 'redeem_codes';
+
 export const redisDB = new Redis({
     url: process.env.UPSTASH_REDIS_REST_URL!,
     token: process.env.UPSTASH_REDIS_REST_TOKEN!,
@@ -85,4 +87,22 @@ export async function getUserStatistics(
         indexCount as string,
         searchCount as string,
     ];
+}
+
+export async function isCodeExist(code: string) {
+    return redisDB.sismember(REDEEM_CODES_SET_KEY, code);
+}
+
+export async function deleteCodeKey(code: string) {
+    return redisDB.srem(REDEEM_CODES_SET_KEY, code);
+}
+
+async function deleteKey(key: string): Promise<boolean> {
+    try {
+        const result = await redisDB.del(key);
+        return result > 0;
+    } catch (err) {
+        console.error('Error deleting key:', err);
+        return false;
+    }
 }

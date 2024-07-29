@@ -12,10 +12,12 @@ if (!redisUrl || !redisToken) {
 export const redisDB = new Redis({
   url: redisUrl,
   token: redisToken,
+  enableAutoPipelining: true,
 });
 
 export const TOTAL_INDEX_COUNT_KEY = "t_index_count:";
 export const TOTAL_SEARCH_COUNT_KEY = "t_s_count:";
+export const REDEEM_CODES_SET_KEY = "redeem_codes";
 
 async function PrefixScan(prefix: string) {
   let cursor: string = "0";
@@ -66,4 +68,35 @@ export async function getTotalIndexCount() {
 export async function getTotalSearchCount() {
   const count = await getCount(TOTAL_SEARCH_COUNT_KEY);
   console.log("Total search count:", count);
+}
+
+import * as fs from "fs";
+import * as readline from "readline";
+export async function insertCodesIntoRedisSet(filePath: string) {
+  const fileStream = fs.createReadStream(filePath);
+
+  const rl = readline.createInterface({
+    input: fileStream,
+    crlfDelay: Infinity,
+  });
+
+  try {
+    for await (const line of rl) {
+      redisDB.sadd(REDEEM_CODES_SET_KEY, line);
+    }
+    const count = await redisDB.scard(REDEEM_CODES_SET_KEY);
+    console.log(`Total elements in set '${REDEEM_CODES_SET_KEY}':`, count);
+    console.log(`Successfully inserted codes from ${filePath} into Redis set.`);
+  } catch (error) {
+    console.error("Error inserting codes into Redis set:", error);
+  }
+}
+
+export async function getSetSize() {
+  const count = await redisDB.scard(REDEEM_CODES_SET_KEY);
+  console.log(`Total elements in set '${REDEEM_CODES_SET_KEY}':`, count);
+}
+
+export async function isCodeExist(code: string) {
+  return redisDB.sismember(REDEEM_CODES_SET_KEY, code);
 }

@@ -60,8 +60,6 @@ export async function POST(req: Request) {
         const fullUrl = `${vectorIndexHost}/api/vector/callback`;
 
         const requests = urls.map((url) => {
-            const timerLabel = `Index ${url}`;
-
             return fetch(fullUrl, {
                 method: 'POST',
                 headers: {
