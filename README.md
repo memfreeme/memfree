@@ -2,6 +2,8 @@
 
 <a href="https://www.memfree.me">
   <img alt="memfree – Hybrid AI Search Engine: Instantly Get Accurate Answers from the Internet, Bookmarks, Notes, and Docs" src=".assets/memfree-preview.gif" width="100%">
+</a>
+<a href="https://www.memfree.me">
   <h1 align="center">MemFree</h1>
   <p align="center"><b>An Open Source Hybrid AI Search Engine</b></p>
 </a>
@@ -47,7 +49,7 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 
 ## Update
 
-- **2024-07-26**: Support one command Embedding Service with fly.io
+- **2024-07-28**: Support one command Embedding Service with fly.io
 - **2024-07-26**: Support AI Search with Twitter Content
 - **2024-07-25**: Support Rerank to get better answer when hybrid search
 - **2024-07-24**: Support context-based continuous search and questioning

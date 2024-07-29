@@ -9,6 +9,17 @@ if (!redisUrl || !redisToken) {
   );
 }
 
+export interface User {
+  id: string;
+  name: string;
+  email?: string;
+  image?: string;
+  stripePriceId?: string;
+  stripeSubscriptionId?: string;
+  stripeCustomerId?: string;
+  stripeCurrentPeriodEnd?: Date;
+}
+
 export const redisDB = new Redis({
   url: redisUrl,
   token: redisToken,
@@ -99,4 +110,34 @@ export async function getSetSize() {
 
 export async function isCodeExist(code: string) {
   return redisDB.sismember(REDEEM_CODES_SET_KEY, code);
+}
+
+// user
+export const USER_KEY = "user:";
+export const USER_EMAIL_KEY = "user:email:";
+
+export const getUserById = async (id: string) => {
+  try {
+    const key = `${USER_KEY}${id}`;
+    const user: User | null = await redisDB.get(key);
+    return user;
+  } catch {
+    return null;
+  }
+};
+
+export async function updateUser(id: string, data: any) {
+  const userKey = `${USER_KEY}${id}`;
+  await redisDB.set(userKey, JSON.stringify(data));
+}
+
+export async function getUserIdByEmail(email: string) {
+  try {
+    const userId: string | null = await redisDB.get(
+      `${USER_EMAIL_KEY}${email}`
+    );
+    return userId;
+  } catch {
+    return null;
+  }
 }

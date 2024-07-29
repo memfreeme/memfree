@@ -2,7 +2,6 @@
 
 import React, { KeyboardEvent, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { useUser } from '@/hooks/use-user';
 import { Link, SendHorizontal } from 'lucide-react';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import {
@@ -15,6 +14,7 @@ import { useToast } from './ui/use-toast';
 import { ModelSelection } from './search/ModelSelection';
 import { SourceSelection } from './search/SourceSelection';
 import TextareaAutosize from 'react-textarea-autosize';
+import { useUserStore } from '@/lib/store';
 
 interface Props {
     handleSearch: (key: string) => void;
@@ -24,7 +24,9 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const [content, setContent] = useState<string>('');
     const signInModal = useSigninModal();
     const uploadModal = useIndexModal();
-    const user = useUser();
+    const user = useUserStore((state) => state.user);
+
+    console.log('SearchBar user', user);
 
     const handleInputChange = (value) => {
         setContent(value);

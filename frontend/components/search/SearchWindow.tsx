@@ -7,10 +7,9 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useSearchParams } from 'next/navigation';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '../Search';
-import { configStore } from '@/lib/store';
+import { configStore, useUserStore } from '@/lib/store';
 
 import { ImageSource, TextSource } from '@/lib/types';
-import { useUser } from '@/hooks/use-user';
 import { formatChatHistoryAsString } from '@/lib/utils';
 
 export function SearchWindow() {
@@ -30,7 +29,7 @@ export function SearchWindow() {
         }
     }, [q]);
 
-    const user = useUser();
+    const user = useUserStore((state) => state.user);
 
     const [chatHistory, setChatHistory] = useState<[string, string][]>([]);
     const chatHistoryRef = useRef(chatHistory);

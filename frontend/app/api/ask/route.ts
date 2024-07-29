@@ -61,12 +61,13 @@ async function handleRephrasing(
 
 export async function POST(req: NextRequest) {
     const session = await auth();
+    console.log('ask session ', session);
     let userId = '';
     let isPro = false;
     if (session) {
         userId = session.user.id;
-        // isPro = checkIsPro(session.user);
-        // console.log('isPro ', isPro);
+        isPro = checkIsPro(session.user);
+        console.log('isPro ', isPro);
     } else {
         const ip = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').split(
             ',',

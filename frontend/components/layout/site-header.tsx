@@ -6,32 +6,37 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Icons } from '@/components/shared/icons';
 import { siteConfig } from '@/config/site';
-import { usePathname, useSelectedLayoutSegment } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Button } from '../ui/button';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { MarketingMenu } from './mobile-menu';
 import { User } from 'next-auth';
 import { MainNavItem } from '@/types';
 import { UserAccountNav } from './user-account-nav';
+import { useUserStore } from '@/lib/store';
 
 interface NavBarProps {
-    user: Pick<User, 'name' | 'image' | 'email'> | undefined;
+    user: User;
     items?: MainNavItem[];
     children?: React.ReactNode;
     rightElements?: React.ReactNode;
     scroll?: boolean;
 }
 
-export default function SiteHeader({
-    user,
-    items,
-    children,
-    rightElements,
-    scroll = false,
-}: NavBarProps) {
+export default function SiteHeader({ user, items }: NavBarProps) {
     const pathname = usePathname();
-    const segment = useSelectedLayoutSegment();
     const signInModal = useSigninModal();
+    const setUser = useUserStore((state) => state.setUser);
+    const stateUser = useUserStore((state) => state.user);
+    React.useEffect(() => {
+        if (user != stateUser) {
+            setUser(user);
+            console.log('SiteHeader user', user);
+        }
+        if (user) {
+            window.postMessage({ user: user }, '*');
+        }
+    }, [setUser]);
 
     return (
         <header
@@ -70,7 +75,7 @@ export default function SiteHeader({
                 <MarketingMenu items={items} user={user} />
             </div>
             <div className="hidden md:flex items-center  gap-3 md:col-span-1 pr-4 mr-0">
-                {user ? (
+                {user?.id ? (
                     <UserAccountNav user={user} />
                 ) : (
                     <Button

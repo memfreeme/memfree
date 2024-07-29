@@ -8,9 +8,8 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Box } from 'lucide-react';
-import { useModelStore } from '@/lib/store';
+import { useModelStore, useUserStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { useUser } from '@/hooks/use-user';
 import { Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI } from '@/lib/model';
 
 type Model = {
@@ -65,7 +64,7 @@ export function ModelSelection() {
     }, [model]);
 
     const signInModal = useSigninModal();
-    const user = useUser();
+    const user = useUserStore((state) => state.user);
 
     return (
         <Select

@@ -8,9 +8,8 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Globe } from 'lucide-react';
-import { useSourceStore } from '@/lib/store';
+import { useSourceStore, useUserStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { useUser } from '@/hooks/use-user';
 import { SearchCategory } from '@/lib/types';
 
 type Source = {
@@ -69,7 +68,7 @@ export function SourceSelection() {
     }, [source]);
 
     const signInModal = useSigninModal();
-    const user = useUser();
+    const user = useUserStore((state) => state.user);
 
     return (
         <Select

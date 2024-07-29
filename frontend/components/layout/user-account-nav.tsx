@@ -13,20 +13,14 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { UserAvatar } from '@/components/shared/user-avatar';
-import { userStore } from '@/lib/store';
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
     user: Pick<User, 'name' | 'image' | 'email'>;
 }
 
 export function UserAccountNav({ user }: UserAccountNavProps) {
-    const logoutUser = userStore((state) => state.logoutUser);
-
     const handleSignOut = async (event: Event) => {
         event.preventDefault();
-
-        logoutUser();
-
         await signOut({});
     };
 

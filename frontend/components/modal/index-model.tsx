@@ -5,18 +5,18 @@ import { Textarea } from '@/components/ui/textarea';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import { useState } from 'react';
 import { LoadingButton } from '../ui/loading-button';
-import { useUser } from '@/hooks/use-user';
 import { cn, isValidUrl } from '@/lib/utils';
 import { useToast } from '../ui/use-toast';
 import { buttonVariants } from '../ui/button';
 import Link from 'next/link';
+import { useUserStore } from '@/lib/store';
 
 export const IndexModal = () => {
     const [url, setUrl] = useState('');
     const [isLoading, setLoading] = useState(false);
     const uploadModal = useIndexModal();
 
-    const user = useUser();
+    const user = useUserStore((state) => state.user);
     const { toast } = useToast();
 
     const handleIndex = async () => {
