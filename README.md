@@ -16,6 +16,9 @@
   <a href="https://github.com/memfreeme/memfree/issues">
     <img src="https://img.shields.io/github/commit-activity/m/memfreeme/memfree" alt="git commit activity" />
   </a>
+    <a href="https://chromewebstore.google.com/detail/memfree/dndjodcanbhkomcgihbhcejogiimdmpk">
+    <img src="https://img.shields.io/chrome-web-store/v/afpgkkipfdpeaflnpoaffkcankadgjfc?style=flat-square&color=blueviolet" alt="Chrome Web Store">
+  </a>
   <a href="https://discord.com/invite/7QqyMSTaRq">
     <img src="https://img.shields.io/badge/chat-on%20Discord-blueviolet" alt="Discord Channel" />
   </a>
