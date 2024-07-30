@@ -6,7 +6,7 @@ const API_TOKEN = process.env.API_TOKEN!;
 
 describe("/api/vector/search endpoint", () => {
   it("should return search results for a valid query", async () => {
-    const query = "memfree";
+    const query = "how memfree index web page";
 
     const response = await fetch(`${host}/api/vector/search`, {
       method: "POST",

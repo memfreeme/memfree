@@ -181,3 +181,5 @@ local_cache
 *.lance
 
 test
+
+fly.template.toml

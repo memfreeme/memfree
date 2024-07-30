@@ -205,7 +205,7 @@ async function ask(
 
         await streamResponse({ sources: texts, images }, onStream);
 
-        if (texts.length > 10 && isPro) {
+        if (texts.length > 10) {
             const documents = texts.map((item) => item.content);
             const rerankedTexts = await rerank(query, documents);
             texts = rerankedTexts.map((rerankedDoc) => {

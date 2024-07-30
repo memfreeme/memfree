@@ -98,23 +98,21 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "sendURL") {
-    const { urls, userId, markdown, title } = message.data;
+    const { url, userId, markdown, title } = message.data;
 
     (async () => {
       try {
         await keepAlive(true);
 
-        // const response = await fetch("https://www.memfree.me/api/index2", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({ urls, userId }),
-        // });
-
-        // const data = await response.json();
+        const response = await fetch("https://www.memfree.me/api/index-md", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ url, userId, markdown, title }),
+        });
+        const data = await response.json();
         console.log("markdown:", markdown);
-        console.log("title:", title);
         sendResponse({ ok: "ok", title });
       } catch (error) {
         console.error("Error sending URL:", error);

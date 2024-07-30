@@ -51,14 +51,14 @@ const loadingButtonContent = `
         const message = {
           action: "sendURL",
           data: {
-            urls: [window.location.href],
+            url: window.location.href,
             userId: result.user.id,
           },
         };
 
         button.innerHTML = loadingButtonContent;
 
-        extractMarkdown()
+        extractMarkdown(window.location.href)
           .then((markdown) => {
             message.data.markdown = markdown;
             message.data.title = document.title;
@@ -111,7 +111,7 @@ const loadingButtonContent = `
   }
 })();
 
-function extractMarkdown() {
+function extractMarkdown(baseUrl) {
   return new Promise((resolve, reject) => {
     try {
       const turndownService = new TurndownService();
@@ -141,6 +141,18 @@ function extractMarkdown() {
             const level = node.tagName.toLowerCase();
             const prefix = "#".repeat(parseInt(level[1]));
             return `${prefix} ${content}\n\n`;
+          },
+        },
+        {
+          name: "absolute-image-paths",
+          filter: "img",
+          replacement: (content, node) => {
+            const src = node.getAttribute("src");
+            if (src) {
+              const absoluteSrc = new URL(src, baseUrl).href;
+              return `![${node.getAttribute("alt") || ""}](${absoluteSrc})`;
+            }
+            return "";
           },
         },
       ];
