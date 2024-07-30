@@ -2,7 +2,7 @@ import { changeEmbedding, deleteUrl, search } from "./db";
 import { logError } from "./log";
 import { urlExists } from "./redis";
 import { isValidUrl } from "./util";
-import { build_vector_for_url } from "./web";
+import { build_vector_for_url, ingest_md } from "./ingest";
 
 const API_TOKEN = process.env.API_TOKEN!;
 function checkAuth(req: Request) {
@@ -66,6 +66,36 @@ export async function handleRequest(req: Request): Promise<Response> {
     } catch (error) {
       logError(error as Error, "index");
       return Response.json("Failed to search", { status: 500 });
+    }
+  }
+
+  if (path === "/api/index/md" && method === "POST") {
+    const { url, userId, markdown, title } = await req.json();
+    try {
+      if (!isValidUrl(url)) {
+        return Response.json("Invalid URL format", { status: 400 });
+      }
+
+      if (!userId || !markdown || !title) {
+        return Response.json("Invalid parameters", { status: 400 });
+      }
+
+      console.log(
+        "url",
+        url,
+        "userId",
+        userId,
+        "markdown",
+        markdown.length,
+        "title",
+        title
+      );
+
+      await ingest_md(url, userId, markdown, title);
+      return Response.json("Success");
+    } catch (error) {
+      logError(error as Error, "index-md");
+      return Response.json("Failed to index markdown", { status: 500 });
     }
   }
 

@@ -12,6 +12,41 @@ const splitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
   chunkOverlap: 20,
 });
 
+function extractImage(markdown: string) {
+  const imageRegex = /!\[.*?\]\((.*?)\)/;
+  const match = imageRegex.exec(markdown);
+  return match ? match[1] : null;
+}
+
+export async function ingest_md(
+  url: string,
+  userId: string,
+  markdown: string,
+  title: string
+) {
+  const documents = await splitter.createDocuments([markdown], [], {
+    appendChunkOverlapHeader: false,
+  });
+  const image = extractImage(markdown) || "";
+  console.log("image", image);
+
+  console.log(`Adding vectors for ${url} (${documents.length} documents)`);
+
+  console.time("addVectors");
+  const data = await addVectors(image, title, url, documents);
+  console.timeEnd("addVectors");
+
+  console.time("append");
+  const table = await append(userId, data);
+  console.timeEnd("append");
+
+  const indexCount = await addUrl(userId, url);
+  if (indexCount % TABLE_COMPACT_THRESHOLD === 0) {
+    await table.optimize({ cleanupOlderThan: new Date() });
+    console.log(`${userId} table optimized, index count: ${indexCount}`);
+  }
+}
+
 export async function build_vector_for_url(url: string, userId: string) {
   console.time("getMd");
   const markdown = await getMd(url);
@@ -60,6 +95,14 @@ async function addVectors(
 
   const data: Array<Record<string, unknown>> = [];
   for (let i = 0; i < documents.length; i += 1) {
+    if (image) {
+      const newImage = extractImage(documents[i].pageContent);
+      if (newImage) {
+        console.log("newImage", newImage);
+        image = newImage;
+      }
+    }
+
     const record = {
       create_time: Date.now(),
       title: title,
