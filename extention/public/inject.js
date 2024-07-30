@@ -44,26 +44,32 @@ const loadingButtonContent = `
   });
 
   button.onclick = function () {
-    chrome.storage.local.get(["user"], (result) => {
-      if (!result.user) {
-        window.location.href = "https://www.memfree.me/login";
-      } else {
-        const message = {
-          action: "sendURL",
-          data: {
-            url: window.location.href,
-            userId: result.user.id,
-          },
-        };
+    if (button.disabled) return;
+    button.disabled = true;
 
-        button.innerHTML = loadingButtonContent;
+    try {
+      chrome.storage.local.get(["user"], function (result) {
+        if (!result.user) {
+          window.location.href = "https://www.memfree.me/login";
+        } else {
+          const message = {
+            action: "sendURL",
+            data: {
+              url: window.location.href,
+              userId: result.user.id,
+            },
+          };
 
-        extractMarkdown(window.location.href)
-          .then((markdown) => {
-            message.data.markdown = markdown;
-            message.data.title = document.title;
+          button.innerHTML = loadingButtonContent;
 
-            chrome.runtime.sendMessage(message, (response) => {
+          extractMarkdown(window.location.href)
+            .then(function (markdown) {
+              message.data.markdown = markdown;
+              message.data.title = document.title;
+
+              return chrome.runtime.sendMessage(message);
+            })
+            .then(function (response) {
               console.log("response:", response);
               if (response.ok) {
                 showAlert(
@@ -72,16 +78,24 @@ const loadingButtonContent = `
               } else {
                 showAlert("Failed to index web pages, please try again");
               }
+            })
+            .catch(function (error) {
+              console.error(
+                "Error extracting markdown or sending message:",
+                error
+              );
+              showAlert("Failed to extract content, please try again");
+            })
+            .finally(function () {
               button.innerHTML = svgButtonContent;
+              button.disabled = false;
             });
-          })
-          .catch((error) => {
-            console.error("Error extracting markdown:", error);
-            showAlert("Failed to extract content, please try again");
-            button.innerHTML = svgButtonContent;
-          });
-      }
-    });
+        }
+      });
+    } catch (error) {
+      console.error("Error sending URL:", error);
+      button.disabled = false;
+    }
   };
 
   document.body.appendChild(button);
@@ -172,8 +186,6 @@ function extractMarkdown(baseUrl) {
       if (h1Index !== -1) {
         markdown = markdown.slice(h1Index + 1);
       }
-
-      console.log("markdown:", markdown);
       resolve(markdown);
     } catch (error) {
       console.error("Error extracting markdown:", error);

@@ -18,7 +18,7 @@ function extractImage(markdown: string) {
   return match ? match[1] : null;
 }
 
-export async function ingest_md(
+async function processIngestion(
   url: string,
   userId: string,
   markdown: string,
@@ -28,7 +28,6 @@ export async function ingest_md(
     appendChunkOverlapHeader: false,
   });
   const image = extractImage(markdown) || "";
-  console.log("image", image);
 
   console.log(`Adding vectors for ${url} (${documents.length} documents)`);
 
@@ -47,37 +46,23 @@ export async function ingest_md(
   }
 }
 
-export async function build_vector_for_url(url: string, userId: string) {
+export async function ingest_md(
+  url: string,
+  userId: string,
+  markdown: string,
+  title: string
+) {
+  await processIngestion(url, userId, markdown, title);
+}
+
+export async function ingest_url(url: string, userId: string) {
   console.time("getMd");
   const markdown = await getMd(url);
   console.timeEnd("getMd");
-  // const imageUrl = await getImage(url);
-  // const image = await uploadImage(imageUrl, url);
-  // TODO: Extract image from markdown
+
   const title = await extractTitle(markdown, url);
 
-  const documents = await splitter.createDocuments([markdown], [], {
-    appendChunkOverlapHeader: false,
-  });
-
-  console.log(`Adding vectors for ${url} (${documents.length} documents)`);
-
-  console.time("addVectors");
-  const data = await addVectors("", title, url, documents);
-  console.timeEnd("addVectors");
-
-  console.time("append");
-  const table = await append(userId, data);
-  console.timeEnd("append");
-
-  console.time("addUrl");
-  const indexCount = await addUrl(userId, url);
-  console.timeEnd("addUrl");
-
-  if (indexCount % TABLE_COMPACT_THRESHOLD === 0) {
-    await table.optimize({ cleanupOlderThan: new Date() });
-    console.log(`${userId} table optimized, index count: ${indexCount}`);
-  }
+  await processIngestion(url, userId, markdown, title);
 }
 
 async function addVectors(
@@ -95,12 +80,9 @@ async function addVectors(
 
   const data: Array<Record<string, unknown>> = [];
   for (let i = 0; i < documents.length; i += 1) {
-    if (image) {
-      const newImage = extractImage(documents[i].pageContent);
-      if (newImage) {
-        console.log("newImage", newImage);
-        image = newImage;
-      }
+    const newImage = image ? extractImage(documents[i].pageContent) : null;
+    if (newImage) {
+      image = newImage;
     }
 
     const record = {

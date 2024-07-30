@@ -112,7 +112,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           body: JSON.stringify({ url, userId, markdown, title }),
         });
         const data = await response.json();
-        console.log("markdown:", markdown);
         sendResponse({ ok: "ok", title });
       } catch (error) {
         console.error("Error sending URL:", error);

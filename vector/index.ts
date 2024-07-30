@@ -2,7 +2,7 @@ import { changeEmbedding, deleteUrl, search } from "./db";
 import { logError } from "./log";
 import { urlExists } from "./redis";
 import { isValidUrl } from "./util";
-import { build_vector_for_url, ingest_md } from "./ingest";
+import { ingest_url, ingest_md } from "./ingest";
 
 const API_TOKEN = process.env.API_TOKEN!;
 function checkAuth(req: Request) {
@@ -61,7 +61,7 @@ export async function handleRequest(req: Request): Promise<Response> {
         await deleteUrl(userId, url);
         console.log("url", url, "already exists for user", userId, "deleted");
       }
-      await build_vector_for_url(url, userId);
+      await ingest_url(url, userId);
       return Response.json("Success");
     } catch (error) {
       logError(error as Error, "index");
