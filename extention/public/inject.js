@@ -58,17 +58,28 @@ const loadingButtonContent = `
 
         button.innerHTML = loadingButtonContent;
 
-        chrome.runtime.sendMessage(message, (response) => {
-          console.log("response:", response);
-          if (response.ok) {
-            showAlert(
-              'This Web Page Indexed successfully! <br>You can now AI Search and Ask its content on <a href="https://memfree.me" target="_blank">MemFree</a>'
-            );
-          } else {
-            showAlert("Failed to index web pages, please try again");
-          }
-          button.innerHTML = svgButtonContent;
-        });
+        extractMarkdown()
+          .then((markdown) => {
+            message.data.markdown = markdown;
+            message.data.title = document.title;
+
+            chrome.runtime.sendMessage(message, (response) => {
+              console.log("response:", response);
+              if (response.ok) {
+                showAlert(
+                  'This Web Page Indexed successfully! <br>You can now AI Search and Ask its content on <a href="https://memfree.me" target="_blank">MemFree</a>'
+                );
+              } else {
+                showAlert("Failed to index web pages, please try again");
+              }
+              button.innerHTML = svgButtonContent;
+            });
+          })
+          .catch((error) => {
+            console.error("Error extracting markdown:", error);
+            showAlert("Failed to extract content, please try again");
+            button.innerHTML = svgButtonContent;
+          });
       }
     });
   };
@@ -99,6 +110,65 @@ const loadingButtonContent = `
     };
   }
 })();
+
+function extractMarkdown() {
+  return new Promise((resolve, reject) => {
+    try {
+      const turndownService = new TurndownService();
+      const rules = [
+        {
+          name: "remove-irrelevant",
+          filter: [
+            "meta",
+            "style",
+            "script",
+            "noscript",
+            "link",
+            "textarea",
+            "iframe",
+          ],
+          replacement: () => "",
+        },
+        {
+          name: "truncate-svg",
+          filter: "svg",
+          replacement: () => "",
+        },
+        {
+          name: "header",
+          filter: ["h1", "h2", "h3"],
+          replacement: (content, node) => {
+            const level = node.tagName.toLowerCase();
+            const prefix = "#".repeat(parseInt(level[1]));
+            return `${prefix} ${content}\n\n`;
+          },
+        },
+      ];
+
+      rules.forEach((rule) => turndownService.addRule(rule.name, rule));
+
+      const clonedDocument = document.cloneNode(true);
+      clonedDocument
+        .querySelectorAll(
+          "header, footer, .sidebar, .nav, #comments, .comments, #toc, .toc, .ads, .popup, .recommended, .related"
+        )
+        .forEach((element) => element.remove());
+
+      let markdown = turndownService.turndown(clonedDocument.body);
+
+      const h1Index = markdown.indexOf("\n# ");
+      if (h1Index !== -1) {
+        markdown = markdown.slice(h1Index + 1);
+      }
+
+      console.log("markdown:", markdown);
+      resolve(markdown);
+    } catch (error) {
+      console.error("Error extracting markdown:", error);
+      reject(error);
+    }
+  });
+}
 
 window.addEventListener("message", (event) => {
   if (event.source !== window) {

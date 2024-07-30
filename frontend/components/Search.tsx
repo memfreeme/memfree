@@ -26,8 +26,6 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const uploadModal = useIndexModal();
     const user = useUserStore((state) => state.user);
 
-    console.log('SearchBar user', user);
-
     const handleInputChange = (value) => {
         setContent(value);
     };

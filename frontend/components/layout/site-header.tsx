@@ -31,7 +31,6 @@ export default function SiteHeader({ user, items }: NavBarProps) {
     React.useEffect(() => {
         if (user != stateUser) {
             setUser(user);
-            console.log('SiteHeader user', user);
         }
         if (user) {
             window.postMessage({ user: user }, '*');
