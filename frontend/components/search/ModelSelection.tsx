@@ -63,7 +63,7 @@ export function ModelSelection() {
         if (initialModel && initialModel !== model) {
             setModel(initialModel);
         }
-    }, [model]);
+    }, [model, initModel, setModel]);
 
     const signInModal = useSigninModal();
     const upgradeModal = useUpgradeModal();

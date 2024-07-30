@@ -67,7 +67,7 @@ export function SourceSelection() {
         if (initialSource && initialSource !== source) {
             setSource(initialSource);
         }
-    }, [source]);
+    }, [source, initSource, setSource]);
 
     const signInModal = useSigninModal();
     const upgradeModal = useUpgradeModal();

@@ -35,7 +35,7 @@ export default function SiteHeader({ user, items }: NavBarProps) {
         if (user) {
             window.postMessage({ user: user }, '*');
         }
-    }, [setUser]);
+    }, [setUser, stateUser, user]);
 
     return (
         <header
