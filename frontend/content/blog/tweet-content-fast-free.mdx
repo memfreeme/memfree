@@ -1,0 +1,102 @@
+---
+title: Hybrid AI Search 4 - Get tweet content fast and free
+description: How to get tweet content fast and free
+image: /images/blog/blog-post-3.jpg
+date: '2024-07-31'
+authors:
+    - MemFree
+---
+
+At the beginning, I used https://jina.ai/reader/ to convert any web page into markdown format, split it and store it in the vector database
+
+## The issues of Jina Reader
+
+I found two issues with indexing Twitter content:
+
+1. Jina Reader returns a lot of useless information, you can refer to https://r.jina.ai/https://x.com/ahaapple2023/status/1816118637696279006
+2. Jina Reader has a high latency, **occasionally up to 1 minute**, and most of the time it takes 1 or 2 seconds
+
+## How to get tweet content fast and free
+
+### 1 Use Twitter API
+
+which is too expensive.
+
+### 2 Use Exa API
+
+```ts
+import Exa from 'exa-js';
+
+const exa = new Exa('API_TOKEN');
+
+const result = await exa.getContents(
+    ['https://x.com/ahaapple2023/status/1816118637696279006'],
+    {
+        text: true,
+    },
+);
+```
+
+This is faster, but costs $1 for every 1,000 requests, and only displays plain text content. I also need to return the image associated with each tweet.
+
+### 3. Use cdn.syndication.twimg.com API
+
+https://cdn.syndication.twimg.com/tweet-result?id=1818291443049615786&lang=en&features=tfw_timeline_list%3A%3Btfw_follower_count_sunset%3Atrue%3Btfw_tweet_edit_backend%3Aon%3Btfw_refsrc_session%3Aon%3Btfw_fosnr_soft_interventions_enabled%3Aon%3Btfw_show_birdwatch_pivots_enabled%3Aon%3Btfw_show_business_verified_badge%3Aon%3Btfw_duplicate_scribes_to_settings%3Aon%3Btfw_use_profile_image_shape_enabled%3Aon%3Btfw_show_blue_verified_badge%3Aon%3Btfw_legacy_timeline_sunset%3Atrue%3Btfw_show_gov_verified_badge%3Aon%3Btfw_show_business_affiliate_badge%3Aon%3Btfw_tweet_edit_frontend%3Aon&token=6c2mmul6mnh
+
+You could change the id to the tweet id you want to get.
+
+**The interface is fast and free. The react-tweet library uses this interface**
+
+Below is my implementation of extracting tweet text and images. You are welcome to give a star
+
+https://github.com/memfreeme/memfree/blob/main/vector/tweet.ts
+
+### 4. Use document.title In chrome extension
+
+Finally, I found that **the fastest, easiest, free, and unlimited method is document.title**.
+
+In the Chrome extension, you can directly get document.title. Its content is the same as the text content you get through `cdn.syndication.twimg.com`
+
+You could refer to https://github.com/memfreeme/memfree/blob/main/extention/public/inject.js#L68
+
+### 5. Use the puppeteer and puppeteer-extra-plugin-stealth
+
+When we found that document.title can get the text content of Twitter, a natural idea is to crawl this web page and get the title.
+
+It should be noted that using puppeteer directly in headless mode does not work. We need to use `puppeteer-extra` and `puppeteer-extra-plugin-stealth` to simulate real user requests.
+
+The sample code is as follows:
+
+```ts
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+
+puppeteer.use(StealthPlugin());
+
+(async () => {
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+
+    await page.setUserAgent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    );
+    await page.setViewport({ width: 1280, height: 800 });
+
+    await page.goto('https://x.com/ahaapple2023/status/1818291443049615786', {
+        waitUntil: 'networkidle2',
+        timeout: 60000,
+    });
+
+    await page.waitForSelector('title');
+    const title = await page.title();
+    console.log(title);
+    await browser.close();
+})();
+```
+
+## Series of Hybird AI Search
+
+-   [Hybird AI Search 1 - How to build Fast Embedding Service](https://www.memfree.me/blog/fast-local-embedding-service)
+-   [Hybrid AI Search 2 - How to build Serverless Vector Search with LanceDB](https://www.memfree.me/blog/serverless-vector-search-lancedb)
+-   [Hybrid AI Search 3 - The Full Tech Stack](https://www.memfree.me/blog/hybrid-ai-search-tech-stack)
+-   [Hybrid AI Search 4 - Get tweet content fast and free](https://www.memfree.me/blog/tweet-content-fast-free)
