@@ -24,7 +24,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
         <div className="relative group">
             <pre
                 ref={ref}
-                className={`pt-4 relative ${className ?? ''}`}
+                className={`p-0 relative ${className ?? ''}`}
                 {...props}
             >
                 {children}
