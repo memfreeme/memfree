@@ -150,6 +150,7 @@ export const IndexModal = () => {
                 <LoadingButton
                     className="rounded-full"
                     loading={isLoading}
+                    variant={'outline'}
                     onClick={handleIndex}
                 >
                     Index Web Page
@@ -163,8 +164,11 @@ export const IndexModal = () => {
                         }),
                     )}
                 >
-                    <p>Index Chrome BookMarks</p>
+                    <p>Index Web Page By Chrome Extension</p>
                 </Link>
+                <p className="text-center text-sm">
+                    Chrome Extension for faster indexing and better quality
+                </p>
             </div>
         </Modal>
     );
