@@ -8,8 +8,7 @@ import '../../styles/highlight.css';
 import 'katex/dist/katex.min.css';
 import { TextSource } from '@/lib/types';
 import { InlineCitation } from './InlineCitation';
-import { useToast } from '../ui/use-toast';
-import { Copy } from 'lucide-react';
+import MemoizedCodeBlock from './CodeBlock';
 
 const processNodeWithCitations = (
     nodeContent: string,
@@ -52,57 +51,6 @@ const processNodeWithCitations = (
 
     return elements.filter((element) => element);
 };
-
-interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {
-    children: React.ReactNode;
-}
-
-const CodeBlock: React.FC<CodeBlockProps> = ({
-    className,
-    children,
-    ...props
-}) => {
-    const ref = useRef<HTMLPreElement>(null);
-    const { toast } = useToast();
-
-    const copyToClipboard = (text) => {
-        navigator.clipboard
-            .writeText(text)
-            .then(() => {
-                toast({
-                    description: 'Copied to clipboard!',
-                });
-            })
-            .catch((err) => {
-                console.error('Failed to copy text: ', err);
-            });
-    };
-
-    return (
-        <div className="relative">
-            <pre
-                ref={ref}
-                className={`pt-4 relative ${className ?? ''}`}
-                {...props}
-            >
-                {children}
-            </pre>
-            <span
-                className="absolute top-4 right-4 cursor-pointer text-white hover:text-primary"
-                onClick={() => {
-                    if (ref.current) {
-                        const code = ref.current.innerText;
-                        copyToClipboard(code);
-                    }
-                }}
-            >
-                <Copy size={28} />
-            </span>
-        </div>
-    );
-};
-
-const MemoizedCodeBlock = memo(CodeBlock);
 
 function MyMarkdown({
     content,
