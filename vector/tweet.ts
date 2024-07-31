@@ -31,15 +31,17 @@ export async function fetchTweetContent(tweetId: string) {
     console.time("getTweet");
     const tweet = await getTweet(tweetId);
     console.timeEnd("getTweet");
+
     if (!tweet || typeof tweet !== "object" || tweet.text === undefined) {
       logError(`Invalid tweet for ${tweetId}`, "tweet");
       return null;
     }
 
-    let image = tweet?.photos?.[0]?.url;
-    if (!image) {
-      image = tweet?.video?.poster;
-    }
+    let image =
+      tweet?.photos?.[0]?.url ??
+      tweet?.video?.poster ??
+      (tweet as any)?.card?.binding_values?.player_image_large?.image_value
+        ?.url;
     console.log("image", image);
 
     const tweetContent = `Tweet from @${
@@ -49,7 +51,7 @@ export async function fetchTweetContent(tweetId: string) {
     console.log("tweetContent", tweetContent);
     return { image, tweetContent };
   } catch (error) {
-    console.error("Error fetching tweet:", error);
+    logError(`Error fetching tweet ${tweetId} ${error}`, "tweet");
     return null;
   }
 }
