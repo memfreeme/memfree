@@ -6,6 +6,7 @@ import { getMd } from "./util";
 import { addUrl } from "./redis";
 import { TABLE_COMPACT_THRESHOLD } from "./config";
 import { getEmbedding } from "./embedding/embedding";
+import { processTweet } from "./tweet";
 
 const splitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
   chunkSize: 400,
@@ -22,12 +23,16 @@ async function processIngestion(
   url: string,
   userId: string,
   markdown: string,
-  title: string
+  title: string,
+  image: string
 ) {
   const documents = await splitter.createDocuments([markdown], [], {
     appendChunkOverlapHeader: false,
   });
-  const image = extractImage(markdown) || "";
+
+  if (!image) {
+    image = extractImage(markdown) || "";
+  }
 
   console.log(`Adding vectors for ${url} (${documents.length} documents)`);
 
@@ -52,17 +57,23 @@ export async function ingest_md(
   markdown: string,
   title: string
 ) {
-  await processIngestion(url, userId, markdown, title);
+  const { image, markdown: newMarkdown } = await processTweet(url);
+  if (newMarkdown) {
+    markdown = newMarkdown;
+  }
+  await processIngestion(url, userId, markdown, title, image ?? "");
 }
 
 export async function ingest_url(url: string, userId: string) {
-  console.time("getMd");
-  const markdown = await getMd(url);
-  console.timeEnd("getMd");
+  let { image, markdown, title } = await processTweet(url);
 
-  const title = await extractTitle(markdown, url);
-
-  await processIngestion(url, userId, markdown, title);
+  if (!markdown) {
+    console.time("getMd");
+    markdown = await getMd(url);
+    console.timeEnd("getMd");
+    title = await extractTitle(markdown, url);
+  }
+  await processIngestion(url, userId, markdown, title, image ?? "");
 }
 
 async function addVectors(

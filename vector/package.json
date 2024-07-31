@@ -15,6 +15,7 @@
     "@lancedb/lancedb": "^0.5.1",
     "@langchain/openai": "^0.2.5",
     "@langchain/textsplitters": "^0.0.2",
-    "@upstash/redis": "^1.31.5"
+    "@upstash/redis": "^1.31.5",
+    "react-tweet": "^3.2.1"
   }
 }
