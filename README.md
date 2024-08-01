@@ -49,6 +49,7 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 
 ## Update
 
+- **2024-08-01**: Add mdReader Service to convert any web page to markdown
 - **2024-07-31**: Improving the quality of indexing Twitter content
 - **2024-07-30**: Support Indexing of web pages that require login.
 - **2024-07-28**: Support one command Embedding Service with fly.io

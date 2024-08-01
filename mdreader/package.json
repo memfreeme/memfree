@@ -1,0 +1,23 @@
+{
+  "name": "mdreader",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.8",
+    "@types/bun": "latest",
+    "@types/jsdom": "^21.1.7",
+    "@types/turndown": "^5.0.5"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.5.0",
+    "jsdom": "^24.1.1",
+    "puppeteer": "^22.15.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "react-tweet": "^3.2.1",
+    "turndown": "^7.2.0"
+  }
+}
