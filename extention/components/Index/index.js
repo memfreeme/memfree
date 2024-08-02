@@ -78,6 +78,7 @@ export default function Index() {
   const [totalUrlsIndexed, setTotalUrlsIndexed] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  const [hasError, setHasError] = useState(false);
 
   const [nodes, setNodes] = useState([]);
   const [checked, setChecked] = useState([]);
@@ -117,10 +118,14 @@ export default function Index() {
   }, []);
 
   const updateProgress = () => {
-    chrome.storage.local.get(["progress", "totalUrlsIndexed"], (storage) => {
-      setProgressPercentage(storage.progress || 0);
-      setTotalUrlsIndexed(storage.totalUrlsIndexed || 0);
-    });
+    chrome.storage.local.get(
+      ["progress", "totalUrlsIndexed", "hasError"],
+      (storage) => {
+        setProgressPercentage(storage.progress || 0);
+        setTotalUrlsIndexed(storage.totalUrlsIndexed || 0);
+        setHasError(storage.hasError || false);
+      }
+    );
   };
 
   const handleChooseookmarks = () => {
@@ -221,9 +226,10 @@ export default function Index() {
 
   const isDisabled = () => {
     return (
-      !userInfo ||
-      isProcessing ||
-      (progressPercentage > 0 && progressPercentage < 100)
+      (!userInfo ||
+        isProcessing ||
+        (progressPercentage > 0 && progressPercentage < 100)) &&
+      !hasError
     );
   };
 
@@ -275,6 +281,12 @@ export default function Index() {
       {totalUrlsIndexed > 0 && (
         <div className="flex justify-center items-center result-info text-indigo-500 mt-4 text-sm font-medium">
           {`${totalUrlsIndexed} Bookmark Indexed`}
+        </div>
+      )}
+
+      {hasError && (
+        <div className="flex justify-center items-center result-info text-red-500 mt-4 text-sm font-medium">
+          Error occurred while processing bookmarks, please try again.
         </div>
       )}
 

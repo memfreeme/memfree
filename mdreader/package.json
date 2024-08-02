@@ -17,7 +17,6 @@
     "puppeteer": "^22.15.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
-    "react-tweet": "^3.2.1",
     "turndown": "^7.2.0"
   }
 }

@@ -57,9 +57,7 @@ export async function handleRequest(req: Request): Promise<Response> {
         return Response.json("Invalid URL format", { status: 400 });
       }
       if (await urlExists(userId, url)) {
-        console.log("url", url, "already exists for user", userId, "deleting");
         await deleteUrl(userId, url);
-        console.log("url", url, "already exists for user", userId, "deleted");
       }
       await ingest_url(url, userId);
       return Response.json("Success");

@@ -9,6 +9,7 @@ import {
 } from "apache-arrow";
 import { DIMENSIONS } from "./config";
 import { getEmbedding } from "./embedding/embedding";
+import { retryAsync } from "./util";
 
 const schema = new Schema([
   new Field("create_time", new Float64(), true),
@@ -52,7 +53,8 @@ async function getTable(db: any, tableName: string): Promise<lancedb.Table> {
 export async function deleteUrl(tableName: string, url: string) {
   const db = await getConnection();
   const table = await getTable(db, tableName);
-  await table.delete(`url == "${url}"`);
+  await retryAsync(() => table.delete(`url == "${url}"`));
+  console.log("url", url, "already exists for user", tableName, "deleted");
 }
 
 export async function append(tableName: string, data: lancedb.Data) {

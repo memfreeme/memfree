@@ -3,20 +3,39 @@ import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
 import { browserService } from "./browser";
 
+async function createNewPageWithRetry(url: string, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const page = await browserService.newPage();
+      await page.goto(url, {
+        waitUntil: "networkidle2",
+        timeout: 60000,
+      });
+      return page;
+    } catch (error) {
+      if (i === retries - 1) {
+        throw error;
+      }
+      console.warn(`Attempt ${url} ${i + 1} failed, retrying...`);
+    }
+  }
+}
+
 export async function urlToMarkdown(url: string): Promise<string> {
   console.time("puppeteer");
-  const page = await browserService.newPage();
-  await page.goto(url, {
-    waitUntil: "networkidle2",
-    timeout: 60000,
-  });
+  const page = await createNewPageWithRetry(url);
+  if (!page) {
+    throw new Error("Failed to create new page");
+  }
   const documentContent = await page.evaluate(
     () => document.documentElement.outerHTML
   );
   console.timeEnd("puppeteer");
 
   console.time("dom");
-  const dom = new JSDOM(documentContent);
+  const dom = new JSDOM(documentContent, {
+    url: url,
+  });
   console.timeEnd("dom");
 
   console.time("Readability");
@@ -28,7 +47,6 @@ export async function urlToMarkdown(url: string): Promise<string> {
   const article = reader.parse();
   console.timeEnd("Readability");
 
-  console.time("turndown");
   const turndownService = new TurndownService();
   const rules = [
     {
@@ -56,7 +74,12 @@ export async function urlToMarkdown(url: string): Promise<string> {
   rules.forEach((rule) => turndownService.addRule(rule.name, rule as any));
 
   let markdown = turndownService.turndown(article?.content || "");
-  console.timeEnd("turndown");
+  console.log(
+    "article length",
+    article?.content.length,
+    " markdown length ",
+    markdown.length
+  );
   await page.close();
   return markdown;
 }

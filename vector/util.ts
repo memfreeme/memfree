@@ -2,28 +2,64 @@ export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+export async function retryAsync<T>(
+  fn: () => Promise<T>,
+  retries: number = 3,
+  delayFactor: number = 1000
+) {
+  let attempt = 0;
+
+  while (attempt < retries) {
+    try {
+      return await fn();
+    } catch (error) {
+      attempt++;
+      if (attempt < retries) {
+        const delay = Math.pow(2, attempt) * delayFactor; // Exponential backoff: 1s, 2s, 4s, ...
+        console.log(
+          `Attempt ${attempt} failed. Retrying in ${delay / 1000} seconds...`
+        );
+        await sleep(delay);
+      } else {
+        console.error(`Failed after ${retries} attempts:`, error);
+        throw error;
+      }
+    }
+  }
+}
+
 export async function fetchWithRetry(
   url: string,
   options = {},
   retries = 3,
   delay = 1000
-): Promise<Response> {
+): Promise<string> {
   for (let i = 0; i < retries; i++) {
     try {
       const response = await fetch(url, options);
-      if (!response.ok)
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      return response;
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(
+          "Error during fetch md ",
+          url,
+          response.status,
+          errorText
+        );
+        throw new Error(
+          `Error during fetch md, ${url},  ${response.status}, ${errorText}`
+        );
+      }
+      return response.text();
     } catch (error) {
       if (i === retries - 1) throw error; // If last retry fails, propagate the error
       console.error(
-        `Attempt ${i + 1} failed: ${error}. Retrying in ${delay}ms...`
+        `Attempt ${url} ${i + 1} failed: ${error}. Retrying in ${delay}ms...`
       );
       await sleep(delay);
       delay *= 2; // Exponential backoff
     }
   }
-  return new Response(null);
+  return "";
 }
 
 export function isValidUrl(input: string): boolean {
@@ -45,17 +81,29 @@ function removeImageLinksAndUrls(mdText: string): string {
 
 const jinaToken = process.env.JINA_KEY || "";
 
-export async function getMd(url: string) {
-  const new_url = "https://r.jina.ai/" + url;
+function getMdReaderUrl(url: string, useFallback: boolean = false) {
+  if (!useFallback && process.env.MD_READER_URL) {
+    return `${process.env.MD_READER_URL}${url}`;
+  } else {
+    return `https://r.jina.ai/${url}`;
+  }
+}
 
+export async function getMd(url: string) {
+  const primaryUrl = getMdReaderUrl(url);
+  const fallbackUrl = getMdReaderUrl(url, true);
+
+  const headers = jinaToken ? { Authorization: `Bearer ${jinaToken}` } : {};
   try {
-    const headers = jinaToken ? { Authorization: `Bearer ${jinaToken}` } : {};
-    const res = await fetchWithRetry(new_url, { headers }, 3, 1000);
-    const text = await res.text();
-    const md = removeImageLinksAndUrls(text);
-    return md;
-  } catch (error) {
-    console.error("Failed to fetch markdown:", error);
-    throw error; // Re-throw so that caller knows this failed
+    return await fetchWithRetry(primaryUrl, { headers }, 2, 1000);
+  } catch (primaryError) {
+    console.error("Primary URL failed:", primaryError);
+    try {
+      return await fetchWithRetry(fallbackUrl, { headers }, 2, 1000);
+    } catch (fallbackError) {
+      console.error("Fallback URL failed:", fallbackError);
+      // Which should be a invalid url
+      return url;
+    }
   }
 }

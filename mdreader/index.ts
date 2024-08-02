@@ -14,7 +14,10 @@ export async function handleRequest(req: Request): Promise<Response> {
         const markdown = await urlToMarkdown(targetUrl);
         return new Response(markdown);
       } catch (error) {
-        return new Response("Failed to fetch markdown", { status: 400 });
+        console.error(`Failed to fetch markdown ${error}`);
+        return new Response(`Failed to fetch markdown ${error}`, {
+          status: 400,
+        });
       }
     }
     return new Response("Welcome to mdreader");
@@ -27,7 +30,6 @@ const server = serve({
   fetch: handleRequest,
 });
 
-await browserService.init();
 console.log(`Server is running on port ${server.port}`);
 
 process.on("SIGINT", async () => {

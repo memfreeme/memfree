@@ -76,6 +76,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     (async () => {
       try {
         await keepAlive(true);
+        await setItem("hasEoor", false);
 
         await setItem("progress", 1);
         const simplifiedBookmarks = await processSelectedBookmarks(
@@ -86,6 +87,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 
         console.log("Bookmarks index finished");
       } catch (error) {
+        await setItem("hasEoor", true);
         console.error("Error processing bookmarks:", error);
       } finally {
         await keepAlive(false);
