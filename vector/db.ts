@@ -52,8 +52,10 @@ async function getTable(db: any, tableName: string): Promise<lancedb.Table> {
 
 export async function deleteUrl(tableName: string, url: string) {
   const db = await getConnection();
-  const table = await getTable(db, tableName);
-  await retryAsync(() => table.delete(`url == "${url}"`));
+  await retryAsync(async () => {
+    const table = await getTable(db, tableName);
+    await table.delete(`url == "${url}"`);
+  });
   console.log("url", url, "already exists for user", tableName, "deleted");
 }
 

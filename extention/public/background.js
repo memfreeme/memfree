@@ -48,7 +48,7 @@ chrome.runtime.onStartup.addListener(() => {
   handleStartup();
 });
 
-async function sendBookmarksInBatches(bookmarks, batchSize = 10) {
+async function sendBookmarksInBatches(bookmarks, batchSize = 5) {
   try {
     const userId = await getUserId();
     if (!userId) {
@@ -83,7 +83,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
           request.items.bookmarks
         );
         console.log("Processed bookmarks:", simplifiedBookmarks);
-        await sendBookmarksInBatches(simplifiedBookmarks, 10);
+        await sendBookmarksInBatches(simplifiedBookmarks, 5);
 
         console.log("Bookmarks index finished");
       } catch (error) {

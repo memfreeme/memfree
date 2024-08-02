@@ -3,13 +3,13 @@ import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
 import { browserService } from "./browser";
 
-async function createNewPageWithRetry(url: string, retries = 3) {
+async function createNewPageWithRetry(url: string, retries = 1) {
   for (let i = 0; i < retries; i++) {
     try {
       const page = await browserService.newPage();
       await page.goto(url, {
         waitUntil: "networkidle2",
-        timeout: 60000,
+        timeout: 10000,
       });
       return page;
     } catch (error) {

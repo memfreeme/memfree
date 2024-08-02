@@ -1,3 +1,5 @@
+import { log } from "./log";
+
 export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -17,7 +19,7 @@ export async function retryAsync<T>(
       if (attempt < retries) {
         const delay = Math.pow(2, attempt) * delayFactor; // Exponential backoff: 1s, 2s, 4s, ...
         console.log(
-          `Attempt ${attempt} failed. Retrying in ${delay / 1000} seconds...`
+          `Attempt ${attempt} failed. Retrying in ${delay / 1000} seconds`
         );
         await sleep(delay);
       } else {
@@ -59,7 +61,7 @@ export async function fetchWithRetry(
       delay *= 2; // Exponential backoff
     }
   }
-  return "";
+  return url;
 }
 
 export function isValidUrl(input: string): boolean {
@@ -89,20 +91,30 @@ function getMdReaderUrl(url: string, useFallback: boolean = false) {
   }
 }
 
-export async function getMd(url: string) {
+export async function getMd(url: string, userId: string) {
   const primaryUrl = getMdReaderUrl(url);
   const fallbackUrl = getMdReaderUrl(url, true);
 
-  const headers = jinaToken ? { Authorization: `Bearer ${jinaToken}` } : {};
+  let headers: HeadersInit = { "X-Timeout": "10" };
+  if (jinaToken) {
+    headers = { ...headers, Authorization: `Bearer ${jinaToken}` };
+  }
+
   try {
-    return await fetchWithRetry(primaryUrl, { headers }, 2, 1000);
+    return await fetchWithRetry(primaryUrl, { headers }, 1, 1000);
   } catch (primaryError) {
     console.error("Primary URL failed:", primaryError);
     try {
-      return await fetchWithRetry(fallbackUrl, { headers }, 2, 1000);
+      return await fetchWithRetry(fallbackUrl, { headers }, 1, 1000);
     } catch (fallbackError) {
       console.error("Fallback URL failed:", fallbackError);
-      // Which should be a invalid url
+      log({
+        service: "vector",
+        action: `error-md`,
+        error: `fallbackError`,
+        url: url,
+        userId: userId,
+      });
       return url;
     }
   }

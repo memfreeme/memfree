@@ -69,7 +69,7 @@ export async function ingest_url(url: string, userId: string) {
 
   if (!markdown) {
     console.time("getMd");
-    markdown = await getMd(url);
+    markdown = await getMd(url, userId);
     console.timeEnd("getMd");
     title = await extractTitle(markdown, url);
   }
