@@ -10,6 +10,7 @@ export const redis = new Redis({
 });
 
 export const URLS_KEY = "urls:";
+export const ERROR_URLS_KEY = "error_urls:";
 export const INDEX_COUNT_KEY = "index_count:";
 export const TOTAL_INDEX_COUNT_KEY = "t_index_count:";
 
@@ -32,6 +33,11 @@ export async function addUrl(userId: string, url: string): Promise<number> {
     incrTotalIndexCountResult
   );
   return incrIndexCountResult;
+}
+
+export async function addErrorUrl(userId: string, url: string) {
+  const date = Date.now();
+  await redis.zadd(ERROR_URLS_KEY + userId, { score: date, member: url });
 }
 
 export async function getLatestUrl(userId: string): Promise<string | null> {

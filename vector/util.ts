@@ -111,7 +111,7 @@ export async function getMd(url: string, userId: string) {
       log({
         service: "vector",
         action: `error-md`,
-        error: `fallbackError`,
+        error: fallbackError,
         url: url,
         userId: userId,
       });

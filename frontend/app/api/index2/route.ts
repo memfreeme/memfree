@@ -1,4 +1,5 @@
 import { getUserById } from '@/lib/db';
+import { log } from '@/lib/log';
 import { NextResponse } from 'next/server';
 
 const API_TOKEN = process.env.API_TOKEN!;
@@ -71,16 +72,23 @@ export async function POST(req: Request) {
                 .then((response) => {
                     if (!response.ok) {
                         console.error(
-                            `Index Error! status: ${response.status}`,
+                            `Index Url Error! status: ${response.status}`,
                         );
                         throw new Error(
-                            `Index Error! status: ${response.status}`,
+                            `Index Url Error! status: ${response.status}`,
                         );
                     }
                     return response.json();
                 })
                 .then((result) => ({ url, result }))
                 .catch((error) => {
+                    log({
+                        service: 'index-url',
+                        action: `error-index-url`,
+                        error: `${error}`,
+                        url: url,
+                        userId: userId,
+                    });
                     console.error(`Error for ${url}:`, error);
                     return { url, error: error.message };
                 });
@@ -102,7 +110,7 @@ export async function POST(req: Request) {
             failedUrls: failedUrls.map((r) => ({ url: r.url, error: r.error })),
         });
     } catch (error) {
-        console.error('Request failed:', error);
+        console.error('Index Request failed:', error);
         return NextResponse.json({ error: `${error}` }, { status: 500 });
     }
 }

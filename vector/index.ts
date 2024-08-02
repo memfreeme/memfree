@@ -1,6 +1,6 @@
 import { changeEmbedding, deleteUrl, search } from "./db";
-import { logError } from "./log";
-import { urlExists } from "./redis";
+import { log, logError } from "./log";
+import { addErrorUrl, urlExists } from "./redis";
 import { isValidUrl } from "./util";
 import { ingest_url, ingest_md } from "./ingest";
 
@@ -62,8 +62,16 @@ export async function handleRequest(req: Request): Promise<Response> {
       await ingest_url(url, userId);
       return Response.json("Success");
     } catch (error) {
-      logError(error as Error, "index");
-      return Response.json("Failed to search", { status: 500 });
+      console.error("error-index-url", error);
+      log({
+        service: "index",
+        action: "error-index-url",
+        error: `${error}`,
+        url: url,
+        userId: userId,
+      });
+      await addErrorUrl(userId, url);
+      return Response.json(`Failed to search ${error}`, { status: 500 });
     }
   }
 

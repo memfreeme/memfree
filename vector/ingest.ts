@@ -36,13 +36,8 @@ async function processIngestion(
 
   console.log(`Adding vectors for ${url} (${documents.length} documents)`);
 
-  console.time("addVectors");
   const data = await addVectors(image, title, url, documents);
-  console.timeEnd("addVectors");
-
-  console.time("append");
   const table = await append(userId, data);
-  console.timeEnd("append");
 
   const indexCount = await addUrl(userId, url);
   if (indexCount % TABLE_COMPACT_THRESHOLD === 0) {
@@ -68,9 +63,7 @@ export async function ingest_url(url: string, userId: string) {
   let { image, markdown, title } = await processTweet(url);
 
   if (!markdown) {
-    console.time("getMd");
     markdown = await getMd(url, userId);
-    console.timeEnd("getMd");
     title = await extractTitle(markdown, url);
   }
   await processIngestion(url, userId, markdown, title, image ?? "");
