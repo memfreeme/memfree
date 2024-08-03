@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "MemFree",
   "short_name": "MemFree",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "MemFree - Hybrid AI search engine",
   "icons": {
     "16": "/icons/icon.png",

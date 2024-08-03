@@ -34,6 +34,8 @@ class BrowserService {
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
       );
       await page.setViewport({ width: 1280, height: 800 });
+      page.setDefaultNavigationTimeout(10000);
+      page.setDefaultTimeout(10000);
       return page;
     } catch (error) {
       console.error("Failed to create new page:", error);
