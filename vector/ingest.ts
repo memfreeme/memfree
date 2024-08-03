@@ -29,16 +29,8 @@ async function processIngestion(
   const documents = await splitter.createDocuments([markdown], [], {
     appendChunkOverlapHeader: false,
   });
-
-  if (!image) {
-    image = extractImage(markdown) || "";
-  }
-
-  console.log(`Adding vectors for ${url} (${documents.length} documents)`);
-
   const data = await addVectors(image, title, url, documents);
   const table = await append(userId, data);
-
   const indexCount = await addUrl(userId, url);
   if (indexCount % TABLE_COMPACT_THRESHOLD === 0) {
     await table.optimize({ cleanupOlderThan: new Date() });
@@ -52,20 +44,38 @@ export async function ingest_md(
   markdown: string,
   title: string
 ) {
-  const { image, markdown: newMarkdown } = await processTweet(url);
-  if (newMarkdown) {
-    markdown = newMarkdown;
-  }
+  let image = extractImage(markdown) || (await processTweet(url)).image;
+  console.log(
+    "url",
+    url,
+    "userId",
+    userId,
+    "markdown",
+    markdown.length,
+    "title",
+    title,
+    "image",
+    image
+  );
   await processIngestion(url, userId, markdown, title, image ?? "");
 }
 
 export async function ingest_url(url: string, userId: string) {
-  let { image, markdown, title } = await processTweet(url);
-
-  if (!markdown) {
-    markdown = await getMd(url, userId);
-    title = await extractTitle(markdown, url);
-  }
+  const markdown = await getMd(url, userId);
+  const title = await extractTitle(markdown, url);
+  let image = extractImage(markdown) || (await processTweet(url)).image;
+  console.log(
+    "url",
+    url,
+    "userId",
+    userId,
+    "markdown",
+    markdown.length,
+    "title",
+    title,
+    "image",
+    image
+  );
   await processIngestion(url, userId, markdown, title, image ?? "");
 }
 
@@ -81,7 +91,6 @@ async function addVectors(
   }
 
   const embeddings = await getEmbedding().embedDocuments(texts);
-
   const data: Array<Record<string, unknown>> = [];
   for (let i = 0; i < documents.length; i += 1) {
     const newImage = image ? extractImage(documents[i].pageContent) : null;

@@ -53,12 +53,12 @@ export async function fetchWithRetry(
       }
       return response.text();
     } catch (error) {
-      if (i === retries - 1) throw error; // If last retry fails, propagate the error
+      if (i === retries - 1) throw error;
       console.error(
         `Attempt ${url} ${i + 1} failed: ${error}. Retrying in ${delay}ms...`
       );
       await sleep(delay);
-      delay *= 2; // Exponential backoff
+      delay *= 2;
     }
   }
   return url;
@@ -71,14 +71,6 @@ export function isValidUrl(input: string): boolean {
   } catch (_) {
     return false;
   }
-}
-
-function removeImageLinksAndUrls(mdText: string): string {
-  let result = mdText.replace(/!\[.*?\]\(.*?\)/g, "");
-
-  result = result.replace(/\[([^\]]*?)\]\((.*?)\)/g, "$1");
-
-  return result;
 }
 
 const jinaToken = process.env.JINA_KEY || "";

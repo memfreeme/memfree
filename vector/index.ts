@@ -49,9 +49,9 @@ export async function handleRequest(req: Request): Promise<Response> {
     }
   }
 
+  // TODO: change the endpoint to /api/index/url
   if (path === "/api/vector/callback" && method === "POST") {
     const { url, userId } = await req.json();
-    console.log("url", url, "userId", userId);
     try {
       if (!isValidUrl(url)) {
         return Response.json("Invalid URL format", { status: 400 });
@@ -81,22 +81,9 @@ export async function handleRequest(req: Request): Promise<Response> {
       if (!isValidUrl(url)) {
         return Response.json("Invalid URL format", { status: 400 });
       }
-
       if (!userId || !markdown || !title) {
         return Response.json("Invalid parameters", { status: 400 });
       }
-
-      console.log(
-        "url",
-        url,
-        "userId",
-        userId,
-        "markdown",
-        markdown.length,
-        "title",
-        title
-      );
-
       await ingest_md(url, userId, markdown, title);
       return Response.json("Success");
     } catch (error) {

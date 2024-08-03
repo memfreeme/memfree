@@ -131,19 +131,6 @@ function extractMarkdown(baseUrl) {
       const turndownService = new TurndownService();
       const rules = [
         {
-          name: "remove-irrelevant",
-          filter: [
-            "meta",
-            "style",
-            "script",
-            "noscript",
-            "link",
-            "textarea",
-            "iframe",
-          ],
-          replacement: () => "",
-        },
-        {
           name: "truncate-svg",
           filter: "svg",
           replacement: () => "",
@@ -173,19 +160,13 @@ function extractMarkdown(baseUrl) {
 
       rules.forEach((rule) => turndownService.addRule(rule.name, rule));
 
-      const clonedDocument = document.cloneNode(true);
-      clonedDocument
-        .querySelectorAll(
-          "header, footer, .sidebar, .nav, #comments, .comments, #toc, .toc, .ads, .popup, .recommended, .related"
-        )
-        .forEach((element) => element.remove());
-
-      let markdown = turndownService.turndown(clonedDocument.body);
-
-      const h1Index = markdown.indexOf("\n# ");
-      if (h1Index !== -1) {
-        markdown = markdown.slice(h1Index + 1);
-      }
+      const reader = new Readability(document.cloneNode(true), {
+        charThreshold: 0,
+        keepClasses: true,
+        nbTopCandidates: 10,
+      });
+      const article = reader.parse();
+      const markdown = turndownService.turndown(article?.content || "");
       resolve(markdown);
     } catch (error) {
       console.error("Error extracting markdown:", error);

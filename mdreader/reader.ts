@@ -32,20 +32,16 @@ export async function urlToMarkdown(url: string): Promise<string> {
   );
   console.timeEnd("puppeteer");
 
-  console.time("dom");
   const dom = new JSDOM(documentContent, {
     url: url,
   });
-  console.timeEnd("dom");
 
-  console.time("Readability");
   let reader = new Readability(dom.window.document, {
     charThreshold: 0,
     keepClasses: true,
-    nbTopCandidates: 500,
+    nbTopCandidates: 10,
   });
   const article = reader.parse();
-  console.timeEnd("Readability");
 
   const turndownService = new TurndownService();
   const rules = [
@@ -74,8 +70,11 @@ export async function urlToMarkdown(url: string): Promise<string> {
   rules.forEach((rule) => turndownService.addRule(rule.name, rule as any));
 
   let markdown = turndownService.turndown(article?.content || "");
+  markdown = `Title: ${article?.title}\n${markdown}`;
   console.log(
-    "article length",
+    "title ",
+    article?.title,
+    " article length ",
     article?.content.length,
     " markdown length ",
     markdown.length

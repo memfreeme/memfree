@@ -42,10 +42,6 @@ async function PrefixScan(prefix: string) {
       });
       cursor = response[0];
       const keys = response[1];
-      for (const key of keys) {
-        console.log(`${prefix} : ${key}`);
-      }
-
       totalCount += keys.length;
     } while (cursor !== "0");
   } catch (error) {
