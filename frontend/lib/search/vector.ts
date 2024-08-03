@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { TextSource } from '../types';
+import { ImageSource, TextSource } from '../types';
 import { SearchResult, SearchSource } from './search';
 import { logError } from '../log';
 
@@ -42,19 +42,30 @@ export class VectorSearch implements SearchSource {
             }
 
             let texts: TextSource[] = [];
+            let images: ImageSource[] = [];
             const result = await response.json();
 
             result
-                .filter((item) => item._distance <= 0.5)
-                .map((item) =>
+                .filter((item) => item._distance <= 0.3)
+                .map((item) => {
+                    console.log('vector item:', item);
                     texts.push({
                         title: item.title,
                         url: item.url,
                         content: item.text,
-                    }),
-                );
+                        type: 'vector',
+                    });
+                    if (item.image) {
+                        images.push({
+                            title: item.title,
+                            url: item.url,
+                            image: item.image,
+                        });
+                    }
+                });
 
-            return { texts, images: [] };
+            console.log('vertor images:', images);
+            return { texts, images };
         } catch (error) {
             logError(error, 'search-vector');
             return { texts: [], images: [] };

@@ -35,6 +35,7 @@ export type Message = {
 };
 
 import React, { forwardRef, memo } from 'react';
+import { useModeStore } from '@/lib/store';
 
 const SearchMessageBubble = memo(
     forwardRef(
@@ -54,7 +55,7 @@ const SearchMessageBubble = memo(
             const sources = props.message.sources ?? [];
             const images = props.message.images ?? [];
             const rephrasedQuery = props.message.rephrasedQuery;
-
+            const mode = useModeStore((state) => state.mode);
             const { toast } = useToast();
 
             const handleCopyClick = () => {
@@ -109,7 +110,40 @@ const SearchMessageBubble = memo(
                             </div>
                         </>
                     )}
-                    {!isUser && sources.length > 0 && (
+                    {!isUser && sources.length > 0 && mode === 'search' && (
+                        <div className="flex w-full flex-col items-start space-y-2.5 py-4">
+                            <div className="flex items-center space-x-2">
+                                <TextSearchIcon className="text-primary size-22"></TextSearchIcon>
+                                <h3 className="text-lg font-medium text-primary">
+                                    Results
+                                </h3>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-full overflow-auto ">
+                                {sources.map((source, index) => (
+                                    <div key={index}>
+                                        <SourceBubble source={source} />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    {!isUser && mode === 'chat' && (
+                        <>
+                            <div className="flex items-center space-x-2">
+                                <BookKey className="text-primary size-22"></BookKey>
+                                <h3 className="py-2 text-lg font-medium text-primary">
+                                    Answer
+                                </h3>
+                            </div>
+                            <div className="prose">
+                                <MyMarkdown
+                                    content={content}
+                                    sources={sources}
+                                />
+                            </div>
+                        </>
+                    )}
+                    {!isUser && sources.length > 0 && mode === 'ask' && (
                         <>
                             <div className="flex items-center space-x-2">
                                 <BookKey className="text-primary size-22"></BookKey>

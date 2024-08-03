@@ -19,7 +19,7 @@ export async function rerank(query: string, documents: string[]): Promise<any> {
             body: JSON.stringify({
                 model: RERANK_MODEL,
                 query,
-                top_n: 8,
+                top_n: 10,
                 documents,
             }),
         });

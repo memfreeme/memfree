@@ -1,13 +1,6 @@
 import { auth } from '@/auth';
 import { getCache, setCache } from '@/lib/cache';
 import {
-    AcademicPrompet,
-    DeepQueryPrompt,
-    MoreQuestionsPrompt,
-    NewsPrompt,
-    RephrasePrompt,
-} from '@/lib/prompt';
-import {
     AskMode,
     CachedResult,
     TextSource,
@@ -15,7 +8,6 @@ import {
     SearchCategory,
 } from '@/lib/types';
 import { NextRequest, NextResponse } from 'next/server';
-import util from 'util';
 
 import { Ratelimit } from '@upstash/ratelimit';
 import { incSearchCount, RATE_LIMIT_KEY, redisDB } from '@/lib/db';
@@ -23,14 +15,20 @@ import {
     getSearchEngine,
     getVectorSearch,
     IMAGE_LIMIT,
+    TEXT_LIMIT,
 } from '@/lib/search/search';
 import { GPT_4o_MIMI, validModel } from '@/lib/model';
 import { logError } from '@/lib/log';
-import { getLLMChat, StreamHandler } from '@/lib/llm/llm';
-import { openaiChat } from '@/lib/llm/openai';
 import { checkIsPro } from '@/lib/user-utils';
 import { rerank } from '@/lib/rerank';
 import { streamController, streamResponse } from '@/lib/server-utils';
+import { search } from './search';
+import {
+    getLLMAnswer,
+    getRelatedQuestions,
+    rephraseQuery,
+} from '@/lib/llm/utils';
+import { chat } from './chat';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -68,8 +66,10 @@ export async function POST(req: NextRequest) {
     let userId = '';
     let isPro = false;
     if (session) {
+        console.log('session:', session);
         userId = session.user.id;
         isPro = checkIsPro(session.user);
+        console.log('isPro:', isPro);
         if (isPro) {
             console.log(session.user.id + ' is a pro user');
         }
@@ -89,6 +89,47 @@ export async function POST(req: NextRequest) {
     }
     const { query, useCache, mode, model, source, history } = await req.json();
 
+    console.log(
+        'query:',
+        query,
+        'mode:',
+        mode,
+        'model:',
+        model,
+        'source:',
+        source,
+        'history:',
+        history,
+    );
+
+    if (mode === 'search') {
+        try {
+            const readableStream = new ReadableStream({
+                async start(controller) {
+                    await search(
+                        query,
+                        useCache,
+                        isPro,
+                        userId,
+                        streamController(controller),
+                    );
+                },
+                cancel() {
+                    console.log('Stream canceled by client');
+                },
+            });
+            return new Response(readableStream, {
+                headers: {
+                    'Content-Type': 'text/event-stream',
+                    'Cache-Control': 'no-cache',
+                },
+            });
+        } catch (error) {
+            logError(error, 'search');
+            return NextResponse.json({ error: `${error}` }, { status: 500 });
+        }
+    }
+
     if (!validModel(model)) {
         return NextResponse.json(
             {
@@ -96,6 +137,33 @@ export async function POST(req: NextRequest) {
             },
             { status: 400 },
         );
+    }
+
+    if (mode === 'chat') {
+        try {
+            const readableStream = new ReadableStream({
+                async start(controller) {
+                    await chat(
+                        query,
+                        useCache,
+                        isPro,
+                        streamController(controller),
+                    );
+                },
+                cancel() {
+                    console.log('Stream canceled by client');
+                },
+            });
+            return new Response(readableStream, {
+                headers: {
+                    'Content-Type': 'text/event-stream',
+                    'Cache-Control': 'no-cache',
+                },
+            });
+        } catch (error) {
+            logError(error, 'chat');
+            return NextResponse.json({ error: `${error}` }, { status: 500 });
+        }
     }
 
     try {
@@ -221,9 +289,10 @@ async function ask(
 
         await streamResponse({ sources: texts, images }, onStream);
     }
+    texts = texts.slice(0, TEXT_LIMIT);
 
     let fullAnswer = '';
-    await getLLMAnswer(source, model, query, texts, mode, (msg) => {
+    await getLLMAnswer(source, model, query, texts, (msg) => {
         fullAnswer += msg;
         onStream?.(JSON.stringify({ answer: msg }));
     });
@@ -259,79 +328,4 @@ async function ask(
         console.error(`Failed to set cache for query ${query}:`, error);
     });
     onStream?.(null, true);
-}
-
-async function getLLMAnswer(
-    source: SearchCategory,
-    model: string,
-    query: string,
-    contexts: TextSource[],
-    mode: AskMode = 'simple',
-    onStream: StreamHandler,
-) {
-    try {
-        const system = promptFormatterAnswer(source, contexts);
-        await getLLMChat(model).chatStream(
-            system,
-            query,
-            model,
-            (msg: string | null, done: boolean) => {
-                onStream?.(msg, done);
-            },
-        );
-    } catch (err: any) {
-        logError(err, 'llm');
-        onStream?.(`Some errors seem to have occurred, plase retry`, true);
-    }
-}
-
-async function getRelatedQuestions(
-    query: string,
-    contexts: TextSource[],
-    onStream: StreamHandler,
-) {
-    try {
-        const system = promptFormatterRelated(contexts);
-        await openaiChat.chatStream(system, query, GPT_4o_MIMI, onStream);
-    } catch (err) {
-        logError(err, 'llm');
-        return [];
-    }
-}
-
-function choosePrompt(source: SearchCategory, type: 'answer' | 'related') {
-    if (source === SearchCategory.ACADEMIC) {
-        return AcademicPrompet;
-    }
-    if (source === SearchCategory.NEWS) {
-        return NewsPrompt;
-    }
-    if (type === 'answer') {
-        return DeepQueryPrompt;
-    }
-    if (type === 'related') {
-        return MoreQuestionsPrompt;
-    }
-    return DeepQueryPrompt;
-}
-
-function promptFormatterAnswer(source: SearchCategory, contexts: any[]) {
-    const context = contexts
-        .map((item, index) => `[citation:${index + 1}] ${item.content}`)
-        .join('\n\n');
-    let prompt = choosePrompt(source, 'answer');
-    return util.format(prompt, context);
-}
-
-function promptFormatterRelated(contexts: any[]) {
-    const context = contexts
-        .map((item, index) => `[citation:${index + 1}] ${item.content}`)
-        .join('\n\n');
-    let prompt = choosePrompt(undefined, 'related');
-    return util.format(prompt, context);
-}
-
-async function rephraseQuery(query: string, history: string) {
-    const prompt = util.format(RephrasePrompt, history, query);
-    return await openaiChat.chat(prompt, GPT_4o_MIMI);
 }

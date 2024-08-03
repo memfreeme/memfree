@@ -12,6 +12,33 @@ export const useUserStore = create<UserState>((set) => ({
     setUser: (user: User) => set({ user }),
 }));
 
+type ModeState = {
+    mode: 'search' | 'ask' | 'chat';
+    setMode: (mode: 'search' | 'ask' | 'chat') => void;
+};
+
+const initialMode = (): 'search' | 'ask' | 'chat' => {
+    if (typeof window === 'undefined') {
+        return 'ask';
+    }
+    const savedMode = localStorage.getItem('mode');
+    console.log('savedMode', savedMode);
+    return savedMode === 'search' || savedMode === 'ask' || savedMode === 'chat'
+        ? savedMode
+        : 'ask';
+};
+
+export const useModeStore = create<ModeState>((set) => ({
+    mode: initialMode(),
+    setMode: (mode: 'search' | 'ask' | 'chat') => {
+        if (typeof window !== 'undefined' && mode) {
+            localStorage.setItem('mode', mode);
+            console.log('set mode:', mode);
+            set({ mode });
+        }
+    },
+}));
+
 type ConfigState = {
     model: string;
     source: string;

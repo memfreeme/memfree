@@ -20,6 +20,7 @@ export interface TextSource {
     title: string;
     url: string;
     content: string;
+    type?: string;
 }
 
 export interface ImageSource {

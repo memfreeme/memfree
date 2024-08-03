@@ -80,8 +80,8 @@ export class SearxngSearch implements SearchSource {
                     });
                 }
             });
-            texts = texts.slice(0, TEXT_LIMIT);
-            images = images.slice(0, IMAGE_LIMIT);
+            // texts = texts.slice(0, TEXT_LIMIT);
+            // images = images.slice(0, IMAGE_LIMIT);
             return { texts, images };
         } catch (error: any) {
             logError(error, 'search-searxng');

@@ -7,7 +7,7 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useSearchParams } from 'next/navigation';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '../Search';
-import { configStore, useUserStore } from '@/lib/store';
+import { configStore, useModeStore, useUserStore } from '@/lib/store';
 
 import { ImageSource, TextSource } from '@/lib/types';
 import { formatChatHistoryAsString } from '@/lib/utils';
@@ -30,6 +30,9 @@ export function SearchWindow() {
     }, [q]);
 
     const user = useUserStore((state) => state.user);
+    const mode = useModeStore((state) => state.mode);
+
+    console.log('mode', mode);
 
     const [chatHistory, setChatHistory] = useState<[string, string][]>([]);
     const chatHistoryRef = useRef(chatHistory);
@@ -41,7 +44,6 @@ export function SearchWindow() {
     const sendMessage = async (
         message?: string,
         messageIdToUpdate?: string,
-        mode: string = 'deep',
     ) => {
         if (isLoading) {
             return;
@@ -160,8 +162,7 @@ export function SearchWindow() {
                 chatHistoryRef.current,
             );
 
-            // TODO: only send chat history if user is pro
-            // const isPro = checkIsPro(user);
+            console.log('mode', mode);
 
             const url = `/api/ask`;
             await fetchEventSource(url, {
@@ -252,7 +253,7 @@ export function SearchWindow() {
 
     const deepIntoQuestion = useCallback(
         async (question: string, msgId: string) => {
-            await sendMessage(question, msgId, 'deep');
+            await sendMessage(question, msgId);
         },
         [],
     );
