@@ -52,7 +52,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
 
     return (
         <section className="relatve my-5">
-            <div className="mx-auto w-full max-w-3xl px-2 md:px-10 text-center">
+            <div className="mx-auto w-full max-w-3xl px-4 md:px-10 text-center">
                 <div className="flex items-center relative mx-auto w-full max-w-2xl">
                     <TextareaAutosize
                         value={content}
