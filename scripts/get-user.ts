@@ -14,3 +14,12 @@ async function getUser(email: string) {
   }
   console.log("user", user);
 }
+
+const emailArg = process.argv[2];
+
+if (!emailArg) {
+  console.log("Please provide an email as a command line argument.");
+  process.exit(1);
+}
+
+await getUser(emailArg);

@@ -44,7 +44,6 @@ export async function getChatAnswer(
 ) {
     try {
         const system = util.format(ChatPrompt, history);
-        console.log('system', system);
         await getLLMChat(model).chatStream(
             system,
             query,

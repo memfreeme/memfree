@@ -29,7 +29,6 @@ export const useModeStore = create<ModeState>((set) => ({
     },
     initMode: (): 'search' | 'ask' | 'chat' => {
         const savedMode = localStorage.getItem('mode');
-        console.log('initMode ', savedMode);
         return savedMode === 'search' ||
             savedMode === 'ask' ||
             savedMode === 'chat'

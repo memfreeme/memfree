@@ -27,11 +27,8 @@ const ActionButtons = ({
 
     const handleCopyValue = (value: string) => {
         navigator.clipboard.writeText(value);
-        console.log('Copied to clipboard:', value);
         setHasCopied(true);
     };
-
-    console.log('hasCopied', hasCopied);
 
     const feedback = (msg) => {
         fetch('/api/feedback', {

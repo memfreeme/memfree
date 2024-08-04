@@ -1,6 +1,7 @@
-import React, { memo, useRef, useEffect, useState } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { CopyButton } from '../shared/copy-button';
+import { Button } from '../ui/button';
+import { Icons } from '../shared/icons';
 
 interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {
     children: React.ReactNode;
@@ -12,13 +13,21 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
     ...props
 }) => {
     const ref = useRef<HTMLPreElement>(null);
-    const [copyValue, setCopyValue] = useState<string>('');
+    const [hasCopied, setHasCopied] = React.useState(false);
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            setHasCopied(false);
+        }, 2000);
+        return () => clearTimeout(timer);
+    }, [hasCopied]);
+
+    const handleCopyValue = () => {
         if (ref.current) {
-            setCopyValue(ref.current.innerText);
+            navigator.clipboard.writeText(ref.current.innerText);
+            setHasCopied(true);
         }
-    }, [ref.current]);
+    };
 
     return (
         <div className="relative group">
@@ -29,10 +38,19 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
             >
                 {children}
             </pre>
-            <CopyButton
-                value={copyValue}
-                className={cn('absolute right-4 top-4 cursor-pointer')}
-            />
+            <Button
+                size="sm"
+                variant="ghost"
+                className="absolute right-4 top-4 cursor-pointer z-10 size-[30px] border border-white/25 p-1.5 text-primary-foreground hover:bg-transparent dark:text-foreground"
+                onClick={() => handleCopyValue()}
+            >
+                <span className="sr-only">Copy</span>
+                {hasCopied ? (
+                    <Icons.check className="size-4 text-white hover:text-primary" />
+                ) : (
+                    <Icons.copy className="size-4 text-white hover:text-primary" />
+                )}
+            </Button>
         </div>
     );
 };
