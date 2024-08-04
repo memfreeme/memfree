@@ -14,7 +14,7 @@ export async function setCache(key: string, value: CachedResult) {
     try {
         await redisDB.set(hashKey, JSON.stringify(value), { ex: 3600 * 7 });
     } catch (error) {
-        logError(error, 'cache');
+        logError(error, 'cache-set');
     }
 }
 
@@ -24,7 +24,7 @@ export async function getCache(key: string): Promise<CachedResult | null> {
         const cache = (await redisDB.get(hashKey)) as CachedResult;
         return cache;
     } catch (error) {
-        logError(error, 'cache');
+        logError(error, 'cache-get');
         return null;
     }
 }

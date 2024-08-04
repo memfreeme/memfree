@@ -273,6 +273,12 @@ If the query requires creative writing, you DO NOT need to use or cite search re
 
 # USER_INPUT
 
+## Contexts
+
+Here are the contexts of the question:
+
+%s
+
 ## User's INITIAL_QUERY
 
 Your answer MUST be written in the same language as the user question, For example, if the user question is written in chinese, your answer should be written in chinese too, if user's question is written in english, your answer should be written in english too.

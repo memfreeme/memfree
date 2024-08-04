@@ -8,7 +8,7 @@ export function HeroLanding() {
         <section className="space-y-6 py-10 sm:py-20 lg:py-10">
             <div className="container flex max-w-5xl flex-col items-center gap-5 text-center">
                 <h1 className="text-balance font-urban text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-[66px]">
-                    Search anything with{' '}
+                    Search Anything with{' '}
                     <span className="text-gradient_indigo-purple font-extrabold">
                         MemFree
                     </span>

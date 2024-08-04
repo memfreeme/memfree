@@ -15,27 +15,26 @@ export const useUserStore = create<UserState>((set) => ({
 type ModeState = {
     mode: 'search' | 'ask' | 'chat';
     setMode: (mode: 'search' | 'ask' | 'chat') => void;
-};
-
-const initialMode = (): 'search' | 'ask' | 'chat' => {
-    if (typeof window === 'undefined') {
-        return 'ask';
-    }
-    const savedMode = localStorage.getItem('mode');
-    console.log('savedMode', savedMode);
-    return savedMode === 'search' || savedMode === 'ask' || savedMode === 'chat'
-        ? savedMode
-        : 'ask';
+    initMode: () => 'search' | 'ask' | 'chat';
 };
 
 export const useModeStore = create<ModeState>((set) => ({
-    mode: initialMode(),
+    mode: 'ask',
     setMode: (mode: 'search' | 'ask' | 'chat') => {
         if (typeof window !== 'undefined' && mode) {
             localStorage.setItem('mode', mode);
             console.log('set mode:', mode);
             set({ mode });
         }
+    },
+    initMode: (): 'search' | 'ask' | 'chat' => {
+        const savedMode = localStorage.getItem('mode');
+        console.log('initMode ', savedMode);
+        return savedMode === 'search' ||
+            savedMode === 'ask' ||
+            savedMode === 'chat'
+            ? savedMode
+            : 'ask';
     },
 }));
 

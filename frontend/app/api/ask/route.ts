@@ -98,8 +98,6 @@ export async function POST(req: NextRequest) {
         model,
         'source:',
         source,
-        'history:',
-        history,
     );
 
     if (mode === 'search') {
@@ -145,6 +143,7 @@ export async function POST(req: NextRequest) {
                 async start(controller) {
                     await chat(
                         query,
+                        history,
                         useCache,
                         isPro,
                         streamController(controller),

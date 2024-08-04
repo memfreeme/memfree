@@ -39,10 +39,12 @@ export async function getLLMAnswer(
 export async function getChatAnswer(
     model: string,
     query: string,
+    history: string,
     onStream: StreamHandler,
 ) {
     try {
-        const system = ChatPrompt;
+        const system = util.format(ChatPrompt, history);
+        console.log('system', system);
         await getLLMChat(model).chatStream(
             system,
             query,

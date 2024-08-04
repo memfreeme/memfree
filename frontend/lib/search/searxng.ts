@@ -5,8 +5,6 @@ import {
     SearchResult,
     SearchSource,
     AnySource,
-    TEXT_LIMIT,
-    IMAGE_LIMIT,
     searxngHost,
 } from './search';
 import { ImageSource, TextSource } from '../types';
@@ -53,6 +51,17 @@ export class SearxngSearch implements SearchSource {
                 );
             }
 
+            const contentType = res.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                const errorDetails = await res.text();
+                console.error(
+                    `Unexpected content-type! status: ${res.status} Content-Type: ${contentType} Details: ${errorDetails}`,
+                );
+                throw new Error(
+                    `Fetch failed with unexpected content-type: ${contentType} and Details: ${errorDetails}`,
+                );
+            }
+
             const result = await res.json();
             anySources = anySources.concat(
                 result.results.map((c: any) => ({
@@ -80,8 +89,6 @@ export class SearxngSearch implements SearchSource {
                     });
                 }
             });
-            // texts = texts.slice(0, TEXT_LIMIT);
-            // images = images.slice(0, IMAGE_LIMIT);
             return { texts, images };
         } catch (error: any) {
             logError(error, 'search-searxng');

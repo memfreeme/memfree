@@ -4,23 +4,12 @@ import {
     Images,
     ListPlusIcon,
     PlusIcon,
-    RefreshCcw,
     FileQuestion,
     TextSearchIcon,
-    Copy,
-    ThumbsDown,
     CircleHelp,
 } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
 import ImageGallery from './ImageGallery';
 import { ImageSource, TextSource } from '@/lib/types';
-import MyMarkdown from './Markdown';
 
 export type Message = {
     id: string;
@@ -36,6 +25,8 @@ export type Message = {
 
 import React, { forwardRef, memo } from 'react';
 import { useModeStore } from '@/lib/store';
+import ActionButtons from './ActionButtons';
+import AnswerSection from './AnswerSection';
 
 const SearchMessageBubble = memo(
     forwardRef(
@@ -52,51 +43,15 @@ const SearchMessageBubble = memo(
             const deepIntoQuestion = props.deepIntoQuestion;
             const isUser = role === 'user';
 
-            const sources = props.message.sources ?? [];
-            const images = props.message.images ?? [];
-            const rephrasedQuery = props.message.rephrasedQuery;
-            const mode = useModeStore((state) => state.mode);
-            const { toast } = useToast();
+            const message = props.message;
+            const sources = message.sources ?? [];
+            const images = message.images ?? [];
+            const rephrasedQuery = message.rephrasedQuery;
 
-            const handleCopyClick = () => {
-                navigator.clipboard.writeText(content).then(
-                    () => {
-                        toast({
-                            description: 'Copied to clipboard successfully!',
-                        });
-                    },
-                    (err) => {
-                        console.error('Failed to copy text: ', err);
-                    },
-                );
-            };
-
-            const feedback = (msg) => {
-                fetch('/api/feedback', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ message: msg }),
-                })
-                    .then((response) => {
-                        if (!response.ok) {
-                            console.error('Error:', response);
-                        }
-                        return response.json();
-                    })
-                    .then((data) => {
-                        toast({
-                            description: 'Feedback received, Thank you!',
-                        });
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-            };
+            const mode = useModeStore((state) => state.initMode)();
 
             return (
-                <div className="flex flex-col items-start space-y-6 pb-10">
+                <div className="flex flex-col w-full  items-start space-y-6 pb-10">
                     {!isUser && rephrasedQuery && (
                         <>
                             <div className="flex items-center space-x-2">
@@ -128,108 +83,25 @@ const SearchMessageBubble = memo(
                         </div>
                     )}
                     {!isUser && mode === 'chat' && (
-                        <>
-                            <div className="flex items-center space-x-2">
-                                <BookKey className="text-primary size-22"></BookKey>
-                                <h3 className="py-2 text-lg font-medium text-primary">
-                                    Answer
-                                </h3>
-                            </div>
-                            <div className="prose">
-                                <MyMarkdown
-                                    content={content}
-                                    sources={sources}
-                                />
-                            </div>
-                        </>
+                        <AnswerSection
+                            content={content}
+                            sources={sources}
+                            question={question}
+                            id={id}
+                            message={message}
+                            deepIntoQuestion={deepIntoQuestion}
+                        />
                     )}
                     {!isUser && sources.length > 0 && mode === 'ask' && (
                         <>
-                            <div className="flex items-center space-x-2">
-                                <BookKey className="text-primary size-22"></BookKey>
-                                <h3 className="py-2 text-lg font-medium text-primary">
-                                    Answer
-                                </h3>
-                            </div>
-                            <div className="prose">
-                                <MyMarkdown
-                                    content={content}
-                                    sources={sources}
-                                />
-                            </div>
-
-                            <div className="flex space-x-4 mt-2">
-                                <TooltipProvider>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <button
-                                                onClick={handleCopyClick}
-                                                title="Copy"
-                                                className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"
-                                            >
-                                                <Copy size={24} />
-                                            </button>
-                                        </TooltipTrigger>
-                                        <TooltipContent className="bg-black text-white">
-                                            <p>Copy the answer</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <button
-                                                onClick={() =>
-                                                    deepIntoQuestion(
-                                                        question,
-                                                        id,
-                                                    )
-                                                }
-                                                title="Reload"
-                                                className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"
-                                            >
-                                                <RefreshCcw size={24} />
-                                            </button>
-                                        </TooltipTrigger>
-                                        <TooltipContent className="bg-black text-white">
-                                            <p>Reload</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                    {/* <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <button
-                                        onClick={() =>
-                                            deepIntoQuestion(question, id)
-                                        }
-                                        title="Deep Into"
-                                        className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"
-                                    >
-                                        <ZoomIn size={24} />
-                                    </button>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>Go deep into, get more detail answer</p>
-                                </TooltipContent>
-                            </Tooltip> */}
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <button
-                                                onClick={() =>
-                                                    feedback(props.message)
-                                                }
-                                                title="Feedback"
-                                                className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"
-                                            >
-                                                <ThumbsDown size={24} />
-                                            </button>
-                                        </TooltipTrigger>
-                                        <TooltipContent className="bg-black text-white">
-                                            <p>
-                                                If you feel unsatisfied with the
-                                                answer, feedback is welcome
-                                            </p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </div>
+                            <AnswerSection
+                                content={content}
+                                sources={sources}
+                                question={question}
+                                id={id}
+                                message={message}
+                                deepIntoQuestion={deepIntoQuestion}
+                            />
 
                             <div className="flex w-full flex-col items-start space-y-2.5 py-4">
                                 <div className="flex items-center space-x-2">

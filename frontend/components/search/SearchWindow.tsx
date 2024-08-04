@@ -7,7 +7,7 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useSearchParams } from 'next/navigation';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '../Search';
-import { configStore, useModeStore, useUserStore } from '@/lib/store';
+import { configStore, useModeStore } from '@/lib/store';
 
 import { ImageSource, TextSource } from '@/lib/types';
 import { formatChatHistoryAsString } from '@/lib/utils';
@@ -29,10 +29,7 @@ export function SearchWindow() {
         }
     }, [q]);
 
-    const user = useUserStore((state) => state.user);
     const mode = useModeStore((state) => state.mode);
-
-    console.log('mode', mode);
 
     const [chatHistory, setChatHistory] = useState<[string, string][]>([]);
     const chatHistoryRef = useRef(chatHistory);
@@ -280,7 +277,7 @@ export function SearchWindow() {
     }, []);
 
     return (
-        <div className="flex max-h-full flex-col items-center rounded">
+        <div className="flex max-h-full w-full flex-col items-center rounded">
             <div className="my-10 flex w-full md:w-3/4 flex-col-reverse overflow-auto p-6 md:p-10">
                 <SearchBar handleSearch={stableHandleSearch} />
                 {messages.length > 0 ? (
