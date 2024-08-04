@@ -66,10 +66,8 @@ export async function POST(req: NextRequest) {
     let userId = '';
     let isPro = false;
     if (session) {
-        console.log('session:', session);
         userId = session.user.id;
         isPro = checkIsPro(session.user);
-        console.log('isPro:', isPro);
         if (isPro) {
             console.log(session.user.id + ' is a pro user');
         }
@@ -88,17 +86,6 @@ export async function POST(req: NextRequest) {
         }
     }
     const { query, useCache, mode, model, source, history } = await req.json();
-
-    console.log(
-        'query:',
-        query,
-        'mode:',
-        mode,
-        'model:',
-        model,
-        'source:',
-        source,
-    );
 
     if (mode === 'search') {
         try {

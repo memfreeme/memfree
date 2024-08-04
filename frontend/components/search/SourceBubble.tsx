@@ -7,7 +7,7 @@ const SourceBubble = ({ source }) => {
     const faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain=${site}`;
     const isVector = source.type === 'vector';
     return (
-        <Link href={source.url} target="_blank" rel="noreferrer">
+        <Link href={source.url} target="_blank">
             <div
                 className={`flex space-x-4 rounded-xl border border-solid ${isVector ? 'border-purple-500' : 'border-gray-300'} hover:bg-gray-200`}
             >
