@@ -11,6 +11,7 @@ import { configStore, useModeStore } from '@/lib/store';
 
 import { ImageSource, TextSource } from '@/lib/types';
 import { formatChatHistoryAsString } from '@/lib/utils';
+import ModeTabs from './ModeTabs';
 
 export function SearchWindow() {
     const [messages, setMessages] = useState<Array<Message>>([]);
@@ -279,6 +280,7 @@ export function SearchWindow() {
     return (
         <div className="flex max-h-full w-full flex-col items-center rounded">
             <div className="my-10 flex w-full md:w-3/4 flex-col-reverse overflow-auto p-6 md:p-10">
+                <ModeTabs showContent={false} />
                 <SearchBar handleSearch={stableHandleSearch} />
                 {messages.length > 0 ? (
                     [...messages]

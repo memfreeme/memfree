@@ -24,7 +24,7 @@ export default function IndexPage() {
         <>
             <HeroLanding />
             <SearchBar handleSearch={handleSearch} />
-            <ModeTabs />
+            <ModeTabs showContent={true} />
         </>
     );
 }

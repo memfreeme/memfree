@@ -48,7 +48,6 @@ export class VectorSearch implements SearchSource {
             result
                 .filter((item) => item._distance <= 0.3)
                 .map((item) => {
-                    console.log('vector item:', item);
                     texts.push({
                         title: item.title,
                         url: item.url,
@@ -63,8 +62,6 @@ export class VectorSearch implements SearchSource {
                         });
                     }
                 });
-
-            console.log('vertor images:', images);
             return { texts, images };
         } catch (error) {
             logError(error, 'search-vector');
