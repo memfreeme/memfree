@@ -263,7 +263,7 @@ async function ask(
             webSearchPromise,
         ]);
 
-        ({ texts } = vectorResponse);
+        ({ texts, images } = vectorResponse);
 
         const { texts: webTexts, images: webImages = [] } = webResponse;
 

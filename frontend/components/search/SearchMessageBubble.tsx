@@ -74,6 +74,19 @@ const SearchMessageBubble = memo(
                                 </div>
                             ))}
                         </div>
+                        {images.length > 0 && (
+                            <div className="flex w-full flex-col items-start space-y-2.5 py-4">
+                                <div className="flex items-center space-x-2">
+                                    <Images className="text-primary size-22"></Images>
+                                    <h3 className="py-2 text-lg font-medium text-primary">
+                                        Images
+                                    </h3>
+                                </div>
+                                <ImageGallery
+                                    initialImages={images}
+                                ></ImageGallery>
+                            </div>
+                        )}
                     </div>
                 )}
                 {!isUser && mode === 'chat' && (

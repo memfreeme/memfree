@@ -9,7 +9,7 @@ const SourceBubble = ({ source }) => {
     return (
         <Link href={source.url} target="_blank">
             <div
-                className={`flex space-x-4 rounded-xl border border-solid ${isVector ? 'border-purple-500' : 'border-gray-300'} hover:bg-gray-200`}
+                className={`flex space-x-4 rounded-xl ${isVector ? 'border-2' : 'border'}  border-solid ${isVector ? 'border-purple-500' : 'border-gray-300'} hover:bg-gray-200`}
             >
                 <article className="max-w-full text-pretty p-4">
                     <div className="flex items-center pb-2">
