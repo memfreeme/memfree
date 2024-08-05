@@ -14,27 +14,32 @@ export async function search(
     const searchOptions = {
         categories: [SearchCategory.ALL],
     };
-    const vectorSearchPromise = getVectorSearch(userId).search(query);
-    const webSearchPromise = getSearchEngine(searchOptions).search(query);
+    if (userId) {
+        const vectorSearchPromise = getVectorSearch(userId).search(query);
+        const webSearchPromise = getSearchEngine(searchOptions).search(query);
 
-    let firstResponseStreamed = false;
+        let firstResponseStreamed = false;
 
-    const streamFirstResponse = async (promise) => {
-        const response = await promise;
-        const { texts } = response;
-        if (!firstResponseStreamed) {
-            firstResponseStreamed = true;
-            await streamResponse({ sources: texts }, onStream);
-        }
-        return { texts };
-    };
+        const streamFirstResponse = async (promise) => {
+            const response = await promise;
+            const { texts } = response;
+            if (!firstResponseStreamed) {
+                firstResponseStreamed = true;
+                await streamResponse({ sources: texts }, onStream);
+            }
+            return { texts };
+        };
 
-    const [vectorResponse, webResponse] = await Promise.all([
-        streamFirstResponse(vectorSearchPromise),
-        streamFirstResponse(webSearchPromise),
-    ]);
+        const [vectorResponse, webResponse] = await Promise.all([
+            streamFirstResponse(vectorSearchPromise),
+            streamFirstResponse(webSearchPromise),
+        ]);
 
-    texts = [...vectorResponse.texts, ...webResponse.texts];
+        texts = [...vectorResponse.texts, ...webResponse.texts];
+    } else {
+        const results = await getSearchEngine(searchOptions).search(query);
+        texts = results.texts;
+    }
 
     await streamResponse({ sources: texts }, onStream);
 
