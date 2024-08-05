@@ -1,6 +1,5 @@
 import '@/styles/globals.css';
 
-import { fontHeading, fontSans, fontUrban } from '@/assets/fonts';
 import { ModalProvider } from '@/components/modal-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { siteConfig } from '@/config/site';
@@ -62,9 +61,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <body
                 className={cn(
                     'min-h-screen bg-background font-sans antialiased',
-                    fontSans.variable,
-                    fontUrban.variable,
-                    fontHeading.variable,
                 )}
             >
                 <ThemeProvider
