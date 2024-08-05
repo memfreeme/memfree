@@ -160,7 +160,8 @@ export function SearchWindow() {
                 chatHistoryRef.current,
             );
 
-            console.log('mode', mode);
+            // console.log('chatHistoryString', chatHistoryString);
+            // console.log('mode', mode);
 
             const url = `/api/ask`;
             await fetchEventSource(url, {

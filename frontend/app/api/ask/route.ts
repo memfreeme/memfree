@@ -87,6 +87,17 @@ export async function POST(req: NextRequest) {
     }
     const { query, useCache, mode, model, source, history } = await req.json();
 
+    // console.log(
+    //     'query:',
+    //     query,
+    //     'mode:',
+    //     mode,
+    //     'model:',
+    //     model,
+    //     'source:',
+    //     source,
+    // );
+
     if (mode === 'search') {
         try {
             const readableStream = new ReadableStream({
@@ -202,7 +213,7 @@ async function ask(
 ) {
     let cachedResult: CachedResult | null = null;
     if (useCache) {
-        query = query.trim().toLocaleLowerCase();
+        query = query.trim();
         let cachedResult: CachedResult = await getCache(model + source + query);
         if (cachedResult) {
             const { webs, images, answer, related } = cachedResult;
