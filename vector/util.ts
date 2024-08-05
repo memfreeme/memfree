@@ -66,7 +66,20 @@ export async function fetchWithRetry(
 
 export function isValidUrl(input: string): boolean {
   try {
-    new URL(input);
+    const url = new URL(input);
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      return false;
+    }
+
+    const hostname = url.hostname;
+    if (!hostname.includes(".")) {
+      return false;
+    }
+
+    if (input.length > 2000) {
+      return false;
+    }
+
     return true;
   } catch (_) {
     return false;

@@ -1,5 +1,6 @@
 import { getUserById } from '@/lib/db';
 import { log } from '@/lib/log';
+import { isValidUrl } from '@/lib/shared-utils';
 import { NextResponse } from 'next/server';
 
 const API_TOKEN = process.env.API_TOKEN!;
@@ -16,15 +17,6 @@ if (process.env.VECTOR_INDEX_HOST) {
     throw new Error(
         'Neither VECTOR_INDEX_HOST, VECTOR_HOST, nor MEMFREE_HOST is defined',
     );
-}
-
-function isValidUrl(input: string): boolean {
-    try {
-        new URL(input);
-        return true;
-    } catch (_) {
-        return false;
-    }
 }
 
 export async function POST(req: Request) {

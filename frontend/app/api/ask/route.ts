@@ -19,7 +19,6 @@ import {
 } from '@/lib/search/search';
 import { GPT_4o_MIMI, validModel } from '@/lib/model';
 import { logError } from '@/lib/log';
-import { checkIsPro } from '@/lib/user-utils';
 import { rerank } from '@/lib/rerank';
 import { streamController, streamResponse } from '@/lib/server-utils';
 import { search } from './search';
@@ -29,6 +28,7 @@ import {
     rephraseQuery,
 } from '@/lib/llm/utils';
 import { chat } from './chat';
+import { checkIsPro } from '@/lib/shared-utils';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,

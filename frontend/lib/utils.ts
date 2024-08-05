@@ -35,15 +35,6 @@ export function extractDomain(url) {
     }
 }
 
-export function isValidUrl(input: string): boolean {
-    try {
-        new URL(input);
-        return true;
-    } catch (_) {
-        return false;
-    }
-}
-
 export const formatChatHistoryAsString = (chatHistory: [string, string][]): string => {
     return chatHistory
         .map(([sender, message]) => `${sender}: ${message}`)

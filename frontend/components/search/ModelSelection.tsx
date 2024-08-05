@@ -11,7 +11,7 @@ import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI } from '@/lib/model';
-import { checkIsPro } from '@/lib/user-utils';
+import { checkIsPro } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
 type Model = {

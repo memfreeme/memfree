@@ -12,7 +12,7 @@ import { useSourceStore, useUserStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { SearchCategory } from '@/lib/types';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
-import { checkIsPro } from '@/lib/user-utils';
+import { checkIsPro } from '@/lib/shared-utils';
 
 type Source = {
     name: string;
