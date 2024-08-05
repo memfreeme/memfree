@@ -6,6 +6,7 @@ export const axiom = new Axiom({
 
 export const log = async (message: any) => {
   try {
+    console.log(message);
     axiom.ingest("memfree", [message]);
   } catch (error) {
     console.error("Error logging to Axiom:", error);

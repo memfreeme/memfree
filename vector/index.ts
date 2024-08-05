@@ -43,7 +43,13 @@ export async function handleRequest(req: Request): Promise<Response> {
         return new Response(JSON.stringify([]), { status: 200 });
       }
 
-      logError(errorMessage || "unkown", "search");
+      log({
+        service: "vector-search",
+        action: `error-search`,
+        error: `${errorMessage}`,
+        query: query,
+        userId: userId,
+      });
       if (errorMessage)
         return Response.json("Failed to search", { status: 500 });
     }
@@ -62,9 +68,8 @@ export async function handleRequest(req: Request): Promise<Response> {
       await ingest_url(url, userId);
       return Response.json("Success");
     } catch (error) {
-      console.error("error-index-url", error);
       log({
-        service: "index",
+        service: "vector-index",
         action: "error-index-url",
         error: `${error}`,
         url: url,
@@ -87,7 +92,13 @@ export async function handleRequest(req: Request): Promise<Response> {
       await ingest_md(url, userId, markdown, title);
       return Response.json("Success");
     } catch (error) {
-      logError(error as Error, "index-md");
+      log({
+        service: "vector-index",
+        action: "error-index-md",
+        error: `${error}`,
+        url: url,
+        userId: userId,
+      });
       return Response.json("Failed to index markdown", { status: 500 });
     }
   }
