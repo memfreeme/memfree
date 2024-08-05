@@ -270,7 +270,7 @@ async function ask(
         texts = [...texts, ...webTexts];
         images = [...images, ...webImages];
 
-        await streamResponse({ sources: texts, images }, onStream);
+        await streamResponse({ sources: texts }, onStream);
 
         if (texts.length > 10) {
             const documents = texts.map((item) => item.content);
@@ -286,7 +286,7 @@ async function ask(
         ({ texts, images } =
             await getSearchEngine(searchOptions).search(query));
 
-        await streamResponse({ sources: texts, images }, onStream);
+        await streamResponse({ sources: texts }, onStream);
     }
     texts = texts.slice(0, TEXT_LIMIT);
 
