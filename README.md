@@ -49,6 +49,7 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 
 ## Update
 
+- **2024-08-04**: Support Search, Chat and Ask mode
 - **2024-08-02**: Make mdReader Service Production Ready
 - **2024-08-01**: Add mdReader Service to convert any web page to markdown
 - **2024-07-31**: Improving the quality of indexing Twitter content
