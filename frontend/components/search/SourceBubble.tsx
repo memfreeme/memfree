@@ -18,15 +18,15 @@ const SourceBubble = ({ source }) => {
                             alt={`${site} favicon`}
                             className="size-4 mr-2"
                         />
-                        <p className="text-xs font-medium text-gray-500">
+                        <p className="text-xs font-medium text-gray-600">
                             {site}
                         </p>
                     </div>
-                    <h3 className="truncate text-xs text-blue-500 font-medium pb-2">
+                    <h3 className="truncate text-xs text-blue-600 font-medium pb-2">
                         {source.title}
                     </h3>
                     <p
-                        className="text-xs overflow-hidden text-gray-500"
+                        className="text-xs overflow-hidden text-gray-600"
                         style={{
                             lineHeight: '1.5em',
                             minHeight: '4.5em',

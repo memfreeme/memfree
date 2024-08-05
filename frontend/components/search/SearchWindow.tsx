@@ -257,23 +257,6 @@ export function SearchWindow() {
         [],
     );
 
-    const scrollTo = (ref) => {
-        ref.current?.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (
-            messages[messages.length - 1]?.role === 'assistant' &&
-            scrollContainerRef.current
-        ) {
-            setTimeout(() => {
-                scrollTo(scrollContainerRef);
-            }, 2000);
-        }
-    }, [messages.length]);
-
     const stableHandleSearch = useCallback((key: string) => {
         sendMessage(key);
     }, []);
@@ -292,7 +275,6 @@ export function SearchWindow() {
                                 message={{ ...m }}
                                 onSelect={sendSelectedQuestion}
                                 deepIntoQuestion={deepIntoQuestion}
-                                ref={index === 1 ? scrollContainerRef : null}
                             ></SearchMessageBubble>
                         ))
                 ) : (

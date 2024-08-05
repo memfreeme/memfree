@@ -28,7 +28,7 @@ const ModeTabs: React.FC<ModeTabsProps> = React.memo(({ showContent }) => {
     };
 
     return (
-        <div className="flex justify-center py-4 mx-auto px-4">
+        <div className="flex justify-center p-4 mx-auto">
             <Tabs
                 defaultValue={mode}
                 value={mode}
