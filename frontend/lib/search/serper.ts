@@ -1,12 +1,6 @@
 import 'server-only';
 
-import {
-    IMAGE_LIMIT,
-    SearchResult,
-    SearchSource,
-    SERPER_API_KEY,
-    TEXT_LIMIT,
-} from './search';
+import { SearchResult, SearchSource, SERPER_API_KEY } from './search';
 import { ImageSource, TextSource } from '../types';
 import { log, logError } from '../log';
 import { fetchWithTimeout } from '../server-utils';
@@ -96,9 +90,6 @@ export class SerperSearch implements SearchSource {
                     })),
                 );
             }
-            // texts = texts.slice(0, TEXT_LIMIT);
-            // images = images.slice(0, IMAGE_LIMIT);
-            console.log('serper images:', images);
             return { texts, images };
         } catch (error) {
             logError(error, 'search-serper');

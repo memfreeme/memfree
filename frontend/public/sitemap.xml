@@ -1,7 +1,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.memfree.me/</loc>
-    <lastmod>2024-07-22</lastmod>
+    <lastmod>2024-08-05</lastmod>
     <changefreq>daily</changefreq>
   </url>
   <url>
@@ -46,7 +46,7 @@
   </url>
   <url>
     <loc>https://www.memfree.me/blog</loc>
-    <lastmod>2024-07-08</lastmod>
+    <lastmod>2024-08-05</lastmod>
     <changefreq>daily</changefreq>
   </url>
   <url>
@@ -56,12 +56,17 @@
   </url>
   <url>
     <loc>https://www.memfree.me/changelog</loc>
-    <lastmod>2024-07-30</lastmod>
+    <lastmod>2024-08-05</lastmod>
     <changefreq>daily</changefreq>
   </url>
-    <url>
+  <url>
     <loc>https://www.memfree.me/blog/hybrid-ai-search-tech-stack</loc>
     <lastmod>2024-07-08</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.memfree.me/blog/tweet-content-fast-free</loc>
+    <lastmod>2024-08-05</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
