@@ -59,6 +59,7 @@ export class VectorSearch implements SearchSource {
                             title: item.title,
                             url: item.url,
                             image: item.image,
+                            type: 'vector',
                         });
                     }
                 });

@@ -30,7 +30,18 @@ export function SearchWindow() {
         }
     }, [q]);
 
-    const mode = useModeStore((state) => state.mode);
+    const { mode, setMode, initMode } = useModeStore((state) => ({
+        mode: state.mode,
+        setMode: state.setMode,
+        initMode: state.initMode,
+    }));
+
+    useEffect(() => {
+        const initialMode = initMode();
+        if (initialMode && initialMode !== mode) {
+            setMode(initialMode);
+        }
+    }, [mode, initMode, setMode]);
 
     const [chatHistory, setChatHistory] = useState<[string, string][]>([]);
     const chatHistoryRef = useRef(chatHistory);
@@ -156,6 +167,7 @@ export function SearchWindow() {
             }
             const model = configStore.getState().model;
             const source = configStore.getState().source;
+            const mode = useModeStore.getState().mode;
 
             let chatHistoryString = '';
             if (needRephrasing) {
@@ -165,7 +177,7 @@ export function SearchWindow() {
             }
 
             // console.log('chatHistoryString', chatHistoryString);
-            // console.log('mode', mode);
+            // console.log('search mode', mode);
 
             const url = `/api/ask`;
             await fetchEventSource(url, {

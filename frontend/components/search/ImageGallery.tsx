@@ -48,7 +48,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = memo(({ initialImages }) => {
                     key={index}
                     href={image.url}
                     target="_blank"
-                    className="aspect-video size-full overflow-hidden hover:scale-110 duration-150 rounded-lg transition-all shadow-md"
+                    className={`aspect-video size-full overflow-hidden hover:scale-110 duration-150 rounded-lg transition-all ${image.type === 'vector' ? 'border-2 border-purple-500 border-solid' : ''}`}
                 >
                     <img
                         src={image.image}

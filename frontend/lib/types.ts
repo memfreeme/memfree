@@ -27,6 +27,7 @@ export interface ImageSource {
     title: string;
     url: string;
     image: string;
+    type?: string;
 }
 
 export enum SearchCategory {
