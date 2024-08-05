@@ -96,6 +96,8 @@ export async function POST(req: NextRequest) {
     //     model,
     //     'source:',
     //     source,
+    //     'history:',
+    //     history.length,
     // );
 
     if (mode === 'search') {

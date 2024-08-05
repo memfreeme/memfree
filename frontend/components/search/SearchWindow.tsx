@@ -42,6 +42,7 @@ export function SearchWindow() {
     const sendMessage = async (
         message?: string,
         messageIdToUpdate?: string,
+        needRephrasing = true,
     ) => {
         if (isLoading) {
             return;
@@ -156,9 +157,12 @@ export function SearchWindow() {
             const model = configStore.getState().model;
             const source = configStore.getState().source;
 
-            let chatHistoryString = formatChatHistoryAsString(
-                chatHistoryRef.current,
-            );
+            let chatHistoryString = '';
+            if (needRephrasing) {
+                chatHistoryString = formatChatHistoryAsString(
+                    chatHistoryRef.current,
+                );
+            }
 
             // console.log('chatHistoryString', chatHistoryString);
             // console.log('mode', mode);
@@ -247,7 +251,7 @@ export function SearchWindow() {
     };
 
     const sendSelectedQuestion = useCallback(async (question: string) => {
-        await sendMessage(question);
+        await sendMessage(question, null, false);
     }, []);
 
     const deepIntoQuestion = useCallback(
