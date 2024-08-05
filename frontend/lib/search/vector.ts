@@ -46,7 +46,7 @@ export class VectorSearch implements SearchSource {
             const result = await response.json();
 
             result
-                .filter((item) => item._distance <= 0.3)
+                .filter((item) => item._distance <= 0.6)
                 .map((item) => {
                     texts.push({
                         title: item.title,

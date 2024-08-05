@@ -165,6 +165,13 @@ export async function update(tableName: string) {
   );
 }
 
+export async function checkout(tableName: string, version: number) {
+  const db = await getConnection();
+  const table = await getTable(db, tableName);
+  await table.checkout(version);
+  await table.restore();
+}
+
 export async function version(tableName: string) {
   const db = await getConnection();
   const table = await getTable(db, tableName);
