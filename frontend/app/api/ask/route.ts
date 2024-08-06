@@ -147,6 +147,7 @@ export async function POST(req: NextRequest) {
                         useCache,
                         isPro,
                         streamController(controller),
+                        model,
                     );
                 },
                 cancel() {

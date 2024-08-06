@@ -25,6 +25,7 @@ export type Message = {
 import React, { memo } from 'react';
 import { useModeStore } from '@/lib/store';
 import AnswerSection from './AnswerSection';
+import QuestionSection from './QuestionSection';
 
 const SearchMessageBubble = memo(
     (props: {
@@ -175,15 +176,7 @@ const SearchMessageBubble = memo(
                 )}
 
                 {isUser && (
-                    <>
-                        <div className="flex items-center space-x-2">
-                            <FileQuestion className="text-primary size-22"></FileQuestion>
-                            <h2 className="capitalize py-2 text-lg font-medium text-primary">
-                                {content}
-                            </h2>
-                        </div>
-                        <hr className="w-full " />
-                    </>
+                    <QuestionSection content={content}></QuestionSection>
                 )}
             </div>
         );
