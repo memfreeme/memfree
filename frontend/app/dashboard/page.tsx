@@ -1,3 +1,4 @@
+import { FailedUrlTable } from '@/components/FailedUrlTable';
 import {
     Card,
     CardContent,
@@ -18,7 +19,9 @@ export default async function page() {
     if (!user) {
         redirect('/login');
     }
-    const [urls, indexCount, searchCount] = await getUserStatistics(user.id);
+    const [urls, failedUrls, indexCount, searchCount] = await getUserStatistics(
+        user.id,
+    );
 
     return (
         <ScrollArea className="h-full">
@@ -86,6 +89,36 @@ export default async function page() {
                                 </CardContent>
                             </Card>
                         </div>
+                        {failedUrls.length > 0 && (
+                            <div className="grid gap-4 grid-cols-1 ">
+                                <Card className="col-span-4">
+                                    <CardHeader>
+                                        <CardTitle>
+                                            Failed Indexed Urls
+                                        </CardTitle>
+                                        <CardDescription className="text-md font-semibold py-2">
+                                            Some web pages are inaccessible,
+                                            Some web pages are not public.
+                                            Please install the browser extension
+                                            and index again.
+                                        </CardDescription>
+                                        <CardDescription className="text-md font-semibold py-2">
+                                            Please refer to{' '}
+                                            <a
+                                                href="https://www.memfree.me/docs/index-bookmarks"
+                                                target="_blank"
+                                                className="text-primary"
+                                            >
+                                                How to Index Web Pages
+                                            </a>
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="pl-2">
+                                        <FailedUrlTable urls={failedUrls} />
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        )}
                     </TabsContent>
                 </Tabs>
             </div>

@@ -10,13 +10,12 @@ export const RATE_LIMIT_KEY = 'ratelimit';
 
 // vector
 export const URLS_KEY = 'urls:';
+export const ERROR_URLS_KEY = 'error_urls:';
 export const INDEX_COUNT_KEY = 'index_count:';
 export const TOTAL_INDEX_COUNT_KEY = 't_index_count:';
 
 export const SEARCH_COUNT_KEY = 's_count:';
 export const TOTAL_SEARCH_COUNT_KEY = 't_s_count:';
-
-const REDEEM_CODES_SET_KEY = 'redeem_codes';
 
 export const redisDB = new Redis({
     url: process.env.UPSTASH_REDIS_REST_URL!,
@@ -60,13 +59,27 @@ export async function incSearchCount(userId: string): Promise<void> {
     ]);
 }
 
-export type UserStatistics = [ScoredURL[], string | null, string | null];
+export async function removeUrlFromErrorUrls(userId: string, url: string) {
+    const result = await redisDB.zrem(ERROR_URLS_KEY + userId, url);
+    return result;
+}
+
+export type UserStatistics = [
+    ScoredURL[],
+    ScoredURL[],
+    string | null,
+    string | null,
+];
 
 export async function getUserStatistics(
     userId: string,
 ): Promise<UserStatistics> {
-    const [urls, indexCount, searchCount] = await Promise.all([
+    const [urls, failedUrls, indexCount, searchCount] = await Promise.all([
         redisDB.zrange(URLS_KEY + userId, 0, 19, {
+            rev: true,
+            withScores: true,
+        }),
+        redisDB.zrange(ERROR_URLS_KEY + userId, 0, 19, {
             rev: true,
             withScores: true,
         }),
@@ -82,19 +95,20 @@ export async function getUserStatistics(
         });
     }
 
+    const failedUrlss: ScoredURL[] = [];
+    for (let i = 0; i < failedUrls.length; i += 2) {
+        failedUrlss.push({
+            value: failedUrls[i] as string,
+            score: failedUrls[i + 1] as number,
+        });
+    }
+
     return [
         scoredURLs as ScoredURL[],
+        failedUrlss as ScoredURL[],
         indexCount as string,
         searchCount as string,
     ];
-}
-
-export async function isCodeExist(code: string) {
-    return redisDB.sismember(REDEEM_CODES_SET_KEY, code);
-}
-
-export async function deleteCodeKey(code: string) {
-    return redisDB.srem(REDEEM_CODES_SET_KEY, code);
 }
 
 async function deleteKey(key: string): Promise<boolean> {
