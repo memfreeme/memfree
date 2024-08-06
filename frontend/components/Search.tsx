@@ -1,6 +1,6 @@
 'use client';
 
-import React, { KeyboardEvent, useState } from 'react';
+import React, { KeyboardEvent, useRef, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { Link, SendHorizontal } from 'lucide-react';
 import { useIndexModal } from '@/hooks/use-index-modal';
@@ -26,10 +26,6 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const uploadModal = useIndexModal();
     const user = useUserStore((state) => state.user);
 
-    const handleInputChange = (value) => {
-        setContent(value);
-    };
-
     const { toast } = useToast();
 
     const handleClick = () => {
@@ -51,7 +47,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     };
 
     return (
-        <section className="relatve my-5">
+        <section className="my-5">
             <div className="mx-auto w-full max-w-3xl px-4 md:px-10 text-center">
                 <div className="flex items-center relative mx-auto w-full max-w-2xl">
                     <TextareaAutosize
@@ -59,10 +55,8 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                         minRows={2}
                         maxRows={10}
                         className="w-full border-input bg-transparent p-4 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50  overflow-y-auto resize-none overflow-hidden border-2 rounded-xl"
-                        onChange={(e) => {
-                            handleInputChange(e.target.value);
-                        }}
                         onKeyDown={handleInputKeydown}
+                        onChange={(e) => setContent(e.target.value)}
                     />
 
                     <div className="absolute bottom-0 right-0 mb-2 mr-2 flex space-x-2">
@@ -71,6 +65,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                 <TooltipTrigger asChild>
                                     <button
                                         type="button"
+                                        aria-label="Index"
                                         className="text-gray-500 hover:text-primary pr-2"
                                         onClick={() => {
                                             if (!user) {
@@ -95,6 +90,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                 <TooltipTrigger asChild>
                                     <button
                                         type="button"
+                                        aria-label="Search"
                                         className="text-gray-500 hover:text-primary pr-2"
                                         onClick={handleClick}
                                     >

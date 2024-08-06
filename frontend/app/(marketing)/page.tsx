@@ -15,7 +15,8 @@ export default function IndexPage() {
         }
 
         if (key.trim() !== '') {
-            router.push('/search?q=' + key);
+            const encodedKey = encodeURIComponent(key);
+            router.push(`/search?q=' + ${encodedKey}`);
             return;
         }
     };
