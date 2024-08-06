@@ -1,3 +1,4 @@
+import { incSearchCount } from '@/lib/db';
 import { rerank } from '@/lib/rerank';
 import { getSearchEngine, getVectorSearch } from '@/lib/search/search';
 import { streamResponse } from '@/lib/server-utils';
@@ -54,6 +55,16 @@ export async function search(
         });
         console.log('rerankedTexts:', texts);
         await streamResponse({ sources: texts }, onStream);
+    }
+
+    if (userId) {
+        // Without awaiting incSearchCount to avoid blocking response time
+        incSearchCount(userId).catch((error) => {
+            console.error(
+                `Failed to increment search count for user ${userId}:`,
+                error,
+            );
+        });
     }
     onStream?.(null, true);
 }

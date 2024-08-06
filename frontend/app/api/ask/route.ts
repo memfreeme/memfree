@@ -146,6 +146,7 @@ export async function POST(req: NextRequest) {
                         history,
                         useCache,
                         isPro,
+                        userId,
                         streamController(controller),
                         model,
                     );
