@@ -94,15 +94,12 @@ async function addVectors(
   const data: Array<Record<string, unknown>> = [];
   for (let i = 0; i < documents.length; i += 1) {
     const newImage = image ? extractImage(documents[i].pageContent) : null;
-    if (newImage) {
-      image = newImage;
-    }
 
     const record = {
       create_time: Date.now(),
       title: title,
       url: url,
-      image: image,
+      image: newImage ? newImage : image,
       text: documents[i].pageContent,
       vector: embeddings[i] as number[],
     };

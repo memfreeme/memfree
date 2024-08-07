@@ -39,7 +39,7 @@ async function processUserIds(userIds: string[]): Promise<void> {
   await Promise.all(promises);
 }
 
-const userIds = ["bf4b4429-69ba-44a7-acac-3d4f11d22892"];
+const userIds = ["testUser"];
 
 processUserIds(userIds)
   .then(() => console.log("All requests completed successfully"))

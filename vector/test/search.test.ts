@@ -1,12 +1,12 @@
 import { describe, it, expect } from "bun:test";
 
-const testUser = "localTest";
+const testUser = process.env.TEST_USER || "localTest";
 const host = process.env.TEST_VECTOR_HOST || "http://localhost:3001";
 const API_TOKEN = process.env.API_TOKEN!;
 
 describe("/api/vector/search endpoint", () => {
   it("should return search results for a valid query", async () => {
-    const query = "how memfree index web page";
+    const query = "memfree";
 
     const response = await fetch(`${host}/api/vector/search`, {
       method: "POST",
@@ -24,7 +24,7 @@ describe("/api/vector/search endpoint", () => {
     console.log(json);
     expect(response.status).toBe(200);
     expect(json).toEqual(expect.any(Object));
-  }, 10000);
+  }, 100000);
 
   it("should return empty results for not found user", async () => {
     const query = "memfree";

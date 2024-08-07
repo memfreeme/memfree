@@ -141,6 +141,11 @@ export async function createEmptyTable(tableName: string) {
   return await db.createEmptyTable(tableName, schema);
 }
 
+export async function reCreateEmptyTable(tableName: string) {
+  const db = await getConnection();
+  return await db.createEmptyTable(tableName, schema, { mode: "overwrite" });
+}
+
 export async function size(tableName: string) {
   const db = await getConnection();
   const table = await getTable(db, tableName);

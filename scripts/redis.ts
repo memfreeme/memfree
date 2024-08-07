@@ -26,6 +26,7 @@ export const redisDB = new Redis({
   enableAutoPipelining: true,
 });
 
+export const URLS_KEY = "urls:";
 export const TOTAL_INDEX_COUNT_KEY = "t_index_count:";
 export const TOTAL_SEARCH_COUNT_KEY = "t_s_count:";
 export const REDEEM_CODES_SET_KEY = "redeem_codes";
@@ -136,4 +137,9 @@ export async function getUserIdByEmail(email: string) {
   } catch {
     return null;
   }
+}
+
+export async function getAllUrls(userId: string): Promise<string[]> {
+  const urls = await redisDB.zrange(URLS_KEY + userId, 0, -1);
+  return urls as string[];
 }

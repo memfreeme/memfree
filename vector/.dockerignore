@@ -183,3 +183,5 @@ local_cache
 test
 
 fly.template.toml
+
+drop-table.ts

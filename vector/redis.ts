@@ -48,6 +48,11 @@ export async function getLatestUrl(userId: string): Promise<string | null> {
   return urls[0] as string;
 }
 
+export async function getAllUrls(userId: string): Promise<string[]> {
+  const urls = await redis.zrange(URLS_KEY + userId, 0, -1);
+  return urls as string[];
+}
+
 export async function urlExists(userId: string, url: string): Promise<boolean> {
   const score = await redis.zscore(URLS_KEY + userId, url);
   return score !== null;

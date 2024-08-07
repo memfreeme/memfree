@@ -80,6 +80,30 @@ export async function handleRequest(req: Request): Promise<Response> {
     }
   }
 
+  if (path === "/api/index/url" && method === "POST") {
+    const { url, userId } = await req.json();
+    try {
+      if (!isValidUrl(url)) {
+        return Response.json("Invalid URL format", { status: 400 });
+      }
+      // if (await urlExists(userId, url)) {
+      //   await deleteUrl(userId, url);
+      // }
+      await ingest_url(url, userId);
+      return Response.json("Success");
+    } catch (error) {
+      log({
+        service: "vector-index",
+        action: "error-index-url",
+        error: `${error}`,
+        url: url,
+        userId: userId,
+      });
+      await addErrorUrl(userId, url);
+      return Response.json(`Failed to search ${error}`, { status: 500 });
+    }
+  }
+
   if (path === "/api/index/md" && method === "POST") {
     const { url, userId, markdown, title } = await req.json();
     try {
