@@ -54,7 +54,8 @@ export async function deleteUrls(tableName: string, urls: string[]) {
   const db = await getConnection();
   await retryAsync(async () => {
     const table = await getTable(db, tableName);
-    await table.delete(`url IN (${urls.join(",")})`);
+    const predicate = `url IN (${urls.map((url) => `'${url}'`).join(", ")})`;
+    await table.delete(predicate);
   });
   console.log("urls", urls, "already exists for user", tableName, "deleted");
 }

@@ -1,4 +1,6 @@
-import { getUserById } from '@/lib/db';
+import { addUrl, getUserById, urlsExists } from '@/lib/db';
+import { compact } from '@/lib/index/compact';
+import { remove } from '@/lib/index/remove';
 import { isValidUrl } from '@/lib/shared-utils';
 import { NextResponse } from 'next/server';
 
@@ -41,6 +43,11 @@ export async function POST(req: Request) {
             );
         }
 
+        const existedUrl = await urlsExists(userId, [url]);
+        if (existedUrl && existedUrl.length > 0) {
+            await remove(userId, existedUrl);
+        }
+
         const fullUrl = `${vectorIndexHost}/api/index/md`;
         const response = await fetch(fullUrl, {
             method: 'POST',
@@ -53,6 +60,12 @@ export async function POST(req: Request) {
         if (!response.ok) {
             throw new Error(`Error! status: ${response.status}`);
         }
+
+        const indexCount = await addUrl(userId, url);
+        if (indexCount % 50 === 0) {
+            await compact(userId);
+        }
+
         return NextResponse.json('Success');
     } catch (error) {
         console.error('Request failed:', error);

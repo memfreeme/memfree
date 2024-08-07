@@ -146,11 +146,8 @@ export async function urlsExists(
 
     const results = await pipeline.exec();
     return urls.filter((_, index) => {
-        const [error, score] = results[index] as [Error | null, number | null];
-        if (error) {
-            console.error('Error checking url', error);
-        }
-        return error === null && score !== null;
+        const score = results[index] as number | null;
+        return score !== null;
     });
 }
 
