@@ -67,7 +67,7 @@ export async function removeUrlFromErrorUrls(userId: string, url: string) {
 export type UserStatistics = [
     ScoredURL[],
     ScoredURL[],
-    string | null,
+    number | null,
     string | null,
 ];
 
@@ -83,7 +83,7 @@ export async function getUserStatistics(
             rev: true,
             withScores: true,
         }),
-        redisDB.get(INDEX_COUNT_KEY + userId),
+        redisDB.zcard(URLS_KEY + userId),
         redisDB.get(SEARCH_COUNT_KEY + userId),
     ]);
 
@@ -106,9 +106,14 @@ export async function getUserStatistics(
     return [
         scoredURLs as ScoredURL[],
         failedUrlss as ScoredURL[],
-        indexCount as string,
+        indexCount as number,
         searchCount as string,
     ];
+}
+
+export async function getUserIndexCount(userId: string): Promise<number> {
+    const count = await redisDB.zcard(URLS_KEY + userId);
+    return count;
 }
 
 async function deleteKey(key: string): Promise<boolean> {
