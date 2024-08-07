@@ -3,8 +3,6 @@ import { Document } from "@langchain/core/documents";
 
 import { append } from "./db";
 import { getMd } from "./util";
-import { addUrl } from "./redis";
-import { TABLE_COMPACT_THRESHOLD } from "./config";
 import { getEmbedding } from "./embedding/embedding";
 import { processTweet } from "./tweet";
 
@@ -31,11 +29,6 @@ async function processIngestion(
   });
   const data = await addVectors(image, title, url, documents);
   const table = await append(userId, data);
-  const indexCount = await addUrl(userId, url);
-  if (indexCount % TABLE_COMPACT_THRESHOLD === 0) {
-    await table.optimize({ cleanupOlderThan: new Date() });
-    console.log(`${userId} table optimized, index count: ${indexCount}`);
-  }
 }
 
 export async function ingest_md(

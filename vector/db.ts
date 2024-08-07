@@ -50,13 +50,13 @@ async function getTable(db: any, tableName: string): Promise<lancedb.Table> {
   }
 }
 
-export async function deleteUrl(tableName: string, url: string) {
+export async function deleteUrls(tableName: string, urls: string[]) {
   const db = await getConnection();
   await retryAsync(async () => {
     const table = await getTable(db, tableName);
-    await table.delete(`url == "${url}"`);
+    await table.delete(`url IN (${urls.join(",")})`);
   });
-  console.log("url", url, "already exists for user", tableName, "deleted");
+  console.log("urls", urls, "already exists for user", tableName, "deleted");
 }
 
 export async function append(tableName: string, data: lancedb.Data) {
@@ -155,8 +155,7 @@ export async function size(tableName: string) {
 export async function compact(tableName: string) {
   const db = await getConnection();
   const table = await getTable(db, tableName);
-  const stats = await table.optimize({ cleanupOlderThan: new Date() });
-  console.log(stats);
+  await table.optimize({ cleanupOlderThan: new Date() });
 }
 
 export async function update(tableName: string) {

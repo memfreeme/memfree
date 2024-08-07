@@ -1,4 +1,4 @@
-import { getUserById } from '@/lib/db';
+import { addUrl, getUserById, urlsExists } from '@/lib/db';
 import { log } from '@/lib/log';
 import { isValidUrl } from '@/lib/shared-utils';
 import { NextResponse } from 'next/server';
@@ -17,6 +17,71 @@ if (process.env.VECTOR_INDEX_HOST) {
     throw new Error(
         'Neither VECTOR_INDEX_HOST, VECTOR_HOST, nor MEMFREE_HOST is defined',
     );
+}
+
+async function compact(userId: string) {
+    const compactUrl = `${vectorIndexHost}/api/index/compact`;
+    try {
+        const response = await fetch(compactUrl, {
+            method: 'POST',
+            headers: {
+                'Authorization': `${API_TOKEN}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId: userId }),
+        });
+        if (!response.ok) {
+            console.error(
+                `Compact Error! Status: ${response.status}, StatusText: ${response.statusText}`,
+            );
+            throw new Error(
+                `Compact Error! Status: ${response.status}, StatusText: ${response.statusText}`,
+            );
+        }
+        const result = await response.json();
+        console.log(`Compacted ${result} for user ${userId}`);
+    } catch (error) {
+        console.error(`Compact Error! ${error} for user ${userId}`);
+        log({
+            service: 'index-url',
+            action: `error-compact`,
+            error: `${error}`,
+            userId: userId,
+        });
+    }
+}
+
+async function remove(userId: string, urls: string[]) {
+    const deleteUrl = `${vectorIndexHost}/api/index/delete`;
+    try {
+        const response = await fetch(deleteUrl, {
+            method: 'POST',
+            headers: {
+                'Authorization': `${API_TOKEN}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId: userId, urls: urls }),
+        });
+        if (!response.ok) {
+            console.error(
+                `remove url Error! Status: ${response.status}, StatusText: ${response.statusText}`,
+            );
+            throw new Error(
+                `remove url Error! Status: ${response.status}, StatusText: ${response.statusText}`,
+            );
+        }
+        const result = await response.json();
+        console.log(`remove url ${urls} for user ${userId}`);
+    } catch (error) {
+        console.error(`remove url Error! ${error} for user ${userId}`);
+        log({
+            service: 'index-url',
+            action: `error-remove-url`,
+            error: `${error}`,
+            userId: userId,
+        });
+        throw error;
+    }
 }
 
 export async function POST(req: Request) {
@@ -49,8 +114,14 @@ export async function POST(req: Request) {
                 { status: 400 },
             );
         }
-        // TODO: rename the endpoint to /api/vector/index
-        const fullUrl = `${vectorIndexHost}/api/vector/callback`;
+
+        const existedUrl = await urlsExists(userId, urls);
+        if (existedUrl && existedUrl.length > 0) {
+            await remove(userId, existedUrl);
+        }
+
+        const fullUrl = `${vectorIndexHost}/api/index/url`;
+        let needCompact = false;
 
         const requests = urls.map((url) => {
             return fetch(fullUrl, {
@@ -61,7 +132,7 @@ export async function POST(req: Request) {
                 },
                 body: JSON.stringify({ url, userId: user.id }),
             })
-                .then((response) => {
+                .then(async (response) => {
                     if (!response.ok) {
                         console.error(
                             `Index Url Error! status: ${response.status}`,
@@ -70,9 +141,13 @@ export async function POST(req: Request) {
                             `Index Url Error! status: ${response.status}`,
                         );
                     }
-                    return response.json();
+                    const result = await response.json();
+                    const indexCount = await addUrl(userId, url);
+                    if (indexCount % 50 === 0) {
+                        needCompact = true;
+                    }
+                    return { url, result };
                 })
-                .then((result) => ({ url, result }))
                 .catch((error) => {
                     log({
                         service: 'index-url',
@@ -95,6 +170,10 @@ export async function POST(req: Request) {
                 { error: 'All URL requests failed' },
                 { status: 500 },
             );
+        }
+
+        if (needCompact) {
+            await compact(userId);
         }
 
         return NextResponse.json({

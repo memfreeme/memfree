@@ -116,6 +116,44 @@ export async function getUserIndexCount(userId: string): Promise<number> {
     return count;
 }
 
+export async function addUrl(userId: string, url: string): Promise<number> {
+    const date = Date.now();
+    const [zaddResult, incrIndexCountResult, incrTotalIndexCountResult] =
+        await Promise.all([
+            redisDB.zadd(URLS_KEY + userId, { score: date, member: url }),
+            redisDB.incr(INDEX_COUNT_KEY + userId),
+            redisDB.incr(TOTAL_INDEX_COUNT_KEY),
+        ]);
+
+    console.log(
+        'Result of all operations:',
+        zaddResult,
+        incrIndexCountResult,
+        incrTotalIndexCountResult,
+    );
+    return incrIndexCountResult;
+}
+
+export async function urlsExists(
+    userId: string,
+    urls: string[],
+): Promise<string[]> {
+    const pipeline = redisDB.pipeline();
+
+    urls.forEach((url) => {
+        pipeline.zscore(URLS_KEY + userId, url);
+    });
+
+    const results = await pipeline.exec();
+    return urls.filter((_, index) => {
+        const [error, score] = results[index] as [Error | null, number | null];
+        if (error) {
+            console.error('Error checking url', error);
+        }
+        return error === null && score !== null;
+    });
+}
+
 async function deleteKey(key: string): Promise<boolean> {
     try {
         const result = await redisDB.del(key);

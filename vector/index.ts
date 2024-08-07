@@ -1,4 +1,4 @@
-import { changeEmbedding, deleteUrl, search } from "./db";
+import { changeEmbedding, compact, deleteUrls, search } from "./db";
 import { log, logError } from "./log";
 import { addErrorUrl, urlExists } from "./redis";
 import { isValidUrl } from "./util";
@@ -63,7 +63,7 @@ export async function handleRequest(req: Request): Promise<Response> {
         return Response.json("Invalid URL format", { status: 400 });
       }
       if (await urlExists(userId, url)) {
-        await deleteUrl(userId, url);
+        await deleteUrls(userId, url);
       }
       await ingest_url(url, userId);
       return Response.json("Success");
@@ -80,15 +80,45 @@ export async function handleRequest(req: Request): Promise<Response> {
     }
   }
 
+  if (path === "/api/vector/delete" && method === "POST") {
+    const { urls, userId } = await req.json();
+    try {
+      await deleteUrls(userId, urls);
+      return Response.json("Success");
+    } catch (error) {
+      log({
+        service: "vector-index",
+        action: "error-delete-urls",
+        error: `${error}`,
+        urls: urls,
+        userId: userId,
+      });
+      return Response.json("Failed to delete urls", { status: 500 });
+    }
+  }
+
+  if (path === "/api/vector/compact" && method === "POST") {
+    const { userId } = await req.json();
+    try {
+      await compact(userId);
+      return Response.json("Success");
+    } catch (error) {
+      log({
+        service: "vector-index",
+        action: "error-compact",
+        error: `${error}`,
+        userId: userId,
+      });
+      return Response.json("Failed to compact", { status: 500 });
+    }
+  }
+
   if (path === "/api/index/url" && method === "POST") {
     const { url, userId } = await req.json();
     try {
       if (!isValidUrl(url)) {
         return Response.json("Invalid URL format", { status: 400 });
       }
-      // if (await urlExists(userId, url)) {
-      //   await deleteUrl(userId, url);
-      // }
       await ingest_url(url, userId);
       return Response.json("Success");
     } catch (error) {
