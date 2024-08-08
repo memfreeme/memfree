@@ -89,7 +89,7 @@ export function ModelSelection() {
                 }
             }}
         >
-            <SelectTrigger className="focus:ring-0 border-none outline-none">
+            <SelectTrigger aria-label="AI Model" className="focus:ring-0 border-none outline-none">
                 <SelectValue>
                     <div className="flex items-center space-x-1">
                         <Box></Box>

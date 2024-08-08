@@ -14,6 +14,7 @@ export function SimpleSiteFooter({
                             href={siteConfig.links.github}
                             target="_blank"
                             rel="noreferrer"
+                            aria-label="MemFree GitHub"
                         >
                             <Icons.gitHub className="size-5 hover:text-primary" />
                         </Link>
@@ -23,6 +24,7 @@ export function SimpleSiteFooter({
                             href="https://chromewebstore.google.com/detail/memfree/dndjodcanbhkomcgihbhcejogiimdmpk"
                             target="_blank"
                             rel="noreferrer"
+                            aria-label="MemFree Browser Extension"
                         >
                             <Icons.chrome className="size-5 hover:text-primary" />
                         </Link>
@@ -32,6 +34,7 @@ export function SimpleSiteFooter({
                             href={siteConfig.links.twitter}
                             target="_blank"
                             rel="noreferrer"
+                            aria-label="MemFree Twitter"
                         >
                             <Icons.twitter className="size-5 hover:text-primary" />
                         </Link>
@@ -41,6 +44,7 @@ export function SimpleSiteFooter({
                             href={siteConfig.links.discord}
                             target="_blank"
                             rel="noreferrer"
+                            aria-label="MemFree Discord"
                         >
                             <Icons.discord className="size-5 hover:text-primary" />
                         </a>
