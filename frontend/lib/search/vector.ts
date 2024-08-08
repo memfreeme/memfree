@@ -46,7 +46,7 @@ export class VectorSearch implements SearchSource {
             const result = await response.json();
 
             result
-                .filter((item) => item._distance <= 0.6)
+                .filter((item) => item._distance <= 0.5)
                 .map((item) => {
                     texts.push({
                         title: item.title,
@@ -54,14 +54,14 @@ export class VectorSearch implements SearchSource {
                         content: item.text,
                         type: 'vector',
                     });
-                    if (item.image) {
-                        images.push({
-                            title: item.title,
-                            url: item.url,
-                            image: item.image,
-                            type: 'vector',
-                        });
-                    }
+                    // if (item.image) {
+                    //     images.push({
+                    //         title: item.title,
+                    //         url: item.url,
+                    //         image: item.image,
+                    //         type: 'vector',
+                    //     });
+                    // }
                 });
             return { texts, images };
         } catch (error) {
