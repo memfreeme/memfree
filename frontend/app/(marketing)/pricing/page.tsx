@@ -1,10 +1,14 @@
 import { PricingCards } from '@/components/pricing-cards';
 import { PricingFaq } from '@/components/pricing-faq';
+import { siteConfig } from '@/config/site';
 import { getCurrentUser } from '@/lib/session';
 import { getUserSubscriptionPlan } from '@/lib/subscription';
 
 export const metadata = {
     title: 'MemFree Pricing',
+    alternates: {
+        canonical: siteConfig.url + '/pricing',
+    },
 };
 
 export default async function PricingPage() {

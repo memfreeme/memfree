@@ -60,6 +60,9 @@ export async function generateMetadata({
                 },
             ],
         },
+        alternates: {
+            canonical: absoluteUrl(post.slug),
+        },
         twitter: {
             card: 'summary_large_image',
             title: post.title,

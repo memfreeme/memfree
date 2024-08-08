@@ -1,12 +1,17 @@
 import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
 import SiteHeader from '@/components/layout/site-header';
 import { marketingConfig } from '@/config/marketing';
+import { siteConfig } from '@/config/site';
 import { getCurrentUser } from '@/lib/session';
 import { Suspense } from 'react';
 
 interface MarketingLayoutProps {
     children: React.ReactNode;
 }
+
+export const metadata = {
+    canonical: siteConfig.url,
+};
 
 export default async function MarketingLayout({
     children,

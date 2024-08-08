@@ -12,9 +12,13 @@ import {
     TimelineTitle,
 } from '@/components/ui/timeline';
 import { formatDate } from '@/lib/utils';
+import { siteConfig } from '@/config/site';
 
 export const metadata = {
     title: 'MemFree Changelog -- Hybrid AI Search',
+    alternates: {
+        canonical: siteConfig.url + '/changelog',
+    },
 };
 
 export default async function ChangeLog() {
