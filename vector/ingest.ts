@@ -2,7 +2,7 @@ import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
 
 import { append } from "./db";
-import { getMd } from "./util";
+import { getMd, readFromJsonlFile, writeToJsonlFile } from "./util";
 import { getEmbedding } from "./embedding/embedding";
 import { processTweet } from "./tweet";
 
@@ -15,6 +15,11 @@ function extractImage(markdown: string) {
   const imageRegex = /!\[.*?\]\((.*?)\)/;
   const match = imageRegex.exec(markdown);
   return match ? match[1] : null;
+}
+
+export async function ingest_jsonl(url: string, userId: string) {
+  const data = await readFromJsonlFile(url);
+  const table = await append(userId, data);
 }
 
 async function processIngestion(
@@ -98,7 +103,6 @@ async function addVectors(
     };
     data.push(record);
   }
-
   return data;
 }
 

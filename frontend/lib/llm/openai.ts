@@ -3,6 +3,7 @@ import 'server-only';
 import OpenAI from 'openai';
 import { logError } from '../log';
 import { LLMChat, Message, StreamHandler } from './llm';
+import { GPT_4o } from '../model';
 
 const apiKey = process.env.OPENAI_API_KEY;
 if (!apiKey) {
@@ -70,6 +71,10 @@ export class OpenAIChat implements LLMChat {
                 },
                 ...messages,
             ];
+        }
+
+        if (model === GPT_4o) {
+            model = 'gpt-4o-2024-08-06';
         }
 
         try {

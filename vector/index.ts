@@ -1,8 +1,8 @@
 import { changeEmbedding, compact, deleteUrls, search } from "./db";
 import { log, logError } from "./log";
-import { addErrorUrl, urlExists } from "./redis";
+import { addErrorUrl } from "./redis";
 import { isValidUrl } from "./util";
-import { ingest_url, ingest_md } from "./ingest";
+import { ingest_url, ingest_md, ingest_jsonl } from "./ingest";
 
 const API_TOKEN = process.env.API_TOKEN!;
 function checkAuth(req: Request) {
@@ -55,31 +55,6 @@ export async function handleRequest(req: Request): Promise<Response> {
     }
   }
 
-  // TODO: change the endpoint to /api/index/url
-  if (path === "/api/vector/callback" && method === "POST") {
-    const { url, userId } = await req.json();
-    try {
-      if (!isValidUrl(url)) {
-        return Response.json("Invalid URL format", { status: 400 });
-      }
-      if (await urlExists(userId, url)) {
-        await deleteUrls(userId, url);
-      }
-      await ingest_url(url, userId);
-      return Response.json("Success");
-    } catch (error) {
-      log({
-        service: "vector-index",
-        action: "error-index-url",
-        error: `${error}`,
-        url: url,
-        userId: userId,
-      });
-      await addErrorUrl(userId, url);
-      return Response.json(`Failed to search ${error}`, { status: 500 });
-    }
-  }
-
   if (path === "/api/vector/delete" && method === "POST") {
     const { urls, userId } = await req.json();
     try {
@@ -100,7 +75,9 @@ export async function handleRequest(req: Request): Promise<Response> {
   if (path === "/api/vector/compact" && method === "POST") {
     const { userId } = await req.json();
     try {
+      console.time(`compact-${userId}`);
       await compact(userId);
+      console.timeEnd(`compact-${userId}`);
       return Response.json("Success");
     } catch (error) {
       log({
@@ -149,6 +126,26 @@ export async function handleRequest(req: Request): Promise<Response> {
       log({
         service: "vector-index",
         action: "error-index-md",
+        error: `${error}`,
+        url: url,
+        userId: userId,
+      });
+      return Response.json("Failed to index markdown", { status: 500 });
+    }
+  }
+
+  if (path === "/api/index/jsonl" && method === "POST") {
+    const { url, userId } = await req.json();
+    try {
+      if (!isValidUrl(url)) {
+        return Response.json("Invalid URL format", { status: 400 });
+      }
+      await ingest_jsonl(url, userId);
+      return Response.json("Success");
+    } catch (error) {
+      log({
+        service: "vector-index",
+        action: "error-index-jsonl",
         error: `${error}`,
         url: url,
         userId: userId,

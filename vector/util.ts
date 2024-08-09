@@ -124,3 +124,48 @@ export async function getMd(url: string, userId: string) {
     }
   }
 }
+
+import fs from "fs";
+import path from "path";
+
+export async function writeToJsonlFile(
+  url: string,
+  data: Array<Record<string, unknown>>
+): Promise<void> {
+  const sanitizedUrl = url.replace(/\//g, "-");
+  const filePath = path.join(process.cwd(), `${sanitizedUrl}.jsonl`);
+
+  console.log(`Writing to ${filePath}`);
+
+  const writeStream = fs.createWriteStream(filePath, { flags: "a" });
+
+  for (const record of data) {
+    writeStream.write(JSON.stringify(record) + "\n");
+  }
+
+  writeStream.end();
+}
+
+import readline from "readline";
+export async function readFromJsonlFile(
+  url: string
+): Promise<Array<Record<string, unknown>>> {
+  const sanitizedUrl = url.replace(/\//g, "-");
+  const filePath = path.join(process.cwd(), `${sanitizedUrl}.jsonl`);
+
+  const data: Array<Record<string, unknown>> = [];
+
+  const fileStream = fs.createReadStream(filePath);
+  const rl = readline.createInterface({
+    input: fileStream,
+    crlfDelay: Infinity,
+  });
+
+  for await (const line of rl) {
+    if (line.trim()) {
+      data.push(JSON.parse(line));
+    }
+  }
+
+  return data;
+}

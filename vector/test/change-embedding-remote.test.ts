@@ -4,7 +4,7 @@ const testUser = "localTest";
 const host = process.env.TEST_VECTOR_HOST || "http://localhost:3001";
 const API_TOKEN = process.env.API_TOKEN!;
 
-describe("/api/vector/callback endpoint", () => {
+describe("change embedding endpoint", () => {
   it("should respond with Success on valid request", async () => {
     const response = await fetch(`${host}/api/vector/change-embedding`, {
       method: "POST",

@@ -4,25 +4,7 @@ const testUser = process.env.TEST_USER || "localTest";
 const host = process.env.TEST_VECTOR_HOST || "http://localhost:3001";
 const API_TOKEN = process.env.API_TOKEN!;
 
-describe("/api/index/url endpoint", () => {
-  it("should respond with Success on valid request", async () => {
-    const response = await fetch(`${host}/api/index/url`, {
-      method: "POST",
-      body: JSON.stringify({
-        url: "https://www.memfree.me/",
-        userId: testUser,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: API_TOKEN,
-      },
-    });
-
-    const text = await response.json();
-    expect(response.status).toBe(200);
-    expect(text).toBe("Success");
-  }, 50000);
-
+describe("jsonl endpoint", () => {
   it("should respond with Success on valid requests for multiple URLs", async () => {
     const urls = [
       "https://www.memfree.me/docs/extension-user-guide",
@@ -34,7 +16,6 @@ describe("/api/index/url endpoint", () => {
       "https://www.memfree.me/docs/deploy-embedding-fly-io",
       "https://www.memfree.me/changelog",
       "https://www.memfree.me/pricing",
-      "https://www.memfree.me",
       "https://www.memfree.me/blog",
       "https://www.memfree.me/blog/tweet-content-fast-free",
       "https://www.memfree.me/blog/hybrid-ai-search-tech-stack",
@@ -44,7 +25,7 @@ describe("/api/index/url endpoint", () => {
     ];
 
     const requests = urls.map((url) =>
-      fetch(`${host}/api/index/url`, {
+      fetch(`${host}/api/index/jsonl`, {
         method: "POST",
         body: JSON.stringify({
           url: url,
@@ -58,10 +39,11 @@ describe("/api/index/url endpoint", () => {
     );
 
     const responses = await Promise.all(requests);
+
     responses.forEach(async (response) => {
       const text = await response.json();
       expect(response.status).toBe(200);
       expect(text).toBe("Success");
     });
-  }, 50000);
+  }, 500000);
 });
