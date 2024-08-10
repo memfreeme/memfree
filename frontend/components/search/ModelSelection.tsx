@@ -12,6 +12,8 @@ import { useModelStore, useUserStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import {
     Claude_35_Sonnet,
+    GEMINI_FLASH,
+    GEMINI_PRO,
     GPT_4o,
     GPT_4o_MIMI,
     LLAMA_31_70B,
@@ -30,6 +32,10 @@ export const modelMap: Record<string, Model> = {
         name: 'GPT-4o mini',
         value: GPT_4o_MIMI,
     },
+    [GEMINI_FLASH]: {
+        name: 'Gemini 1.5 Flash',
+        value: GEMINI_FLASH,
+    },
     [LLAMA_31_70B]: {
         name: 'LLAMA 3.1 70B',
         value: LLAMA_31_70B,
@@ -38,6 +44,11 @@ export const modelMap: Record<string, Model> = {
         name: 'GPT-4o',
         flag: 'Pro',
         value: GPT_4o,
+    },
+    [GEMINI_PRO]: {
+        name: 'Gemini 1.5 Pro',
+        flag: 'Pro',
+        value: GEMINI_PRO,
     },
     [Claude_35_Sonnet]: {
         name: 'Claude 3.5 Sonnet',

@@ -5,6 +5,7 @@ import { createOpenAI, openai } from '@ai-sdk/openai';
 import { anthropic } from '@ai-sdk/anthropic';
 import { GPT_4o, GPT_4o_MIMI } from '../model';
 import { logError } from '../log';
+import { google } from '@ai-sdk/google';
 
 export type RoleType = 'user' | 'assistant' | 'system';
 export interface Message {
@@ -41,7 +42,7 @@ export async function chat(
 
         return text;
     } catch (error) {
-        logError(error, 'llm-openai');
+        logError(error, `llm-${model.modelId}`);
         throw error;
     }
 }
@@ -73,7 +74,7 @@ export async function chatStream(
             onMessage?.(text, false);
         }
     } catch (error) {
-        logError(error, 'llm-openai');
+        logError(error, `llm-${model.modelId}`);
     }
 }
 
@@ -83,10 +84,13 @@ const groq = createOpenAI({
 });
 
 export function getLLM(model: string): LanguageModel {
+    // console.log('model', model);
     if (model.startsWith('llama')) {
         return groq(model);
     } else if (model.startsWith('claude')) {
         return anthropic(model);
+    } else if (model.startsWith('models/gemini')) {
+        return google(model);
     } else {
         if (model === GPT_4o) {
             model = 'gpt-4o-2024-08-06';
