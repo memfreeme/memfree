@@ -53,6 +53,9 @@ export async function getUserIdByEmail(email: string) {
 }
 
 export async function incSearchCount(userId: string): Promise<void> {
+    if (!userId) {
+        userId = 'guest';
+    }
     const result = await Promise.all([
         redisDB.incr(SEARCH_COUNT_KEY + userId),
         redisDB.incr(TOTAL_SEARCH_COUNT_KEY),

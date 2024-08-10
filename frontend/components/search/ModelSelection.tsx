@@ -10,7 +10,12 @@ import {
 import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI } from '@/lib/model';
+import {
+    Claude_35_Sonnet,
+    GPT_4o,
+    GPT_4o_MIMI,
+    LLAMA_31_70B,
+} from '@/lib/model';
 import { checkIsPro } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
@@ -24,6 +29,10 @@ export const modelMap: Record<string, Model> = {
     [GPT_4o_MIMI]: {
         name: 'GPT-4o mini',
         value: GPT_4o_MIMI,
+    },
+    [LLAMA_31_70B]: {
+        name: 'LLAMA 3.1 70B',
+        value: LLAMA_31_70B,
     },
     [GPT_4o]: {
         name: 'GPT-4o',
@@ -89,7 +98,10 @@ export function ModelSelection() {
                 }
             }}
         >
-            <SelectTrigger aria-label="AI Model" className="focus:ring-0 border-none outline-none">
+            <SelectTrigger
+                aria-label="AI Model"
+                className="focus:ring-0 border-none outline-none"
+            >
                 <SelectValue>
                     <div className="flex items-center space-x-1">
                         <Box></Box>

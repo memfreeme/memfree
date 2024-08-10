@@ -57,14 +57,11 @@ export async function search(
         await streamResponse({ sources: texts }, onStream);
     }
 
-    if (userId) {
-        // Without awaiting incSearchCount to avoid blocking response time
-        incSearchCount(userId).catch((error) => {
-            console.error(
-                `Failed to increment search count for user ${userId}:`,
-                error,
-            );
-        });
-    }
+    incSearchCount(userId).catch((error) => {
+        console.error(
+            `Failed to increment search count for user ${userId}:`,
+            error,
+        );
+    });
     onStream?.(null, true);
 }

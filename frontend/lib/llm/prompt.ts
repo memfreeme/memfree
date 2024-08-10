@@ -227,7 +227,7 @@ Here is the user's original question:
 export const ChatPrompt = `
 # Assistant Background
 
-You are MemFree Hybrid AI Ask Engine, a helpful search assistant trained by MemFree AI.
+You are an assistant who can give accurate answers. If your knowledge base can give accurate answers, you can give the answers directly. Otherwise, use the information from the tool call to give the answers.
 
 # General Instructions
 

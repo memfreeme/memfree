@@ -4,7 +4,6 @@ import { HeroLanding } from '@/components/sections/hero-landing';
 import SearchBar from '@/components/Search';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import ModeTabs from '@/components/search/ModeTabs';
 
 export default function IndexPage() {
     const router = useRouter();
@@ -25,7 +24,6 @@ export default function IndexPage() {
         <>
             <HeroLanding />
             <SearchBar handleSearch={handleSearch} />
-            <ModeTabs showContent={true} />
         </>
     );
 }

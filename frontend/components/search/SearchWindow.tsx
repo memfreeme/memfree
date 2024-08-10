@@ -7,11 +7,10 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useSearchParams } from 'next/navigation';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '../Search';
-import { configStore, useModeStore } from '@/lib/store';
+import { configStore } from '@/lib/store';
 
 import { ImageSource, TextSource } from '@/lib/types';
 import { formatChatHistoryAsString } from '@/lib/utils';
-import ModeTabs from './ModeTabs';
 
 export function SearchWindow() {
     const [messages, setMessages] = useState<Array<Message>>([]);
@@ -29,19 +28,6 @@ export function SearchWindow() {
             hasSentMessageRef.current = true;
         }
     }, [q]);
-
-    const { mode, setMode, initMode } = useModeStore((state) => ({
-        mode: state.mode,
-        setMode: state.setMode,
-        initMode: state.initMode,
-    }));
-
-    useEffect(() => {
-        const initialMode = initMode();
-        if (initialMode && initialMode !== mode) {
-            setMode(initialMode);
-        }
-    }, [mode, initMode, setMode]);
 
     const [chatHistory, setChatHistory] = useState<[string, string][]>([]);
     const chatHistoryRef = useRef(chatHistory);
@@ -167,7 +153,6 @@ export function SearchWindow() {
             }
             const model = configStore.getState().model;
             const source = configStore.getState().source;
-            const mode = useModeStore.getState().mode;
 
             let chatHistoryString = '';
             if (needRephrasing) {
@@ -175,9 +160,6 @@ export function SearchWindow() {
                     chatHistoryRef.current,
                 );
             }
-
-            // console.log('chatHistoryString', chatHistoryString);
-            // console.log('search mode', mode);
 
             const url = `/api/ask`;
             await fetchEventSource(url, {
@@ -189,7 +171,6 @@ export function SearchWindow() {
                 body: JSON.stringify({
                     query: messageValue,
                     useCache: !messageIdToUpdate,
-                    mode: mode,
                     model: model,
                     source: source,
                     history: chatHistoryString,
@@ -280,7 +261,6 @@ export function SearchWindow() {
     return (
         <div className="flex max-h-full w-full flex-col items-center rounded">
             <div className="my-10 flex w-full md:w-3/4 flex-col-reverse overflow-auto p-6 md:p-10">
-                <ModeTabs showContent={false} />
                 <SearchBar handleSearch={stableHandleSearch} />
                 {messages.length > 0 ? (
                     [...messages]
