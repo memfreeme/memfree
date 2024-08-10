@@ -1,17 +1,13 @@
 import { logError } from '../log';
-import { AskMode, SearchCategory, TextSource } from '../types';
-import { getLLMChat, StreamHandler } from './llm';
+import { SearchCategory, TextSource } from '../types';
+import { chatStream, getLLM, StreamHandler } from './llm';
 import util from 'util';
 import {
     AcademicPrompet,
-    ChatPrompt,
     DeepQueryPrompt,
     MoreQuestionsPrompt,
     NewsPrompt,
-    RephrasePrompt,
 } from './prompt';
-import { openaiChat } from './openai';
-import { GPT_4o_MIMI } from '../model';
 
 export async function getLLMAnswer(
     source: SearchCategory,
@@ -22,45 +18,18 @@ export async function getLLMAnswer(
 ) {
     try {
         const system = promptFormatterAnswer(source, contexts);
-        await getLLMChat(model).chatStream(
+        await chatStream(
             system,
             query,
-            model,
             (msg: string | null, done: boolean) => {
                 onStream?.(msg, done);
             },
+            getLLM(model),
         );
     } catch (err: any) {
         logError(err, 'llm');
         onStream?.(`Some errors seem to have occurred, plase retry`, true);
     }
-}
-
-export async function getChatAnswer(
-    model: string,
-    query: string,
-    history: string,
-    onStream: StreamHandler,
-) {
-    try {
-        const system = util.format(ChatPrompt, history);
-        await getLLMChat(model).chatStream(
-            system,
-            query,
-            model,
-            (msg: string | null, done: boolean) => {
-                onStream?.(msg, done);
-            },
-        );
-    } catch (err: any) {
-        logError(err, 'llm');
-        onStream?.(`Some errors seem to have occurred, plase retry`, true);
-    }
-}
-
-export async function rephraseQuery(query: string, history: string) {
-    const prompt = util.format(RephrasePrompt, history, query);
-    return await openaiChat.chat(prompt, GPT_4o_MIMI);
 }
 
 export async function getRelatedQuestions(
@@ -68,13 +37,8 @@ export async function getRelatedQuestions(
     contexts: TextSource[],
     onStream: StreamHandler,
 ) {
-    try {
-        const system = promptFormatterRelated(contexts);
-        await openaiChat.chatStream(system, query, GPT_4o_MIMI, onStream);
-    } catch (err) {
-        logError(err, 'llm');
-        return [];
-    }
+    const system = promptFormatterRelated(contexts);
+    await chatStream(system, query, onStream);
 }
 
 function promptFormatterAnswer(source: SearchCategory, contexts: any[]) {

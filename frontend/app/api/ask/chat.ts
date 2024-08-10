@@ -100,9 +100,9 @@ export async function chat(
                         ),
                 }),
             },
-            onFinish: (finish) => {
-                console.log('finishReason ', finish.usage);
-            },
+            // onFinish: (finish) => {
+            //     console.log('finishReason ', finish.usage);
+            // },
         });
 
         let hasAnswer = false;

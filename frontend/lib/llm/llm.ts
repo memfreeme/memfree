@@ -1,8 +1,10 @@
 import 'server-only';
 
-import { AnthropicChat } from './anthropic';
-import { OpenAIChat } from './openai';
-import { GroqChat } from './groq';
+import { generateText, LanguageModel, streamText } from 'ai';
+import { createOpenAI, openai } from '@ai-sdk/openai';
+import { anthropic } from '@ai-sdk/anthropic';
+import { GPT_4o, GPT_4o_MIMI } from '../model';
+import { logError } from '../log';
 
 export type RoleType = 'user' | 'assistant' | 'system';
 export interface Message {
@@ -16,23 +18,79 @@ export interface StreamHandler {
 
 export const MAX_TOKENS = 1024;
 
-export interface LLMChat {
-    chat(query: string, model: string, system?: string): Promise<string>;
+export async function chat(
+    query: string,
+    system?: string,
+    model: LanguageModel = openai(GPT_4o_MIMI),
+): Promise<string> {
+    let messages: Message[] = [
+        {
+            role: 'user',
+            content: `${query}`,
+        },
+    ];
 
-    chatStream(
-        system: string,
-        query: string,
-        model: string,
-        onMessage: StreamHandler,
-    ): Promise<void>;
+    try {
+        const { text, finishReason, usage } = await generateText({
+            model: model,
+            system: system,
+            messages: messages,
+            maxTokens: 1024,
+            temperature: 0.3,
+        });
+
+        return text;
+    } catch (error) {
+        logError(error, 'llm-openai');
+        throw error;
+    }
 }
 
-export function getLLMChat(model: string): LLMChat {
+export async function chatStream(
+    system: string,
+    query: string,
+    onMessage: StreamHandler,
+    model: LanguageModel = openai(GPT_4o_MIMI),
+) {
+    let messages: Message[] = [
+        {
+            role: 'user',
+            content: `${query}`,
+        },
+    ];
+
+    // console.log('model', model, 'query', query);
+    try {
+        const result = await streamText({
+            model: model,
+            system: system,
+            messages: messages,
+            maxTokens: 1024,
+            temperature: 0.3,
+        });
+
+        for await (const text of result.textStream) {
+            onMessage?.(text, false);
+        }
+    } catch (error) {
+        logError(error, 'llm-openai');
+    }
+}
+
+const groq = createOpenAI({
+    baseURL: 'https://api.groq.com/openai/v1',
+    apiKey: process.env.GROQ_API_KEY,
+});
+
+export function getLLM(model: string): LanguageModel {
     if (model.startsWith('llama')) {
-        return new GroqChat();
+        return groq(model);
     } else if (model.startsWith('claude')) {
-        return new AnthropicChat();
+        return anthropic(model);
     } else {
-        return new OpenAIChat();
+        if (model === GPT_4o) {
+            model = 'gpt-4o-2024-08-06';
+        }
+        return openai(model);
     }
 }
