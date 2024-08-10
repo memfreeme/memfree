@@ -28,6 +28,7 @@ import {
     X,
     BarChart4,
     Chrome,
+    MessageSquareText,
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -41,6 +42,7 @@ export const Icons = {
     chevronLeft: ChevronLeft,
     chevronRight: ChevronRight,
     check: Check,
+    feedback: MessageSquareText,
     chrome: Chrome,
     close: X,
     copy: Copy,
