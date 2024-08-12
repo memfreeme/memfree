@@ -21,7 +21,7 @@ import { z } from 'zod';
 
 export async function chat(
     query: string,
-    history: string,
+    messages: Message[],
     useCache: boolean,
     isPro: boolean,
     userId: string,
@@ -67,7 +67,7 @@ export async function chat(
                     .slice(0, IMAGE_LIMIT),
             );
 
-        let messages: Message[] = [
+        let newMessages: Message[] = [
             {
                 role: 'user',
                 content: `${query}`,
@@ -78,11 +78,30 @@ export async function chat(
             model = 'gpt-4o-2024-08-06';
         }
 
+        let history = '';
+        if (isPro) {
+            history = messages
+                .slice(-6)
+                .map((msg) => {
+                    if (msg.role === 'user') {
+                        return `User: ${msg.content}`;
+                    } else if (msg.role === 'assistant') {
+                        return `Assistant: ${msg.content}`;
+                    } else if (msg.role === 'system') {
+                        return `System: ${msg.content}`;
+                    }
+                    return '';
+                })
+                .join('\n');
+        }
+
+        // console.log('history', history);
+
         const system = util.format(ChatPrompt, history);
         const result = await streamText({
             model: openai(GPT_4o_MIMI),
             system: system,
-            messages: messages,
+            messages: newMessages,
             maxTokens: 1024,
             temperature: 0.3,
             tools: {
@@ -101,7 +120,7 @@ export async function chat(
                 }),
             },
             // onFinish: (finish) => {
-            //     console.log('finishReason ', finish.usage);
+            //     console.log('finishReason ', finish.finishReason);
             // },
         });
 

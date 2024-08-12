@@ -10,13 +10,7 @@ import { RefreshCcw, ThumbsDown } from 'lucide-react';
 import { Icons } from '../shared/icons';
 import { Button } from '../ui/button';
 
-const ActionButtons = ({
-    content,
-    question,
-    id,
-    message,
-    deepIntoQuestion,
-}) => {
+const ActionButtons = ({ content, question, id, message, reload }) => {
     const [hasCopied, setHasCopied] = React.useState(false);
 
     React.useEffect(() => {
@@ -55,7 +49,7 @@ const ActionButtons = ({
     };
 
     const handleReloadClick = () => {
-        deepIntoQuestion(question, id);
+        reload(id);
     };
 
     const buttons = useMemo(

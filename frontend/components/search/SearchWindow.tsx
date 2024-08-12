@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useRef, useState, useEffect, useCallback } from 'react';
-import SearchMessageBubble, { Message } from './SearchMessageBubble';
+import React, { useRef, useState, useEffect, useCallback, use } from 'react';
+import SearchMessageBubble from './SearchMessageBubble';
 
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useSearchParams } from 'next/navigation';
@@ -9,11 +9,11 @@ import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '../Search';
 import { configStore } from '@/lib/store';
 
-import { ImageSource, TextSource } from '@/lib/types';
-import { formatChatHistoryAsString } from '@/lib/utils';
+import { ImageSource, Message, TextSource } from '@/lib/types';
 
 export function SearchWindow() {
     const [messages, setMessages] = useState<Array<Message>>([]);
+    const messagesRef = useRef(messages);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -29,24 +29,20 @@ export function SearchWindow() {
         }
     }, [q]);
 
-    const [chatHistory, setChatHistory] = useState<[string, string][]>([]);
-    const chatHistoryRef = useRef(chatHistory);
-
     useEffect(() => {
-        chatHistoryRef.current = chatHistory;
-    }, [chatHistory]);
+        messagesRef.current = messages;
+    }, [messages]);
 
     const sendMessage = async (
         message?: string,
         messageIdToUpdate?: string,
-        needRephrasing = true,
     ) => {
         if (isLoading) {
             return;
         }
         const messageValue = message ?? input;
-
         if (messageValue === '') return;
+
         if (!messageIdToUpdate) {
             setInput('');
             setMessages((prevMessages) => [
@@ -54,7 +50,6 @@ export function SearchWindow() {
                 {
                     id: Math.random().toString(),
                     content: messageValue,
-                    question: messageValue,
                     role: 'user',
                 },
             ]);
@@ -63,7 +58,6 @@ export function SearchWindow() {
         setIsLoading(true);
         let accumulatedMessage = '';
         let accumulatedRelated = '';
-        let runId: string | undefined = undefined;
         let messageIndex: number | null = null;
 
         const resetMessages = (messageIdToUpdate: string) => {
@@ -79,7 +73,6 @@ export function SearchWindow() {
                 const newMessages = [...prevMessages];
                 newMessages[messageIndex] = {
                     ...newMessages[messageIndex],
-                    rephrasedQuery: '',
                     content: '',
                     sources: [],
                     images: [],
@@ -91,7 +84,6 @@ export function SearchWindow() {
         };
 
         const updateMessages = (
-            rephrasedQuery?: string,
             parsedResult?: string,
             newSources?: TextSource[],
             newImages?: ImageSource[],
@@ -110,10 +102,7 @@ export function SearchWindow() {
                         ...prevMessages,
                         {
                             id: Math.random().toString(),
-                            question: messageValue,
-                            rephrasedQuery: rephrasedQuery,
                             content: parsedResult ? parsedResult.trim() : '',
-                            runId: runId,
                             sources: newSources || [],
                             images: newImages || [],
                             related: newRelated || '',
@@ -125,7 +114,6 @@ export function SearchWindow() {
                 const newMessages = [...prevMessages];
                 const msg = newMessages[messageIndex];
 
-                if (rephrasedQuery) msg.rephrasedQuery = rephrasedQuery;
                 if (parsedResult) msg.content = parsedResult.trim();
                 if (newSources) msg.sources = newSources;
                 if (newImages) msg.images = newImages;
@@ -136,30 +124,12 @@ export function SearchWindow() {
             });
         };
 
-        const updateChatHistory = () => {
-            setChatHistory((prevChatHistory) => {
-                const newChatHistory: [string, string][] = [
-                    ...prevChatHistory,
-                    ['user', messageValue],
-                    ['ai', accumulatedMessage],
-                ];
-                return newChatHistory.slice(-6);
-            });
-        };
-
         try {
             if (messageIdToUpdate) {
                 resetMessages(messageIdToUpdate);
             }
             const model = configStore.getState().model;
             const source = configStore.getState().source;
-
-            let chatHistoryString = '';
-            if (needRephrasing) {
-                chatHistoryString = formatChatHistoryAsString(
-                    chatHistoryRef.current,
-                );
-            }
 
             const url = `/api/ask`;
             await fetchEventSource(url, {
@@ -173,7 +143,7 @@ export function SearchWindow() {
                     useCache: !messageIdToUpdate,
                     model: model,
                     source: source,
-                    history: chatHistoryString,
+                    messages: messagesRef.current,
                 }),
                 openWhenHidden: true,
                 onerror(err) {
@@ -191,7 +161,6 @@ export function SearchWindow() {
                     }
                 },
                 onclose() {
-                    updateChatHistory();
                     setIsLoading(false);
                     // console.log('related ', accumulatedRelated);
                     // console.log('message ', accumulatedMessage);
@@ -199,24 +168,17 @@ export function SearchWindow() {
                 },
                 onmessage(msg) {
                     const parsedData = JSON.parse(msg.data);
-                    if (parsedData.rephrasedQuery) {
-                        updateMessages(parsedData.rephrasedQuery);
-                    }
                     if (parsedData.answer) {
                         accumulatedMessage += parsedData.answer;
-                        updateMessages(undefined, accumulatedMessage);
+                        updateMessages(accumulatedMessage);
                     }
                     if (parsedData.sources) {
-                        updateMessages(
-                            undefined,
-                            undefined,
-                            parsedData.sources,
-                        );
+                        updateMessages(undefined, parsedData.sources);
                     }
                     if (parsedData.images) {
                         updateMessages(
                             undefined,
-                            undefined,
+
                             undefined,
                             parsedData.images,
                         );
@@ -224,7 +186,6 @@ export function SearchWindow() {
                     if (parsedData.related) {
                         accumulatedRelated += parsedData.related;
                         updateMessages(
-                            undefined,
                             undefined,
                             undefined,
                             undefined,
@@ -244,15 +205,19 @@ export function SearchWindow() {
     };
 
     const sendSelectedQuestion = useCallback(async (question: string) => {
-        await sendMessage(question, null, false);
+        await sendMessage(question, null);
     }, []);
 
-    const deepIntoQuestion = useCallback(
-        async (question: string, msgId: string) => {
-            await sendMessage(question, msgId);
-        },
-        [],
-    );
+    const reload = useCallback(async (msgId: string) => {
+        const currentIndex = messagesRef.current.findIndex(
+            (msg) => msg.id === msgId,
+        );
+        const previousMessage =
+            currentIndex > 0 ? messagesRef.current[currentIndex - 1] : null;
+        if (previousMessage) {
+            await sendMessage(previousMessage.content, msgId);
+        }
+    }, []);
 
     const stableHandleSearch = useCallback((key: string) => {
         sendMessage(key);
@@ -270,7 +235,7 @@ export function SearchWindow() {
                                 key={m.id}
                                 message={{ ...m }}
                                 onSelect={sendSelectedQuestion}
-                                deepIntoQuestion={deepIntoQuestion}
+                                reload={reload}
                             ></SearchMessageBubble>
                         ))
                 ) : (

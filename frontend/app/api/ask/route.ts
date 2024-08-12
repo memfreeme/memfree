@@ -5,7 +5,7 @@ import { Ratelimit } from '@upstash/ratelimit';
 import { RATE_LIMIT_KEY, redisDB } from '@/lib/db';
 import { validModel } from '@/lib/model';
 import { logError } from '@/lib/log';
-import { streamController, streamResponse } from '@/lib/server-utils';
+import { streamController } from '@/lib/server-utils';
 import { chat } from './chat';
 import { checkIsPro } from '@/lib/shared-utils';
 
@@ -40,7 +40,10 @@ export async function POST(req: NextRequest) {
             );
         }
     }
-    const { query, useCache, model, source, history } = await req.json();
+    const { query, useCache, model, source, messages } = await req.json();
+
+    // console.log('messages', messages);
+    // console.log('query', query);
 
     if (!validModel(model)) {
         return NextResponse.json(
@@ -56,7 +59,7 @@ export async function POST(req: NextRequest) {
             async start(controller) {
                 await chat(
                     query,
-                    history,
+                    messages,
                     useCache,
                     isPro,
                     userId,

@@ -34,9 +34,3 @@ export function extractDomain(url) {
         return '';
     }
 }
-
-export const formatChatHistoryAsString = (chatHistory: [string, string][]): string => {
-    return chatHistory
-        .map(([sender, message]) => `${sender}: ${message}`)
-        .join('\n');
-};

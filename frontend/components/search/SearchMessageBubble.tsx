@@ -1,29 +1,9 @@
 import SourceBubble from '@/components/search/SourceBubble';
-import {
-    Images,
-    ListPlusIcon,
-    PlusIcon,
-    FileQuestion,
-    TextSearchIcon,
-    CircleHelp,
-} from 'lucide-react';
+import { Images, ListPlusIcon, PlusIcon, TextSearchIcon } from 'lucide-react';
 import ImageGallery from './ImageGallery';
-import { ImageSource, TextSource } from '@/lib/types';
-
-export type Message = {
-    id: string;
-    createdAt?: Date;
-    question: string;
-    rephrasedQuery?: string;
-    content: string;
-    role: 'system' | 'user' | 'assistant' | 'function';
-    sources?: TextSource[];
-    related?: string;
-    images?: ImageSource[];
-};
+import { Message } from '@/lib/types';
 
 import React, { memo } from 'react';
-import { useModeStore } from '@/lib/store';
 import AnswerSection from './AnswerSection';
 import QuestionSection from './QuestionSection';
 
@@ -31,35 +11,19 @@ const SearchMessageBubble = memo(
     (props: {
         message: Message;
         onSelect: (question: string) => void;
-        deepIntoQuestion: (question: string, msgId: string) => void;
+        reload: (msgId: string) => void;
     }) => {
-        const { id, role, content, related, question } = props.message;
+        const { id, role, content, related } = props.message;
         const onSelect = props.onSelect;
-        const deepIntoQuestion = props.deepIntoQuestion;
+        const reload = props.reload;
         const isUser = role === 'user';
 
         const message = props.message;
         const sources = message.sources ?? [];
         const images = message.images ?? [];
-        const rephrasedQuery = message.rephrasedQuery;
-
-        const mode = useModeStore((state) => state.initMode)();
 
         return (
             <div className="flex flex-col w-full  items-start space-y-6 pb-10">
-                {!isUser && rephrasedQuery && (
-                    <>
-                        <div className="flex items-center space-x-2">
-                            <CircleHelp className="text-primary size-22"></CircleHelp>
-                            <h3 className="py-2 text-lg font-medium text-primary">
-                                Rewritten Query
-                            </h3>
-                        </div>
-                        <div className="prose font-urban text-lg font-medium">
-                            <p> {rephrasedQuery}</p>
-                        </div>
-                    </>
-                )}
                 {!isUser && sources.length > 0 && (
                     <div className="flex w-full flex-col items-start space-y-2.5 py-4">
                         <div className="flex items-center space-x-2">
@@ -81,10 +45,9 @@ const SearchMessageBubble = memo(
                     <AnswerSection
                         content={content}
                         sources={sources}
-                        question={question}
                         id={id}
                         message={message}
-                        deepIntoQuestion={deepIntoQuestion}
+                        reload={reload}
                     />
                 )}
 

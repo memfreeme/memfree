@@ -48,4 +48,19 @@ export interface ScoredURL {
     score: number;
 }
 
-export type AskMode = 'simple' | 'deep' | 'research';
+export type Message = {
+    id: string;
+    role: 'system' | 'user' | 'assistant' | 'tool';
+    content: string;
+    sources?: TextSource[];
+    images?: ImageSource[];
+    related?: string;
+};
+
+export interface Search extends Record<string, any> {
+    id: string;
+    title: string;
+    createdAt: Date;
+    userId: string;
+    messages: Message[];
+}

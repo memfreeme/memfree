@@ -10,7 +10,7 @@ const AnswerSection = ({
     question,
     id,
     message,
-    deepIntoQuestion,
+    reload,
 }) => {
     return (
         <div className="flex w-full flex-col items-start space-y-2.5 py-4">
@@ -28,7 +28,7 @@ const AnswerSection = ({
                 question={question}
                 id={id}
                 message={message}
-                deepIntoQuestion={deepIntoQuestion}
+                reload={reload}
             />
         </div>
     );
