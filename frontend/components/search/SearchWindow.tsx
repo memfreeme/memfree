@@ -10,6 +10,7 @@ import SearchBar from '../Search';
 import { configStore } from '@/lib/store';
 
 import { ImageSource, Message, TextSource } from '@/lib/types';
+import { generateId } from 'ai';
 
 export function SearchWindow() {
     const [messages, setMessages] = useState<Array<Message>>([]);
@@ -34,21 +35,23 @@ export function SearchWindow() {
     }, [messages]);
 
     const sendMessage = async (
-        message?: string,
+        question?: string,
         messageIdToUpdate?: string,
     ) => {
         if (isLoading) {
             return;
         }
-        const messageValue = message ?? input;
+        const messageValue = question ?? input;
         if (messageValue === '') return;
+
+        const messageId = generateId();
 
         if (!messageIdToUpdate) {
             setInput('');
             setMessages((prevMessages) => [
                 ...prevMessages,
                 {
-                    id: Math.random().toString(),
+                    id: messageId,
                     content: messageValue,
                     role: 'user',
                 },
@@ -143,7 +146,14 @@ export function SearchWindow() {
                     useCache: !messageIdToUpdate,
                     model: model,
                     source: source,
-                    messages: messagesRef.current,
+                    messages: [
+                        ...messagesRef.current,
+                        {
+                            id: messageId,
+                            content: messageValue,
+                            role: 'user',
+                        },
+                    ],
                 }),
                 openWhenHidden: true,
                 onerror(err) {

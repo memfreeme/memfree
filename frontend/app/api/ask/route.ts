@@ -58,7 +58,6 @@ export async function POST(req: NextRequest) {
         const readableStream = new ReadableStream({
             async start(controller) {
                 await chat(
-                    query,
                     messages,
                     useCache,
                     isPro,

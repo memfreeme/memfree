@@ -7,21 +7,22 @@ import { logError } from '@/lib/log';
 import { GPT_4o, GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine, IMAGE_LIMIT } from '@/lib/search/search';
 import { streamResponse } from '@/lib/server-utils';
+import { saveSearch } from '@/lib/store/search';
 import { searchRelevantContent } from '@/lib/tools/search';
 import {
     CachedResult,
     ImageSource,
+    Message as StoreMessage,
     SearchCategory,
     TextSource,
 } from '@/lib/types';
 import { openai } from '@ai-sdk/openai';
-import { streamText, tool } from 'ai';
+import { generateId, streamText, tool } from 'ai';
 import util from 'util';
 import { z } from 'zod';
 
 export async function chat(
-    query: string,
-    messages: Message[],
+    messages: StoreMessage[],
     useCache: boolean,
     isPro: boolean,
     userId: string,
@@ -30,29 +31,35 @@ export async function chat(
     source = SearchCategory.ALL,
 ) {
     try {
-        let cachedResult: CachedResult | null = null;
-        if (useCache) {
-            query = query.trim();
-            let cachedResult: CachedResult = await getCache(
-                model + source + query,
-            );
-            if (cachedResult) {
-                const { webs, images, answer, related } = cachedResult;
-                await streamResponse(
-                    { sources: webs, images, answer, related },
-                    onStream,
-                );
+        console.log('messages', messages);
+        // let cachedResult: CachedResult | null = null;
+        // if (useCache) {
+        //     query = query.trim();
+        //     let cachedResult: CachedResult = await getCache(
+        //         model + source + query,
+        //     );
+        //     if (cachedResult) {
+        //         const { webs, images, answer, related } = cachedResult;
+        //         await streamResponse(
+        //             { sources: webs, images, answer, related },
+        //             onStream,
+        //         );
 
-                incSearchCount(userId).catch((error) => {
-                    console.error(
-                        `Failed to increment search count for user ${userId}:`,
-                        error,
-                    );
-                });
-                onStream?.(null, true);
-                return;
-            }
-        }
+        //         incSearchCount(userId).catch((error) => {
+        //             console.error(
+        //                 `Failed to increment search count for user ${userId}:`,
+        //                 error,
+        //             );
+        //         });
+        //         onStream?.(null, true);
+        //         return;
+        //     }
+        // }
+
+        const newMessages = messages.slice(-1) as Message[];
+        console.log('newMessages', newMessages);
+        const query = newMessages[0].content;
+        console.log('query', query);
 
         let texts: TextSource[] = [];
         let images: ImageSource[] = [];
@@ -67,12 +74,12 @@ export async function chat(
                     .slice(0, IMAGE_LIMIT),
             );
 
-        let newMessages: Message[] = [
-            {
-                role: 'user',
-                content: `${query}`,
-            },
-        ];
+        // let newMessages: Message[] = [
+        //     {
+        //         role: 'user',
+        //         content: `${query}`,
+        //     },
+        // ];
 
         if (model === GPT_4o) {
             model = 'gpt-4o-2024-08-06';
@@ -81,7 +88,7 @@ export async function chat(
         let history = '';
         if (isPro) {
             history = messages
-                .slice(-6)
+                ?.slice(-6)
                 .map((msg) => {
                     if (msg.role === 'user') {
                         return `User: ${msg.content}`;
@@ -98,10 +105,11 @@ export async function chat(
         // console.log('history', history);
 
         const system = util.format(ChatPrompt, history);
+
         const result = await streamText({
             model: openai(GPT_4o_MIMI),
             system: system,
-            messages: newMessages,
+            messages: newMessages.slice(-1) as Message[],
             maxTokens: 1024,
             temperature: 0.3,
             tools: {
@@ -178,16 +186,36 @@ export async function chat(
             );
         });
 
-        cachedResult = {
-            webs: texts,
-            images: images,
-            answer: fullAnswer,
-            related: fullRelated,
-        };
+        // cachedResult = {
+        //     webs: texts,
+        //     images: images,
+        //     answer: fullAnswer,
+        //     related: fullRelated,
+        // };
 
-        setCache(model + source + rewriteQuery, cachedResult).catch((error) => {
-            console.error(`Failed to set cache for query ${query}:`, error);
+        messages.push({
+            id: generateId(),
+            role: 'assistant',
+            content: fullAnswer,
+            sources: texts,
+            images: images,
+            related: fullRelated,
         });
+
+        // setCache(model + source + rewriteQuery, cachedResult).catch((error) => {
+        //     console.error(`Failed to set cache for query ${query}:`, error);
+        // });
+
+        await saveSearch(
+            {
+                id: messages[0].id,
+                title: query.substring(0, 100),
+                createdAt: new Date(),
+                userId: userId,
+                messages: messages,
+            },
+            userId,
+        );
         onStream?.(null, true);
     } catch (error) {
         logError(error, 'llm-openai');
