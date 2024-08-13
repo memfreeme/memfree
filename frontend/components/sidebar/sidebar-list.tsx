@@ -46,11 +46,23 @@ export async function SidebarList({ user }: SidebarListProps) {
                     {user && <UserAccountNav user={user} />}
                     <ModeToggle />
                     <Link href="/dashboard/settings">
+<<<<<<< HEAD
                         <Button
                             variant="ghost"
                             className="leading-none p-2 h-auto"
                         >
                             <Settings className="size-4" />
+=======
+                        {/* <span
+                            className={cn(
+                                'group flex items-center rounded-md p-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
+                            )}
+                        >
+                            <Settings className="size-4" />
+                        </span> */}
+                        <Button variant='ghost' className="leading-none p-2 h-auto">
+                        <Settings className="size-4"/>
+>>>>>>> c74c957 (feat:add dark css)
                         </Button>
                     </Link>
                     <ClearHistory
