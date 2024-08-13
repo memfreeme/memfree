@@ -3,7 +3,7 @@ import type { Config } from 'tailwindcss';
 const { fontFamily } = require('tailwindcss/defaultTheme');
 
 const config = {
-    darkMode: ['class'],
+    darkMode: 'class',
     content: [
         './components/**/*.{ts,tsx}',
         './app/**/*.{ts,tsx}',
@@ -161,7 +161,49 @@ const config = {
                     'spin-around calc(var(--speed) * 2) infinite linear',
                 'slide': 'slide var(--speed) ease-in-out infinite alternate',
             },
-        },
+            typography: (theme) => ({
+                DEFAULT: {
+                  css: {
+                    color: theme('colors.gray.800'),
+                    a: {
+                      color: theme('colors.blue.500'),
+                      '&:hover': {
+                        color: theme('colors.blue.700'),
+                      },
+                    },
+                    h1: { color: theme('colors.gray.900') },
+                    h2: { color: theme('colors.gray.900') },
+                    h3: { color: theme('colors.gray.900') },
+                    h4: { color: theme('colors.gray.900') },
+                    strong: { color: theme('colors.gray.900') },
+                    blockquote: {
+                      borderLeftColor: theme('colors.gray.200'),
+                      color: theme('colors.gray.900'),
+                    },
+                  },
+                },
+                dark: {
+                  css: {
+                    color: theme('colors.gray.300'),
+                    a: {
+                      color: theme('colors.blue.400'),
+                      '&:hover': {
+                        color: theme('colors.blue.600'),
+                      },
+                    },
+                    h1: { color: theme('colors.gray.100') },
+                    h2: { color: theme('colors.gray.100') },
+                    h3: { color: theme('colors.gray.100') },
+                    h4: { color: theme('colors.gray.100') },
+                    strong: { color: theme('colors.gray.100') },
+                    blockquote: {
+                      borderLeftColor: theme('colors.gray.700'),
+                      color: theme('colors.gray.300'),
+                    },
+                 },
+             }
+            })
+        }
     },
     plugins: [
         require('tailwindcss-animate'),

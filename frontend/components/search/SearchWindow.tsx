@@ -226,6 +226,7 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
                             accumulatedRelated,
                         );
                     }
+                    setIsLoading(false);
                 },
             });
         } catch (e) {
@@ -258,9 +259,10 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
     }, []);
 
     return (
-        <div className="group w-full overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
-            <div className="flex flex-col-reverse my-2 w-11/12 overflow-auto p-6">
+        <div className="group w-full overflow-auto pl-0">
+            <div className="flex flex-col-reverse my-2 w-full overflow-auto p-6">
                 <SearchBar handleSearch={stableHandleSearch} />
+                {isLoading&&<div className='pb-5'>Loding...</div>}
                 {messages.length > 0 ? (
                     [...messages]
                         .reverse()

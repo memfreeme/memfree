@@ -15,7 +15,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { LoaderCircle, Trash2 } from 'lucide-react';
+import { LoaderCircle, RefreshCcw, Trash2 } from 'lucide-react';
 import { ServerActionResult } from '@/lib/types';
 
 interface ClearHistoryProps {
@@ -35,11 +35,12 @@ export function ClearHistory({
             <AlertDialogTrigger asChild>
                 <Button
                     variant="ghost"
-                    className="size-8 px-0"
+                    className="leading-none p-2 h-auto"
+                    // className="size-8 px-0"
                     disabled={!isEnabled || isPending}
                 >
-                    {isPending && <LoaderCircle className="mr-2" />}
-                    <Trash2 className="size-4" />
+                    {isPending ? <LoaderCircle className="size-4" />: <RefreshCcw className="size-4" />}
+                   
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>

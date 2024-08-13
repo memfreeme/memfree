@@ -23,12 +23,12 @@ const SearchMessageBubble = memo(
         const images = message.images ?? [];
 
         return (
-            <div className="flex flex-col w-full  items-start space-y-6 pb-10">
+            <div className="flex flex-col w-full  items-start space-y-6">
                 {!isUser && sources.length > 0 && (
                     <div className="flex w-full flex-col items-start space-y-2.5 py-4">
                         <div className="flex items-center space-x-2">
                             <TextSearchIcon className="text-primary size-22"></TextSearchIcon>
-                            <h3 className="text-lg font-medium text-primary">
+                            <h3 className="text-lg font-bold text-primary">
                                 Sources
                             </h3>
                         </div>
@@ -55,7 +55,7 @@ const SearchMessageBubble = memo(
                     <div className="flex w-full flex-col items-start space-y-2.5 py-4">
                         <div className="flex items-center space-x-2">
                             <Images className="text-primary size-22"></Images>
-                            <h3 className="py-2 text-lg font-medium text-primary">
+                            <h3 className="py-2 text-lg font-bold text-primary">
                                 Images
                             </h3>
                         </div>
@@ -67,7 +67,7 @@ const SearchMessageBubble = memo(
                     <div className="flex w-full flex-col items-start space-y-2.5">
                         <div className="flex items-center space-x-2">
                             <ListPlusIcon className="text-primary size-22"></ListPlusIcon>
-                            <h3 className="py-2 text-lg font-medium text-primary">
+                            <h3 className="py-2 text-lg font-bold text-primary">
                                 Related
                             </h3>
                         </div>
@@ -75,7 +75,7 @@ const SearchMessageBubble = memo(
                             {related.split('\n').map((reletedQ, index) => (
                                 <div
                                     key={`question-${index}`}
-                                    className="flex cursor-pointer items-center py-2 font-medium justify-between hover:scale-110 hover:text-primary duration-300"
+                                    className="flex cursor-pointer items-center py-2 justify-between hover:scale-110 hover:text-primary duration-300"
                                     onClick={() => onSelect(reletedQ)}
                                 >
                                     <span>{reletedQ.toLowerCase()}</span>

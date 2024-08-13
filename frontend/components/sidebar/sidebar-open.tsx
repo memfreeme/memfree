@@ -14,7 +14,7 @@ export function SidebarOpen() {
             {!isSidebarOpen && (
                 <Button
                     variant="ghost"
-                    className="absolute  hover:bg-gray-300  bg-gray-200 rounded-full left-2 top-1/2 transform -translate-y-1/2 p-3 lg:flex"
+                    className="absolute  hover:bg-gray-300  bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full left-2 top-1/2 transform -translate-y-1/2 p-3 lg:flex"
                     onClick={() => {
                         toggleSidebar();
                     }}

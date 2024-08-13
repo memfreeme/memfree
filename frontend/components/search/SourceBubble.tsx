@@ -9,7 +9,7 @@ const SourceBubble = ({ source }) => {
     return (
         <Link href={source.url} target="_blank">
             <div
-                className={`flex space-x-4 rounded-xl ${isVector ? 'border-2 border-purple-500' : 'border border-gray-300'}  border-solid hover:bg-gray-200`}
+                className={`flex space-x-4 rounded-xl ${isVector ? 'border-2 border-purple-500' : 'border border-gray-300'}  border-solid  dark:border-gray-700 hover:bg-gray-100  dark:hover:bg-gray-800`}
             >
                 <article className="max-w-full text-pretty p-4">
                     <div className="flex items-center pb-2">
@@ -18,7 +18,7 @@ const SourceBubble = ({ source }) => {
                             alt={`${site} favicon`}
                             className="size-4 mr-2"
                         />
-                        <p className="text-xs font-medium text-gray-600">
+                        <p className="text-xs font-medium text-gray-600 dark:text-gray-50">
                             {site}
                         </p>
                     </div>
@@ -26,7 +26,7 @@ const SourceBubble = ({ source }) => {
                         {source.title}
                     </h3>
                     <p
-                        className="text-xs overflow-hidden text-gray-600"
+                        className="text-xs overflow-hidden text-gray-600 dark:text-gray-50"
                         style={{
                             lineHeight: '1.5em',
                             minHeight: '4.5em',

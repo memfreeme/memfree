@@ -17,10 +17,10 @@ const QuestionSection: React.FC<QuestionSectionProps> = React.memo(
         const textSizeClass = getTextSizeClass(content);
 
         return (
-            <div className="flex w-full items-center space-x-2 p-4 my-4 rounded-xl bg-violet-50">
-                <FileQuestion className="text-primary size-4" />
+            <div className="flex w-full items-center space-x-2 p-4 my-4 rounded-xl bg-violet-50 dark:bg-violet-800">
+                <FileQuestion className="text-primary size-4 dark:text-gray-50" />
                 <h2
-                    className={` text-gray-800 whitespace-pre-wrap ${textSizeClass}`}
+                    className={` text-gray-800 dark:text-gray-50 whitespace-pre-wrap ${textSizeClass}`}
                 >
                     {content}
                 </h2>

@@ -14,12 +14,12 @@ export function SidebarClose() {
             {isSidebarOpen && (
                 <Button
                     variant="ghost"
-                    className="hidden hover:bg-gray-200   rounded-full size-9 p-0 lg:flex"
+                    className="hidden border-solid shadow-sm border-gray-200 dark:text-white dark:hover:bg-gray-700 rounded-full size-9 p-0 lg:flex"
                     onClick={() => {
                         toggleSidebar();
                     }}
                 >
-                    <ArrowLeftToLine className="size-3" strokeWidth={1.5} />
+                    <ArrowLeftToLine className="size-3 text-inherit" strokeWidth={1.5} />
                     <span className="sr-only">Toggle Sidebar</span>
                 </Button>
             )}

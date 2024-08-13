@@ -20,10 +20,10 @@ export default async function SearchPage({ params }: SearchPageProps) {
     const search = await getSearch(params.id, userId);
 
     return (
-        <div className="group w-5/6 mx-auto overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
+        <div className="group mx-auto overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
             <SearchWindow
                 id={params.id}
-                initialMessages={search.messages}
+                initialMessages={search?.messages}
                 user={user}
             ></SearchWindow>
         </div>
