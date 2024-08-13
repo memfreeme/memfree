@@ -1,3 +1,5 @@
+'use server';
+
 import { getCache, setCache } from '@/lib/cache';
 import { incSearchCount } from '@/lib/db';
 import { Message } from '@/lib/llm/llm';
@@ -31,7 +33,7 @@ export async function chat(
     source = SearchCategory.ALL,
 ) {
     try {
-        console.log('messages', messages);
+        // console.log('messages', messages);
         // let cachedResult: CachedResult | null = null;
         // if (useCache) {
         //     query = query.trim();
@@ -57,9 +59,7 @@ export async function chat(
         // }
 
         const newMessages = messages.slice(-1) as Message[];
-        console.log('newMessages', newMessages);
         const query = newMessages[0].content;
-        console.log('query', query);
 
         let texts: TextSource[] = [];
         let images: ImageSource[] = [];
@@ -73,13 +73,6 @@ export async function chat(
                     .filter((img) => img.image.startsWith('https'))
                     .slice(0, IMAGE_LIMIT),
             );
-
-        // let newMessages: Message[] = [
-        //     {
-        //         role: 'user',
-        //         content: `${query}`,
-        //     },
-        // ];
 
         if (model === GPT_4o) {
             model = 'gpt-4o-2024-08-06';
@@ -202,20 +195,19 @@ export async function chat(
             related: fullRelated,
         });
 
-        // setCache(model + source + rewriteQuery, cachedResult).catch((error) => {
-        //     console.error(`Failed to set cache for query ${query}:`, error);
-        // });
+        if (userId) {
+            await saveSearch(
+                {
+                    id: messages[0].id,
+                    title: messages[0].content.substring(0, 100),
+                    createdAt: new Date(),
+                    userId: userId,
+                    messages: messages,
+                },
+                userId,
+            );
+        }
 
-        await saveSearch(
-            {
-                id: messages[0].id,
-                title: query.substring(0, 100),
-                createdAt: new Date(),
-                userId: userId,
-                messages: messages,
-            },
-            userId,
-        );
         onStream?.(null, true);
     } catch (error) {
         logError(error, 'llm-openai');

@@ -30,6 +30,13 @@ export interface ImageSource {
     type?: string;
 }
 
+export type ServerActionResult<Result> = Promise<
+    | Result
+    | {
+          error: string;
+      }
+>;
+
 export enum SearchCategory {
     ALL = 'all',
     SCIENCE = 'science',

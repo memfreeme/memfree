@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { type Search } from '@/lib/types';
 import { Redis } from '@upstash/redis';
+import { auth } from '@/auth';
 
 const redis = new Redis({
     url: process.env.UPSTASH_REDIS_REST_URL || '',
@@ -18,6 +19,8 @@ export async function getSearches(userId?: string | null) {
         return [];
     }
 
+    // console.log('getSearches userId', userId);
+
     try {
         const pipeline = redis.pipeline();
         const searches: string[] = await redis.zrange(
@@ -29,12 +32,16 @@ export async function getSearches(userId?: string | null) {
             },
         );
 
+        if (searches.length === 0) {
+            console.warn('No searches found for user:', userId);
+            return [];
+        }
+
         for (const search of searches) {
             pipeline.hgetall(search);
         }
 
         const results = await pipeline.exec();
-
         return results as Search[];
     } catch (error) {
         console.error('Failed to get searches:', error, userId);
@@ -45,6 +52,10 @@ export async function getSearches(userId?: string | null) {
 export async function getSearch(id: string, userId: string) {
     try {
         const search = await redis.hgetall<Search>(SEARCH_KEY + id);
+        if (!search) {
+            console.warn('getSearch, No search found:', id, userId);
+        }
+        // console.log('getSearch userId', userId, id, search);
         return search;
     } catch (error) {
         console.error('Failed to get search:', error, id, userId);
@@ -52,17 +63,21 @@ export async function getSearch(id: string, userId: string) {
     }
 }
 
-export async function clearSearches(
-    userId: string,
-): Promise<{ error?: string }> {
+export async function clearSearches() {
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            return { error: 'Unauthorized' };
+        }
+        const userId = session.user.id;
+
         const searches: string[] = await redis.zrange(
             USER_SEARCH_KEY + userId,
             0,
             -1,
         );
         if (!searches.length) {
-            return { error: 'No search to clear' };
+            return redirect('/');
         }
         const pipeline = redis.pipeline();
 
@@ -74,10 +89,11 @@ export async function clearSearches(
         await pipeline.exec();
 
         revalidatePath('/');
-        redirect('/');
     } catch (error) {
-        console.error('Failed to clear searches:', error, userId);
+        console.error('Failed to clear searches:', error);
         return { error: 'Failed to clear searches' };
+    } finally {
+        redirect('/');
     }
 }
 
@@ -90,8 +106,31 @@ export async function saveSearch(search: Search, userId: string) {
             member: SEARCH_KEY + search.id,
         });
         await pipeline.exec();
-        console.log('Saved search:', search, userId);
+        // console.log('Saved search:', search, userId);
     } catch (error) {
         console.error('Failed to save search:', error, search, userId);
     }
+}
+
+export async function removeSearch({ id, path }: { id: string; path: string }) {
+    const session = await auth();
+
+    if (!session) {
+        return {
+            error: 'Unauthorized',
+        };
+    }
+
+    const uid = String(await redis.hget(SEARCH_KEY + id, 'userId'));
+    if (uid !== session?.user?.id) {
+        return {
+            error: 'Unauthorized',
+        };
+    }
+
+    await redis.del(SEARCH_KEY + id);
+    await redis.zrem(USER_SEARCH_KEY + uid, SEARCH_KEY + id);
+
+    revalidatePath('/');
+    return revalidatePath(path);
 }

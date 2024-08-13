@@ -4,31 +4,50 @@ import React, { useRef, useState, useEffect, useCallback, use } from 'react';
 import SearchMessageBubble from './SearchMessageBubble';
 
 import { fetchEventSource } from '@microsoft/fetch-event-source';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '../Search';
 import { configStore } from '@/lib/store';
 
-import { ImageSource, Message, TextSource } from '@/lib/types';
+import { ImageSource, Message, TextSource, User } from '@/lib/types';
 import { generateId } from 'ai';
 
-export function SearchWindow() {
-    const [messages, setMessages] = useState<Array<Message>>([]);
+export interface SearchProps extends React.ComponentProps<'div'> {
+    id?: string;
+    initialMessages?: Message[];
+    user?: User;
+}
+
+export function SearchWindow({ id, initialMessages, user }: SearchProps) {
+    const router = useRouter();
+    const path = usePathname();
+
+    const [messages, setMessages] = useState<Array<Message>>(
+        initialMessages ?? [],
+    );
     const messagesRef = useRef(messages);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const hasSentMessageRef = useRef(false);
-    const searchParams = useSearchParams();
     const signInModal = useSigninModal();
 
-    const q = searchParams.get('q');
     useEffect(() => {
-        if (q && !hasSentMessageRef.current) {
-            sendMessage(q as string);
-            hasSentMessageRef.current = true;
+        if (
+            user &&
+            messages.length == 2 &&
+            !isLoading &&
+            path.includes('search')
+        ) {
+            console.log('refreshing');
+            router.refresh();
         }
-    }, [q]);
+    }, [messages.length, user, isLoading, router]);
+
+    useEffect(() => {
+        if (user && !path.includes('search') && messages.length === 1) {
+            window.history.replaceState({}, '', `/search/${id}`);
+        }
+    }, [id, path, messages.length]);
 
     useEffect(() => {
         messagesRef.current = messages;
@@ -44,7 +63,12 @@ export function SearchWindow() {
         const messageValue = question ?? input;
         if (messageValue === '') return;
 
-        const messageId = generateId();
+        console.log('id', id);
+        let messageId = id;
+        if (messagesRef.current.length > 0) {
+            messageId = generateId();
+        }
+        console.log('messageId', messageId);
 
         if (!messageIdToUpdate) {
             setInput('');
@@ -172,7 +196,7 @@ export function SearchWindow() {
                 },
                 onclose() {
                     setIsLoading(false);
-                    // console.log('related ', accumulatedRelated);
+                    console.log('related ', accumulatedRelated);
                     // console.log('message ', accumulatedMessage);
                     return;
                 },
@@ -234,8 +258,8 @@ export function SearchWindow() {
     }, []);
 
     return (
-        <div className="flex max-h-full w-full flex-col items-center rounded">
-            <div className="my-10 flex w-full md:w-3/4 flex-col-reverse overflow-auto p-6 md:p-10">
+        <div className="group w-full overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
+            <div className="flex flex-col-reverse my-2 w-11/12 overflow-auto p-6">
                 <SearchBar handleSearch={stableHandleSearch} />
                 {messages.length > 0 ? (
                     [...messages]

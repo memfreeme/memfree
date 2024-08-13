@@ -16,7 +16,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = memo(({ initialImages }) => {
                 resolve({ ...image });
             };
             img.onerror = (error) => {
-                console.error('Image load error:', error);
                 resolve(null);
             };
             img.src = image.image;

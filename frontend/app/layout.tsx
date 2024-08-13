@@ -6,6 +6,7 @@ import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from 'next-themes';
 import Script from 'next/script';
+import { SidebarProvider } from '@/hooks/use-sidebar';
 
 interface RootLayoutProps {
     children: React.ReactNode;
@@ -69,7 +70,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     enableSystem
                     disableTransitionOnChange
                 >
-                    {children}
+                    <SidebarProvider>{children}</SidebarProvider>
                     <Toaster />
                     <ModalProvider />
                 </ThemeProvider>

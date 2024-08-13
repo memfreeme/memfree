@@ -47,75 +47,70 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     };
 
     return (
-        <section className="my-5">
-            <div className="mx-auto w-full max-w-3xl px-4 md:px-10 text-center">
-                <div className="flex items-center relative mx-auto w-full max-w-2xl">
-                    <TextareaAutosize
-                        value={content}
-                        minRows={2}
-                        maxRows={10}
-                        aria-label="Search"
-                        className="w-full border-input bg-transparent p-4 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50  overflow-y-auto resize-none overflow-hidden border-2 rounded-xl"
-                        onKeyDown={handleInputKeydown}
-                        onChange={(e) => setContent(e.target.value)}
-                    />
+        <div className="mx-auto w-full px-6 text-center">
+            <div className="flex items-center relative mx-auto w-full">
+                <TextareaAutosize
+                    value={content}
+                    minRows={2}
+                    maxRows={10}
+                    aria-label="Search"
+                    className="w-full border-input bg-transparent p-4 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50  overflow-y-auto resize-none overflow-hidden border-2 rounded-xl"
+                    onKeyDown={handleInputKeydown}
+                    onChange={(e) => setContent(e.target.value)}
+                />
 
-                    <div className="absolute bottom-0 right-0 mb-2 mr-2 flex space-x-2">
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <button
-                                        type="button"
-                                        aria-label="Index"
-                                        className="text-gray-500 hover:text-primary pr-2"
-                                        onClick={() => {
-                                            if (!user) {
-                                                signInModal.onOpen();
-                                            } else {
-                                                uploadModal.onOpen();
-                                            }
-                                        }}
-                                    >
-                                        <span className="sr-only">Index</span>
-                                        <Link size={24} strokeWidth={2} />
-                                    </button>
-                                </TooltipTrigger>
-                                <TooltipContent className="bg-black text-white">
-                                    <p>
-                                        Enhance AI Search by Indexing the Web
-                                        Pages You Value
-                                    </p>
-                                </TooltipContent>
-                            </Tooltip>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <button
-                                        type="button"
-                                        aria-label="Search"
-                                        className="text-gray-500 hover:text-primary pr-2"
-                                        onClick={handleClick}
-                                    >
-                                        <span className="sr-only">Search</span>
-                                        <SendHorizontal
-                                            size={24}
-                                            strokeWidth={2}
-                                        />
-                                    </button>
-                                </TooltipTrigger>
-                                <TooltipContent className="bg-black text-white">
-                                    <p>Send (Enter) </p>
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                    </div>
-                </div>
-
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <ModelSelection />
-                    <SourceSelection />
+                <div className="absolute bottom-0 right-0 mb-2 mr-2 flex space-x-2">
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button
+                                    type="button"
+                                    aria-label="Index"
+                                    className="text-gray-500 hover:text-primary pr-2"
+                                    onClick={() => {
+                                        if (!user) {
+                                            signInModal.onOpen();
+                                        } else {
+                                            uploadModal.onOpen();
+                                        }
+                                    }}
+                                >
+                                    <span className="sr-only">Index</span>
+                                    <Link size={24} strokeWidth={2} />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-black text-white">
+                                <p>
+                                    Enhance AI Search by Indexing the Web Pages
+                                    You Value
+                                </p>
+                            </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button
+                                    type="button"
+                                    aria-label="Search"
+                                    className="text-gray-500 hover:text-primary pr-2"
+                                    onClick={handleClick}
+                                >
+                                    <span className="sr-only">Search</span>
+                                    <SendHorizontal size={24} strokeWidth={2} />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-black text-white">
+                                <p>Send (Enter) </p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
                 </div>
             </div>
-        </section>
+
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2">
+                <ModelSelection />
+                <SourceSelection />
+            </div>
+        </div>
     );
 };
 

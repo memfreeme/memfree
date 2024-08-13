@@ -13,6 +13,8 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { UserAvatar } from '@/components/shared/user-avatar';
+import { useUserStore } from '@/lib/store';
+import React from 'react';
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
     user: Pick<User, 'name' | 'image' | 'email'>;
@@ -23,6 +25,18 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         event.preventDefault();
         await signOut({});
     };
+
+    const setUser = useUserStore((state) => state.setUser);
+    const stateUser = useUserStore((state) => state.user);
+
+    React.useEffect(() => {
+        if (user != stateUser) {
+            setUser(user);
+        }
+        if (user) {
+            window.postMessage({ user: user }, '*');
+        }
+    }, [setUser, stateUser, user]);
 
     return (
         <DropdownMenu>

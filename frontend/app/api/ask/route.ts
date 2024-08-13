@@ -6,8 +6,8 @@ import { RATE_LIMIT_KEY, redisDB } from '@/lib/db';
 import { validModel } from '@/lib/model';
 import { logError } from '@/lib/log';
 import { streamController } from '@/lib/server-utils';
-import { chat } from './chat';
 import { checkIsPro } from '@/lib/shared-utils';
+import { chat } from './chat';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
             );
         }
     }
-    const { query, useCache, model, source, messages } = await req.json();
+    const { useCache, model, source, messages } = await req.json();
 
     // console.log('messages', messages);
     // console.log('query', query);

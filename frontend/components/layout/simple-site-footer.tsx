@@ -7,7 +7,7 @@ export function SimpleSiteFooter({
 }: React.HTMLAttributes<HTMLElement>) {
     return (
         <footer>
-            <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+            <div className="mx-auto p-4 pt-24">
                 <ul className="mt-8 flex justify-center gap-6 md:gap-8">
                     <li className="mx-4">
                         <Link

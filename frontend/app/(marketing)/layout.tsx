@@ -1,3 +1,5 @@
+import { SidebarDesktop } from '@/components/sidebar/sidebar-desktop';
+import { SidebarOpen } from '@/components/sidebar/sidebar-open';
 import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
 import SiteHeader from '@/components/layout/site-header';
 import { marketingConfig } from '@/config/marketing';
@@ -16,14 +18,16 @@ export const metadata = {
 export default async function MarketingLayout({
     children,
 }: MarketingLayoutProps) {
-    const user = await getCurrentUser();
     return (
-        <div className="flex min-h-screen flex-col">
-            <Suspense fallback="...">
+        <div className="flex flex-col flex-1 min-h-screen">
+            {/* <Suspense fallback="...">
                 <SiteHeader user={user} items={marketingConfig.mainNav} />
-            </Suspense>
-            <main className="flex-1">{children}</main>
-            <SimpleSiteFooter />
+            </Suspense> */}
+            <main className="relative flex h-lvh overflow-hidden">
+                <SidebarDesktop />
+                <SidebarOpen />
+                {children}
+            </main>
         </div>
     );
 }

@@ -25,7 +25,7 @@ export function HeroLanding() {
                     Notes, and Docs
                 </p>
 
-                <div className="py-4">
+                {/* <div className="py-4">
                     <Link
                         href="https://chromewebstore.google.com/detail/memfree/dndjodcanbhkomcgihbhcejogiimdmpk"
                         target="_blank"
@@ -39,7 +39,7 @@ export function HeroLanding() {
                             One Click Index Your Bookmarks and Web Pages
                         </p>
                     </Link>
-                </div>
+                </div> */}
             </div>
         </section>
     );
