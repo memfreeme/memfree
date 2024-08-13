@@ -26,17 +26,17 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         await signOut({});
     };
 
-    const setUser = useUserStore((state) => state.setUser);
-    const stateUser = useUserStore((state) => state.user);
+    // const setUser = useUserStore((state) => state.setUser);
+    // const stateUser = useUserStore((state) => state.user);
 
-    React.useEffect(() => {
-        if (user != stateUser) {
-            setUser(user);
-        }
-        if (user) {
-            window.postMessage({ user: user }, '*');
-        }
-    }, [setUser, stateUser, user]);
+    // React.useEffect(() => {
+    //     if (user != stateUser) {
+    //         setUser(user);
+    //     }
+    //     if (user) {
+    //         window.postMessage({ user: user }, '*');
+    //     }
+    // }, [setUser, stateUser, user]);
 
     return (
         <DropdownMenu>

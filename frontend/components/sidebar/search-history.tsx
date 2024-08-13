@@ -4,12 +4,11 @@ import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 import { SidebarList } from './sidebar-list';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 import { Icons } from '../shared/icons';
 import { siteConfig } from '@/config/site';
 import { SidebarClose } from './sidebar-close';
-import { useSigninModal } from '@/hooks/use-signin-modal';
 import { SignInButton } from '../layout/sign-in-button';
 import { User } from '@/lib/types';
 
