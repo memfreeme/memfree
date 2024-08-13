@@ -4,7 +4,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 import { Sidebar } from './sidebar';
 import { Button } from '@/components/ui/button';
-import { PanelRight, SidebarOpen } from 'lucide-react';
+import { SidebarOpen } from 'lucide-react';
 
 interface SidebarMobileProps {
     children: React.ReactNode;

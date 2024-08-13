@@ -19,7 +19,7 @@ export async function getSearches(userId?: string | null) {
         return [];
     }
 
-    // console.log('getSearches userId', userId);
+    console.log('getSearches all userId', userId);
 
     try {
         const pipeline = redis.pipeline();

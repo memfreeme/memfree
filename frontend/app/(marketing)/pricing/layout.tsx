@@ -1,4 +1,3 @@
-import { SidebarDesktop } from '@/components/sidebar/sidebar-desktop';
 import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
 import SiteHeader from '@/components/layout/site-header';
 import { marketingConfig } from '@/config/marketing';

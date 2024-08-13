@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { CreditCard, LayoutDashboard, LogOut, Settings } from 'lucide-react';
 import type { User } from 'next-auth';
 import { signOut } from 'next-auth/react';
-
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -17,7 +16,7 @@ import { useUserStore } from '@/lib/store';
 import React from 'react';
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
-    user: Pick<User, 'name' | 'image' | 'email'>;
+    user: User;
 }
 
 export function UserAccountNav({ user }: UserAccountNavProps) {
@@ -26,17 +25,13 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         await signOut({});
     };
 
-    // const setUser = useUserStore((state) => state.setUser);
-    // const stateUser = useUserStore((state) => state.user);
-
-    // React.useEffect(() => {
-    //     if (user != stateUser) {
-    //         setUser(user);
-    //     }
-    //     if (user) {
-    //         window.postMessage({ user: user }, '*');
-    //     }
-    // }, [setUser, stateUser, user]);
+    const setUser = useUserStore((state) => state.setUser);
+    React.useEffect(() => {
+        if (user) {
+            setUser(user);
+            window.postMessage({ user: user }, '*');
+        }
+    }, [setUser, user]);
 
     return (
         <DropdownMenu>

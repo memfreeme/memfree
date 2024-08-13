@@ -4,19 +4,9 @@ import * as React from 'react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
-import { motion } from 'framer-motion';
-
 import { buttonVariants } from '@/components/ui/button';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { useLocalStorage } from '@/hooks/use-local-storage';
 import { type Search } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { MessageSquare } from 'lucide-react';
 
 interface SidebarItemProps {
     index: number;
@@ -37,14 +27,14 @@ export function SidebarItem({
 
     return (
         <div className="relative h-8">
-            <div className="absolute left-2 top-1 flex size-6 items-center justify-center">
+            {/* <div className="absolute left-2 top-1 flex size-6 items-center justify-center">
                 <MessageSquare className="mr-2 mt-2 text-zinc-500" />
-            </div>
+            </div> */}
             <Link
                 href={`/search/${search?.id}`}
                 className={cn(
                     buttonVariants({ variant: 'ghost' }),
-                    'group w-full px-8 transition-colors hover:bg-zinc-200/40 dark:hover:bg-zinc-300/10',
+                    'group w-full px-4 transition-colors hover:bg-zinc-200/40 dark:hover:bg-zinc-300/10',
                     isActive &&
                         'bg-zinc-200 pr-16 font-semibold dark:bg-zinc-800',
                 )}

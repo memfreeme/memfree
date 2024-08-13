@@ -19,11 +19,10 @@ export default async function MarketingLayout({
     const user = await getCurrentUser();
     return (
         <div className="flex flex-col flex-1 min-h-screen">
-            <Suspense fallback="...">
-                <MobileHeader user={user} />
-            </Suspense>
+            <MobileHeader user={user} />
             <main className="relative flex h-lvh overflow-hidden">
                 <SidebarDesktop />
+
                 <SidebarOpen />
                 {children}
             </main>
