@@ -47,23 +47,9 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 
 <img alt="MemFree Hybrid AI Search workflow" src="frontend/public/memfree-hybrid-ai-search.webp" width="100%">
 
-## Update
+## ChangeLog
 
-- **2024-08-04**: Support Search, Chat and Ask mode
-- **2024-08-02**: Make mdReader Service Production Ready
-- **2024-08-01**: Add mdReader Service to convert any web page to markdown
-- **2024-07-31**: Improving the quality of indexing Twitter content
-- **2024-07-30**: Support Indexing of web pages that require login.
-- **2024-07-28**: Support one command Embedding Service with fly.io
-- **2024-07-26**: Support AI Search with Twitter Content
-- **2024-07-25**: Support Rerank to get better answer when hybrid search
-- **2024-07-24**: Support context-based continuous search and questioning
-- **2024-07-23**: Support claude-3-5-sonnet AI Model
-- **2024-07-21**: Support one command deploy Searxng and Vector Service with fly.io
-- **2024-07-19**: Support GPT-4o-mini AI Model
-- **2024-07-18**: Support specialized Academic and News searches
-- **2024-07-18**: Backend one click deploy with Zeabur is available
-- **2024-07-17**: Make search results more beautiful, Support mathematical formula and code highlighting, Use react-markdown instead of marked
+**2024-08-14**: [MemFree ChangeLog](https://feedback.memfree.me/changelog)
 
 ## Tech Stack
 
@@ -171,7 +157,12 @@ Here's how you can contribute:
 
 ## Help and Support
 
+- [MemFree Feedback](https://feedback.memfree.me/)
 - [MemFree Discord](https://discord.com/invite/7QqyMSTaRq)
+
+## Roadmap
+
+- [MemFree Roadmap](https://feedback.memfree.me/roadmap)
 
 ## License
 

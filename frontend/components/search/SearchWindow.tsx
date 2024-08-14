@@ -258,8 +258,8 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
     }, []);
 
     return (
-        <div className="group w-full overflow-auto pl-0">
-            <div className="flex flex-col-reverse my-2 w-full overflow-auto p-6">
+        <div className="group w-full">
+            <div className="flex flex-col-reverse my-2 w-full overflow-auto p-10">
                 <SearchBar handleSearch={stableHandleSearch} />
                 {/* {isLoading && (
                     <div className="pb-5 flex justify-center items-center">
