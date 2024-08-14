@@ -10,7 +10,7 @@ export default async function IndexPage() {
     const user = await getCurrentUser();
 
     return (
-        <div className="group w-11/12 mx-auto overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
+        <div className="group mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
             <HeroLanding />
             <SearchWindow id={id} user={user} initialMessages={[]} />
             <SimpleSiteFooter />

@@ -2,7 +2,6 @@ import { SidebarDesktop } from '@/components/sidebar/sidebar-desktop';
 import { SidebarOpen } from '@/components/sidebar/sidebar-open';
 import { siteConfig } from '@/config/site';
 import { getCurrentUser } from '@/lib/session';
-import { Suspense } from 'react';
 import MobileHeader from '@/components/layout/mobile-header';
 
 interface MarketingLayoutProps {
@@ -22,7 +21,6 @@ export default async function MarketingLayout({
             <MobileHeader user={user} />
             <main className="relative flex h-lvh overflow-hidden">
                 <SidebarDesktop />
-
                 <SidebarOpen />
                 {children}
             </main>

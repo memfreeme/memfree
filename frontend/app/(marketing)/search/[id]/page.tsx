@@ -1,8 +1,10 @@
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/lib/session';
 import { getSearch } from '@/lib/store/search';
 import { SearchWindow } from '@/components/search/SearchWindow';
+import { HeroLanding } from '@/components/sections/hero-landing';
+import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
 
 export interface SearchPageProps {
     params: {
@@ -20,12 +22,14 @@ export default async function SearchPage({ params }: SearchPageProps) {
     const search = await getSearch(params.id, userId);
 
     return (
-        <div className="group mx-auto overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
+        <div className="group mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
+            <HeroLanding />
             <SearchWindow
                 id={params.id}
                 initialMessages={search?.messages}
                 user={user}
             ></SearchWindow>
+            <SimpleSiteFooter />
         </div>
     );
 }

@@ -2,9 +2,7 @@ import { Icons } from '../shared/icons';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site';
 
-export function SimpleSiteFooter({
-    className,
-}: React.HTMLAttributes<HTMLElement>) {
+export function SimpleSiteFooter() {
     return (
         <footer>
             <div className="mx-auto p-4 pt-24">
