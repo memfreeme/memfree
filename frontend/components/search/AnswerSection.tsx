@@ -15,11 +15,11 @@ const AnswerSection = ({
         <div className="flex w-full flex-col items-start space-y-2.5 py-4">
             <div className="flex w-full items-center">
                 <BookKey className="text-primary size-22" />
-                <h3 className="py-2 text-lg font-medium text-primary">
+                <h3 className="py-2 text-lg text-primary font-bold">
                     Answer
                 </h3>
             </div>
-            <div className="prose w-full max-w-full">
+            <div className="prose dark:prose-dark w-full max-w-full">
                 <MyMarkdown content={content} sources={sources} />
             </div>
             <ActionButtons
