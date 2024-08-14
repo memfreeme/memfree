@@ -59,7 +59,6 @@ export async function POST(req: NextRequest) {
             async start(controller) {
                 await chat(
                     messages,
-                    useCache,
                     isPro,
                     userId,
                     streamController(controller),

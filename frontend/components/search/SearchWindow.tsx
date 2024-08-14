@@ -11,6 +11,7 @@ import { configStore } from '@/lib/store';
 
 import { ImageSource, Message, TextSource, User } from '@/lib/types';
 import { generateId } from 'ai';
+import { LoaderCircle } from 'lucide-react';
 
 export interface SearchProps extends React.ComponentProps<'div'> {
     id?: string;
@@ -28,6 +29,7 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
     const messagesRef = useRef(messages);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [status, setStatus] = useState('Thinking...');
 
     const signInModal = useSigninModal();
 
@@ -206,6 +208,9 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
                         accumulatedMessage += parsedData.answer;
                         updateMessages(accumulatedMessage);
                     }
+                    if (parsedData.status) {
+                        setStatus(parsedData.status);
+                    }
                     if (parsedData.sources) {
                         updateMessages(undefined, parsedData.sources);
                     }
@@ -261,11 +266,13 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
         <div className="group w-full">
             <div className="flex flex-col-reverse my-2 w-full overflow-auto p-10">
                 <SearchBar handleSearch={stableHandleSearch} />
-                {/* {isLoading && (
-                    <div className="pb-5 flex justify-center items-center">
-                        Loding...
+                {isLoading && (
+                    <div className="my-6 w-1/2 mx-auto flex justify-center items-center text-md text-violet-800 dark:text-violet-200">
+                        <LoaderCircle className="size-5 mr-2 animate-spin" />
+                        <div>{status}</div>
                     </div>
-                )} */}
+                )}
+
                 {messages.length > 0 ? (
                     [...messages]
                         .reverse()

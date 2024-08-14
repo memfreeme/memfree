@@ -31,7 +31,10 @@ export const searchRelevantContent = async (
         texts = [...texts, ...webTexts];
         images = [...images, ...webImages];
 
-        await streamResponse({ sources: texts }, onStream);
+        await streamResponse(
+            { sources: texts, status: 'Searching ...' },
+            onStream,
+        );
 
         if (texts.length > 10) {
             const documents = texts.map((item) => item.content);
@@ -39,7 +42,10 @@ export const searchRelevantContent = async (
             texts = rerankedTexts.map((rerankedDoc) => {
                 return texts[rerankedDoc.index];
             });
-            await streamResponse({ sources: texts }, onStream);
+            await streamResponse(
+                { sources: texts, status: 'Thinking ...' },
+                onStream,
+            );
         }
     }
 
@@ -47,7 +53,10 @@ export const searchRelevantContent = async (
         ({ texts, images } =
             await getSearchEngine(searchOptions).search(query));
 
-        await streamResponse({ sources: texts }, onStream);
+        await streamResponse(
+            { sources: texts, status: 'Thinking ...' },
+            onStream,
+        );
     }
     texts = texts.slice(0, TEXT_LIMIT);
 

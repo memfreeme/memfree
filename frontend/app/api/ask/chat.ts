@@ -1,6 +1,5 @@
 'use server';
 
-import { getCache, setCache } from '@/lib/cache';
 import { incSearchCount } from '@/lib/db';
 import { Message } from '@/lib/llm/llm';
 import { ChatPrompt } from '@/lib/llm/prompt';
@@ -12,7 +11,6 @@ import { streamResponse } from '@/lib/server-utils';
 import { saveSearch } from '@/lib/store/search';
 import { searchRelevantContent } from '@/lib/tools/search';
 import {
-    CachedResult,
     ImageSource,
     Message as StoreMessage,
     SearchCategory,
@@ -25,7 +23,6 @@ import { z } from 'zod';
 
 export async function chat(
     messages: StoreMessage[],
-    useCache: boolean,
     isPro: boolean,
     userId: string,
     onStream?: (...args: any[]) => void,
@@ -33,31 +30,6 @@ export async function chat(
     source = SearchCategory.ALL,
 ) {
     try {
-        // console.log('messages', messages);
-        // let cachedResult: CachedResult | null = null;
-        // if (useCache) {
-        //     query = query.trim();
-        //     let cachedResult: CachedResult = await getCache(
-        //         model + source + query,
-        //     );
-        //     if (cachedResult) {
-        //         const { webs, images, answer, related } = cachedResult;
-        //         await streamResponse(
-        //             { sources: webs, images, answer, related },
-        //             onStream,
-        //         );
-
-        //         incSearchCount(userId).catch((error) => {
-        //             console.error(
-        //                 `Failed to increment search count for user ${userId}:`,
-        //                 error,
-        //             );
-        //         });
-        //         onStream?.(null, true);
-        //         return;
-        //     }
-        // }
-
         const newMessages = messages.slice(-1) as Message[];
         const query = newMessages[0].content;
 
@@ -94,8 +66,6 @@ export async function chat(
                 })
                 .join('\n');
         }
-
-        // console.log('history', history);
 
         const system = util.format(ChatPrompt, history);
 
@@ -136,12 +106,21 @@ export async function chat(
                         // onStream?.(delta.textDelta, false);
                         hasAnswer = true;
                         fullAnswer += delta.textDelta;
-                        onStream?.(JSON.stringify({ answer: delta.textDelta }));
+                        onStream?.(
+                            JSON.stringify({
+                                answer: delta.textDelta,
+                                status: 'Answering ...',
+                            }),
+                        );
                     }
                     break;
                 }
                 case 'tool-call':
-                    // console.log('tool-call');
+                    onStream?.(
+                        JSON.stringify({
+                            status: 'Searching ...',
+                        }),
+                    );
                     break;
                 case 'tool-result':
                     // console.log('tool-result', delta.result);
@@ -158,7 +137,9 @@ export async function chat(
         if (!hasAnswer) {
             await getLLMAnswer(source, model, query, texts, (msg) => {
                 fullAnswer += msg;
-                onStream?.(JSON.stringify({ answer: msg }));
+                onStream?.(
+                    JSON.stringify({ answer: msg, status: 'Answering ...' }),
+                );
             });
         }
 
@@ -169,7 +150,12 @@ export async function chat(
         let fullRelated = '';
         await getRelatedQuestions(query, texts, (msg) => {
             fullRelated += msg;
-            onStream?.(JSON.stringify({ related: msg }));
+            onStream?.(
+                JSON.stringify({
+                    related: msg,
+                    status: 'Generating related questions ...',
+                }),
+            );
         });
 
         incSearchCount(userId).catch((error) => {
@@ -179,23 +165,16 @@ export async function chat(
             );
         });
 
-        // cachedResult = {
-        //     webs: texts,
-        //     images: images,
-        //     answer: fullAnswer,
-        //     related: fullRelated,
-        // };
-
-        messages.push({
-            id: generateId(),
-            role: 'assistant',
-            content: fullAnswer,
-            sources: texts,
-            images: images,
-            related: fullRelated,
-        });
-
         if (userId) {
+            messages.push({
+                id: generateId(),
+                role: 'assistant',
+                content: fullAnswer,
+                sources: texts,
+                images: images,
+                related: fullRelated,
+            });
+
             await saveSearch(
                 {
                     id: messages[0].id,
@@ -207,7 +186,6 @@ export async function chat(
                 userId,
             );
         }
-
         onStream?.(null, true);
     } catch (error) {
         logError(error, 'llm-openai');

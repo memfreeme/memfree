@@ -51,6 +51,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
             <div className="flex items-center relative mx-auto w-full">
                 <TextareaAutosize
                     value={content}
+                    placeholder="Ask me anything, you could choose different AI Models and Search Sources"
                     minRows={2}
                     maxRows={10}
                     aria-label="Search"
