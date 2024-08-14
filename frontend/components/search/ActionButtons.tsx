@@ -9,7 +9,7 @@ import { RefreshCcw, ThumbsDown } from 'lucide-react';
 import { Icons } from '../shared/icons';
 import { Button } from '../ui/button';
 
-const ActionButtons = ({ content, question, id, reload }) => {
+const ActionButtons = ({ content, id, reload }) => {
     const [hasCopied, setHasCopied] = React.useState(false);
 
     React.useEffect(() => {
@@ -89,7 +89,7 @@ const ActionButtons = ({ content, question, id, reload }) => {
                 </TooltipProvider>
             </div>
         ),
-        [content, hasCopied, question, id],
+        [content, hasCopied, id],
     );
 
     return buttons;

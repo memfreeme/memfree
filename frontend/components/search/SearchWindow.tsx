@@ -12,6 +12,7 @@ import { configStore } from '@/lib/store';
 import { ImageSource, Message, TextSource, User } from '@/lib/types';
 import { generateId } from 'ai';
 import { LoaderCircle } from 'lucide-react';
+import { useScrollAnchor } from '@/hooks/use-scroll-anchor';
 
 export interface SearchProps extends React.ComponentProps<'div'> {
     id?: string;
@@ -26,7 +27,7 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
     const [messages, setMessages] = useState<Array<Message>>(
         initialMessages ?? [],
     );
-    const messagesRef = useRef(messages);
+    const messagesContentRef = useRef(messages);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [status, setStatus] = useState('Thinking...');
@@ -52,8 +53,16 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
     }, [id, path, messages.length]);
 
     useEffect(() => {
-        messagesRef.current = messages;
+        messagesContentRef.current = messages;
     }, [messages]);
+
+    const {
+        messagesRef,
+        scrollRef,
+        visibilityRef,
+        isAtBottom,
+        scrollToBottom,
+    } = useScrollAnchor();
 
     const sendMessage = async (
         question?: string,
@@ -67,7 +76,7 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
 
         console.log('id', id);
         let messageId = id;
-        if (messagesRef.current.length > 0) {
+        if (messagesContentRef.current.length > 0) {
             messageId = generateId();
         }
         console.log('messageId', messageId);
@@ -173,7 +182,7 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
                     model: model,
                     source: source,
                     messages: [
-                        ...messagesRef.current,
+                        ...messagesContentRef.current,
                         {
                             id: messageId,
                             content: messageValue,
@@ -248,11 +257,13 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
     }, []);
 
     const reload = useCallback(async (msgId: string) => {
-        const currentIndex = messagesRef.current.findIndex(
+        const currentIndex = messagesContentRef.current.findIndex(
             (msg) => msg.id === msgId,
         );
         const previousMessage =
-            currentIndex > 0 ? messagesRef.current[currentIndex - 1] : null;
+            currentIndex > 0
+                ? messagesContentRef.current[currentIndex - 1]
+                : null;
         if (previousMessage) {
             await sendMessage(previousMessage.content, msgId);
         }
@@ -263,16 +274,15 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
     }, []);
 
     return (
-        <div className="group w-full">
-            <div className="flex flex-col-reverse my-2 w-full overflow-auto p-10">
-                <SearchBar handleSearch={stableHandleSearch} />
-                {isLoading && (
-                    <div className="my-6 w-1/2 mx-auto flex justify-center items-center text-md text-violet-800 dark:text-violet-200">
-                        <LoaderCircle className="size-5 mr-2 animate-spin" />
-                        <div>{status}</div>
-                    </div>
-                )}
-
+        <div
+            className="group w-full flex flex-col my-2 overflow-auto"
+            ref={scrollRef}
+        >
+            <div
+                className="flex flex-col-reverse w-full p-10"
+                ref={messagesRef}
+            >
+                <div className="w-full h-px" ref={visibilityRef} />
                 {messages.length > 0 ? (
                     [...messages]
                         .reverse()
@@ -288,6 +298,13 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
                     <></>
                 )}
             </div>
+            {isLoading && (
+                <div className="my-6 w-1/2 mx-auto flex justify-center items-center text-md text-violet-800 dark:text-violet-200">
+                    <LoaderCircle className="size-5 mr-2 animate-spin" />
+                    <div>{status}</div>
+                </div>
+            )}
+            <SearchBar handleSearch={stableHandleSearch} />
         </div>
     );
 }

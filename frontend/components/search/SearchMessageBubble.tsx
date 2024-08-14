@@ -6,6 +6,7 @@ import { Message } from '@/lib/types';
 import React, { memo } from 'react';
 import AnswerSection from './AnswerSection';
 import QuestionSection from './QuestionSection';
+import ActionButtons from './ActionButtons';
 
 const SearchMessageBubble = memo(
     (props: {
@@ -42,12 +43,10 @@ const SearchMessageBubble = memo(
                     </div>
                 )}
                 {!isUser && content && (
-                    <AnswerSection
-                        content={content}
-                        sources={sources}
-                        id={id}
-                        reload={reload}
-                    />
+                    <AnswerSection content={content} sources={sources} />
+                )}
+                {images.length > 0 && (
+                    <ActionButtons content={content} id={id} reload={reload} />
                 )}
 
                 {images.length > 0 && (
