@@ -24,7 +24,7 @@ export function SimpleSiteFooter({
                             target="_blank"
                             aria-label="MemFree Feedback"
                         >
-                            <Icons.feedback className="size-5 hover:text-primary" />
+                            <Icons.heart className="size-5 hover:text-primary" />
                         </Link>
                     </li>
                     <li className="mx-4">

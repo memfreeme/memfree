@@ -29,6 +29,7 @@ import {
     BarChart4,
     Chrome,
     MessageSquareText,
+    Heart,
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -46,6 +47,7 @@ export const Icons = {
     chrome: Chrome,
     close: X,
     copy: Copy,
+    heart: Heart,
     ellipsis: MoreVertical,
     gitHub: ({ ...props }: LucideProps) => (
         <svg

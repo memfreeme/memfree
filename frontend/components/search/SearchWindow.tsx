@@ -196,7 +196,7 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
                 },
                 onclose() {
                     setIsLoading(false);
-                    console.log('related ', accumulatedRelated);
+                    // console.log('related ', accumulatedRelated);
                     // console.log('message ', accumulatedMessage);
                     return;
                 },

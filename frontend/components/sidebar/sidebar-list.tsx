@@ -21,7 +21,7 @@ const loadSearches = cache(async (userId?: string) => {
 export async function SidebarList({ user }: SidebarListProps) {
     const searches = await loadSearches(user?.id);
 
-    console.log('SidebarList searches', searches);
+    // console.log('SidebarList searches', searches);
 
     if (!searches || 'error' in searches) {
         console.error('SidebarList Failed to load searches:', searches);

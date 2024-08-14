@@ -5,12 +5,11 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { toast } from '../ui/use-toast';
 import { RefreshCcw, ThumbsDown } from 'lucide-react';
 import { Icons } from '../shared/icons';
 import { Button } from '../ui/button';
 
-const ActionButtons = ({ content, question, id, message, reload }) => {
+const ActionButtons = ({ content, question, id, reload }) => {
     const [hasCopied, setHasCopied] = React.useState(false);
 
     React.useEffect(() => {
@@ -24,28 +23,8 @@ const ActionButtons = ({ content, question, id, message, reload }) => {
         setHasCopied(true);
     };
 
-    const feedback = (msg) => {
-        fetch('/api/feedback', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message: msg }),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    console.error('Error:', response);
-                }
-                return response.json();
-            })
-            .then((data) => {
-                toast({
-                    description: 'Feedback received, Thank you!',
-                });
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+    const feedback = () => {
+        window.open('https://feedback.memfree.me', '_blank');
     };
 
     const handleReloadClick = () => {
@@ -93,7 +72,7 @@ const ActionButtons = ({ content, question, id, message, reload }) => {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <button
-                                onClick={() => feedback(message)}
+                                onClick={() => feedback()}
                                 title="Feedback"
                                 className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"
                             >
@@ -110,7 +89,7 @@ const ActionButtons = ({ content, question, id, message, reload }) => {
                 </TooltipProvider>
             </div>
         ),
-        [content, hasCopied, question, id, message],
+        [content, hasCopied, question, id],
     );
 
     return buttons;

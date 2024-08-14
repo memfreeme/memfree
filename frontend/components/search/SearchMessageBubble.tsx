@@ -46,7 +46,6 @@ const SearchMessageBubble = memo(
                         content={content}
                         sources={sources}
                         id={id}
-                        message={message}
                         reload={reload}
                     />
                 )}
