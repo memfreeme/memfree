@@ -4,12 +4,11 @@ import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 import { SidebarList } from './sidebar-list';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 import { Icons } from '../shared/icons';
 import { siteConfig } from '@/config/site';
 import { SidebarClose } from './sidebar-close';
-import { useSigninModal } from '@/hooks/use-signin-modal';
 import { SignInButton } from '../layout/sign-in-button';
 import { User } from '@/lib/types';
 
@@ -45,7 +44,20 @@ export async function SearchHistory({ user }: SearchHistoryProps) {
                     New Search
                 </Link>
             </div>
-            <SidebarList user={user} />
+            <React.Suspense
+                fallback={
+                    <div className="flex flex-col flex-1 px-4 space-y-4 overflow-auto">
+                        {Array.from({ length: 10 }).map((_, i) => (
+                            <div
+                                key={i}
+                                className="w-full h-10 rounded-md shrink-0 animate-pulse bg-zinc-200 dark:bg-zinc-800"
+                            />
+                        ))}
+                    </div>
+                }
+            >
+                <SidebarList user={user} />
+            </React.Suspense>
         </div>
     );
 }

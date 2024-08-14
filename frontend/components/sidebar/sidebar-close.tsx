@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { useSidebar } from '@/hooks/use-sidebar';
 import { Button } from '@/components/ui/button';
-import { ArrowLeftToLine, PanelRight } from 'lucide-react';
+import { ArrowLeftToLine } from 'lucide-react';
 
 export function SidebarClose() {
     const { toggleSidebar, isSidebarOpen } = useSidebar();

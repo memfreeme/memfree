@@ -33,7 +33,7 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
 
     useEffect(() => {
         if (
-            user &&
+            user?.id &&
             messages.length == 2 &&
             !isLoading &&
             path.includes('search')
@@ -41,7 +41,7 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
             console.log('refreshing');
             router.refresh();
         }
-    }, [messages.length, user, isLoading, router]);
+    }, [messages.length, user?.id, isLoading, router]);
 
     useEffect(() => {
         if (user && !path.includes('search') && messages.length === 1) {
@@ -196,7 +196,7 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
                 },
                 onclose() {
                     setIsLoading(false);
-                    console.log('related ', accumulatedRelated);
+                    // console.log('related ', accumulatedRelated);
                     // console.log('message ', accumulatedMessage);
                     return;
                 },

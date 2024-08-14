@@ -9,7 +9,6 @@ const AnswerSection = ({
     sources,
     question,
     id,
-    message,
     reload,
 }) => {
     return (
@@ -27,7 +26,6 @@ const AnswerSection = ({
                 content={content}
                 question={question}
                 id={id}
-                message={message}
                 reload={reload}
             />
         </div>
@@ -39,8 +37,6 @@ AnswerSection.propTypes = {
     sources: PropTypes.array,
     question: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
-    message: PropTypes.any,
-    deepIntoQuestion: PropTypes.func.isRequired,
 };
 
 export default AnswerSection;

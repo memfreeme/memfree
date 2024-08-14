@@ -1,6 +1,5 @@
 import { clearSearches, getSearches } from '@/lib/store/search';
 import { SidebarItems } from './sidebar-items';
-import { redirect } from 'next/navigation';
 import { cache } from 'react';
 import { ModeToggle } from '../layout/mode-toggle';
 import Link from 'next/link';
@@ -23,8 +22,11 @@ const loadSearches = cache(async (userId?: string) => {
 export async function SidebarList({ user }: SidebarListProps) {
     const searches = await loadSearches(user?.id);
 
+    // console.log('SidebarList searches', searches);
+
     if (!searches || 'error' in searches) {
-        redirect('/');
+        console.error('SidebarList Failed to load searches:', searches);
+        return null;
     } else {
         return (
             <div className="flex flex-1 flex-col overflow-hidden">
