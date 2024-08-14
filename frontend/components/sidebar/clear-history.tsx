@@ -36,11 +36,13 @@ export function ClearHistory({
                 <Button
                     variant="ghost"
                     className="leading-none p-2 h-auto"
-                    // className="size-8 px-0"
                     disabled={!isEnabled || isPending}
                 >
-                    {isPending ? <LoaderCircle className="size-4" />: <RefreshCcw className="size-4" />}
-                   
+                    {isPending ? (
+                        <LoaderCircle className="size-4" />
+                    ) : (
+                        <Trash2 className="size-4" />
+                    )}
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>

@@ -3,7 +3,6 @@ import { SidebarItems } from './sidebar-items';
 import { cache } from 'react';
 import { ModeToggle } from '../layout/mode-toggle';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
 import { Settings } from 'lucide-react';
 import { ClearHistory } from './clear-history';
 import { User } from '@/lib/types';
@@ -47,15 +46,11 @@ export async function SidebarList({ user }: SidebarListProps) {
                     {user && <UserAccountNav user={user} />}
                     <ModeToggle />
                     <Link href="/dashboard/settings">
-                        {/* <span
-                            className={cn(
-                                'group flex items-center rounded-md p-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
-                            )}
+                        <Button
+                            variant="ghost"
+                            className="leading-none p-2 h-auto"
                         >
                             <Settings className="size-4" />
-                        </span> */}
-                        <Button variant='ghost' className="leading-none p-2 h-auto">
-                        <Settings className="size-4"/>
                         </Button>
                     </Link>
                     <ClearHistory
