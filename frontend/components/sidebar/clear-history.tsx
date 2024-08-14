@@ -48,9 +48,17 @@ export function ClearHistory({
                     // className="size-8 px-0"
                     disabled={!isEnabled || isPending}
                 >
+<<<<<<< HEAD
                     {isPending ? <LoaderCircle className="size-4" />: <RefreshCcw className="size-4" />}
                    
 >>>>>>> c74c957 (feat:add dark css)
+=======
+                    {isPending ? (
+                        <LoaderCircle className="size-4" />
+                    ) : (
+                        <Trash2 className="size-4" />
+                    )}
+>>>>>>> 0a2bca1 (sidebar)
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>

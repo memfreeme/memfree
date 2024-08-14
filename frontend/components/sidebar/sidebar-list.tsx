@@ -21,15 +21,15 @@ const loadSearches = cache(async (userId?: string) => {
 export async function SidebarList({ user }: SidebarListProps) {
     const searches = await loadSearches(user?.id);
 
-    // console.log('SidebarList searches', searches);
+    console.log('SidebarList searches', searches);
 
     if (!searches || 'error' in searches) {
         console.error('SidebarList Failed to load searches:', searches);
         return null;
     } else {
         return (
-            <div className="flex flex-1 flex-col overflow-hidden">
-                <div className="flex-1 overflow-auto">
+            <div className="flex flex-1 flex-col">
+                <div className="flex-1">
                     {searches?.length ? (
                         <div className="space-y-2 px-2">
                             <SidebarItems searches={searches} />
@@ -42,6 +42,7 @@ export async function SidebarList({ user }: SidebarListProps) {
                         </div>
                     )}
                 </div>
+<<<<<<< HEAD
                 <div className="flex items-center justify-between p-3 border-t">
                     {user && <UserAccountNav user={user} />}
                     <ModeToggle />
@@ -65,6 +66,9 @@ export async function SidebarList({ user }: SidebarListProps) {
 >>>>>>> c74c957 (feat:add dark css)
                         </Button>
                     </Link>
+=======
+                <div className="absolute top-1 right-2">
+>>>>>>> 0a2bca1 (sidebar)
                     <ClearHistory
                         isEnabled={searches?.length > 0}
                         clearSearches={clearSearches}
