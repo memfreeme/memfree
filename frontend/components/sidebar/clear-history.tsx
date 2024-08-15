@@ -34,31 +34,18 @@ export function ClearHistory({
         <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
                 <Button
-                    variant="ghost"
-                    className="leading-none p-2 h-auto"
-<<<<<<< HEAD
+                    variant="outline"
+                    className="p-2"
                     disabled={!isEnabled || isPending}
                 >
                     {isPending ? (
                         <LoaderCircle className="size-4" />
                     ) : (
-                        <Trash2 className="size-4" />
+                        <>Delete All Search History</>
                     )}
-=======
                     // className="size-8 px-0"
                     disabled={!isEnabled || isPending}
                 >
-<<<<<<< HEAD
-                    {isPending ? <LoaderCircle className="size-4" />: <RefreshCcw className="size-4" />}
-                   
->>>>>>> c74c957 (feat:add dark css)
-=======
-                    {isPending ? (
-                        <LoaderCircle className="size-4" />
-                    ) : (
-                        <Trash2 className="size-4" />
-                    )}
->>>>>>> 0a2bca1 (sidebar)
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>

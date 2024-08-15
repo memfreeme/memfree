@@ -112,7 +112,8 @@ export const docsConfig: DocsConfig = {
 export const pricingData: SubscriptionPlan[] = [
     {
         title: 'Free',
-        description: 'For Beginners',
+        description:
+            'Upgrade to Pro, Unlock Advanced Features and Get Better Answers.',
         benefits: [
             'Up to 10 Basic AI Searches per day',
             'Up to 10 bookmarks and web pages to index',
@@ -131,7 +132,7 @@ export const pricingData: SubscriptionPlan[] = [
     },
     {
         title: 'Pro',
-        description: 'Unlock Advanced Features',
+        description: 'Unlock All Advanced Features and Get Better Answers',
         benefits: [
             'Unlimited Basic AI Searches Per Month',
             'Up to 1000 Expert AI Searches Per Month',

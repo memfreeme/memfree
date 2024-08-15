@@ -1,10 +1,9 @@
-import { clearSearches, getSearches } from '@/lib/store/search';
+import { getSearches } from '@/lib/store/search';
 import { SidebarItems } from './sidebar-items';
 import { cache } from 'react';
 import { ModeToggle } from '../layout/mode-toggle';
 import Link from 'next/link';
 import { Settings } from 'lucide-react';
-import { ClearHistory } from './clear-history';
 import { User } from '@/lib/types';
 import { UserAccountNav } from '../layout/user-account-nav';
 import { Button } from '../ui/button';
@@ -42,37 +41,18 @@ export async function SidebarList({ user }: SidebarListProps) {
                         </div>
                     )}
                 </div>
-<<<<<<< HEAD
                 <div className="flex items-center justify-between p-3 border-t">
                     {user && <UserAccountNav user={user} />}
                     <ModeToggle />
-                    <Link href="/dashboard/settings">
-<<<<<<< HEAD
+                    <Link href="/settings">
                         <Button
                             variant="ghost"
                             className="leading-none p-2 h-auto"
                         >
                             <Settings className="size-4" />
-=======
-                        {/* <span
-                            className={cn(
-                                'group flex items-center rounded-md p-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
-                            )}
-                        >
-                            <Settings className="size-4" />
-                        </span> */}
-                        <Button variant='ghost' className="leading-none p-2 h-auto">
-                        <Settings className="size-4"/>
->>>>>>> c74c957 (feat:add dark css)
                         </Button>
                     </Link>
-=======
                 <div className="absolute top-1 right-2">
->>>>>>> 0a2bca1 (sidebar)
-                    <ClearHistory
-                        isEnabled={searches?.length > 0}
-                        clearSearches={clearSearches}
-                    />
                 </div>
             </div>
         );
