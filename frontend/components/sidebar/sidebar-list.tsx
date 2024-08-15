@@ -20,15 +20,15 @@ const loadSearches = cache(async (userId?: string) => {
 export async function SidebarList({ user }: SidebarListProps) {
     const searches = await loadSearches(user?.id);
 
-    console.log('SidebarList searches', searches);
+    // console.log('SidebarList searches', searches);
 
     if (!searches || 'error' in searches) {
         console.error('SidebarList Failed to load searches:', searches);
         return null;
     } else {
         return (
-            <div className="flex flex-1 flex-col">
-                <div className="flex-1">
+            <div className="flex flex-1 flex-col overflow-hidden">
+                <div className="flex-1 overflow-auto">
                     {searches?.length ? (
                         <div className="space-y-2 px-2">
                             <SidebarItems searches={searches} />
@@ -52,7 +52,6 @@ export async function SidebarList({ user }: SidebarListProps) {
                             <Settings className="size-4" />
                         </Button>
                     </Link>
-                <div className="absolute top-1 right-2">
                 </div>
             </div>
         );

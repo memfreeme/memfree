@@ -240,7 +240,6 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
                             accumulatedRelated,
                         );
                     }
-                    setIsLoading(false);
                 },
             });
         } catch (e) {

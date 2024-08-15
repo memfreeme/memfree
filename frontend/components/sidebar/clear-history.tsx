@@ -43,9 +43,6 @@ export function ClearHistory({
                     ) : (
                         <>Delete All Search History</>
                     )}
-                    // className="size-8 px-0"
-                    disabled={!isEnabled || isPending}
-                >
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
