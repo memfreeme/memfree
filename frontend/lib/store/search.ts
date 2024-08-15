@@ -33,7 +33,6 @@ export async function getSearches(userId?: string | null) {
         );
 
         if (searches.length === 0) {
-            console.warn('No searches found for user:', userId);
             return [];
         }
 

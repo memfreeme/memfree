@@ -1,4 +1,4 @@
-import { SidebarNavItem, SiteConfig } from '@/types';
+import { SiteConfig } from '@/types';
 
 const site_url = 'https://www.memfree.me';
 
@@ -18,33 +18,3 @@ export const siteConfig: SiteConfig = {
     },
     mailSupport: 'support@memfree.me',
 };
-
-export const footerLinks: SidebarNavItem[] = [
-    {
-        title: 'Company',
-        items: [
-            { title: 'About', href: '#' },
-            { title: 'Enterprise', href: '#' },
-            { title: 'Partners', href: '#' },
-            { title: 'Jobs', href: '#' },
-        ],
-    },
-    {
-        title: 'Product',
-        items: [
-            { title: 'Security', href: '#' },
-            { title: 'Customization', href: '#' },
-            { title: 'Customers', href: '#' },
-            { title: 'Changelog', href: '#' },
-        ],
-    },
-    {
-        title: 'Docs',
-        items: [
-            { title: 'Introduction', href: '#' },
-            { title: 'Installation', href: '#' },
-            { title: 'Components', href: '#' },
-            { title: 'Code Blocks', href: '#' },
-        ],
-    },
-];

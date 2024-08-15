@@ -15,8 +15,8 @@ export const docsConfig: DocsConfig = {
             href: '/changelog',
         },
         {
-            title: 'Dashboard',
-            href: '/dashboard',
+            title: 'Blog',
+            href: '/blog',
         },
     ],
     sidebarNav: [
