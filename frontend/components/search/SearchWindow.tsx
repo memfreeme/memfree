@@ -275,7 +275,6 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
     }, []);
 
     return (
-<<<<<<< HEAD
         <div
             className="group w-full flex flex-col my-2 overflow-auto"
             ref={scrollRef}
@@ -285,12 +284,6 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
                 ref={messagesRef}
             >
                 <div className="w-full h-px" ref={visibilityRef} />
-=======
-        <div className="group w-full overflow-auto pl-0">
-            <div className="flex flex-col-reverse my-2 w-full overflow-auto p-6">
-                <SearchBar handleSearch={stableHandleSearch} />
-                {isLoading&&<div className='pb-5'>Loding...</div>}
->>>>>>> c74c957 (feat:add dark css)
                 {messages.length > 0 ? (
                     [...messages]
                         .reverse()
