@@ -5,7 +5,7 @@ import Link from 'next/link';
 export function SimpleSiteFooter() {
     return (
         <footer>
-            <div className="mx-auto p-4 pt-24">
+            <div className="mx-auto p-4 pt-10">
                 <ul className="mt-8 flex justify-center gap-6 md:gap-8">
                     <li className="mx-4">
                         <Link

@@ -6,6 +6,7 @@ import { SearchHistory } from '../sidebar/search-history';
 import type { User } from 'next-auth';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+
 interface NavBarProps {
     user: User;
 }

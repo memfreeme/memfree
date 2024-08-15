@@ -23,7 +23,7 @@ export default async function MarketingLayout({
             <main className="relative flex h-lvh overflow-hidden">
                 <Featurebase user={user}></Featurebase>
                 <SidebarDesktop />
-                <SidebarOpen />
+                <SidebarOpen user={user} />
                 {children}
             </main>
         </div>

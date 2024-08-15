@@ -3,7 +3,7 @@ import { SidebarItems } from './sidebar-items';
 import { cache } from 'react';
 import { ModeToggle } from '../layout/mode-toggle';
 import Link from 'next/link';
-import { Settings } from 'lucide-react';
+import { LayoutDashboard, Settings } from 'lucide-react';
 import { User } from '@/lib/types';
 import { UserAccountNav } from '../layout/user-account-nav';
 import { Button } from '../ui/button';
@@ -44,6 +44,14 @@ export async function SidebarList({ user }: SidebarListProps) {
                 <div className="flex items-center justify-between p-3 border-t">
                     {user && <UserAccountNav user={user} />}
                     <ModeToggle />
+                    <Link href="/dashboard">
+                        <Button
+                            variant="ghost"
+                            className="leading-none p-2 h-auto"
+                        >
+                            <LayoutDashboard className="size-4" />
+                        </Button>
+                    </Link>
                     <Link href="/settings">
                         <Button
                             variant="ghost"

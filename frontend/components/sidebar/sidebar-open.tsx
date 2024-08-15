@@ -3,26 +3,75 @@
 import * as React from 'react';
 
 import { useSidebar } from '@/hooks/use-sidebar';
-import { Button } from '@/components/ui/button';
-import { ArrowRightToLine } from 'lucide-react';
+import {
+    ArrowRightToLine,
+    Home,
+    LayoutDashboard,
+    Plus,
+    Settings,
+} from 'lucide-react';
+import Link from 'next/link';
+import { User } from 'next-auth';
+import { UserAccountNav } from '../layout/user-account-nav';
 
-export function SidebarOpen() {
+interface NavBarProps {
+    user: User;
+}
+
+export function SidebarOpen({ user }: NavBarProps) {
     const { toggleSidebar, isSidebarOpen } = useSidebar();
 
     return (
-        <>
+        <div className="hidden md:flex absolute left-4 top-1/2 transform -translate-y-1/2  flex-col space-y-2 rounded-lg bg-gray-50 dark:bg-gray-400 py-3">
             {!isSidebarOpen && (
-                <Button
-                    variant="ghost"
-                    className="absolute  hover:bg-gray-300  bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full left-2 top-1/2 transform -translate-y-1/2 p-3 lg:flex"
-                    onClick={() => {
-                        toggleSidebar();
-                    }}
-                >
-                    <ArrowRightToLine className="size-4" strokeWidth={1.5} />
-                    <span className="sr-only">Toggle Sidebar</span>
-                </Button>
+                <>
+                    <button
+                        className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 m-2"
+                        onClick={() => {
+                            toggleSidebar();
+                        }}
+                    >
+                        <ArrowRightToLine size={20} strokeWidth={2} />
+                        <span className="sr-only">Toggle Sidebar</span>
+                    </button>
+                    <Link
+                        href="/"
+                        className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 m-2"
+                    >
+                        <Home size={20} strokeWidth={2} />
+                        <span className="sr-only">Home</span>
+                    </Link>
+                    <Link
+                        href="/"
+                        className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 rounded-lg  p-2 m-2"
+                    >
+                        <Plus size={20} strokeWidth={2} />
+                        <span className="sr-only">New Search</span>
+                    </Link>
+
+                    <Link
+                        href="/settings"
+                        className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 rounded-lg  p-2 m-2"
+                    >
+                        <Settings size={20} strokeWidth={2} />
+                        <span className="sr-only">New Search</span>
+                    </Link>
+
+                    <Link
+                        href="/dashboard"
+                        className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 rounded-lg  p-2 m-2"
+                    >
+                        <LayoutDashboard size={20} strokeWidth={2} />
+                        <span className="sr-only">New Search</span>
+                    </Link>
+
+                    {user && (
+                        <div className="items-center justify-center rounded-lg p-2">
+                            <UserAccountNav user={user} />
+                        </div>
+                    )}
+                </>
             )}
-        </>
+        </div>
     );
 }

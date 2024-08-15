@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { SidebarList } from './sidebar-list';
 import { buttonVariants } from '@/components/ui/button';
-import { Search } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Icons } from '../shared/icons';
 import { siteConfig } from '@/config';
 import { SidebarClose } from './sidebar-close';
@@ -40,7 +40,7 @@ export async function SearchHistory({ user }: SearchHistoryProps) {
                         'h-10 w-full justify-start bg-zinc-50 px-4 shadow-none transition-colors hover:bg-zinc-200/40 dark:bg-zinc-900 dark:hover:bg-zinc-300/10',
                     )}
                 >
-                    <Search className="-translate-x-2" strokeWidth={1.5} />
+                    <Plus className="-translate-x-2" strokeWidth={1.5} />
                     New Search
                 </Link>
             </div>

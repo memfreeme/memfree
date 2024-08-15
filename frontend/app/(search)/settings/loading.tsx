@@ -4,10 +4,10 @@ import { DashboardShell } from '@/components/dashboard/shell';
 
 export default function DashboardSettingsLoading() {
     return (
-        <div className="group w-full overflow-auto mx-10 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px] my-10">
+        <div className="group w-5/6 mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px] my-10">
             <DashboardShell>
                 <DashboardHeader
-                    heading="Settings"
+                    heading="MemFree Settings"
                     text="Manage account and website settings."
                 />
                 <div className="grid gap-10">

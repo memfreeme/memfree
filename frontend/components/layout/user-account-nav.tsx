@@ -1,7 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { CreditCard, LayoutDashboard, LogOut, Settings } from 'lucide-react';
+import {
+    CreditCard,
+    Gem,
+    LayoutDashboard,
+    LogOut,
+    Settings,
+} from 'lucide-react';
 import type { User } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import {
@@ -74,6 +80,15 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                     >
                         <Settings className="size-4" />
                         <p className="text-sm">Settings</p>
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link
+                        href="/pricing"
+                        className="flex items-center space-x-2.5"
+                    >
+                        <Gem className="size-4" />
+                        <p className="text-sm">Upgrade Plan</p>
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />

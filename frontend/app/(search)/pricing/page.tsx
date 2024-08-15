@@ -20,7 +20,7 @@ export default async function PricingPage() {
     }
 
     return (
-        <div className="group w-full overflow-auto peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px] my-10">
+        <div className="group mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px] my-10">
             <PricingCards
                 userId={user?.id}
                 subscriptionPlan={subscriptionPlan}

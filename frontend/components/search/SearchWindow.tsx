@@ -275,7 +275,7 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
 
     return (
         <div
-            className="group w-full flex flex-col my-2 overflow-auto"
+            className="group mx-auto w-5/6 flex flex-col my-2 overflow-auto"
             ref={scrollRef}
         >
             <div

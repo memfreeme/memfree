@@ -22,7 +22,7 @@ export default async function SearchPage({ params }: SearchPageProps) {
     const search = await getSearch(params.id, userId);
 
     return (
-        <div className="group mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
+        <div className="group mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px] my-10">
             <HeroLanding />
             <SearchWindow
                 id={params.id}
