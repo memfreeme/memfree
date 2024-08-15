@@ -22,12 +22,8 @@ export default async function SearchPage({ params }: SearchPageProps) {
     const search = await getSearch(params.id, userId);
 
     return (
-<<<<<<< HEAD:frontend/app/(search)/search/[id]/page.tsx
         <div className="group mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
             <HeroLanding />
-=======
-        <div className="group mx-auto overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
->>>>>>> c74c957 (feat:add dark css):frontend/app/(marketing)/search/[id]/page.tsx
             <SearchWindow
                 id={params.id}
                 initialMessages={search?.messages}
