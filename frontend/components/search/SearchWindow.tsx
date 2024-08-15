@@ -275,13 +275,10 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
 
     return (
         <div
-            className="group mx-auto w-5/6 flex flex-col my-2 overflow-auto"
+            className="group mx-auto px-4 w-full md:w-5/6 md:px-0 flex flex-col my-2 overflow-auto"
             ref={scrollRef}
         >
-            <div
-                className="flex flex-col-reverse w-full p-10"
-                ref={messagesRef}
-            >
+            <div className="flex flex-col-reverse w-full" ref={messagesRef}>
                 <div className="w-full h-px" ref={visibilityRef} />
                 {messages.length > 0 ? (
                     [...messages]
