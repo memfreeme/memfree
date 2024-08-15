@@ -8,13 +8,7 @@ const AnswerSection = ({ content, sources }) => {
         <div className="flex w-full flex-col items-start space-y-2.5 py-4">
             <div className="flex w-full items-center">
                 <BookKey className="text-primary size-22" />
-<<<<<<< HEAD
                 <h3 className="py-2 text-lg text-primary font-bold">Answer</h3>
-=======
-                <h3 className="py-2 text-lg text-primary font-bold">
-                    Answer
-                </h3>
->>>>>>> c74c957 (feat:add dark css)
             </div>
             <div className="prose dark:prose-dark w-full max-w-full">
                 <MyMarkdown content={content} sources={sources} />
