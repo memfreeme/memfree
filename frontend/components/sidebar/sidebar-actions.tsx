@@ -19,7 +19,6 @@ import { Button } from '@/components/ui/button';
 import {
     Tooltip,
     TooltipContent,
-    TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { LoaderCircle, Trash2 } from 'lucide-react';
@@ -42,22 +41,20 @@ export function SidebarActions({
     return (
         <>
             <div>
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                className="size-7 p-2 hover:bg-background"
-                                disabled={isRemovePending}
-                                onClick={() => setDeleteDialogOpen(true)}
-                            >
-                                <Trash2 />
-                                <span className="sr-only">Delete</span>
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>Delete It</TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button
+                            variant="ghost"
+                            className="size-7 p-2 hover:bg-background"
+                            disabled={isRemovePending}
+                            onClick={() => setDeleteDialogOpen(true)}
+                        >
+                            <Trash2 />
+                            <span className="sr-only">Delete</span>
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Delete It</TooltipContent>
+                </Tooltip>
             </div>
             <AlertDialog
                 open={deleteDialogOpen}

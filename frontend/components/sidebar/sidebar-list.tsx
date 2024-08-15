@@ -7,6 +7,7 @@ import { LayoutDashboard, Settings } from 'lucide-react';
 import { User } from '@/lib/types';
 import { UserAccountNav } from '../layout/user-account-nav';
 import { Button } from '../ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 interface SidebarListProps {
     user?: User;
@@ -44,14 +45,22 @@ export async function SidebarList({ user }: SidebarListProps) {
                 <div className="flex items-center justify-between p-3 border-t">
                     {user && <UserAccountNav user={user} />}
                     <ModeToggle />
-                    <Link href="/dashboard">
-                        <Button
-                            variant="ghost"
-                            className="leading-none p-2 h-auto"
-                        >
-                            <LayoutDashboard className="size-4" />
-                        </Button>
-                    </Link>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Link href="/dashboard">
+                                <Button
+                                    variant="ghost"
+                                    className="leading-none p-2 h-auto"
+                                >
+                                    <LayoutDashboard className="size-4" />
+                                </Button>
+                            </Link>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>DashBoard</p>
+                        </TooltipContent>
+                    </Tooltip>
+
                     <Link href="/settings">
                         <Button
                             variant="ghost"

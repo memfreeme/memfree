@@ -7,7 +7,6 @@ import { useIndexModal } from '@/hooks/use-index-modal';
 import {
     Tooltip,
     TooltipContent,
-    TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useToast } from './ui/use-toast';
@@ -61,49 +60,47 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                 />
 
                 <div className="absolute bottom-0 right-0 mb-2 mr-2 flex space-x-2">
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button
-                                    type="button"
-                                    aria-label="Index"
-                                    className="text-gray-500 hover:text-primary pr-2"
-                                    onClick={() => {
-                                        if (!user) {
-                                            signInModal.onOpen();
-                                        } else {
-                                            uploadModal.onOpen();
-                                        }
-                                    }}
-                                >
-                                    <span className="sr-only">Index</span>
-                                    <Link size={24} strokeWidth={2} />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent className="bg-black text-white">
-                                <p>
-                                    Enhance AI Search by Indexing the Web Pages
-                                    You Value
-                                </p>
-                            </TooltipContent>
-                        </Tooltip>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button
-                                    type="button"
-                                    aria-label="Search"
-                                    className="text-gray-500 hover:text-primary pr-2"
-                                    onClick={handleClick}
-                                >
-                                    <span className="sr-only">Search</span>
-                                    <SendHorizontal size={24} strokeWidth={2} />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent className="bg-black text-white">
-                                <p>Send (Enter) </p>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <button
+                                type="button"
+                                aria-label="Index"
+                                className="text-gray-500 hover:text-primary pr-2"
+                                onClick={() => {
+                                    if (!user) {
+                                        signInModal.onOpen();
+                                    } else {
+                                        uploadModal.onOpen();
+                                    }
+                                }}
+                            >
+                                <span className="sr-only">Index</span>
+                                <Link size={24} strokeWidth={2} />
+                            </button>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-black text-white">
+                            <p>
+                                Enhance AI Search by Indexing the Web Pages You
+                                Value
+                            </p>
+                        </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <button
+                                type="button"
+                                aria-label="Search"
+                                className="text-gray-500 hover:text-primary pr-2"
+                                onClick={handleClick}
+                            >
+                                <span className="sr-only">Search</span>
+                                <SendHorizontal size={24} strokeWidth={2} />
+                            </button>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-black text-white">
+                            <p>Send (Enter) </p>
+                        </TooltipContent>
+                    </Tooltip>
                 </div>
             </div>
 
