@@ -34,14 +34,14 @@ export function ClearHistory({
         <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
                 <Button
-                    variant="ghost"
-                    className="leading-none p-2 h-auto"
+                    variant="outline"
+                    className="p-2"
                     disabled={!isEnabled || isPending}
                 >
                     {isPending ? (
                         <LoaderCircle className="size-4" />
                     ) : (
-                        <Trash2 className="size-4" />
+                        <>Delete All Search History</>
                     )}
                 </Button>
             </AlertDialogTrigger>
