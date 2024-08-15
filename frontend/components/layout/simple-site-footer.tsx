@@ -18,8 +18,10 @@ export function SimpleSiteFooter() {
                     </li>
                     <li className="mx-4">
                         <Link
+                            data-featurebase-link
                             href="https://feedback.memfree.me"
                             target="_blank"
+                            rel="noopener noreferrer"
                             aria-label="MemFree Feedback"
                         >
                             <Icons.heart className="size-5 hover:text-primary" />

@@ -7,7 +7,9 @@ import {
 } from '@/components/ui/tooltip';
 import { RefreshCcw, ThumbsDown } from 'lucide-react';
 import { Icons } from '../shared/icons';
-import { Button } from '../ui/button';
+import { Button, buttonVariants } from '../ui/button';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 const ActionButtons = ({ content, id, reload }) => {
     const [hasCopied, setHasCopied] = React.useState(false);
@@ -21,10 +23,6 @@ const ActionButtons = ({ content, id, reload }) => {
     const handleCopyValue = (value: string) => {
         navigator.clipboard.writeText(value);
         setHasCopied(true);
-    };
-
-    const feedback = () => {
-        window.open('https://feedback.memfree.me', '_blank');
     };
 
     const handleReloadClick = () => {
@@ -41,13 +39,19 @@ const ActionButtons = ({ content, id, reload }) => {
                                 onClick={() => handleCopyValue(content)}
                                 variant="ghost"
                                 title="Copy"
-                                className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"
+                                className="p-2 border-2 border-dashed rounded-full hover:bg-purple-300"
                             >
                                 <span className="sr-only">Copy</span>
                                 {hasCopied ? (
-                                    <Icons.check size={24} />
+                                    <Icons.check
+                                        size={24}
+                                        className="text-primary"
+                                    />
                                 ) : (
-                                    <Icons.copy size={24} />
+                                    <Icons.copy
+                                        size={24}
+                                        className="text-primary"
+                                    />
                                 )}
                             </Button>
                         </TooltipTrigger>
@@ -71,13 +75,23 @@ const ActionButtons = ({ content, id, reload }) => {
                     </Tooltip>
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <button
-                                onClick={() => feedback()}
-                                title="Feedback"
-                                className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"
+                            <Link
+                                href="https://feedback.memfree.me"
+                                data-featurebase-link
+                                target="_blank"
+                                rel="noreferrer"
+                                className={cn(
+                                    buttonVariants({
+                                        variant: 'outline',
+                                    }),
+                                    'p-2 border-2 border-dashed rounded-full hover:bg-purple-300',
+                                )}
                             >
-                                <ThumbsDown size={24} />
-                            </button>
+                                <ThumbsDown
+                                    size={24}
+                                    className="text-primary"
+                                />
+                            </Link>
                         </TooltipTrigger>
                         <TooltipContent className="bg-black text-white">
                             <p>

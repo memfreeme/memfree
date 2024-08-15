@@ -10,7 +10,6 @@ export const useScrollAnchor = () => {
 
     const scrollToBottom = useCallback(() => {
         if (messagesRef.current) {
-            console.log('scrolling to bottom', isAtBottom, isVisible);
             messagesRef.current.scrollIntoView({
                 block: 'end',
                 behavior: 'smooth',
@@ -20,7 +19,6 @@ export const useScrollAnchor = () => {
 
     useEffect(() => {
         if (messagesRef.current) {
-            console.log('scrolling to bottom', isAtBottom, isVisible);
             if (isAtBottom && !isVisible) {
                 messagesRef.current.scrollIntoView({
                     block: 'end',
