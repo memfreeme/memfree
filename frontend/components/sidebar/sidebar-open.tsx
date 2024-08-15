@@ -35,14 +35,16 @@ export function SidebarOpen({ user }: NavBarProps) {
                         <span className="sr-only">Toggle Sidebar</span>
                     </button>
                     <Link
-                        href="/"
+                        href="/new"
+                        rel="nofollow"
                         className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 m-2"
                     >
                         <Home size={20} strokeWidth={2} />
                         <span className="sr-only">Home</span>
                     </Link>
                     <Link
-                        href="/"
+                        href="/new"
+                        rel="nofollow"
                         className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 rounded-lg  p-2 m-2"
                     >
                         <Plus size={20} strokeWidth={2} />

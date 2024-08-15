@@ -19,7 +19,7 @@ export default async function MobileHeader({ user }: NavBarProps) {
                     <SearchHistory user={user} />
                 </SidebarMobile>
                 <Link
-                    href="/"
+                    href="/new"
                     className={cn(
                         buttonVariants({ variant: 'outline' }),
                         'rounded-lg w-full h-10 mx-4',
