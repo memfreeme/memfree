@@ -2,14 +2,12 @@ import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/lib/session';
 import { getUserSubscriptionPlan } from '@/lib/subscription';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { BillingInfo } from '@/components/billing-info';
 import { DashboardHeader } from '@/components/dashboard/header';
 import { DashboardShell } from '@/components/dashboard/shell';
-import { Icons } from '@/components/shared/icons';
 
 export const metadata = {
-    title: 'Billing',
+    title: 'MemFree Billing',
     description: 'Manage billing and your subscription plan.',
 };
 

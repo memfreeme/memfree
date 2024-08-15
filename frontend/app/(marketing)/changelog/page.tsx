@@ -12,7 +12,7 @@ import {
     TimelineTitle,
 } from '@/components/ui/timeline';
 import { formatDate } from '@/lib/utils';
-import { siteConfig } from '@/config/site';
+import { siteConfig } from '@/config';
 
 export const metadata = {
     title: 'MemFree Changelog -- Hybrid AI Search',

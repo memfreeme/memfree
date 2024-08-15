@@ -6,8 +6,8 @@ import { Mdx } from '@/components/content/mdx-components';
 import '@/styles/mdx.css';
 import { Metadata } from 'next';
 
-import { siteConfig } from '@/config/site';
 import { absoluteUrl } from '@/lib/utils';
+import { siteConfig } from '@/config';
 
 interface PageProps {
     params: {

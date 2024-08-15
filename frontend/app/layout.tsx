@@ -2,7 +2,7 @@ import '@/styles/globals.css';
 
 import { ModalProvider } from '@/components/modal-provider';
 import { Toaster } from '@/components/ui/toaster';
-import { siteConfig } from '@/config/site';
+import { siteConfig } from '@/config';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from 'next-themes';
 import Script from 'next/script';

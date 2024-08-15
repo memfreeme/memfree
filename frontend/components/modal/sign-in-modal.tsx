@@ -5,10 +5,10 @@ import { useState } from 'react';
 import { Icons } from '@/components/shared/icons';
 import { Modal } from '@/components/shared/modal';
 import { Button } from '@/components/ui/button';
-import { siteConfig } from '@/config/site';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
+import { siteConfig } from '@/config';
 
 export const SignInModal = () => {
     const signInModal = useSigninModal();

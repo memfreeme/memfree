@@ -7,7 +7,7 @@ import { SidebarList } from './sidebar-list';
 import { buttonVariants } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 import { Icons } from '../shared/icons';
-import { siteConfig } from '@/config/site';
+import { siteConfig } from '@/config';
 import { SidebarClose } from './sidebar-close';
 import { SignInButton } from '../layout/sign-in-button';
 import { User } from '@/lib/types';

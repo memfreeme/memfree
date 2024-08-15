@@ -1,6 +1,6 @@
 import { PricingCards } from '@/components/pricing-cards';
 import { PricingFaq } from '@/components/pricing-faq';
-import { siteConfig } from '@/config/site';
+import { siteConfig } from '@/config';
 import { getCurrentUser } from '@/lib/session';
 import { getUserSubscriptionPlan } from '@/lib/subscription';
 

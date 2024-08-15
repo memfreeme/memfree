@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { absoluteUrl, cn, formatDate } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { Newsletter } from '@/components/Newsletter';
-import { siteConfig } from '@/config/site';
+import { siteConfig } from '@/config';
 import { GitHubButton } from '@/components/shared/github-button';
 
 interface PostPageProps {

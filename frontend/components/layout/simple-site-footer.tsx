@@ -1,6 +1,6 @@
+import { siteConfig } from '@/config';
 import { Icons } from '../shared/icons';
 import Link from 'next/link';
-import { siteConfig } from '@/config/site';
 
 export function SimpleSiteFooter() {
     return (

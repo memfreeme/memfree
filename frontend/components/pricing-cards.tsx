@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { UserSubscriptionPlan } from '@/types';
 
-import { pricingData } from '@/config/subscriptions';
 import { cn } from '@/lib/utils';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { Button, buttonVariants } from '@/components/ui/button';
@@ -14,6 +13,7 @@ import { HeaderSection } from '@/components/shared/header-section';
 import { Icons } from '@/components/shared/icons';
 
 import { SubscriptionPlan } from '../types/index';
+import { pricingData } from '@/config';
 
 interface PricingCardsProps {
     userId?: string;
@@ -143,7 +143,7 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
     return (
         <section className="container flex flex-col items-center text-center">
             <HeaderSection
-                label="Pricing"
+                label="MemFree Pricing"
                 title="Get the Answers You Really Need, Instantly!"
             />
 

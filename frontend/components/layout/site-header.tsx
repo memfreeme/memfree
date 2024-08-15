@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 import { Icons } from '@/components/shared/icons';
-import { siteConfig } from '@/config/site';
 import { usePathname } from 'next/navigation';
 import { Button } from '../ui/button';
 import { useSigninModal } from '@/hooks/use-signin-modal';
@@ -14,6 +13,7 @@ import { User } from 'next-auth';
 import { MainNavItem } from '@/types';
 import { UserAccountNav } from './user-account-nav';
 import { useUserStore } from '@/lib/store';
+import { siteConfig } from '@/config';
 
 interface NavBarProps {
     user: User;
@@ -69,6 +69,17 @@ export default function SiteHeader({ user, items }: NavBarProps) {
                         </Button>
                     );
                 })}
+                <Button key="changelog" variant="link" asChild>
+                    <Link
+                        href="https://feedback.memfree.me/changelog"
+                        data-featurebase-link
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="MemFree Changelog"
+                    >
+                        <span className="text-black">Changelog</span>
+                    </Link>
+                </Button>
             </div>
             <div className="block md:hidden ml-auto mr-4">
                 <MarketingMenu items={items} user={user} />

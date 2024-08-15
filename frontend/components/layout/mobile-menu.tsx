@@ -10,9 +10,9 @@ import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '../ui/sheet';
 import Link from 'next/link';
 import { MainNavItem } from '@/types';
 import { Icons } from '../shared/icons';
-import { siteConfig } from '@/config/site';
 import { User } from 'next-auth';
 import { UserAccountNav } from './user-account-nav';
+import { siteConfig } from '@/config';
 
 interface NavProps {
     items?: MainNavItem[];

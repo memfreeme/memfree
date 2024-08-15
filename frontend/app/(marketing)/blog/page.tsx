@@ -2,7 +2,7 @@ import { allPosts } from 'contentlayer/generated';
 import { compareDesc } from 'date-fns';
 
 import { BlogPosts } from '@/components/blog-posts';
-import { siteConfig } from '@/config/site';
+import { siteConfig } from '@/config';
 
 export const metadata = {
     title: 'MemFree Blog -- Hybrid AI Search',

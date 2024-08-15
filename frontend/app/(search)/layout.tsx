@@ -1,9 +1,9 @@
 import { SidebarDesktop } from '@/components/sidebar/sidebar-desktop';
 import { SidebarOpen } from '@/components/sidebar/sidebar-open';
-import { siteConfig } from '@/config/site';
 import { getCurrentUser } from '@/lib/session';
 import MobileHeader from '@/components/layout/mobile-header';
 import Featurebase from '@/components/featurebase';
+import { siteConfig } from '@/config';
 
 interface MarketingLayoutProps {
     children: React.ReactNode;

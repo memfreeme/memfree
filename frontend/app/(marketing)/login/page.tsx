@@ -4,9 +4,9 @@ import { useState } from 'react';
 
 import { Icons } from '@/components/shared/icons';
 import { Button } from '@/components/ui/button';
-import { siteConfig } from '@/config/site';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
+import { siteConfig } from '@/config';
 
 export default function LoginPage() {
     const [signInClicked, setSignInClicked] = useState(false);
