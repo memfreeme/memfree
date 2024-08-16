@@ -70,4 +70,5 @@ export interface Search extends Record<string, any> {
     createdAt: Date;
     userId: string;
     messages: Message[];
+    sharePath?: string;
 }

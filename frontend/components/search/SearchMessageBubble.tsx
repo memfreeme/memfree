@@ -7,14 +7,16 @@ import React, { memo } from 'react';
 import AnswerSection from './AnswerSection';
 import QuestionSection from './QuestionSection';
 import ActionButtons from './ActionButtons';
+import { search } from '@/app/api/ask/search';
 
 const SearchMessageBubble = memo(
     (props: {
+        searchId: string;
         message: Message;
         onSelect: (question: string) => void;
         reload: (msgId: string) => void;
     }) => {
-        const { id, role, content, related } = props.message;
+        const {id, role, content, related } = props.message;
         const onSelect = props.onSelect;
         const reload = props.reload;
         const isUser = role === 'user';
@@ -22,6 +24,7 @@ const SearchMessageBubble = memo(
         const message = props.message;
         const sources = message.sources ?? [];
         const images = message.images ?? [];
+        const searchId = props.searchId;
 
         return (
             <div className="flex flex-col w-full  items-start space-y-6 pb-10">
@@ -45,8 +48,8 @@ const SearchMessageBubble = memo(
                 {!isUser && content && (
                     <AnswerSection content={content} sources={sources} />
                 )}
-                {images.length > 0 && (
-                    <ActionButtons content={content} id={id} reload={reload} />
+                {(images.length > 0 || related) && (
+                    <ActionButtons content={content} searchId={searchId} msgId={id} reload={reload} />
                 )}
 
                 {images.length > 0 && (

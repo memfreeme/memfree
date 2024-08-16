@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect, useCallback, use } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import SearchMessageBubble from './SearchMessageBubble';
 
 import { fetchEventSource } from '@microsoft/fetch-event-source';
@@ -74,12 +74,10 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
         const messageValue = question ?? input;
         if (messageValue === '') return;
 
-        console.log('id', id);
         let messageId = id;
         if (messagesContentRef.current.length > 0) {
             messageId = generateId();
         }
-        console.log('messageId', messageId);
 
         if (!messageIdToUpdate) {
             setInput('');
@@ -286,6 +284,7 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
                         .map((m, index) => (
                             <SearchMessageBubble
                                 key={m.id}
+                                searchId={id}
                                 message={{ ...m }}
                                 onSelect={sendSelectedQuestion}
                                 reload={reload}

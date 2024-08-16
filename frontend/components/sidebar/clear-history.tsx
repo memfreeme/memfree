@@ -15,7 +15,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { LoaderCircle, RefreshCcw, Trash2 } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { ServerActionResult } from '@/lib/types';
 
 interface ClearHistoryProps {

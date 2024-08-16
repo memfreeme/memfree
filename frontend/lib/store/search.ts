@@ -48,20 +48,6 @@ export async function getSearches(userId?: string | null) {
     }
 }
 
-export async function getSearch(id: string, userId: string) {
-    try {
-        const search = await redis.hgetall<Search>(SEARCH_KEY + id);
-        if (!search) {
-            console.warn('getSearch, No search found:', id, userId);
-        }
-        // console.log('getSearch userId', userId, id, search);
-        return search;
-    } catch (error) {
-        console.error('Failed to get search:', error, id, userId);
-        return null;
-    }
-}
-
 export async function clearSearches() {
     try {
         const session = await auth();
@@ -132,4 +118,63 @@ export async function removeSearch({ id, path }: { id: string; path: string }) {
 
     revalidatePath('/');
     return revalidatePath(path);
+}
+
+export async function shareSearch(id: string) {
+    const session = await auth();
+    if (!session?.user?.id) {
+        return {
+            error: 'Unauthorized',
+        };
+    }
+
+    console.log('shareSearch', id, session.user.id);
+
+    const search = await redis.hgetall<Search>(SEARCH_KEY + id);
+    if (!search || search.userId !== session.user.id) {
+        return {
+            error: 'Something went wrong',
+        };
+    }
+
+    if (search.sharePath) {
+        return search;
+    }
+
+    const payload = {
+        ...search,
+        sharePath: `/share/${search.id}`,
+    };
+
+    await redis.hmset(SEARCH_KEY + id, payload);
+
+    return payload;
+}
+
+export async function getSharedSearch(id: string) {
+    try {
+        const search = await redis.hgetall<Search>(SEARCH_KEY + id);
+        if (!search || !search.sharePath) {
+            console.warn('getSharedSearch, No search found:', id);
+            return null;
+        }
+        return search;
+    } catch (error) {
+        console.error('Failed to get shared search:', error, id);
+        return null;
+    }
+}
+
+export async function getSearch(id: string, userId: string) {
+    try {
+        const search = await redis.hgetall<Search>(SEARCH_KEY + id);
+        if (!search) {
+            console.warn('getSearch, No search found:', id, userId);
+        }
+        // console.log('getSearch userId', userId, id, search);
+        return search;
+    } catch (error) {
+        console.error('Failed to get search:', error, id, userId);
+        return null;
+    }
 }

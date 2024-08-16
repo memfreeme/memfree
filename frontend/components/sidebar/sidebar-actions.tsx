@@ -21,7 +21,8 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { LoaderCircle, Trash2 } from 'lucide-react';
+import { LoaderCircle, Share2, Trash2 } from 'lucide-react';
+import { SearchShareDialog } from '../search/search-share-dialog';
 
 interface SidebarActionsProps {
     search: Search;
@@ -37,6 +38,7 @@ export function SidebarActions({
 }: SidebarActionsProps) {
     const router = useRouter();
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+    const [shareDialogOpen, setShareDialogOpen] = React.useState(false);
     const [isRemovePending, startRemoveTransition] = React.useTransition();
     return (
         <>
@@ -45,17 +47,36 @@ export function SidebarActions({
                     <TooltipTrigger asChild>
                         <Button
                             variant="ghost"
-                            className="size-7 p-2 hover:bg-background"
+                            className="leading-none p-2 h-auto hover:bg-background"
+                            onClick={() => setShareDialogOpen(true)}
+                        >
+                            <Share2 className="size-4" />
+                            <span className="sr-only">Share</span>
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Share</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button
+                            variant="ghost"
+                            className="leading-none p-2 h-auto hover:bg-background"
                             disabled={isRemovePending}
                             onClick={() => setDeleteDialogOpen(true)}
                         >
-                            <Trash2 />
+                            <Trash2 className="size-4" />
                             <span className="sr-only">Delete</span>
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>Delete It</TooltipContent>
                 </Tooltip>
             </div>
+            <SearchShareDialog
+                search={search}
+                open={shareDialogOpen}
+                onOpenChange={setShareDialogOpen}
+                onCopy={() => setShareDialogOpen(false)}
+            />
             <AlertDialog
                 open={deleteDialogOpen}
                 onOpenChange={setDeleteDialogOpen}

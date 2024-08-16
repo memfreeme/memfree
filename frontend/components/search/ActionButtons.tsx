@@ -4,14 +4,16 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { RefreshCcw, ThumbsDown } from 'lucide-react';
+import { RefreshCcw, Share2, ThumbsDown } from 'lucide-react';
 import { Icons } from '../shared/icons';
 import { Button, buttonVariants } from '../ui/button';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { SearchShareDialog } from './search-share-dialog';
 
-const ActionButtons = ({ content, id, reload }) => {
+const ActionButtons = ({ content, searchId, msgId, reload }) => {
     const [hasCopied, setHasCopied] = React.useState(false);
+    const [shareDialogOpen, setShareDialogOpen] = React.useState(false);
 
     React.useEffect(() => {
         setTimeout(() => {
@@ -25,7 +27,7 @@ const ActionButtons = ({ content, id, reload }) => {
     };
 
     const handleReloadClick = () => {
-        reload(id);
+        reload(msgId);
     };
 
     const buttons = useMemo(
@@ -53,8 +55,8 @@ const ActionButtons = ({ content, id, reload }) => {
                             )}
                         </Button>
                     </TooltipTrigger>
-                    <TooltipContent className="bg-black text-white">
-                        <p>Copy the answer</p>
+                    <TooltipContent className="font-bold">
+                        Copy Answer
                     </TooltipContent>
                 </Tooltip>
                 <Tooltip>
@@ -67,8 +69,8 @@ const ActionButtons = ({ content, id, reload }) => {
                             <RefreshCcw size={24} />
                         </button>
                     </TooltipTrigger>
-                    <TooltipContent className="bg-black text-white">
-                        <p>Reload</p>
+                    <TooltipContent className="font-bold">
+                        Reload
                     </TooltipContent>
                 </Tooltip>
                 <Tooltip>
@@ -88,16 +90,33 @@ const ActionButtons = ({ content, id, reload }) => {
                             <ThumbsDown size={24} className="text-primary" />
                         </Link>
                     </TooltipTrigger>
-                    <TooltipContent className="bg-black text-white">
-                        <p>
-                            If you feel unsatisfied with the answer, feedback is
-                            welcome
-                        </p>
+                    <TooltipContent className="font-bold">
+                        Feedback
                     </TooltipContent>
                 </Tooltip>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <button
+                            onClick={() => setShareDialogOpen(true)}
+                            title="Share"
+                            className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"
+                        >
+                            <Share2 size={24} />
+                        </button>
+                    </TooltipTrigger>
+                    <TooltipContent className="font-bold">Share</TooltipContent>
+                </Tooltip>
+                <SearchShareDialog
+                    open={shareDialogOpen}
+                    onOpenChange={setShareDialogOpen}
+                    onCopy={() => setShareDialogOpen(false)}
+                    search={{
+                        id: searchId,
+                    }}
+                />
             </div>
         ),
-        [content, hasCopied, id],
+        [content, hasCopied, msgId, shareDialogOpen],
     );
 
     return buttons;
