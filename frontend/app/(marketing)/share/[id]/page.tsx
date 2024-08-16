@@ -23,6 +23,7 @@ export default async function SharePage({ params }: SharePageProps) {
                 id={search.id}
                 initialMessages={search?.messages}
                 user={{}}
+                isReadOnly={true}
             ></SearchWindow>
         </div>
     );

@@ -13,14 +13,21 @@ import { ImageSource, Message, TextSource, User } from '@/lib/types';
 import { generateId } from 'ai';
 import { LoaderCircle } from 'lucide-react';
 import { useScrollAnchor } from '@/hooks/use-scroll-anchor';
+import { toast } from 'sonner';
 
 export interface SearchProps extends React.ComponentProps<'div'> {
     id?: string;
     initialMessages?: Message[];
     user?: User;
+    isReadOnly?: boolean;
 }
 
-export function SearchWindow({ id, initialMessages, user }: SearchProps) {
+export function SearchWindow({
+    id,
+    initialMessages,
+    user,
+    isReadOnly = false,
+}: SearchProps) {
     const router = useRouter();
     const path = usePathname();
 
@@ -68,6 +75,11 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
         question?: string,
         messageIdToUpdate?: string,
     ) => {
+        if (isReadOnly) {
+            toast.error('You cannot ask questions in share search page');
+            return;
+        }
+
         if (isLoading) {
             return;
         }
@@ -300,7 +312,7 @@ export function SearchWindow({ id, initialMessages, user }: SearchProps) {
                     <div>{status}</div>
                 </div>
             )}
-            <SearchBar handleSearch={stableHandleSearch} />
+            {!isReadOnly && <SearchBar handleSearch={stableHandleSearch} />}
         </div>
     );
 }

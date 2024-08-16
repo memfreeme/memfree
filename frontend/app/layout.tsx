@@ -1,7 +1,7 @@
 import '@/styles/globals.css';
 
 import { ModalProvider } from '@/components/modal-provider';
-import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from '@/components/ui/sonner';
 import { siteConfig } from '@/config';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from 'next-themes';
@@ -65,6 +65,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     'min-h-screen bg-background font-sans antialiased',
                 )}
             >
+                <Toaster position="top-center" />
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="system"
@@ -74,7 +75,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     <SidebarProvider>
                         <TooltipProvider>{children}</TooltipProvider>
                     </SidebarProvider>
-                    <Toaster />
                     <ModalProvider />
                 </ThemeProvider>
                 <Script

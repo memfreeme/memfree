@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { type DialogProps } from '@radix-ui/react-dialog';
-import { toast } from 'sonner';
 
 import { type Search } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -16,6 +15,7 @@ import {
 } from '@/components/ui/dialog';
 import { LoaderCircle } from 'lucide-react';
 import { shareSearch } from '@/lib/store/search';
+import { toast } from 'sonner';
 
 interface SearchShareDialogProps extends DialogProps {
     search: Pick<Search, 'id'>;
@@ -27,8 +27,6 @@ export function SearchShareDialog({
     onCopy,
     ...props
 }: SearchShareDialogProps) {
-    console.log('SearchShareDialog');
-    // const { copyToClipboard } = useCopyToClipboard({ timeout: 1000 });
     const [isSharePending, startShareTransition] = React.useTransition();
 
     const [hasCopied, setHasCopied] = React.useState(false);

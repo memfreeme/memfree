@@ -9,11 +9,11 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { useToast } from './ui/use-toast';
 import { ModelSelection } from './search/ModelSelection';
 import { SourceSelection } from './search/SourceSelection';
 import TextareaAutosize from 'react-textarea-autosize';
 import { useUserStore } from '@/lib/store';
+import { toast } from 'sonner';
 
 interface Props {
     handleSearch: (key: string) => void;
@@ -25,13 +25,9 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const uploadModal = useIndexModal();
     const user = useUserStore((state) => state.user);
 
-    const { toast } = useToast();
-
     const handleClick = () => {
         if (content.trim() === '') {
-            toast({
-                description: 'Please input your question!',
-            });
+            toast.error('Please input your question!');
             return;
         }
         handleSearch(content);

@@ -124,7 +124,7 @@ export async function shareSearch(id: string) {
     const session = await auth();
     if (!session?.user?.id) {
         return {
-            error: 'Unauthorized',
+            error: 'Unauthorized, please login',
         };
     }
 
@@ -133,7 +133,7 @@ export async function shareSearch(id: string) {
     const search = await redis.hgetall<Search>(SEARCH_KEY + id);
     if (!search || search.userId !== session.user.id) {
         return {
-            error: 'Something went wrong',
+            error: 'You cannot share this search result',
         };
     }
 

@@ -11,8 +11,8 @@ import {
 import { formatDateTime } from '@/lib/utils';
 import { ScoredURL } from '@/lib/types';
 import { Send, Trash2 } from 'lucide-react';
-import { toast } from './ui/use-toast';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export function FailedUrlTable(props: { urls: ScoredURL[] }) {
     const { urls: urlProps } = props;
@@ -40,9 +40,7 @@ export function FailedUrlTable(props: { urls: ScoredURL[] }) {
                 setUrls((prevUrls) =>
                     prevUrls.filter((u) => u.value !== url.value),
                 );
-                toast({
-                    description: 'Successfully Deleted',
-                });
+                toast.success('Successfully Deleted');
             })
             .catch((error) => {
                 console.error('Error:', error);
