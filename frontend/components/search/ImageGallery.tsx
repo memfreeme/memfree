@@ -22,23 +22,23 @@ const ImageGallery: React.FC<ImageGalleryProps> = memo(({ initialImages }) => {
         });
     };
 
-    async function validateImages(imageList: ImageSource[]) {
-        const imagePromises = imageList.map(loadImage);
-
-        imagePromises.forEach(async (imagePromise) => {
-            const result = await imagePromise;
-            if (result !== null && !loadedImageUrls.has(result.url)) {
-                loadedImageUrls.add(result.url);
-                setImages((prevImages) => [...prevImages, result]);
-            }
-        });
-    }
-
     const memoizedInitialImages = useMemo(() => initialImages, [initialImages]);
 
     useEffect(() => {
+        async function validateImages(imageList: ImageSource[]) {
+            const imagePromises = imageList.map(loadImage);
+
+            imagePromises.forEach(async (imagePromise) => {
+                const result = await imagePromise;
+                if (result !== null && !loadedImageUrls.has(result.url)) {
+                    loadedImageUrls.add(result.url);
+                    setImages((prevImages) => [...prevImages, result]);
+                }
+            });
+        }
+
         validateImages(memoizedInitialImages);
-    }, [memoizedInitialImages]);
+    }, [loadedImageUrls, memoizedInitialImages]);
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

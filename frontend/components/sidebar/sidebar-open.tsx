@@ -23,7 +23,7 @@ export function SidebarOpen({ user }: NavBarProps) {
     const { toggleSidebar, isSidebarOpen } = useSidebar();
 
     return (
-        <div className="hidden md:flex absolute left-4 top-1/2 transform -translate-y-1/2  flex-col space-y-2 rounded-lg bg-gray-50 dark:bg-gray-400 py-3">
+        <div className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2  flex-col space-y-2 rounded-lg bg-gray-50 dark:bg-gray-400 py-3">
             {!isSidebarOpen && (
                 <>
                     <Tooltip>

@@ -26,9 +26,9 @@ const ActionButtons = ({ content, searchId, msgId, reload }) => {
         setHasCopied(true);
     };
 
-    const handleReloadClick = () => {
+    const handleReloadClick = React.useCallback(() => {
         reload(msgId);
-    };
+    }, [msgId, reload]);
 
     const buttons = useMemo(
         () => (
@@ -116,7 +116,7 @@ const ActionButtons = ({ content, searchId, msgId, reload }) => {
                 />
             </div>
         ),
-        [content, hasCopied, msgId, shareDialogOpen],
+        [content, hasCopied, shareDialogOpen, handleReloadClick, searchId],
     );
 
     return buttons;

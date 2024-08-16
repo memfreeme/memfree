@@ -51,13 +51,13 @@ export function SearchWindow({
             console.log('refreshing');
             router.refresh();
         }
-    }, [messages.length, user?.id, isLoading, router]);
+    }, [messages.length, user?.id, isLoading, router, path]);
 
     useEffect(() => {
         if (user && !path.includes('search') && messages.length === 1) {
             window.history.replaceState({}, '', `/search/${id}`);
         }
-    }, [id, path, messages.length]);
+    }, [id, path, messages.length, user]);
 
     useEffect(() => {
         messagesContentRef.current = messages;
@@ -71,217 +71,228 @@ export function SearchWindow({
         scrollToBottom,
     } = useScrollAnchor();
 
-    const sendMessage = async (
-        question?: string,
-        messageIdToUpdate?: string,
-    ) => {
-        if (isReadOnly) {
-            toast.error('You cannot ask questions in share search page');
-            return;
-        }
-
-        if (isLoading) {
-            return;
-        }
-        const messageValue = question ?? input;
-        if (messageValue === '') return;
-
-        let messageId = id;
-        if (messagesContentRef.current.length > 0) {
-            messageId = generateId();
-        }
-
-        if (!messageIdToUpdate) {
-            setInput('');
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                {
-                    id: messageId,
-                    content: messageValue,
-                    role: 'user',
-                },
-            ]);
-        }
-
-        setIsLoading(true);
-        let accumulatedMessage = '';
-        let accumulatedRelated = '';
-        let messageIndex: number | null = null;
-
-        const resetMessages = (messageIdToUpdate: string) => {
-            setMessages((prevMessages) => {
-                if (!messageIndex) {
-                    messageIndex = prevMessages.findIndex(
-                        (msg) => msg.id === messageIdToUpdate,
-                    );
-                }
-
-                if (messageIndex === -1) return prevMessages;
-
-                const newMessages = [...prevMessages];
-                newMessages[messageIndex] = {
-                    ...newMessages[messageIndex],
-                    content: '',
-                    sources: [],
-                    images: [],
-                    related: '',
-                };
-
-                return newMessages;
-            });
-        };
-
-        const updateMessages = (
-            parsedResult?: string,
-            newSources?: TextSource[],
-            newImages?: ImageSource[],
-            newRelated?: string,
-        ) => {
-            setMessages((prevMessages) => {
-                if (!messageIndex) {
-                    messageIndex = prevMessages.findIndex(
-                        (msg) => msg.id === messageIdToUpdate,
-                    );
-                }
-
-                if (messageIndex === null || !prevMessages[messageIndex]) {
-                    messageIndex = prevMessages.length;
-                    return [
-                        ...prevMessages,
-                        {
-                            id: Math.random().toString(),
-                            content: parsedResult ? parsedResult.trim() : '',
-                            sources: newSources || [],
-                            images: newImages || [],
-                            related: newRelated || '',
-                            role: 'assistant',
-                        },
-                    ];
-                }
-
-                const newMessages = [...prevMessages];
-                const msg = newMessages[messageIndex];
-
-                if (parsedResult) msg.content = parsedResult.trim();
-                if (newSources) msg.sources = newSources;
-                if (newImages) msg.images = newImages;
-                if (newRelated) msg.related = newRelated;
-
-                newMessages[messageIndex] = { ...msg };
-                return newMessages;
-            });
-        };
-
-        try {
-            if (messageIdToUpdate) {
-                resetMessages(messageIdToUpdate);
+    const sendMessage = useCallback(
+        async (question?: string, messageIdToUpdate?: string) => {
+            if (isReadOnly) {
+                toast.error('You cannot ask questions in share search page');
+                return;
             }
-            const model = configStore.getState().model;
-            const source = configStore.getState().source;
 
-            const url = `/api/ask`;
-            await fetchEventSource(url, {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'text/event-stream',
-                },
-                body: JSON.stringify({
-                    query: messageValue,
-                    useCache: !messageIdToUpdate,
-                    model: model,
-                    source: source,
-                    messages: [
-                        ...messagesContentRef.current,
-                        {
-                            id: messageId,
-                            content: messageValue,
-                            role: 'user',
-                        },
-                    ],
-                }),
-                openWhenHidden: true,
-                onerror(err) {
-                    throw err;
-                },
-                async onopen(response) {
-                    if (response.ok && response.status === 200) {
-                    } else if (response.status === 429) {
-                        signInModal.onOpen();
-                        return;
-                    } else {
-                        console.error(
-                            `Received unexpected status code: ${response.status}`,
-                        );
-                    }
-                },
-                onclose() {
-                    setIsLoading(false);
-                    // console.log('related ', accumulatedRelated);
-                    // console.log('message ', accumulatedMessage);
-                    return;
-                },
-                onmessage(msg) {
-                    const parsedData = JSON.parse(msg.data);
-                    if (parsedData.answer) {
-                        accumulatedMessage += parsedData.answer;
-                        updateMessages(accumulatedMessage);
-                    }
-                    if (parsedData.status) {
-                        setStatus(parsedData.status);
-                    }
-                    if (parsedData.sources) {
-                        updateMessages(undefined, parsedData.sources);
-                    }
-                    if (parsedData.images) {
-                        updateMessages(
-                            undefined,
+            if (isLoading) {
+                return;
+            }
+            const messageValue = question ?? input;
+            if (messageValue === '') return;
 
-                            undefined,
-                            parsedData.images,
-                        );
-                    }
-                    if (parsedData.related) {
-                        accumulatedRelated += parsedData.related;
-                        updateMessages(
-                            undefined,
-                            undefined,
-                            undefined,
-                            accumulatedRelated,
-                        );
-                    }
-                },
-            });
-        } catch (e) {
+            let messageId = id;
+            if (messagesContentRef.current.length > 0) {
+                messageId = generateId();
+            }
+
             if (!messageIdToUpdate) {
-                setMessages((prevMessages) => prevMessages.slice(0, -1));
+                setInput('');
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    {
+                        id: messageId,
+                        content: messageValue,
+                        role: 'user',
+                    },
+                ]);
             }
-            setIsLoading(false);
-            setInput(messageValue);
-            throw e;
-        }
-    };
 
-    const sendSelectedQuestion = useCallback(async (question: string) => {
-        await sendMessage(question, null);
-    }, []);
+            setIsLoading(true);
+            let accumulatedMessage = '';
+            let accumulatedRelated = '';
+            let messageIndex: number | null = null;
 
-    const reload = useCallback(async (msgId: string) => {
-        const currentIndex = messagesContentRef.current.findIndex(
-            (msg) => msg.id === msgId,
-        );
-        const previousMessage =
-            currentIndex > 0
-                ? messagesContentRef.current[currentIndex - 1]
-                : null;
-        if (previousMessage) {
-            await sendMessage(previousMessage.content, msgId);
-        }
-    }, []);
+            const resetMessages = (messageIdToUpdate: string) => {
+                setMessages((prevMessages) => {
+                    if (!messageIndex) {
+                        messageIndex = prevMessages.findIndex(
+                            (msg) => msg.id === messageIdToUpdate,
+                        );
+                    }
 
-    const stableHandleSearch = useCallback((key: string) => {
-        sendMessage(key);
-    }, []);
+                    if (messageIndex === -1) return prevMessages;
+
+                    const newMessages = [...prevMessages];
+                    newMessages[messageIndex] = {
+                        ...newMessages[messageIndex],
+                        content: '',
+                        sources: [],
+                        images: [],
+                        related: '',
+                    };
+
+                    return newMessages;
+                });
+            };
+
+            const updateMessages = (
+                parsedResult?: string,
+                newSources?: TextSource[],
+                newImages?: ImageSource[],
+                newRelated?: string,
+            ) => {
+                setMessages((prevMessages) => {
+                    if (!messageIndex) {
+                        messageIndex = prevMessages.findIndex(
+                            (msg) => msg.id === messageIdToUpdate,
+                        );
+                    }
+
+                    if (messageIndex === null || !prevMessages[messageIndex]) {
+                        messageIndex = prevMessages.length;
+                        return [
+                            ...prevMessages,
+                            {
+                                id: Math.random().toString(),
+                                content: parsedResult
+                                    ? parsedResult.trim()
+                                    : '',
+                                sources: newSources || [],
+                                images: newImages || [],
+                                related: newRelated || '',
+                                role: 'assistant',
+                            },
+                        ];
+                    }
+
+                    const newMessages = [...prevMessages];
+                    const msg = newMessages[messageIndex];
+
+                    if (parsedResult) msg.content = parsedResult.trim();
+                    if (newSources) msg.sources = newSources;
+                    if (newImages) msg.images = newImages;
+                    if (newRelated) msg.related = newRelated;
+
+                    newMessages[messageIndex] = { ...msg };
+                    return newMessages;
+                });
+            };
+
+            try {
+                if (messageIdToUpdate) {
+                    resetMessages(messageIdToUpdate);
+                }
+                const model = configStore.getState().model;
+                const source = configStore.getState().source;
+
+                const url = `/api/ask`;
+                await fetchEventSource(url, {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'text/event-stream',
+                    },
+                    body: JSON.stringify({
+                        query: messageValue,
+                        useCache: !messageIdToUpdate,
+                        model: model,
+                        source: source,
+                        messages: [
+                            ...messagesContentRef.current,
+                            {
+                                id: messageId,
+                                content: messageValue,
+                                role: 'user',
+                            },
+                        ],
+                    }),
+                    openWhenHidden: true,
+                    onerror(err) {
+                        throw err;
+                    },
+                    async onopen(response) {
+                        if (response.ok && response.status === 200) {
+                        } else if (response.status === 429) {
+                            signInModal.onOpen();
+                            return;
+                        } else {
+                            console.error(
+                                `Received unexpected status code: ${response.status}`,
+                            );
+                        }
+                    },
+                    onclose() {
+                        setIsLoading(false);
+                        // console.log('related ', accumulatedRelated);
+                        // console.log('message ', accumulatedMessage);
+                        return;
+                    },
+                    onmessage(msg) {
+                        const parsedData = JSON.parse(msg.data);
+                        if (parsedData.answer) {
+                            accumulatedMessage += parsedData.answer;
+                            updateMessages(accumulatedMessage);
+                        }
+                        if (parsedData.status) {
+                            setStatus(parsedData.status);
+                        }
+                        if (parsedData.sources) {
+                            updateMessages(undefined, parsedData.sources);
+                        }
+                        if (parsedData.images) {
+                            updateMessages(
+                                undefined,
+
+                                undefined,
+                                parsedData.images,
+                            );
+                        }
+                        if (parsedData.related) {
+                            accumulatedRelated += parsedData.related;
+                            updateMessages(
+                                undefined,
+                                undefined,
+                                undefined,
+                                accumulatedRelated,
+                            );
+                        }
+                    },
+                });
+            } catch (e) {
+                if (!messageIdToUpdate) {
+                    setMessages((prevMessages) => prevMessages.slice(0, -1));
+                }
+                setIsLoading(false);
+                setInput(messageValue);
+                throw e;
+            }
+        },
+        [id, input, isReadOnly, isLoading, signInModal],
+    );
+
+    const sendSelectedQuestion = useCallback(
+        async (question: string) => {
+            await sendMessage(question, null);
+        },
+        [sendMessage],
+    );
+
+    const reload = useCallback(
+        async (msgId: string) => {
+            const currentIndex = messagesContentRef.current.findIndex(
+                (msg) => msg.id === msgId,
+            );
+            const previousMessage =
+                currentIndex > 0
+                    ? messagesContentRef.current[currentIndex - 1]
+                    : null;
+            if (previousMessage) {
+                await sendMessage(previousMessage.content, msgId);
+            }
+        },
+        [sendMessage],
+    );
+
+    const stableHandleSearch = useCallback(
+        (key: string) => {
+            sendMessage(key);
+        },
+        [sendMessage],
+    );
 
     return (
         <div

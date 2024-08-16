@@ -37,16 +37,16 @@ export function SearchShareDialog({
         }, 2000);
     }, [hasCopied]);
 
-    const handleCopyValue = (value: string) => {
-        navigator.clipboard.writeText(value);
-        setHasCopied(true);
-    };
-
     const copyShareLink = React.useCallback(
         async (search: Search) => {
             if (!search.sharePath) {
                 return toast.error('Could not copy share link to clipboard');
             }
+
+            const handleCopyValue = (value: string) => {
+                navigator.clipboard.writeText(value);
+                setHasCopied(true);
+            };
 
             const url = new URL(window.location.href);
             url.pathname = search.sharePath;
@@ -54,7 +54,7 @@ export function SearchShareDialog({
             onCopy();
             toast.success('Share link copied to clipboard');
         },
-        [handleCopyValue, onCopy],
+        [onCopy],
     );
 
     return (
