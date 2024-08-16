@@ -40,9 +40,8 @@ export function SimpleSiteFooter() {
                     </li>
                     <li className="mx-2">
                         <Link
-                            href="https://chromewebstore.google.com/detail/memfree/dndjodcanbhkomcgihbhcejogiimdmpk"
+                            href="/docs/extension-user-guide"
                             target="_blank"
-                            rel="noopener noreferrer"
                             aria-label="MemFree Browser Extension"
                         >
                             <Icons.chrome className="size-5 hover:text-primary" />
