@@ -1,15 +1,10 @@
 import 'server-only';
 
-import {
-    SearchOptions,
-    SearchResult,
-    SearchSource,
-    AnySource,
-    searxngHost,
-} from './search';
-import { ImageSource, TextSource } from '../types';
-import { logError } from '../log';
-import { fetchWithTimeout } from '../server-utils';
+import { SearchOptions, SearchResult, SearchSource, AnySource } from '@/lib/search/search';
+import { ImageSource, TextSource } from '@/lib/types';
+import { logError } from '@/lib/log';
+import { fetchWithTimeout } from '@/lib/server-utils';
+import { SEARXNG_HOST } from '@/lib/env';
 
 export class SearxngSearch implements SearchSource {
     private options: SearchOptions;
@@ -19,7 +14,7 @@ export class SearxngSearch implements SearchSource {
     }
 
     private formatUrl(query: string, options: SearchOptions) {
-        const url = new URL(`${searxngHost}/search?format=json`);
+        const url = new URL(`${SEARXNG_HOST}/search?format=json`);
         url.searchParams.append('q', query.slice(0, 2000));
         for (const key in options) {
             const value = options[key as keyof SearchOptions];

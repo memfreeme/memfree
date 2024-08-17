@@ -1,9 +1,10 @@
 import 'server-only';
 
-import { SearchResult, SearchSource, SERPER_API_KEY } from './search';
-import { ImageSource, TextSource } from '../types';
-import { log, logError } from '../log';
-import { fetchWithTimeout } from '../server-utils';
+import { SearchResult, SearchSource } from '@/lib/search/search';
+import { ImageSource, TextSource } from '@/lib/types';
+import { logError } from '@/lib/log';
+import { fetchWithTimeout } from '@/lib/server-utils';
+import { SERPER_API_KEY } from '@/lib/env';
 
 const serperUrl = 'https://google.serper.dev/';
 

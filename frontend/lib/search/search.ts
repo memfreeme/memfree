@@ -1,10 +1,11 @@
 import 'server-only';
 
-import { SearxngSearch } from './searxng';
-import { SerperSearch } from './serper';
-import { VectorSearch } from './vector';
-import { ImageSource, SearchCategory, TextSource } from '../types';
-import { EXASearch } from './exa';
+import { SearxngSearch } from '@/lib/search/searxng';
+import { SerperSearch } from '@/lib/search/serper';
+import { VectorSearch } from '@/lib/search/vector';
+import { ImageSource, SearchCategory, TextSource } from '@/lib/types';
+import { EXASearch } from '@/lib/search/exa';
+import { SEARXNG_HOST, SERPER_API_KEY } from '@/lib/env';
 
 export interface SearchOptions {
     categories?: string[];
@@ -31,25 +32,13 @@ export interface SearchSource {
 export const TEXT_LIMIT = 8;
 export const IMAGE_LIMIT = 8;
 
-export let searxngHost = '';
-// Let open source users could one click deploy
-if (process.env.SEARXNG_HOST) {
-    searxngHost = process.env.SEARXNG_HOST;
-} else if (process.env.MEMFREE_HOST) {
-    searxngHost = process.env.MEMFREE_HOST;
-} else {
-    throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
-}
-
-export const SERPER_API_KEY = process.env.SERPER_API_KEY;
-
 export function getVectorSearch(userId: string): SearchSource {
     return new VectorSearch(userId);
 }
 
 export function getSearchEngine(options: SearchOptions): SearchSource {
     // Let open source user could start more easily
-    if (!searxngHost) {
+    if (!SEARXNG_HOST) {
         return new SerperSearch();
     }
     if (!SERPER_API_KEY) {

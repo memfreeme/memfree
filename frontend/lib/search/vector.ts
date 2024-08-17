@@ -1,19 +1,9 @@
 import 'server-only';
 
-import { ImageSource, TextSource } from '../types';
-import { SearchResult, SearchSource } from './search';
-import { logError } from '../log';
-
-const memfreeHost = process.env.MEMFREE_HOST;
-let vectorHost = '';
-// Let open source users could one click deploy
-if (process.env.VECTOR_HOST) {
-    vectorHost = process.env.VECTOR_HOST;
-} else if (memfreeHost) {
-    vectorHost = `${memfreeHost}/vector`;
-} else {
-    throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
-}
+import { ImageSource, TextSource } from '@/lib/types';
+import { SearchResult, SearchSource } from '@/lib/search/search';
+import { logError } from '@/lib/log';
+import { VECTOR_HOST } from '@/lib/env';
 
 export class VectorSearch implements SearchSource {
     private userId: string;
@@ -23,7 +13,7 @@ export class VectorSearch implements SearchSource {
     }
 
     async search(query: string): Promise<SearchResult> {
-        const url = `${vectorHost}/api/vector/search`;
+        const url = `${VECTOR_HOST}/api/vector/search`;
 
         try {
             const response = await fetch(url, {

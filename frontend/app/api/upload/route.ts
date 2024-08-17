@@ -3,7 +3,7 @@ import { addUrl, urlsExists } from '@/lib/db';
 import { compact } from '@/lib/index/compact';
 import { remove } from '@/lib/index/remove';
 import { NextResponse } from 'next/server';
-import { API_TOKEN, VectorIndexHost } from '@/lib/env';
+import { API_TOKEN, VECTOR_INDEX_HOST } from '@/lib/env';
 
 export async function POST(req: Request) {
     try {
@@ -26,17 +26,12 @@ export async function POST(req: Request) {
         const title = file.name;
         const url = `local-md-${file.name}`;
 
-        console.log('Indexing URL:', url);
-
         const existedUrl = await urlsExists(userId, [url]);
         if (existedUrl && existedUrl.length > 0) {
             await remove(userId, existedUrl);
         }
-        console.log('existedUrl:', existedUrl);
-        console.log('API_TOKEN:', API_TOKEN);
-        console.log('VectorIndexHost:', VectorIndexHost);
 
-        const fullUrl = `${VectorIndexHost}/api/index/md`;
+        const fullUrl = `${VECTOR_INDEX_HOST}/api/index/md`;
         const response = await fetch(fullUrl, {
             method: 'POST',
             headers: {

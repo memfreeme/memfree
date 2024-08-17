@@ -1,23 +1,10 @@
-const API_TOKEN = process.env.API_TOKEN!;
+import 'server-only';
 
-let vectorIndexHost = '';
-// Let open source users could one click deploy
-if (process.env.VECTOR_INDEX_HOST) {
-    vectorIndexHost = process.env.VECTOR_INDEX_HOST;
-} else if (process.env.VECTOR_HOST) {
-    vectorIndexHost = process.env.VECTOR_HOST;
-} else if (process.env.MEMFREE_HOST) {
-    vectorIndexHost = `${process.env.MEMFREE_HOST}/vector`;
-} else {
-    throw new Error(
-        'Neither VECTOR_INDEX_HOST, VECTOR_HOST, nor MEMFREE_HOST is defined',
-    );
-}
-
-import { log } from '../log';
+import { API_TOKEN, VECTOR_INDEX_HOST } from '@/lib/env';
+import { log } from '@/lib/log';
 
 export async function compact(userId: string) {
-    const compactUrl = `${vectorIndexHost}/api/vector/compact`;
+    const compactUrl = `${VECTOR_INDEX_HOST}/api/vector/compact`;
     try {
         const response = await fetch(compactUrl, {
             method: 'POST',

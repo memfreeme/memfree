@@ -4,7 +4,7 @@ import { remove } from '@/lib/index/remove';
 import { log } from '@/lib/log';
 import { isValidUrl } from '@/lib/shared-utils';
 import { NextResponse } from 'next/server';
-import { API_TOKEN, VectorIndexHost } from '@/lib/env';
+import { API_TOKEN, VECTOR_INDEX_HOST } from '@/lib/env';
 
 export async function POST(req: Request) {
     const { urls, userId } = await req.json();
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
             await remove(userId, existedUrl);
         }
 
-        const fullUrl = `${VectorIndexHost}/api/index/url`;
+        const fullUrl = `${VECTOR_INDEX_HOST}/api/index/url`;
         let needCompact = false;
 
         const requests = urls.map((url) => {
