@@ -12,7 +12,7 @@ import { BillingFormButton } from '@/components/forms/billing-form-button';
 import { HeaderSection } from '@/components/shared/header-section';
 import { Icons } from '@/components/shared/icons';
 
-import { SubscriptionPlan } from '../types/index';
+import { SubscriptionPlan } from '@/types/index';
 import { pricingData } from '@/config';
 
 interface PricingCardsProps {

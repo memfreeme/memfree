@@ -1,6 +1,6 @@
 'use client';
 
-import React, { KeyboardEvent, useRef, useState } from 'react';
+import React, { KeyboardEvent, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { Link, SendHorizontal } from 'lucide-react';
 import { useIndexModal } from '@/hooks/use-index-modal';
@@ -9,8 +9,8 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { ModelSelection } from './search/ModelSelection';
-import { SourceSelection } from './search/SourceSelection';
+import { ModelSelection } from '@/components/search/model-selection';
+import { SourceSelection } from '@/components/search/source-selection';
 import TextareaAutosize from 'react-textarea-autosize';
 import { useUserStore } from '@/lib/store';
 import { toast } from 'sonner';

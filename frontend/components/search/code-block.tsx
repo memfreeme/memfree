@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useRef } from 'react';
-import { cn } from '@/lib/utils';
-import { Button } from '../ui/button';
-import { Icons } from '../shared/icons';
+import { Button } from '@/components/ui/button';
+import { Icons } from '@/components/shared/icons';
 
 interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {
     children: React.ReactNode;

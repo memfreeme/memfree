@@ -1,7 +1,7 @@
 'use client';
 
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 
 export function SignInButton() {
     const signInModal = useSigninModal();

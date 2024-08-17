@@ -6,12 +6,17 @@ import { Menu } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '../ui/sheet';
+import {
+    Sheet,
+    SheetContent,
+    SheetHeader,
+    SheetTrigger,
+} from '@/components/ui/sheet';
 import Link from 'next/link';
 import { MainNavItem } from '@/types';
-import { Icons } from '../shared/icons';
+import { Icons } from '@/components/shared/icons';
 import { User } from 'next-auth';
-import { UserAccountNav } from './user-account-nav';
+import { UserAccountNav } from '@/components/layout/user-account-nav';
 import { siteConfig } from '@/config';
 
 interface NavProps {

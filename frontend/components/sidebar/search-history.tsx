@@ -6,10 +6,10 @@ import { cn } from '@/lib/utils';
 import { SidebarList } from './sidebar-list';
 import { buttonVariants } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { Icons } from '../shared/icons';
+import { Icons } from '@/components/shared/icons';
 import { siteConfig } from '@/config';
-import { SidebarClose } from './sidebar-close';
-import { SignInButton } from '../layout/sign-in-button';
+import { SidebarClose } from '@/components/sidebar/sidebar-close';
+import { SignInButton } from '@/components/layout/sign-in-button';
 import { User } from '@/lib/types';
 
 interface SearchHistoryProps {

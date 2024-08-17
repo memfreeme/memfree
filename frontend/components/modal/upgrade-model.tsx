@@ -4,7 +4,7 @@ import { Modal } from '@/components/shared/modal';
 import { Button } from '../ui/button';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useRouter } from 'next/navigation';
-import { Icons } from '../shared/icons';
+import { Icons } from '@/components/shared/icons';
 
 const benefits = [
     'Unlimited Basic AI Searches Per Month',

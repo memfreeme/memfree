@@ -22,7 +22,7 @@ import {
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { LoaderCircle, Share2, Trash2 } from 'lucide-react';
-import { SearchShareDialog } from '../search/search-share-dialog';
+import { SearchShareDialog } from '@/components/search/search-share-dialog';
 
 interface SidebarActionsProps {
     search: Search;

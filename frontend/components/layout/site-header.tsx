@@ -6,12 +6,12 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Icons } from '@/components/shared/icons';
 import { usePathname } from 'next/navigation';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { MarketingMenu } from './mobile-menu';
+import { MarketingMenu } from '@/components/layout/mobile-menu';
 import { User } from 'next-auth';
 import { MainNavItem } from '@/types';
-import { UserAccountNav } from './user-account-nav';
+import { UserAccountNav } from '@/components/layout/user-account-nav';
 import { useUserStore } from '@/lib/store';
 import { siteConfig } from '@/config';
 

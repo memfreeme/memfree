@@ -1,7 +1,11 @@
-import { getSearchEngine, getVectorSearch, TEXT_LIMIT } from '../search/search';
-import { ImageSource, SearchCategory, TextSource } from '../types';
-import { streamResponse } from '../server-utils';
-import { rerank } from '../rerank';
+import {
+    getSearchEngine,
+    getVectorSearch,
+    TEXT_LIMIT,
+} from '@/lib/search/search';
+import { ImageSource, SearchCategory, TextSource } from '@/lib/types';
+import { streamResponse } from '@/lib/server-utils';
+import { rerank } from '@/lib/rerank';
 
 export const searchRelevantContent = async (
     query: string,

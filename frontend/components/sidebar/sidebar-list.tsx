@@ -1,13 +1,17 @@
 import { getSearches } from '@/lib/store/search';
-import { SidebarItems } from './sidebar-items';
+import { SidebarItems } from '@/components/sidebar/sidebar-items';
 import { cache } from 'react';
-import { ModeToggle } from '../layout/mode-toggle';
+import { ModeToggle } from '@/components/layout/mode-toggle';
 import Link from 'next/link';
 import { LayoutDashboard, Settings } from 'lucide-react';
 import { User } from '@/lib/types';
-import { UserAccountNav } from '../layout/user-account-nav';
-import { Button } from '../ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { UserAccountNav } from '@/components/layout/user-account-nav';
+import { Button } from '@/components/ui/button';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 interface SidebarListProps {
     user?: User;

@@ -1,6 +1,6 @@
 import 'server-only';
-import { fetchWithTimeout } from './server-utils';
-import { logError } from './log';
+import { fetchWithTimeout } from '@/lib/server-utils';
+import { logError } from '@/lib/log';
 
 const JINA_KEY = process.env.JINA_KEY!;
 const RERANK_MODEL = 'jina-reranker-v2-base-multilingual';

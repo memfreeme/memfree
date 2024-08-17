@@ -7,7 +7,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from './ui/table';
+} from '@/components/ui/table';
 import { formatDateTime } from '@/lib/utils';
 import { ScoredURL } from '@/lib/types';
 import { Send, Trash2 } from 'lucide-react';

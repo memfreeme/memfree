@@ -2,7 +2,7 @@
 
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
-import { Sidebar } from './sidebar';
+import { Sidebar } from '@/components/sidebar/sidebar';
 import { Button } from '@/components/ui/button';
 import { SidebarOpen } from 'lucide-react';
 

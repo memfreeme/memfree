@@ -14,11 +14,7 @@ interface SidebarItemProps {
     children: React.ReactNode;
 }
 
-export function SidebarItem({
-    index,
-    search: search,
-    children,
-}: SidebarItemProps) {
+export function SidebarItem({ search: search, children }: SidebarItemProps) {
     const pathname = usePathname();
 
     const isActive = pathname === `/search/${search?.id}`;

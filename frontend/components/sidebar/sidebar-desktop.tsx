@@ -1,7 +1,7 @@
 import { Sidebar } from './sidebar';
 
 import { auth } from '@/auth';
-import { SearchHistory } from './search-history';
+import { SearchHistory } from '@/components/sidebar/search-history';
 
 export async function SidebarDesktop() {
     const session = await auth();

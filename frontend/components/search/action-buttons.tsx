@@ -5,11 +5,11 @@ import {
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { RefreshCcw, Share2, ThumbsDown } from 'lucide-react';
-import { Icons } from '../shared/icons';
-import { Button, buttonVariants } from '../ui/button';
+import { Icons } from '@/components/shared/icons';
+import { Button, buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { SearchShareDialog } from './search-share-dialog';
+import { SearchShareDialog } from '@/components/search/search-share-dialog';
 
 const ActionButtons = ({ content, searchId, msgId, reload }) => {
     const [hasCopied, setHasCopied] = React.useState(false);

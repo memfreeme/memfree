@@ -7,7 +7,7 @@ import { validModel } from '@/lib/model';
 import { logError } from '@/lib/log';
 import { streamController } from '@/lib/server-utils';
 import { checkIsPro } from '@/lib/shared-utils';
-import { chat } from './chat';
+import { chat } from '@/app/api/ask/chat';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,

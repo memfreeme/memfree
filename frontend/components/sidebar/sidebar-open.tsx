@@ -12,8 +12,12 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { User } from 'next-auth';
-import { UserAccountNav } from '../layout/user-account-nav';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { UserAccountNav } from '@/components/layout/user-account-nav';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 interface NavBarProps {
     user: User;

@@ -7,7 +7,7 @@ import {
     AccordionTrigger,
 } from '@/components/ui/accordion';
 
-import { HeaderSection } from './shared/header-section';
+import { HeaderSection } from '@/components/shared/header-section';
 
 const pricingFaqData = [
     {

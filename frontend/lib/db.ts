@@ -1,6 +1,6 @@
 import 'server-only';
 import { Redis } from '@upstash/redis';
-import { ScoredURL, User } from './types';
+import { ScoredURL, User } from '@/lib/types';
 
 // search cache
 export const CACHE_KEY = 'cache:';

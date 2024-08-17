@@ -1,13 +1,12 @@
-import SourceBubble from '@/components/search/SourceBubble';
+import SourceBubble from '@/components/search/source-bubble';
 import { Images, ListPlusIcon, PlusIcon, TextSearchIcon } from 'lucide-react';
-import ImageGallery from './ImageGallery';
+import ImageGallery from '@/components/search/image-gallery';
 import { Message } from '@/lib/types';
 
 import React, { memo } from 'react';
-import AnswerSection from './AnswerSection';
-import QuestionSection from './QuestionSection';
-import ActionButtons from './ActionButtons';
-import { search } from '@/app/api/ask/search';
+import AnswerSection from '@/components/search/answer-section';
+import QuestionSection from '@/components/search/question-section';
+import ActionButtons from '@/components/search/action-buttons';
 
 const SearchMessageBubble = memo(
     (props: {
@@ -16,7 +15,7 @@ const SearchMessageBubble = memo(
         onSelect: (question: string) => void;
         reload: (msgId: string) => void;
     }) => {
-        const {id, role, content, related } = props.message;
+        const { id, role, content, related } = props.message;
         const onSelect = props.onSelect;
         const reload = props.reload;
         const isUser = role === 'user';
@@ -49,7 +48,12 @@ const SearchMessageBubble = memo(
                     <AnswerSection content={content} sources={sources} />
                 )}
                 {(images.length > 0 || related) && (
-                    <ActionButtons content={content} searchId={searchId} msgId={id} reload={reload} />
+                    <ActionButtons
+                        content={content}
+                        searchId={searchId}
+                        msgId={id}
+                        reload={reload}
+                    />
                 )}
 
                 {images.length > 0 && (

@@ -1,9 +1,9 @@
 import React from 'react';
 import { generateId } from 'ai';
-import { SearchWindow } from '@/components/search/SearchWindow';
 import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
 import { getCurrentUser } from '@/lib/session';
 import { HeroLanding } from '@/components/layout/hero-landing';
+import { SearchWindow } from '@/components/search/search-window';
 
 export default async function IndexPage() {
     const id = generateId();

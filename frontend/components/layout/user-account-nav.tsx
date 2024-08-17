@@ -1,13 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import {
-    CreditCard,
-    Gem,
-    LayoutDashboard,
-    LogOut,
-    Settings,
-} from 'lucide-react';
+import { Gem, LayoutDashboard, LogOut, Settings } from 'lucide-react';
 import type { User } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import {

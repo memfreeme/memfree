@@ -1,9 +1,9 @@
 import 'server-only';
 
 import { createHash } from 'node:crypto';
-import { CachedResult } from './types';
-import { CACHE_KEY, redisDB } from './db';
-import { logError } from './log';
+import { CachedResult } from '@/lib/types';
+import { CACHE_KEY, redisDB } from '@/lib/db';
+import { logError } from '@/lib/log';
 
 function generateHash(key: string): string {
     return createHash('sha256').update(key, 'utf8').digest('hex');

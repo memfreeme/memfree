@@ -2,9 +2,9 @@ import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/lib/session';
 import { getSearch } from '@/lib/store/search';
-import { SearchWindow } from '@/components/search/SearchWindow';
 import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
 import { HeroLanding } from '@/components/layout/hero-landing';
+import { SearchWindow } from '@/components/search/search-window';
 
 export interface SearchPageProps {
     params: {

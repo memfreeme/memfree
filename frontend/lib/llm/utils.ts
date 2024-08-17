@@ -1,6 +1,6 @@
-import { logError } from '../log';
-import { SearchCategory, TextSource } from '../types';
-import { chatStream, getLLM, StreamHandler } from './llm';
+import { logError } from '@/lib/log';
+import { SearchCategory, TextSource } from '@/lib/types';
+import { chatStream, getLLM, StreamHandler } from '@/lib/llm/llm';
 import util from 'util';
 import {
     AcademicPrompet,

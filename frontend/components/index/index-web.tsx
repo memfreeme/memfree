@@ -1,14 +1,14 @@
 'use client';
 
-import { LoadingButton } from '../ui/loading-button';
-import { Button, buttonVariants } from '../ui/button';
+import { LoadingButton } from '@/components/ui/loading-button';
+import { buttonVariants } from '@/components//ui/button';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { isValidUrl } from '@/lib/shared-utils';
 import { useUserStore } from '@/lib/store';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import { cn } from '@/lib/utils';
-import { Textarea } from '../ui/textarea';
+import { Textarea } from '@/components/ui/textarea';
 import Link from 'next/link';
 
 export function IndexWebPage() {

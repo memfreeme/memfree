@@ -1,7 +1,7 @@
 import Exa from 'exa-js';
-import { SearchOptions, SearchResult, SearchSource } from './search';
-import { TextSource } from '../types';
-import { logError } from '../log';
+import { SearchOptions, SearchResult, SearchSource } from '@/lib/search/search';
+import { TextSource } from '@/lib/types';
+import { logError } from '@/lib/log';
 
 const exa = new Exa(process.env.EXA_API_KEY);
 

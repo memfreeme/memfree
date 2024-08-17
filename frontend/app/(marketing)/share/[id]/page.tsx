@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 
 import { getSharedSearch } from '@/lib/store/search';
 import { HeroLanding } from '@/components/layout/hero-landing';
-import { SearchWindow } from '@/components/search/SearchWindow';
+import { SearchWindow } from '@/components/search/search-window';
 
 interface SharePageProps {
     params: {

@@ -2,8 +2,8 @@
 
 import { removeSearch } from '@/lib/store/search';
 
-import { SidebarActions } from './sidebar-actions';
-import { SidebarItem } from './sidebar-item';
+import { SidebarActions } from '@/components/sidebar/sidebar-actions';
+import { SidebarItem } from '@/components/sidebar/sidebar-item';
 import { Search } from '@/lib/types';
 
 interface SidebarItemsProps {

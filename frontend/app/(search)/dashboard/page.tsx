@@ -1,4 +1,4 @@
-import { FailedUrlTable } from '@/components/FailedUrlTable';
+import { FailedUrlTable } from '@/components/failed-url-table';
 import {
     Card,
     CardContent,
@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
-import { UrlTable } from '@/components/urlTable';
+import { UrlTable } from '@/components/url-table';
 import { getUserStatistics } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
 import { Link, Search } from 'lucide-react';

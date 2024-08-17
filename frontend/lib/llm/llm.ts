@@ -3,8 +3,8 @@ import 'server-only';
 import { generateText, LanguageModel, streamText } from 'ai';
 import { createOpenAI, openai } from '@ai-sdk/openai';
 import { anthropic } from '@ai-sdk/anthropic';
-import { GPT_4o, GPT_4o_MIMI } from '../model';
-import { logError } from '../log';
+import { GPT_4o, GPT_4o_MIMI } from '@/lib/model';
+import { logError } from '@/lib/log';
 import { google } from '@ai-sdk/google';
 
 export type RoleType = 'user' | 'assistant' | 'system';

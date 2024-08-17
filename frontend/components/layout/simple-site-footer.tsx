@@ -1,5 +1,5 @@
 import { siteConfig } from '@/config';
-import { Icons } from '../shared/icons';
+import { Icons } from '@/components/shared/icons';
 import Link from 'next/link';
 
 export function SimpleSiteFooter() {

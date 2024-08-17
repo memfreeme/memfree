@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { User } from './types';
-import { GPT_4o_MIMI } from './model';
+import { User } from '@/lib/types';
+import { GPT_4o_MIMI } from '@/lib/model';
 
 type UserState = {
     user: User | null;

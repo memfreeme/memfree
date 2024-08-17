@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import SearchMessageBubble from './SearchMessageBubble';
+import SearchMessageBubble from '@/components/search/search-message-bubble';
 
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import SearchBar from '../Search';
+import SearchBar from '@/components/search';
 import { configStore } from '@/lib/store';
 
 import { ImageSource, Message, TextSource, User } from '@/lib/types';
