@@ -1,43 +1,46 @@
-import { addUrl, getUserById, urlsExists } from '@/lib/db';
+import { auth } from '@/auth';
+import { addUrl, urlsExists } from '@/lib/db';
 import { compact } from '@/lib/index/compact';
 import { remove } from '@/lib/index/remove';
-import { isValidUrl } from '@/lib/shared-utils';
 import { NextResponse } from 'next/server';
 import { API_TOKEN, VectorIndexHost } from '@/lib/env';
 
 export async function POST(req: Request) {
-    const { url, userId, markdown, title } = await req.json();
-
     try {
-        const isValid = isValidUrl(url);
-        if (!isValid) {
+        const session = await auth();
+        if (!session?.user) {
             return NextResponse.json(
-                {
-                    error: 'Please enter valid URLs, they should start with http:// or https://.',
-                    url,
-                },
-                { status: 400 },
-            );
-        }
-        // TODO: Check if the user is authenticated
-        const user = await getUserById(userId);
-        if (!user) {
-            return NextResponse.json(
-                { error: 'Unauthorized' },
+                { message: 'Unauthorized' },
                 { status: 401 },
             );
         }
+        const userId = session.user.id;
+
+        const formData = await req.formData();
+
+        const file = formData.get('file') as File;
+        console.log('File:', file.name, file.size, file.type);
+
+        const arrayBuffer = await file.arrayBuffer();
+        const markdown = new TextDecoder('utf-8').decode(arrayBuffer);
+        const title = file.name;
+        const url = `local-md-${file.name}`;
+
+        console.log('Indexing URL:', url);
 
         const existedUrl = await urlsExists(userId, [url]);
         if (existedUrl && existedUrl.length > 0) {
             await remove(userId, existedUrl);
         }
+        console.log('existedUrl:', existedUrl);
+        console.log('API_TOKEN:', API_TOKEN);
+        console.log('VectorIndexHost:', VectorIndexHost);
 
         const fullUrl = `${VectorIndexHost}/api/index/md`;
         const response = await fetch(fullUrl, {
             method: 'POST',
             headers: {
-                'Authorization': `${API_TOKEN}`,
+                'Authorization': API_TOKEN,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ url, userId, markdown, title }),
@@ -51,9 +54,9 @@ export async function POST(req: Request) {
             await compact(userId);
         }
 
-        return NextResponse.json('Success');
+        return NextResponse.json({ status: 'success' });
     } catch (error) {
-        console.error('Request failed:', error);
-        return NextResponse.json({ error: `${error}` }, { status: 500 });
+        console.error('Failed to read file:', error);
+        return new Response('Failed to read file', { status: 500 });
     }
 }

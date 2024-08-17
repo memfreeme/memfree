@@ -4,22 +4,7 @@ import { remove } from '@/lib/index/remove';
 import { log } from '@/lib/log';
 import { isValidUrl } from '@/lib/shared-utils';
 import { NextResponse } from 'next/server';
-
-const API_TOKEN = process.env.API_TOKEN!;
-
-let vectorIndexHost = '';
-// Let open source users could one click deploy
-if (process.env.VECTOR_INDEX_HOST) {
-    vectorIndexHost = process.env.VECTOR_INDEX_HOST;
-} else if (process.env.VECTOR_HOST) {
-    vectorIndexHost = process.env.VECTOR_HOST;
-} else if (process.env.MEMFREE_HOST) {
-    vectorIndexHost = `${process.env.MEMFREE_HOST}/vector`;
-} else {
-    throw new Error(
-        'Neither VECTOR_INDEX_HOST, VECTOR_HOST, nor MEMFREE_HOST is defined',
-    );
-}
+import { API_TOKEN, VectorIndexHost } from '@/lib/env';
 
 export async function POST(req: Request) {
     const { urls, userId } = await req.json();
@@ -57,7 +42,7 @@ export async function POST(req: Request) {
             await remove(userId, existedUrl);
         }
 
-        const fullUrl = `${vectorIndexHost}/api/index/url`;
+        const fullUrl = `${VectorIndexHost}/api/index/url`;
         let needCompact = false;
 
         const requests = urls.map((url) => {

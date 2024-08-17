@@ -1,23 +1,21 @@
 'use client';
 
-import { Modal } from '@/components/shared/modal';
-import { Textarea } from '@/components/ui/textarea';
-import { useIndexModal } from '@/hooks/use-index-modal';
-import { useState } from 'react';
 import { LoadingButton } from '../ui/loading-button';
-import { cn } from '@/lib/utils';
-import { isValidUrl } from '@/lib/shared-utils';
-import { buttonVariants } from '../ui/button';
-import Link from 'next/link';
-import { useUserStore } from '@/lib/store';
+import { Button, buttonVariants } from '../ui/button';
+import { useState } from 'react';
 import { toast } from 'sonner';
+import { isValidUrl } from '@/lib/shared-utils';
+import { useUserStore } from '@/lib/store';
+import { useIndexModal } from '@/hooks/use-index-modal';
+import { cn } from '@/lib/utils';
+import { Textarea } from '../ui/textarea';
+import Link from 'next/link';
 
-export const IndexModal = () => {
-    const [url, setUrl] = useState('');
+export function IndexWebPage() {
     const [isLoading, setLoading] = useState(false);
-    const uploadModal = useIndexModal();
-
+    const [url, setUrl] = useState('');
     const user = useUserStore((state) => state.user);
+    const indexModal = useIndexModal();
 
     const handleIndex = async () => {
         try {
@@ -100,10 +98,10 @@ export const IndexModal = () => {
                 );
             }
             setLoading(false);
-            uploadModal.onClose();
+            indexModal.onClose();
         } catch (e) {
             setLoading(false);
-            uploadModal.onClose();
+            indexModal.onClose();
             console.log('index failed: ', e);
             toast.success(
                 'Indexing failed due to an unexpected error. please try again',
@@ -112,49 +110,36 @@ export const IndexModal = () => {
     };
 
     return (
-        <Modal
-            showModal={uploadModal.isOpen}
-            setShowModal={uploadModal.onClose}
-        >
-            <div className="grid w-full gap-10 p-10">
-                <div>
-                    <h3 className="font-semibold text-center">
-                        Enhance your search results with AI indexing
-                    </h3>
-                    <p className="text-center text-xs pt-2 text-gray-500">
-                        It takes about a few seconds to index a web page.
-                    </p>
-                </div>
-                <Textarea
-                    placeholder="Please enter the URL of the web pages you value. Memfree will let you search the content of these pages by AI."
-                    rows={3}
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                />
-
-                <LoadingButton
-                    className="rounded-full"
-                    loading={isLoading}
-                    variant={'outline'}
-                    onClick={handleIndex}
-                >
-                    Index Web Page
-                </LoadingButton>
-                <Link
-                    href="https://www.memfree.me/docs/extension-user-guide"
-                    target="_blank"
-                    className={cn(
-                        buttonVariants({
-                            rounded: 'full',
-                        }),
-                    )}
-                >
-                    <p>Index Web Page By Chrome Extension</p>
-                </Link>
-                <p className="text-center text-sm">
-                    Chrome Extension for faster indexing and better quality
-                </p>
-            </div>
-        </Modal>
+        <div className="flex flex-col w-full space-y-6 mt-4">
+            <Textarea
+                placeholder="Please enter the URL of the web pages you value. Memfree will let you search the content of these pages by AI."
+                rows={3}
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+            />
+            <LoadingButton
+                className="rounded-full"
+                loading={isLoading}
+                variant={'outline'}
+                onClick={handleIndex}
+            >
+                Index Web Page
+            </LoadingButton>
+            <Link
+                href="/docs/extension-user-guide"
+                target="_blank"
+                className={cn(
+                    buttonVariants({
+                        rounded: 'full',
+                    }),
+                    'w-full',
+                )}
+            >
+                <span>Index Web Page By Chrome Extension</span>
+            </Link>
+            <p className="text-center text-sm">
+                Chrome Extension for faster indexing and better quality
+            </p>
+        </div>
     );
-};
+}

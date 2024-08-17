@@ -66,6 +66,10 @@ export async function fetchWithRetry(
 
 export function isValidUrl(input: string): boolean {
   try {
+    if (input.startsWith("local-md-")) {
+      return true;
+    }
+
     const url = new URL(input);
     if (url.protocol !== "http:" && url.protocol !== "https:") {
       return false;
