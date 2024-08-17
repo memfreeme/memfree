@@ -12,6 +12,7 @@ interface NavBarProps {
 }
 
 export default async function MobileHeader({ user }: NavBarProps) {
+    const newSearchUrl = user ? '/' : '/new';
     return (
         <header>
             <div className="md:hidden flex items-center justify-between mx-6 pt-4">
@@ -19,7 +20,7 @@ export default async function MobileHeader({ user }: NavBarProps) {
                     <SearchHistory user={user} />
                 </SidebarMobile>
                 <Link
-                    href="/new"
+                    href={newSearchUrl}
                     className={cn(
                         buttonVariants({ variant: 'outline' }),
                         'rounded-lg w-full h-10 mx-4',

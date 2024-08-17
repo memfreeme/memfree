@@ -17,6 +17,7 @@ interface SearchHistoryProps {
 }
 
 export async function SearchHistory({ user }: SearchHistoryProps) {
+    const newSearchUrl = user ? '/' : '/new';
     return (
         <div className="flex flex-col h-full">
             <div className="flex items-center mt-4 md:col-span-1 mx-4">
@@ -34,7 +35,7 @@ export async function SearchHistory({ user }: SearchHistoryProps) {
 
             <div className="mb-2 px-4 my-4">
                 <Link
-                    href="/new"
+                    href={newSearchUrl}
                     rel="nofollow"
                     className={cn(
                         buttonVariants({ variant: 'outline' }),
