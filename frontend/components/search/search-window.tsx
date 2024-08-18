@@ -14,6 +14,8 @@ import { generateId } from 'ai';
 import { LoaderCircle } from 'lucide-react';
 import { useScrollAnchor } from '@/hooks/use-scroll-anchor';
 import { toast } from 'sonner';
+import { checkIsPro } from '@/lib/shared-utils';
+import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
 export interface SearchProps extends React.ComponentProps<'div'> {
     id?: string;
@@ -40,6 +42,7 @@ export function SearchWindow({
     const [status, setStatus] = useState('Thinking...');
 
     const signInModal = useSigninModal();
+    const upgradeModal = useUpgradeModal();
 
     useEffect(() => {
         if (
@@ -71,6 +74,34 @@ export function SearchWindow({
         scrollToBottom,
     } = useScrollAnchor();
 
+    const checkMessagesLength = () => {
+        if (!user && messagesContentRef.current.length > 20) {
+            toast.error(
+                'You need to sign in to ask more questions in one search thread.',
+            );
+            signInModal.onOpen();
+            return false;
+        }
+        if (
+            user &&
+            !checkIsPro(user) &&
+            messagesContentRef.current.length > 40
+        ) {
+            toast.error(
+                'You need to upgrade to Pro to ask more questions in one search thread.',
+            );
+            upgradeModal.onOpen();
+            return false;
+        }
+        if (messagesContentRef.current.length > 100) {
+            toast.error(
+                'You have reached the limit of questions in one search thread, please start a new thread.',
+            );
+            return false;
+        }
+        return true;
+    };
+
     const sendMessage = useCallback(
         async (question?: string, messageIdToUpdate?: string) => {
             if (isReadOnly) {
@@ -81,6 +112,11 @@ export function SearchWindow({
             if (isLoading) {
                 return;
             }
+
+            if (!checkMessagesLength()) {
+                return;
+            }
+
             const messageValue = question ?? input;
             if (messageValue === '') return;
 

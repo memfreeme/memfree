@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { type Search } from '@/lib/types';
 import { Redis } from '@upstash/redis';
 import { auth } from '@/auth';
+import { log } from '@/lib/log';
 
 const redis = new Redis({
     url: process.env.UPSTASH_REDIS_REST_URL || '',
@@ -91,30 +92,41 @@ export async function saveSearch(search: Search, userId: string) {
             member: SEARCH_KEY + search.id,
         });
         await pipeline.exec();
-        // console.log('Saved search:', search, userId);
     } catch (error) {
+        log({
+            service: 'search',
+            action: 'save-search',
+            error: `${error}`,
+            userId: userId,
+            context: `message length: ${search.messages.length}; search id: ${search.id}`,
+        });
         console.error('Failed to save search:', error, search, userId);
     }
 }
 
 export async function removeSearch({ id, path }: { id: string; path: string }) {
     const session = await auth();
-
     if (!session) {
         return {
             error: 'Unauthorized',
         };
     }
 
-    const uid = String(await redis.hget(SEARCH_KEY + id, 'userId'));
-    if (uid !== session?.user?.id) {
+    try {
+        const uid = String(await redis.hget(SEARCH_KEY + id, 'userId'));
+        if (uid !== session?.user?.id) {
+            return {
+                error: 'Unauthorized',
+            };
+        }
+        await redis.del(SEARCH_KEY + id);
+        await redis.zrem(USER_SEARCH_KEY + uid, SEARCH_KEY + id);
+    } catch (error) {
+        console.error('Failed to remove search:', error, id, path);
         return {
-            error: 'Unauthorized',
+            error: 'Failed to remove search',
         };
     }
-
-    await redis.del(SEARCH_KEY + id);
-    await redis.zrem(USER_SEARCH_KEY + uid, SEARCH_KEY + id);
 
     revalidatePath('/');
     return revalidatePath(path);
@@ -130,25 +142,32 @@ export async function shareSearch(id: string) {
 
     console.log('shareSearch', id, session.user.id);
 
-    const search = await redis.hgetall<Search>(SEARCH_KEY + id);
-    if (!search || search.userId !== session.user.id) {
+    try {
+        const search = await redis.hgetall<Search>(SEARCH_KEY + id);
+        if (!search || search.userId !== session.user.id) {
+            return {
+                error: 'You cannot share this search result',
+            };
+        }
+
+        if (search.sharePath) {
+            return search;
+        }
+
+        const payload = {
+            ...search,
+            sharePath: `/share/${search.id}`,
+        };
+
+        await redis.hmset(SEARCH_KEY + id, payload);
+
+        return payload;
+    } catch (error) {
+        console.error('Failed to share search:', error, id);
         return {
-            error: 'You cannot share this search result',
+            error: 'Failed to share search',
         };
     }
-
-    if (search.sharePath) {
-        return search;
-    }
-
-    const payload = {
-        ...search,
-        sharePath: `/share/${search.id}`,
-    };
-
-    await redis.hmset(SEARCH_KEY + id, payload);
-
-    return payload;
 }
 
 export async function getSharedSearch(id: string) {
