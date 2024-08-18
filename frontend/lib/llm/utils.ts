@@ -1,63 +1,17 @@
-import { logError } from '@/lib/log';
-import { SearchCategory, TextSource } from '@/lib/types';
-import { chatStream, getLLM, StreamHandler } from '@/lib/llm/llm';
-import util from 'util';
+import 'server-only';
+
+import { SearchCategory } from '@/lib/types';
 import {
     AcademicPrompet,
-    DeepQueryPrompt,
+    DirectAnswerPrompt,
     MoreQuestionsPrompt,
     NewsPrompt,
 } from './prompt';
 
-export async function getLLMAnswer(
+export function choosePrompt(
     source: SearchCategory,
-    model: string,
-    query: string,
-    contexts: TextSource[],
-    onStream: StreamHandler,
+    type: 'answer' | 'related',
 ) {
-    try {
-        const system = promptFormatterAnswer(source, contexts);
-        await chatStream(
-            system,
-            query,
-            (msg: string | null, done: boolean) => {
-                onStream?.(msg, done);
-            },
-            getLLM(model),
-        );
-    } catch (err: any) {
-        logError(err, 'llm');
-        onStream?.(`Some errors seem to have occurred, plase retry`, true);
-    }
-}
-
-export async function getRelatedQuestions(
-    query: string,
-    contexts: TextSource[],
-    onStream: StreamHandler,
-) {
-    const system = promptFormatterRelated(contexts);
-    await chatStream(system, query, onStream);
-}
-
-function promptFormatterAnswer(source: SearchCategory, contexts: any[]) {
-    const context = contexts
-        .map((item, index) => `[citation:${index + 1}] ${item.content}`)
-        .join('\n\n');
-    let prompt = choosePrompt(source, 'answer');
-    return util.format(prompt, context);
-}
-
-function promptFormatterRelated(contexts: any[]) {
-    const context = contexts
-        .map((item, index) => `[citation:${index + 1}] ${item.content}`)
-        .join('\n\n');
-    let prompt = choosePrompt(undefined, 'related');
-    return util.format(prompt, context);
-}
-
-function choosePrompt(source: SearchCategory, type: 'answer' | 'related') {
     if (source === SearchCategory.ACADEMIC) {
         return AcademicPrompet;
     }
@@ -65,10 +19,50 @@ function choosePrompt(source: SearchCategory, type: 'answer' | 'related') {
         return NewsPrompt;
     }
     if (type === 'answer') {
-        return DeepQueryPrompt;
+        return DirectAnswerPrompt;
     }
     if (type === 'related') {
         return MoreQuestionsPrompt;
     }
-    return DeepQueryPrompt;
+    return DirectAnswerPrompt;
 }
+
+export function getMaxOutputToken(isPro: boolean) {
+    return isPro ? 4096 : 1024;
+}
+
+export function getHistory(isPro: boolean, messages: any[]) {
+    const sliceNum = isPro ? -7 : -3;
+    return messages
+        ?.slice(sliceNum, -1)
+        .map((msg) => {
+            if (msg.role === 'user') {
+                return `User: ${msg.content}`;
+            } else if (msg.role === 'assistant') {
+                return `Assistant: ${msg.content}`;
+            } else if (msg.role === 'system') {
+                return `System: ${msg.content}`;
+            }
+            return '';
+        })
+        .join('\n');
+}
+
+export async function streamResponse(
+    data: Record<string, any>,
+    onStream?: (...args: any[]) => void,
+) {
+    for (const [key, value] of Object.entries(data)) {
+        onStream?.(JSON.stringify({ [key]: value }));
+    }
+}
+
+export const streamController =
+    (controller) => (message: string | null, done: boolean) => {
+        if (done) {
+            controller.close();
+        } else {
+            const payload = `data: ${message} \n\n`;
+            controller.enqueue(payload);
+        }
+    };

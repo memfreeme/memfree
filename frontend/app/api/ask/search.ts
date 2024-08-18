@@ -1,7 +1,7 @@
 import { incSearchCount } from '@/lib/db';
+import { streamResponse } from '@/lib/llm/utils';
 import { rerank } from '@/lib/rerank';
 import { getSearchEngine, getVectorSearch } from '@/lib/search/search';
-import { streamResponse } from '@/lib/server-utils';
 import { ImageSource, SearchCategory, TextSource } from '@/lib/types';
 
 export async function search(

@@ -1,14 +1,15 @@
 'use server';
 
 import { incSearchCount } from '@/lib/db';
-import { Message } from '@/lib/llm/llm';
-import { ChatPrompt } from '@/lib/llm/prompt';
-import { getLLMAnswer, getRelatedQuestions } from '@/lib/llm/utils';
+import { getLLM, Message } from '@/lib/llm/llm';
+import { AutoAnswerPrompt } from '@/lib/llm/prompt';
+import { getHistory, getMaxOutputToken, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
-import { GPT_4o, GPT_4o_MIMI } from '@/lib/model';
+import { GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine, IMAGE_LIMIT } from '@/lib/search/search';
-import { streamResponse } from '@/lib/server-utils';
 import { saveSearch } from '@/lib/store/search';
+import { directlyAnswer } from '@/lib/tools/answer';
+import { getRelatedQuestions } from '@/lib/tools/related';
 import { searchRelevantContent } from '@/lib/tools/search';
 import {
     ImageSource,
@@ -46,34 +47,15 @@ export async function chat(
                     .slice(0, IMAGE_LIMIT),
             );
 
-        if (model === GPT_4o) {
-            model = 'gpt-4o-2024-08-06';
-        }
+        let history = getHistory(isPro, messages);
+        const system = util.format(AutoAnswerPrompt, history);
 
-        let history = '';
-        if (isPro) {
-            history = messages
-                ?.slice(-6)
-                .map((msg) => {
-                    if (msg.role === 'user') {
-                        return `User: ${msg.content}`;
-                    } else if (msg.role === 'assistant') {
-                        return `Assistant: ${msg.content}`;
-                    } else if (msg.role === 'system') {
-                        return `System: ${msg.content}`;
-                    }
-                    return '';
-                })
-                .join('\n');
-        }
-
-        const system = util.format(ChatPrompt, history);
-
+        const maxTokens = getMaxOutputToken(isPro);
         const result = await streamText({
             model: openai(GPT_4o_MIMI),
             system: system,
-            messages: newMessages.slice(-1) as Message[],
-            maxTokens: 1024,
+            prompt: query,
+            maxTokens: maxTokens,
             temperature: 0.3,
             tools: {
                 getInformation: tool({
@@ -135,12 +117,23 @@ export async function chat(
         }
 
         if (!hasAnswer) {
-            await getLLMAnswer(source, model, query, texts, (msg) => {
-                fullAnswer += msg;
-                onStream?.(
-                    JSON.stringify({ answer: msg, status: 'Answering ...' }),
-                );
-            });
+            await directlyAnswer(
+                isPro,
+                source,
+                history,
+                getLLM(model),
+                rewriteQuery,
+                texts,
+                (msg) => {
+                    fullAnswer += msg;
+                    onStream?.(
+                        JSON.stringify({
+                            answer: msg,
+                            status: 'Answering ...',
+                        }),
+                    );
+                },
+            );
         }
 
         const fetchedImages = await imageFetchPromise;
@@ -148,7 +141,7 @@ export async function chat(
         await streamResponse({ images: images }, onStream);
 
         let fullRelated = '';
-        await getRelatedQuestions(query, texts, (msg) => {
+        await getRelatedQuestions(rewriteQuery, texts, (msg) => {
             fullRelated += msg;
             onStream?.(
                 JSON.stringify({
