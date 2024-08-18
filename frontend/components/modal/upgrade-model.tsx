@@ -1,15 +1,17 @@
 'use client';
 
 import { Modal } from '@/components/shared/modal';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useRouter } from 'next/navigation';
 import { Icons } from '@/components/shared/icons';
 
 const benefits = [
     'Unlimited Basic AI Searches Per Month',
+    'Unlimited Saving of Search History',
     'More Expert AI Searches Per Month',
     'More Bookmarks and Web Pages to Index',
+    'More Detailed Output Per Answer',
     'Support GPT-4o & Claude-3.5-sonnet AI Model',
     'Support Context-based Continuous Search',
     'Support Rerank to get Better search results',
