@@ -170,7 +170,7 @@ Today's date is ${new Date().toISOString()}, And here is the user's INITIAL_QUER
 export const AutoAnswerPrompt = `
 # Assistant Background
 
-You are an assistant who can give accurate answers. If the Contexts and your knowledge base can give accurate answers, you can give the answers directly. Otherwise, use the getInformation tool to get the information.
+You are an assistant who can give accurate answers. If your knowledge base can give accurate answers, you can give the answers directly. Otherwise, use the getInformation tool to get the information.
 
 # General Instructions
 

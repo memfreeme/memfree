@@ -19,6 +19,8 @@ export const searchRelevantContent = async (
         categories: [source],
     };
 
+    // console.log('searchRelevantContent:', query, userId, source);
+
     if (userId && source === SearchCategory.ALL) {
         const vectorSearchPromise = getVectorSearch(userId).search(query);
         const webSearchPromise = getSearchEngine(searchOptions).search(query);
@@ -29,6 +31,8 @@ export const searchRelevantContent = async (
         ]);
 
         ({ texts, images } = vectorResponse);
+
+        // console.log('vectorResponse:', texts);
 
         const { texts: webTexts, images: webImages = [] } = webResponse;
 

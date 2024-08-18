@@ -2,13 +2,18 @@ import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
 
 import { append } from "./db";
-import { getMd, readFromJsonlFile, writeToJsonlFile } from "./util";
+import { getMd, readFromJsonlFile } from "./util";
 import { getEmbedding } from "./embedding/embedding";
 import { processTweet } from "./tweet";
 
-const splitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
+const mdSplitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
   chunkSize: 400,
-  chunkOverlap: 20,
+  chunkOverlap: 40,
+});
+
+const pdfSplitter = new RecursiveCharacterTextSplitter({
+  chunkSize: 400,
+  chunkOverlap: 40,
 });
 
 function extractImage(markdown: string) {
@@ -22,6 +27,17 @@ export async function ingest_jsonl(url: string, userId: string) {
   const table = await append(userId, data);
 }
 
+export async function ingest_pdf(
+  url: string,
+  userId: string,
+  content: string,
+  title: string
+) {
+  const documents = await pdfSplitter.createDocuments([content]);
+  const data = await addVectors("", title, url, documents);
+  const table = await append(userId, data);
+}
+
 async function processIngestion(
   url: string,
   userId: string,
@@ -29,7 +45,7 @@ async function processIngestion(
   title: string,
   image: string
 ) {
-  const documents = await splitter.createDocuments([markdown], [], {
+  const documents = await mdSplitter.createDocuments([markdown], [], {
     appendChunkOverlapHeader: false,
   });
   const data = await addVectors(image, title, url, documents);
@@ -91,6 +107,9 @@ async function addVectors(
   const embeddings = await getEmbedding().embedDocuments(texts);
   const data: Array<Record<string, unknown>> = [];
   for (let i = 0; i < documents.length; i += 1) {
+    if (documents[i].pageContent.length < 10) {
+      continue;
+    }
     const newImage = image ? extractImage(documents[i].pageContent) : null;
 
     const record = {

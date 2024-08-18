@@ -56,7 +56,7 @@ export async function chat(
             system: system,
             prompt: query,
             maxTokens: maxTokens,
-            temperature: 0.3,
+            temperature: 0.1,
             tools: {
                 getInformation: tool({
                     description: `get information from internet to answer user questions.`,

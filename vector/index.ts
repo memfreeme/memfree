@@ -2,7 +2,7 @@ import { changeEmbedding, compact, deleteUrls, search } from "./db";
 import { log, logError } from "./log";
 import { addErrorUrl } from "./redis";
 import { isValidUrl } from "./util";
-import { ingest_url, ingest_md, ingest_jsonl } from "./ingest";
+import { ingest_url, ingest_md, ingest_jsonl, ingest_pdf } from "./ingest";
 
 const API_TOKEN = process.env.API_TOKEN!;
 function checkAuth(req: Request) {
@@ -108,6 +108,35 @@ export async function handleRequest(req: Request): Promise<Response> {
       });
       await addErrorUrl(userId, url);
       return Response.json(`Failed to search ${error}`, { status: 500 });
+    }
+  }
+
+  if (path === "/api/index/file" && method === "POST") {
+    const { url, userId, markdown, title, type } = await req.json();
+    try {
+      if (!userId || !markdown || !title) {
+        return Response.json("Invalid parameters", { status: 400 });
+      }
+      switch (type) {
+        case "md":
+          await ingest_md(url, userId, markdown, title);
+          break;
+        case "pdf":
+          await ingest_pdf(url, userId, markdown, title);
+          break;
+        default:
+          return Response.json("Invalid file type", { status: 400 });
+      }
+      return Response.json("Success");
+    } catch (error) {
+      log({
+        service: "vector-index",
+        action: "error-index-file",
+        error: `${error}`,
+        url: url,
+        userId: userId,
+      });
+      return Response.json("Failed to index markdown", { status: 500 });
     }
   }
 

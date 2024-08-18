@@ -23,7 +23,7 @@ export async function directlyAnswer(
                 system: system,
                 prompt: query,
                 maxTokens: maxTokens,
-                temperature: 0.3,
+                temperature: 0.1,
             });
 
             for await (const text of result.textStream) {

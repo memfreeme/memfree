@@ -1,7 +1,7 @@
 import { describe, it } from "bun:test";
 import { compact } from "../db";
 
-const testUser = "localTest";
+const testUser = process.env.TEST_USER || "localTest";
 
 describe("compact", () => {
   it("should compact succesully", async () => {
