@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { BookKey } from 'lucide-react';
-import MyMarkdown from '@/components/search/markdown';
+import MyMarkdown from '@/components/search/my-markdown';
 
 const AnswerSection = ({ content, sources }) => {
     return (
