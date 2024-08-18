@@ -2,7 +2,7 @@
 
 import React, { KeyboardEvent, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { Link, SendHorizontal } from 'lucide-react';
+import { SendHorizontal } from 'lucide-react';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import {
     Tooltip,
@@ -14,6 +14,7 @@ import { SourceSelection } from '@/components/search/source-selection';
 import TextareaAutosize from 'react-textarea-autosize';
 import { useUserStore } from '@/lib/store';
 import { toast } from 'sonner';
+import { Icons } from '@/components/shared/icons';
 
 interface Props {
     handleSearch: (key: string) => void;
@@ -46,22 +47,21 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
             <div className="flex items-center relative mx-auto w-full">
                 <TextareaAutosize
                     value={content}
-                    placeholder="Ask MemFree Anything"
-                    minRows={2}
+                    minRows={4}
                     maxRows={10}
                     aria-label="Search"
-                    className="w-full border-input bg-transparent p-4 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50  overflow-y-auto resize-none overflow-hidden border-2 rounded-xl"
+                    className="w-full border-input bg-transparent px-4 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50  overflow-y-auto resize-none overflow-hidden border-2 rounded-xl"
                     onKeyDown={handleInputKeydown}
                     onChange={(e) => setContent(e.target.value)}
                 />
 
-                <div className="absolute bottom-0 right-0 mb-2 mr-2 flex space-x-2">
+                <div className="absolute left-0 bottom-0 mb-2 ml-2">
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <button
                                 type="button"
                                 aria-label="Index"
-                                className="text-gray-500 hover:text-primary pr-2"
+                                className="text-gray-500 hover:text-primary"
                                 onClick={() => {
                                     if (!user) {
                                         signInModal.onOpen();
@@ -71,31 +71,31 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                 }}
                             >
                                 <span className="sr-only">Index</span>
-                                <Link size={24} strokeWidth={2} />
+                                <Icons.mylink size={24} strokeWidth={2} />
                             </button>
                         </TooltipTrigger>
-                        <TooltipContent className="bg-black text-white">
-                            <p>
-                                Enhance AI Search by Indexing the Web Pages You
-                                Value
-                            </p>
+                        <TooltipContent>
+                            Enhance AI Search by Indexing the Web Pages and
+                            Local Files
                         </TooltipContent>
                     </Tooltip>
+                </div>
+
+                <div className="absolute right-0 bottom-0 mb-2 mr-2">
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <button
                                 type="button"
                                 aria-label="Search"
-                                className="text-gray-500 hover:text-primary pr-2"
+                                disabled={content.trim() === ''}
+                                className="text-gray-500 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                                 onClick={handleClick}
                             >
                                 <span className="sr-only">Search</span>
                                 <SendHorizontal size={24} strokeWidth={2} />
                             </button>
                         </TooltipTrigger>
-                        <TooltipContent className="bg-black text-white">
-                            <p>Send (Enter) </p>
-                        </TooltipContent>
+                        <TooltipContent>Send (Enter)</TooltipContent>
                     </Tooltip>
                 </div>
             </div>
