@@ -6,6 +6,7 @@ import { NextResponse } from 'next/server';
 import { API_TOKEN, VECTOR_INDEX_HOST } from '@/lib/env';
 
 import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
+import { DocxLoader } from '@langchain/community/document_loaders/fs/docx';
 
 async function getFileContent(file: File) {
     switch (file.type) {
@@ -29,6 +30,15 @@ async function getFileContent(file: File) {
             return {
                 type: 'pdf',
                 url: `local-pdf-${file.name}`,
+                markdown: docs[0].pageContent,
+            };
+        }
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': {
+            const loader = new DocxLoader(file);
+            const docs = await loader.load();
+            return {
+                type: 'docx',
+                url: `local-docx-${file.name}`,
                 markdown: docs[0].pageContent,
             };
         }
@@ -56,6 +66,8 @@ export async function POST(req: Request) {
         const { type, url, markdown } = await getFileContent(file);
 
         const title = file.name;
+
+        // console.log('File content:', { type, url, markdown });
 
         const existedUrl = await urlsExists(userId, [url]);
         if (existedUrl && existedUrl.length > 0) {

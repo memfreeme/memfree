@@ -50,12 +50,12 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                     minRows={4}
                     maxRows={10}
                     aria-label="Search"
-                    className="w-full border-input bg-transparent px-4 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50  overflow-y-auto resize-none overflow-hidden border-2 rounded-xl"
+                    className="w-full border-input bg-transparent px-4 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50  overflow-y-auto resize-none overflow-hidden border-2 rounded-xl"
                     onKeyDown={handleInputKeydown}
                     onChange={(e) => setContent(e.target.value)}
                 />
 
-                <div className="absolute left-0 bottom-0 mb-2 ml-2">
+                <div className="absolute left-0 bottom-0 mb-1 ml-2">
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <button
@@ -81,7 +81,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                     </Tooltip>
                 </div>
 
-                <div className="absolute right-0 bottom-0 mb-2 mr-2">
+                <div className="absolute right-0 bottom-0 mb-1 mr-2">
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <button

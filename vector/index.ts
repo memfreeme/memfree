@@ -2,7 +2,12 @@ import { changeEmbedding, compact, deleteUrls, search } from "./db";
 import { log, logError } from "./log";
 import { addErrorUrl } from "./redis";
 import { isValidUrl } from "./util";
-import { ingest_url, ingest_md, ingest_jsonl, ingest_pdf } from "./ingest";
+import {
+  ingest_url,
+  ingest_md,
+  ingest_jsonl,
+  ingest_text_content,
+} from "./ingest";
 
 const API_TOKEN = process.env.API_TOKEN!;
 function checkAuth(req: Request) {
@@ -122,7 +127,8 @@ export async function handleRequest(req: Request): Promise<Response> {
           await ingest_md(url, userId, markdown, title);
           break;
         case "pdf":
-          await ingest_pdf(url, userId, markdown, title);
+        case "docx":
+          await ingest_text_content(url, userId, markdown, title);
           break;
         default:
           return Response.json("Invalid file type", { status: 400 });

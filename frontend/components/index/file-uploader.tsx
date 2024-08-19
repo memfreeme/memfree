@@ -101,6 +101,8 @@ export function FileUploader(props: FileUploaderProps) {
         accept = {
             'application/pdf': ['.pdf'],
             'text/markdown': ['.md'],
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                ['.docx'],
         },
         maxSize = 1024 * 1024 * 2,
         maxFileCount = 1,
@@ -234,8 +236,8 @@ export function FileUploader(props: FileUploaderProps) {
                                 </div>
                                 <div className="flex flex-col gap-px">
                                     <p className="font-medium text-muted-foreground">
-                                        Drag {`'n'`} drop files here, or click
-                                        to select files
+                                        Drag and drop files here, or click to
+                                        select files
                                     </p>
                                     <p className="text-sm text-muted-foreground/70">
                                         You can upload

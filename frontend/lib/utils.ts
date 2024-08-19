@@ -28,7 +28,7 @@ export function absoluteUrl(path: string) {
 export function extractDomain(url) {
     try {
         if (url.startsWith('local-')) {
-            return 'memfree.me';
+            return 'Your Knowledge Base';
         }
         const match = url.match(/^https?:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
         return match && match[1];

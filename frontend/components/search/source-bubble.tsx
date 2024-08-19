@@ -4,7 +4,10 @@ import React, { memo, useState } from 'react';
 
 const SourceBubble = ({ source }) => {
     const site = extractDomain(source.url);
-    const faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain=${site}`;
+    let faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain=${site}`;
+    if (site === 'Your Knowledge Base') {
+        faviconUrl = '/favicon.ico';
+    }
     const isVector = source.type === 'vector';
 
     const [showFullContent, setShowFullContent] = useState(false);

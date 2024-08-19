@@ -31,7 +31,7 @@ export function IndexLocalFile() {
     return (
         <FileUploader
             maxFileCount={1}
-            maxSize={8 * 1024 * 1024}
+            maxSize={10 * 1024 * 1024}
             onUpload={onUpload}
             disabled={isUploading}
         />

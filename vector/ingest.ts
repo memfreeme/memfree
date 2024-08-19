@@ -11,7 +11,7 @@ const mdSplitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
   chunkOverlap: 40,
 });
 
-const pdfSplitter = new RecursiveCharacterTextSplitter({
+const textSplitter = new RecursiveCharacterTextSplitter({
   chunkSize: 400,
   chunkOverlap: 40,
 });
@@ -27,13 +27,13 @@ export async function ingest_jsonl(url: string, userId: string) {
   const table = await append(userId, data);
 }
 
-export async function ingest_pdf(
+export async function ingest_text_content(
   url: string,
   userId: string,
   content: string,
   title: string
 ) {
-  const documents = await pdfSplitter.createDocuments([content]);
+  const documents = await textSplitter.createDocuments([content]);
   const data = await addVectors("", title, url, documents);
   const table = await append(userId, data);
 }
