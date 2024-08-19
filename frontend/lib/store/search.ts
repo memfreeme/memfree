@@ -15,19 +15,19 @@ const redis = new Redis({
 const SEARCH_KEY = 'search:';
 const USER_SEARCH_KEY = 'user:search:';
 
-export async function getSearches(userId?: string | null) {
-    if (!userId) {
-        return [];
-    }
-
-    console.log('getSearches all userId', userId);
+export async function getSearches(
+    userId: string,
+    offset: number = 0,
+    limit: number = 20,
+) {
+    console.log('getSearches all userId', userId, offset, limit);
 
     try {
         const pipeline = redis.pipeline();
         const searches: string[] = await redis.zrange(
             USER_SEARCH_KEY + userId,
-            0,
-            -1,
+            offset,
+            offset + limit - 1,
             {
                 rev: true,
             },
@@ -37,8 +37,10 @@ export async function getSearches(userId?: string | null) {
             return [];
         }
 
-        for (const search of searches) {
-            pipeline.hgetall(search);
+        console.log('getSearches searches', searches.length);
+
+        for (const searchid of searches) {
+            pipeline.hgetall(searchid);
         }
 
         const results = await pipeline.exec();
