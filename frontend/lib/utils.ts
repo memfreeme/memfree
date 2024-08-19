@@ -27,11 +27,14 @@ export function absoluteUrl(path: string) {
 
 export function extractDomain(url) {
     try {
+        if (url.startsWith('local-')) {
+            return 'memfree.me';
+        }
         const match = url.match(/^https?:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
         return match && match[1];
     } catch (error) {
         console.error('Failed to extract domain:', error, url);
-        return '';
+        return 'memfree.me';
     }
 }
 
