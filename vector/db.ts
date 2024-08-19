@@ -190,8 +190,8 @@ export async function selectDetail(table: string) {
   console.time("select");
   const result = await tbl
     .query()
-    .select(["title", "url", "image", "create_time"])
-    .limit(10)
+    .select(["title", "text"])
+    .limit(100)
     .toArray();
   console.timeEnd("select");
   return result;

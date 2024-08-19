@@ -137,6 +137,7 @@ export function SearchWindow({
                 ]);
             }
 
+            setStatus('Thinking...');
             setIsLoading(true);
             let accumulatedMessage = '';
             let accumulatedRelated = '';
