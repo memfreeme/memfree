@@ -7,6 +7,7 @@ import { API_TOKEN, VECTOR_INDEX_HOST } from '@/lib/env';
 
 import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
 import { DocxLoader } from '@langchain/community/document_loaders/fs/docx';
+import { PPTXLoader } from '@langchain/community/document_loaders/fs/pptx';
 
 async function getFileContent(file: File) {
     switch (file.type) {
@@ -39,6 +40,15 @@ async function getFileContent(file: File) {
             return {
                 type: 'docx',
                 url: `local-docx-${file.name}`,
+                markdown: docs[0].pageContent,
+            };
+        }
+        case 'application/vnd.openxmlformats-officedocument.presentationml.presentation': {
+            const loader = new PPTXLoader(file);
+            const docs = await loader.load();
+            return {
+                type: 'pptx',
+                url: `local-pptx-${file.name}`,
                 markdown: docs[0].pageContent,
             };
         }

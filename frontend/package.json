@@ -50,6 +50,7 @@
     "next-auth": "^5.0.0-beta.17",
     "next-contentlayer2": "^0.4.6",
     "next-themes": "^0.3.0",
+    "officeparser": "^4.1.1",
     "pdf-parse": "^1.1.1",
     "postcss": "8.4.31",
     "react": "^18.3.1",

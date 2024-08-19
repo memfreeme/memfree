@@ -128,6 +128,7 @@ export async function handleRequest(req: Request): Promise<Response> {
           break;
         case "pdf":
         case "docx":
+        case "pptx":
           await ingest_text_content(url, userId, markdown, title);
           break;
         default:

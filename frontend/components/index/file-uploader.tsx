@@ -103,6 +103,8 @@ export function FileUploader(props: FileUploaderProps) {
             'text/markdown': ['.md'],
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
                 ['.docx'],
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+                ['.pptx'],
         },
         maxSize = 1024 * 1024 * 2,
         maxFileCount = 1,
