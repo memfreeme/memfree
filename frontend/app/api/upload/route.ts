@@ -8,6 +8,7 @@ import { API_TOKEN, VECTOR_INDEX_HOST } from '@/lib/env';
 import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
 import { DocxLoader } from '@langchain/community/document_loaders/fs/docx';
 import { PPTXLoader } from '@langchain/community/document_loaders/fs/pptx';
+import { log } from '@/lib/log';
 
 async function getFileContent(file: File) {
     switch (file.type) {
@@ -69,15 +70,9 @@ export async function POST(req: Request) {
         const userId = session.user.id;
 
         const formData = await req.formData();
-
         const file = formData.get('file') as File;
-        console.log('File:', file.name, file.size, file.type);
-
         const { type, url, markdown } = await getFileContent(file);
-
         const title = file.name;
-
-        // console.log('File content:', { type, url, markdown });
 
         const existedUrl = await urlsExists(userId, [url]);
         if (existedUrl && existedUrl.length > 0) {
@@ -101,6 +96,17 @@ export async function POST(req: Request) {
         if (indexCount % 50 === 0) {
             await compact(userId);
         }
+
+        log({
+            service: 'vector-upload',
+            action: 'index-file',
+            userId,
+            file: {
+                name: file.name,
+                size: file.size,
+                type: file.type,
+            },
+        });
 
         return NextResponse.json({ status: 'success' });
     } catch (error) {
