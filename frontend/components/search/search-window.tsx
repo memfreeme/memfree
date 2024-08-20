@@ -52,10 +52,21 @@ export function SearchWindow({
     }, [messages]);
 
     useEffect(() => {
-        if (user && !path.includes('search') && messages.length === 1) {
+        if (user.id && !path.includes('search') && messages.length === 1) {
             window.history.replaceState({}, '', `/search/${id}`);
         }
-    }, [id, path, messages.length, user]);
+    }, [id, path, messages.length, user.id]);
+
+    useEffect(() => {
+        if (
+            user?.id &&
+            messages.length == 2 &&
+            !isLoading &&
+            path.includes('search')
+        ) {
+            router.refresh();
+        }
+    }, [messages.length, user?.id, isLoading, router, path]);
 
     const { messagesRef, scrollRef, visibilityRef } = useScrollAnchor();
 
