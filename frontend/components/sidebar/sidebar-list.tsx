@@ -4,7 +4,7 @@ import { getSearches, removeSearch } from '@/lib/store/search';
 import { ModeToggle } from '@/components/layout/mode-toggle';
 import Link from 'next/link';
 import { LayoutDashboard, Loader2, Settings } from 'lucide-react';
-import { Search, User } from '@/lib/types';
+import { User } from '@/lib/types';
 import { UserAccountNav } from '@/components/layout/user-account-nav';
 import { Button } from '@/components/ui/button';
 import {
@@ -34,6 +34,7 @@ export function SidebarList({ user }: SidebarListProps) {
 
     const next = async () => {
         if (!user) {
+            setHasMore(false);
             return;
         }
         setLoading(true);

@@ -251,13 +251,6 @@ export function SearchWindow({
                                 userId: user?.id,
                                 messages: messagesContentRef.current,
                             });
-                            addSearch({
-                                id: id,
-                                title: title,
-                                createdAt: new Date(),
-                                userId: user?.id,
-                                messages: messagesContentRef.current,
-                            });
                         }
                         return;
                     },

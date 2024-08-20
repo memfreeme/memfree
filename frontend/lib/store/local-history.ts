@@ -6,6 +6,8 @@ interface SearchStore {
     addSearch: (search: Search) => void;
     addSearches: (searches: Search[]) => void;
     setSearches: (searches: Search[]) => void;
+    removeSearch: (id: string) => void;
+    clearSearches: () => void;
 }
 
 export const useSearchStore = create<SearchStore>((set) => ({
@@ -52,4 +54,13 @@ export const useSearchStore = create<SearchStore>((set) => ({
         });
     },
     setSearches: (searches) => set({ searches }),
+    removeSearch: (id) => {
+        set((state) => ({
+            searches: state.searches.filter((search) => search.id !== id),
+        }));
+    },
+
+    clearSearches: () => {
+        set({ searches: [] });
+    },
 }));

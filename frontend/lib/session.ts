@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { auth } from '@/auth';
 
 export async function getCurrentUser() {

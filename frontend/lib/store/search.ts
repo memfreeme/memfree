@@ -187,7 +187,7 @@ export async function getSharedSearch(id: string) {
 }
 
 export async function getSearch(id: string, userId: string) {
-    // console.log('getSearch userId', userId, id);
+    console.log('getSearch userId', userId, id);
     try {
         const search = await redis.hgetall<Search>(SEARCH_KEY + id);
         if (!search) {

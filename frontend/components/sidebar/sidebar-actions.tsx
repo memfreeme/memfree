@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/tooltip';
 import { LoaderCircle, Share2, Trash2 } from 'lucide-react';
 import { SearchShareDialog } from '@/components/search/search-share-dialog';
+import { useSearchStore } from '@/lib/store/local-history';
 
 interface SidebarActionsProps {
     search: Search;
@@ -40,6 +41,7 @@ export function SidebarActions({
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
     const [shareDialogOpen, setShareDialogOpen] = React.useState(false);
     const [isRemovePending, startRemoveTransition] = React.useTransition();
+    const { removeSearch: removeLocalSearch } = useSearchStore();
     return (
         <>
             <div>
@@ -105,6 +107,7 @@ export function SidebarActions({
                                         id: search.id,
                                         path: `/search/${search.id}`,
                                     });
+                                    removeLocalSearch(search.id);
 
                                     if (result && 'error' in result) {
                                         toast.error(result.error);
@@ -112,7 +115,7 @@ export function SidebarActions({
                                     }
 
                                     setDeleteDialogOpen(false);
-                                    router.refresh();
+                                    // router.refresh();
                                     router.push('/');
                                     toast.success('Search deleted');
                                 });

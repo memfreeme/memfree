@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { LoaderCircle } from 'lucide-react';
 import { ServerActionResult } from '@/lib/types';
+import { useSearchStore } from '@/lib/store/local-history';
 
 interface ClearHistoryProps {
     isEnabled: boolean;
@@ -29,6 +30,7 @@ export function ClearHistory({
 }: ClearHistoryProps) {
     const [open, setOpen] = React.useState(false);
     const [isPending, startTransition] = React.useTransition();
+    const { clearSearches: clearLocalSearches } = useSearchStore();
 
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>
@@ -69,7 +71,7 @@ export function ClearHistory({
                                     toast.error(result.error);
                                     return;
                                 }
-
+                                clearLocalSearches();
                                 setOpen(false);
                             });
                         }}

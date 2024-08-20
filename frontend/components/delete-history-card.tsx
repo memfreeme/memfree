@@ -1,12 +1,11 @@
 import {
     Card,
-    CardContent,
     CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
-} from './ui/card';
-import { ClearHistory } from './sidebar/clear-history';
+} from '@/components/ui/card';
+import { ClearHistory } from '@/components/sidebar/clear-history';
 import { clearSearches } from '@/lib/store/search';
 
 export function DeleteHistoryCard() {
