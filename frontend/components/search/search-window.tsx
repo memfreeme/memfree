@@ -51,6 +51,12 @@ export function SearchWindow({
         messagesContentRef.current = messages;
     }, [messages]);
 
+    useEffect(() => {
+        if (user && !path.includes('search') && messages.length === 1) {
+            window.history.replaceState({}, '', `/search/${id}`);
+        }
+    }, [id, path, messages.length, user]);
+
     const { messagesRef, scrollRef, visibilityRef } = useScrollAnchor();
 
     const checkMessagesLength = () => {
