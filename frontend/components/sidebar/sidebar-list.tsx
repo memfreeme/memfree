@@ -47,8 +47,6 @@ export function SidebarList({ user }: SidebarListProps) {
         setLoading(false);
     };
 
-    console.log('Rendering SidebarItems with searches:', searches);
-
     return (
         <div className="flex flex-1 flex-col overflow-hidden">
             <div className="flex-1 overflow-auto flex-col gap-3 items-center">

@@ -39,6 +39,24 @@ const Featurebase = ({ user }: FeaturebaseProps) => {
         );
     }, [user]);
 
+    useEffect(() => {
+        const win = window as any;
+
+        if (typeof win.Featurebase !== 'function') {
+            win.Featurebase = function () {
+                // eslint-disable-next-line prefer-rest-params
+                (win.Featurebase.q = win.Featurebase.q || []).push(arguments);
+            };
+        }
+        win.Featurebase('initialize_changelog_widget', {
+            organization: 'memfree', // Replace this with your featurebase organization name
+            placement: 'top', // Choose between right, left, top, bottom placement (Optional if fullscreenPopup is enabled)
+            theme: 'light', // Choose between dark or light theme
+            fullscreenPopup: true, // Optional - Open a fullscreen announcement of the new feature to the user
+            locale: 'en',
+        });
+    }, []);
+
     return (
         <>
             <Script
