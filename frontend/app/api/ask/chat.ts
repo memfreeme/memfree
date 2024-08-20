@@ -171,7 +171,7 @@ export async function chat(
             await saveSearch(
                 {
                     id: messages[0].id,
-                    title: messages[0].content.substring(0, 100),
+                    title: messages[0].content.substring(0, 50),
                     createdAt: new Date(),
                     userId: userId,
                     messages: messages,

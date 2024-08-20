@@ -16,6 +16,7 @@ import { useScrollAnchor } from '@/hooks/use-scroll-anchor';
 import { toast } from 'sonner';
 import { checkIsPro } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
+import { useSearchStore } from '@/lib/store/local-history';
 
 export interface SearchProps extends React.ComponentProps<'div'> {
     id?: string;
@@ -44,35 +45,13 @@ export function SearchWindow({
     const signInModal = useSigninModal();
     const upgradeModal = useUpgradeModal();
 
-    useEffect(() => {
-        if (
-            user?.id &&
-            messages.length == 2 &&
-            !isLoading &&
-            path.includes('search')
-        ) {
-            console.log('refreshing');
-            router.refresh();
-        }
-    }, [messages.length, user?.id, isLoading, router, path]);
-
-    useEffect(() => {
-        if (user && !path.includes('search') && messages.length === 1) {
-            window.history.replaceState({}, '', `/search/${id}`);
-        }
-    }, [id, path, messages.length, user]);
+    const { addSearch } = useSearchStore();
 
     useEffect(() => {
         messagesContentRef.current = messages;
     }, [messages]);
 
-    const {
-        messagesRef,
-        scrollRef,
-        visibilityRef,
-        isAtBottom,
-        scrollToBottom,
-    } = useScrollAnchor();
+    const { messagesRef, scrollRef, visibilityRef } = useScrollAnchor();
 
     const checkMessagesLength = () => {
         if (!user && messagesContentRef.current.length > 20) {
@@ -256,6 +235,30 @@ export function SearchWindow({
                         setIsLoading(false);
                         // console.log('related ', accumulatedRelated);
                         // console.log('message ', accumulatedMessage);
+                        if (user) {
+                            let title =
+                                messagesContentRef.current.length > 0
+                                    ? messagesContentRef.current[0].content.substring(
+                                          0,
+                                          50,
+                                      )
+                                    : messageValue.substring(0, 50);
+
+                            addSearch({
+                                id: id,
+                                title: title,
+                                createdAt: new Date(),
+                                userId: user?.id,
+                                messages: messagesContentRef.current,
+                            });
+                            addSearch({
+                                id: id,
+                                title: title,
+                                createdAt: new Date(),
+                                userId: user?.id,
+                                messages: messagesContentRef.current,
+                            });
+                        }
                         return;
                     },
                     onmessage(msg) {

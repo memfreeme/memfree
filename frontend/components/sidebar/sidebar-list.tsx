@@ -1,8 +1,6 @@
 'use client';
 
-import { getSearches } from '@/lib/store/search';
-import { SidebarItems } from '@/components/sidebar/sidebar-items';
-import { cache } from 'react';
+import { getSearches, removeSearch } from '@/lib/store/search';
 import { ModeToggle } from '@/components/layout/mode-toggle';
 import Link from 'next/link';
 import { LayoutDashboard, Loader2, Settings } from 'lucide-react';
@@ -22,15 +20,14 @@ interface SidebarListProps {
 
 import { useState } from 'react';
 import InfiniteScroll from '@/components/ui/infinite-scroll';
+import { useSearchStore } from '@/lib/store/local-history';
+import { SidebarItem } from '@/components/sidebar/sidebar-item';
+import { SidebarActions } from '@/components/sidebar/sidebar-actions';
 
 const limit = 20;
 
-const cachedLoadSearches = cache(async (userId: string, offset: number) => {
-    return await getSearches(userId, offset);
-});
-
 export function SidebarList({ user }: SidebarListProps) {
-    const [searches, setSearches] = useState<Search[]>([]);
+    const { searches, addSearches } = useSearchStore();
     const [loading, setLoading] = useState(false);
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
@@ -40,21 +37,38 @@ export function SidebarList({ user }: SidebarListProps) {
             return;
         }
         setLoading(true);
-        const newSearches = await cachedLoadSearches(user.id, offset);
+        const newSearches = await getSearches(user.id, offset);
         if (newSearches.length < limit) {
             setHasMore(false);
         }
-        setSearches((prev) => [...prev, ...newSearches]);
+        addSearches(newSearches);
         setOffset((prev) => prev + limit);
         setLoading(false);
     };
+
+    console.log('Rendering SidebarItems with searches:', searches);
 
     return (
         <div className="flex flex-1 flex-col overflow-hidden">
             <div className="flex-1 overflow-auto flex-col gap-3 items-center">
                 {searches?.length ? (
                     <div className="space-y-2 px-2">
-                        <SidebarItems searches={searches} />
+                        {searches.map(
+                            (search, index) =>
+                                search && (
+                                    <div key={search?.id}>
+                                        <SidebarItem
+                                            index={index}
+                                            search={search}
+                                        >
+                                            <SidebarActions
+                                                search={search}
+                                                removeSearch={removeSearch}
+                                            />
+                                        </SidebarItem>
+                                    </div>
+                                ),
+                        )}
                     </div>
                 ) : (
                     <div className="p-8 text-center">

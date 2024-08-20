@@ -23,9 +23,6 @@ export function SidebarItem({ search: search, children }: SidebarItemProps) {
 
     return (
         <div className="relative h-8">
-            {/* <div className="absolute left-2 top-1 flex size-6 items-center justify-center">
-                <MessageSquare className="mr-2 mt-2 text-zinc-500" />
-            </div> */}
             <Link
                 href={`/search/${search?.id}`}
                 className={cn(
