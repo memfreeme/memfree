@@ -9,8 +9,6 @@ import { User } from 'next-auth';
 const useOneTapSignin = (options, user: User) => {
     const [isLoading, setIsLoading] = useState(false);
 
-    console.log('user', user);
-
     const oneTap = () => {
         if (isLoading) {
             return;
@@ -19,12 +17,11 @@ const useOneTapSignin = (options, user: User) => {
         if (google) {
             setIsLoading(true);
             google.accounts.id.initialize({
-                log_level: 'debug',
+                // log_level: 'debug',
                 client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
                 callback: async (response: CredentialResponse) => {
                     setIsLoading(true);
 
-                    console.log('signIn run');
                     void signIn('googleonetap', {
                         credential: response.credential,
                         redirect: true,
@@ -52,7 +49,6 @@ const useOneTapSignin = (options, user: User) => {
                             notification.getDismissedReason(),
                         );
                     }
-                    console.log('notification ::', notification);
                 },
             );
         }

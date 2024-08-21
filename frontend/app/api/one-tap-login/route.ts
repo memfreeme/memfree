@@ -13,8 +13,6 @@ export async function POST(req: Request) {
             );
         }
 
-        console.log('token', token);
-
         const googleAuthClient = new OAuth2Client(process.env.AUTH_GOOGLE_ID);
 
         const ticket = await googleAuthClient.verifyIdToken({
@@ -45,9 +43,6 @@ export async function POST(req: Request) {
         }
 
         let user = await adapter.getUserByEmail!(email);
-        console.log('user', user);
-
-        // If no user is found, then we create one.
         if (!user) {
             user = await adapter.createUser!({
                 id: uuidv4(),
@@ -57,6 +52,7 @@ export async function POST(req: Request) {
                 emailVerified: email_verified ? new Date() : null,
             });
         }
+        console.log('user log by one tap successfully', user.id);
         if (user) {
             return NextResponse.json(user);
         } else {
