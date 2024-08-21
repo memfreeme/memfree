@@ -82,6 +82,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     src="https://static.cloudflareinsights.com/beacon.min.js"
                     data-cf-beacon={`{"token": "${process.env.NEXT_PUBLIC_CLOUDFLARE_INSIGHTS_TOKEN}"}`}
                 ></Script>
+                <Script defer src="https://accounts.google.com/gsi/client" />
             </body>
         </html>
     );

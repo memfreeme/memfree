@@ -52,10 +52,10 @@ export function SearchWindow({
     }, [messages]);
 
     useEffect(() => {
-        if (user.id && !path.includes('search') && messages.length === 1) {
+        if (user?.id && !path.includes('search') && messages.length === 1) {
             window.history.replaceState({}, '', `/search/${id}`);
         }
-    }, [id, path, messages.length, user.id]);
+    }, [id, path, messages.length, user?.id]);
 
     useEffect(() => {
         if (

@@ -44,6 +44,7 @@
     "contentlayer2": "^0.4.6",
     "date-fns": "^3.6.0",
     "exa-js": "^1.0.14",
+    "google-auth-library": "^9.4.1",
     "lucide-react": "^0.377.0",
     "mammoth": "^1.8.0",
     "next": "^14.0.2",
@@ -70,6 +71,7 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
+    "uuid": "^10.0.0",
     "vaul": "^0.9.1",
     "zod": "^3.23.8",
     "zustand": "^4.5.2"
@@ -80,6 +82,7 @@
     "@tailwindcss/typography": "^0.5.13",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.14",
+    "@types/google-one-tap": "^1.2.6",
     "@vercel/style-guide": "^5.0.1",
     "dotenv": "^16.3.1",
     "eslint": "^8.52.0",

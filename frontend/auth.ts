@@ -3,6 +3,7 @@ import { getUserById, redisDB } from '@/lib/db';
 import type { DefaultSession, NextAuthConfig } from 'next-auth';
 import GitHub from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
+import Credentials from 'next-auth/providers/credentials';
 import { UpstashRedisAdapter } from '@auth/upstash-redis-adapter';
 
 declare module 'next-auth' {
@@ -14,12 +15,43 @@ declare module 'next-auth' {
     }
 }
 
+export const adapter = UpstashRedisAdapter(redisDB);
+
 export const config = {
     adapter: UpstashRedisAdapter(redisDB),
     session: {
         strategy: 'jwt',
     },
-    providers: [GitHub, Google],
+    providers: [
+        GitHub,
+        Google,
+        Credentials({
+            id: 'googleonetap',
+            name: 'google-one-tap',
+            credentials: {
+                credential: { type: 'text' },
+            },
+            async authorize(credentials) {
+                const host = process.env.NEXT_PUBLIC_APP_URL;
+                const res = await fetch(`${host}/api/one-tap-login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token: credentials.credential,
+                    }),
+                });
+                const user = await res.json();
+                console.log('user', user);
+                if (res.ok && user) {
+                    return user;
+                } else {
+                    throw new Error(user.error || 'Authorization failed');
+                }
+            },
+        }),
+    ],
     pages: {
         signIn: '/login',
     },
