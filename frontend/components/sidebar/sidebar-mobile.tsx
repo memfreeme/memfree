@@ -4,7 +4,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 import { Sidebar } from '@/components/sidebar/sidebar';
 import { Button } from '@/components/ui/button';
-import { SidebarOpen } from 'lucide-react';
+import { AlignJustify } from 'lucide-react';
 
 interface SidebarMobileProps {
     children: React.ReactNode;
@@ -18,7 +18,7 @@ export function SidebarMobile({ children }: SidebarMobileProps) {
                     variant="ghost"
                     className="-ml-2 flex size-9 p-0 lg:hidden"
                 >
-                    <SidebarOpen className="size-6 text-primary" />
+                    <AlignJustify className="size-6 text-primary" />
                     <span className="sr-only">Toggle Sidebar</span>
                 </Button>
             </SheetTrigger>
