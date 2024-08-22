@@ -65,7 +65,7 @@ export async function clearSearches() {
             -1,
         );
         if (!searches.length) {
-            return redirect('/');
+            return;
         }
         const pipeline = redis.pipeline();
 
