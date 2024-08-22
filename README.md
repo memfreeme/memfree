@@ -49,7 +49,7 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 
 ## ChangeLog
 
-**2024-08-14**: [MemFree ChangeLog](https://feedback.memfree.me/changelog)
+[MemFree ChangeLog](https://feedback.memfree.me/changelog)
 
 ## Tech Stack
 
