@@ -53,7 +53,7 @@ export const metadata = {
         card: 'summary_large_image',
         title: siteConfig.name,
         description: siteConfig.description,
-        images: ['https://www.memfree.me/og.png'],
+        images: [siteConfig.ogImage],
         creator: '@MemFree',
     },
     icons: {
