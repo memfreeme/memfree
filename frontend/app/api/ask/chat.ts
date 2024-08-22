@@ -8,6 +8,7 @@ import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine, IMAGE_LIMIT } from '@/lib/search/search';
 import { saveSearch } from '@/lib/store/search';
+import { accessWebPage } from '@/lib/tools/access';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { getRelatedQuestions } from '@/lib/tools/related';
 import { searchRelevantContent } from '@/lib/tools/search';
@@ -71,10 +72,16 @@ export async function chat(
                             onStream,
                         ),
                 }),
+                accessWebPage: tool({
+                    description: `access a webpage or url and return the content.`,
+                    parameters: z.object({
+                        url: z.string().describe('the url to access'),
+                    }),
+                    execute: async ({ url }) => {
+                        return await accessWebPage(url, onStream);
+                    },
+                }),
             },
-            // onFinish: (finish) => {
-            //     console.log('finishReason ', finish.finishReason);
-            // },
         });
 
         let hasAnswer = false;
@@ -84,8 +91,6 @@ export async function chat(
             switch (delta.type) {
                 case 'text-delta': {
                     if (delta.textDelta) {
-                        // console.log('textDelta', delta.textDelta);
-                        // onStream?.(delta.textDelta, false);
                         hasAnswer = true;
                         fullAnswer += delta.textDelta;
                         onStream?.(
@@ -105,11 +110,13 @@ export async function chat(
                     );
                     break;
                 case 'tool-result':
-                    // console.log('tool-result', delta.result);
-                    // console.log('tool-args', delta.args);
-                    texts = delta.result.texts;
-                    images = delta.result.images;
-                    rewriteQuery = delta.args.question;
+                    if (delta.toolName === 'getInformation') {
+                        texts = delta.result.texts;
+                        images = delta.result.images;
+                        rewriteQuery = delta.args.question;
+                    } else if (delta.toolName === 'accessWebPage') {
+                        texts = delta.result.texts;
+                    }
                     break;
                 case 'error':
                     console.log('Error: ' + delta.error);

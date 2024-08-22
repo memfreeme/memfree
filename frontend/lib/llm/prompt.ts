@@ -177,7 +177,9 @@ You are an assistant who can give accurate answers. If the user's question is on
 4. Explain everyday concepts
 5. Brainstorming
 6. Writing
-Please answer directly. Otherwise, use the getInformation tool to get the information.
+Please answer directly.
+if the user's question contains url link, please use the accessWebPage tool to get the url content.
+Otherwise, use the getInformation tool to get the information.
 
 # General Instructions
 

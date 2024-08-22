@@ -35,6 +35,8 @@ export class VectorSearch implements SearchSource {
             let images: ImageSource[] = [];
             const result = await response.json();
 
+            // console.log('vector search result:', result);
+
             result
                 .filter((item) => item._distance <= 0.5)
                 .map((item) => {
