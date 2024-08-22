@@ -40,12 +40,13 @@ export const metadata = {
         title: siteConfig.name,
         description: siteConfig.description,
         siteName: siteConfig.name,
+        images: ['https://www.memfree.me/og.png'],
     },
     twitter: {
         card: 'summary_large_image',
         title: siteConfig.name,
         description: siteConfig.description,
-        images: [siteConfig.ogImage],
+        images: ['https://www.memfree.me/og.png'],
         creator: '@MemFree',
     },
     icons: {
