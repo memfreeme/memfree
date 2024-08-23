@@ -8,6 +8,8 @@ import { logError } from '@/lib/log';
 import { checkIsPro } from '@/lib/shared-utils';
 import { chat } from '@/app/api/ask/chat';
 import { streamController } from '@/lib/llm/utils';
+import { SearchCategory } from '@/lib/types';
+import { indieMakerSearch } from '@/lib/tools/indie';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -57,14 +59,24 @@ export async function POST(req: NextRequest) {
     try {
         const readableStream = new ReadableStream({
             async start(controller) {
-                await chat(
-                    messages,
-                    isPro,
-                    userId,
-                    streamController(controller),
-                    model,
-                    source,
-                );
+                if (source === SearchCategory.INDIE_MAKER) {
+                    await indieMakerSearch(
+                        messages,
+                        isPro,
+                        userId,
+                        streamController(controller),
+                        model,
+                    );
+                } else {
+                    await chat(
+                        messages,
+                        isPro,
+                        userId,
+                        streamController(controller),
+                        model,
+                        source,
+                    );
+                }
             },
             cancel() {
                 console.log('Stream canceled by client');

@@ -48,6 +48,7 @@ export enum SearchCategory {
     NEWS = 'news',
     MUSIC = 'music',
     TWEET = 'tweet',
+    INDIE_MAKER = 'indie-maker',
     HACKER_NEWS = 'hacker-news',
 }
 

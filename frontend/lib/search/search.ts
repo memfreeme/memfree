@@ -11,6 +11,7 @@ export interface SearchOptions {
     categories?: string[];
     engines?: string[];
     language?: string;
+    domain?: string;
 }
 
 export interface AnySource {
@@ -29,7 +30,7 @@ export interface SearchSource {
     search(query: string): Promise<SearchResult>;
 }
 
-export const TEXT_LIMIT = 8;
+export const TEXT_LIMIT = 16;
 export const IMAGE_LIMIT = 8;
 
 export function getVectorSearch(userId: string): SearchSource {
@@ -63,11 +64,7 @@ export function getSearchEngine(options: SearchOptions): SearchSource {
                 ],
             });
 
-        case SearchCategory.IMAGES:
-        case SearchCategory.NEWS:
-            return new SearxngSearch({ categories: [categories[0]] });
-
         default:
-            return new SearxngSearch();
+            return new SearxngSearch(options);
     }
 }

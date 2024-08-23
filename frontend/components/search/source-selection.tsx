@@ -29,6 +29,10 @@ export const sourceMap: Record<string, Source> = {
         name: 'News',
         value: SearchCategory.NEWS,
     },
+    [SearchCategory.INDIE_MAKER]: {
+        name: 'Indie Maker',
+        value: SearchCategory.INDIE_MAKER,
+    },
     [SearchCategory.ACADEMIC]: {
         name: 'Paper',
         flag: 'Pro',

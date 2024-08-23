@@ -1,6 +1,11 @@
 import 'server-only';
 
-import { SearchOptions, SearchResult, SearchSource, AnySource } from '@/lib/search/search';
+import {
+    SearchOptions,
+    SearchResult,
+    SearchSource,
+    AnySource,
+} from '@/lib/search/search';
 import { ImageSource, TextSource } from '@/lib/types';
 import { logError } from '@/lib/log';
 import { fetchWithTimeout } from '@/lib/server-utils';
@@ -13,11 +18,15 @@ export class SearxngSearch implements SearchSource {
         this.options = params || {};
     }
 
-    private formatUrl(query: string, options: SearchOptions) {
+    private formatUrl(query: string) {
+        if (this.options.domain) {
+            query = `site:${this.options.domain} ${query}`;
+        }
+        // console.log('SearxngSearch query:', query);
         const url = new URL(`${SEARXNG_HOST}/search?format=json`);
         url.searchParams.append('q', query.slice(0, 2000));
-        for (const key in options) {
-            const value = options[key as keyof SearchOptions];
+        for (const key in this.options) {
+            const value = this.options[key as keyof SearchOptions];
             if (Array.isArray(value)) {
                 url.searchParams.append(key, value.join(','));
             } else if (value !== undefined) {
@@ -28,7 +37,7 @@ export class SearxngSearch implements SearchSource {
     }
 
     async search(query: string): Promise<SearchResult> {
-        const url = this.formatUrl(query, this.options);
+        const url = this.formatUrl(query);
         //console.log('SearxngSearch:', url);
 
         let anySources: AnySource[] = [];
