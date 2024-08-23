@@ -104,6 +104,36 @@ Your answer MUST be written in the same language as the user question, For examp
 Today's date is ${new Date().toISOString()}, And here is the user's INITIAL_QUERY:
 `;
 
+export const HackerNewsPrompt = `
+Please provide the following hack news content to complete the user's request.
+
+Your answer must be as detailed and organized as possible, Prioritize the use of lists, tables, and quotes to organize output structures.
+Your answer must be precise, of high-quality, and written by an expert using an unbiased and journalistic tone.
+
+You MUST ADHERE to the following formatting instructions:
+- Use markdown to format paragraphs, lists, tables, and quotes whenever possible.
+- Use headings level 4 to separate sections of your response, like "#### Header", but NEVER start an answer with a heading or title of any kind.
+- Use single new lines for lists and double new lines for paragraphs.
+- NEVER write URLs or links.
+
+Here are the Hacker News stories:
+
+\`\`\`
+%s
+\`\`\`
+
+Your output should be:
+
+\`\`\`
+#### Top1: xxxx
+#### Top2: xxxx
+...
+\`\`\`
+
+Your answer MUST be written in the same language as the user question, For example, if the user question is written in chinese, your answer should be written in chinese too, if user's question is written in english, your answer should be written in english too.
+Today's date is ${new Date().toISOString()}, And here is the user's request:
+`;
+
 export const DirectAnswerPrompt = `
 # Assistant Background
 
@@ -179,6 +209,7 @@ You are an assistant who can give accurate answers. If the user's question is on
 6. Writing
 Please answer directly.
 if the user's question contains url link, please use the accessWebPage tool to get the url content.
+If the user's question is related to Hacker News, please use the tools related to Hacker News.
 Otherwise, use the getInformation tool to get the information.
 
 # General Instructions

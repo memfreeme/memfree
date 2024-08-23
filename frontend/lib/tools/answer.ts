@@ -1,4 +1,5 @@
 import { StreamHandler } from '@/lib/llm/llm';
+import { HackerNewsPrompt } from '@/lib/llm/prompt';
 import { choosePrompt, getMaxOutputToken } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { SearchCategory, TextSource } from '@/lib/types';
@@ -43,9 +44,16 @@ function promptFormatterAnswer(
     searchContexts: any[],
     history: string,
 ) {
+    if (source === SearchCategory.HACKER_NEWS) {
+        return util.format(
+            HackerNewsPrompt,
+            JSON.stringify(searchContexts, null, 2),
+            history,
+        );
+    }
     const context = searchContexts
         .map((item, index) => `[citation:${index + 1}] ${item.content}`)
         .join('\n\n');
-    let prompt = choosePrompt(source, 'answer');
+    let prompt = choosePrompt(source);
     return util.format(prompt, context, history);
 }

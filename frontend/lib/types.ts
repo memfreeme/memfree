@@ -48,6 +48,7 @@ export enum SearchCategory {
     NEWS = 'news',
     MUSIC = 'music',
     TWEET = 'tweet',
+    HACKER_NEWS = 'hacker-news',
 }
 
 export interface ScoredURL {

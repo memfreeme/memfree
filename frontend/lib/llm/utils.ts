@@ -4,25 +4,20 @@ import { SearchCategory } from '@/lib/types';
 import {
     AcademicPrompet,
     DirectAnswerPrompt,
+    HackerNewsPrompt,
     MoreQuestionsPrompt,
     NewsPrompt,
 } from './prompt';
 
-export function choosePrompt(
-    source: SearchCategory,
-    type: 'answer' | 'related',
-) {
+export function choosePrompt(source: SearchCategory) {
     if (source === SearchCategory.ACADEMIC) {
         return AcademicPrompet;
     }
     if (source === SearchCategory.NEWS) {
         return NewsPrompt;
     }
-    if (type === 'answer') {
-        return DirectAnswerPrompt;
-    }
-    if (type === 'related') {
-        return MoreQuestionsPrompt;
+    if (source === SearchCategory.HACKER_NEWS) {
+        return HackerNewsPrompt;
     }
     return DirectAnswerPrompt;
 }

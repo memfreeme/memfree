@@ -10,6 +10,7 @@ import { getSearchEngine, IMAGE_LIMIT } from '@/lib/search/search';
 import { saveSearch } from '@/lib/store/search';
 import { accessWebPage } from '@/lib/tools/access';
 import { directlyAnswer } from '@/lib/tools/answer';
+import { getTopStories } from '@/lib/tools/hacker-news';
 import { getRelatedQuestions } from '@/lib/tools/related';
 import { searchRelevantContent } from '@/lib/tools/search';
 import {
@@ -81,6 +82,7 @@ export async function chat(
                         return await accessWebPage(url, onStream);
                     },
                 }),
+                getTopStories: getTopStories(onStream),
             },
         });
 
@@ -115,6 +117,9 @@ export async function chat(
                         images = delta.result.images;
                         rewriteQuery = delta.args.question;
                     } else if (delta.toolName === 'accessWebPage') {
+                        texts = delta.result.texts;
+                    } else if (delta.toolName === 'getTopStories') {
+                        source = SearchCategory.HACKER_NEWS;
                         texts = delta.result.texts;
                     }
                     break;

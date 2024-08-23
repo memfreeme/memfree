@@ -1,5 +1,5 @@
 import { getLLM, StreamHandler } from '@/lib/llm/llm';
-import { choosePrompt } from '@/lib/llm/utils';
+import { MoreQuestionsPrompt } from '@/lib/llm/prompt';
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
 import { TextSource } from '@/lib/types';
@@ -33,6 +33,5 @@ export async function getRelatedQuestions(
 
 function promptFormatterRelated(contexts: any[]) {
     const context = contexts.map((item) => `${item.content}`).join('\n\n');
-    let prompt = choosePrompt(undefined, 'related');
-    return util.format(prompt, context);
+    return util.format(MoreQuestionsPrompt, context);
 }
