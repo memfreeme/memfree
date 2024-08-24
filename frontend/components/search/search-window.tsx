@@ -68,7 +68,8 @@ export function SearchWindow({
         }
     }, [messages.length, user?.id, isLoading, router, path]);
 
-    const { messagesRef, scrollRef, visibilityRef } = useScrollAnchor();
+    const { messagesRef, scrollRef, visibilityRef, scrollToBottom } =
+        useScrollAnchor();
 
     const checkMessagesLength = () => {
         if (!user && messagesContentRef.current.length > 20) {
@@ -316,7 +317,10 @@ export function SearchWindow({
 
     const sendSelectedQuestion = useCallback(
         async (question: string) => {
-            await sendMessage(question, null);
+            sendMessage(question, null);
+            setTimeout(() => {
+                scrollToBottom();
+            }, 500);
         },
         [sendMessage],
     );
@@ -346,23 +350,20 @@ export function SearchWindow({
 
     return (
         <div
-            className="group mx-auto px-4 w-full md:w-5/6 md:px-0 flex flex-col my-2 overflow-auto"
+            className="group  overflow-auto mx-auto px-4 w-full md:w-5/6 md:px-0 flex flex-col my-2"
             ref={scrollRef}
         >
-            <div className="flex flex-col-reverse w-full" ref={messagesRef}>
-                <div className="w-full h-px" ref={visibilityRef} />
+            <div className="flex flex-col w-full" ref={messagesRef}>
                 {messages.length > 0 ? (
-                    [...messages]
-                        .reverse()
-                        .map((m, index) => (
-                            <SearchMessageBubble
-                                key={m.id}
-                                searchId={id}
-                                message={{ ...m }}
-                                onSelect={sendSelectedQuestion}
-                                reload={reload}
-                            ></SearchMessageBubble>
-                        ))
+                    [...messages].map((m, index) => (
+                        <SearchMessageBubble
+                            key={m.id}
+                            searchId={id}
+                            message={{ ...m }}
+                            onSelect={sendSelectedQuestion}
+                            reload={reload}
+                        ></SearchMessageBubble>
+                    ))
                 ) : (
                     <></>
                 )}
@@ -373,6 +374,7 @@ export function SearchWindow({
                     <div>{status}</div>
                 </div>
             )}
+            <div className="w-full h-px" ref={visibilityRef} />
             {!isReadOnly && <SearchBar handleSearch={stableHandleSearch} />}
         </div>
     );

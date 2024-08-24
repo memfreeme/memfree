@@ -38,7 +38,7 @@ const SearchMessageBubble = memo(
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-full overflow-auto ">
                             {sources.map((source, index) => (
                                 <div key={index}>
-                                    <SourceBubble source={source} />
+                                    <SourceBubble source={source} onSelect={onSelect}/>
                                 </div>
                             ))}
                         </div>
