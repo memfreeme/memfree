@@ -118,6 +118,8 @@ export async function chat(
                         rewriteQuery = delta.args.question;
                     } else if (delta.toolName === 'accessWebPage') {
                         texts = delta.result.texts;
+                        source = SearchCategory.WEB_PAGE;
+                        texts;
                     } else if (delta.toolName === 'getTopStories') {
                         source = SearchCategory.HACKER_NEWS;
                         texts = delta.result.texts;
@@ -127,6 +129,8 @@ export async function chat(
                     console.log('Error: ' + delta.error);
             }
         }
+
+        // console.log('texts', texts);
 
         if (!hasAnswer) {
             await directlyAnswer(

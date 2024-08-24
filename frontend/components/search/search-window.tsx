@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 import { checkIsPro } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useSearchStore } from '@/lib/store/local-history';
+import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
 
 export interface SearchProps extends React.ComponentProps<'div'> {
     id?: string;
@@ -68,7 +69,7 @@ export function SearchWindow({
         }
     }, [messages.length, user?.id, isLoading, router, path]);
 
-    const { messagesRef, scrollRef, visibilityRef, scrollToBottom } =
+    const { messagesRef, scrollRef, visibilityRef, isVisible, scrollToBottom } =
         useScrollAnchor();
 
     const checkMessagesLength = () => {
@@ -350,10 +351,10 @@ export function SearchWindow({
 
     return (
         <div
-            className="group  overflow-auto mx-auto px-4 w-full md:w-5/6 md:px-0 flex flex-col my-2"
+            className="group overflow-auto mx-auto px-4 w-full md:w-5/6 md:px-0 flex flex-col my-2"
             ref={scrollRef}
         >
-            <div className="flex flex-col w-full" ref={messagesRef}>
+            <div className="flex flex-col w-full">
                 {messages.length > 0 ? (
                     [...messages].map((m, index) => (
                         <SearchMessageBubble
@@ -369,13 +370,20 @@ export function SearchWindow({
                 )}
             </div>
             {isLoading && (
-                <div className="my-6 w-1/2 mx-auto flex justify-center items-center text-md text-violet-800 dark:text-violet-200">
+                <div
+                    className="my-6 w-1/2 mx-auto flex justify-center items-center text-md text-violet-800 dark:text-violet-200"
+                    ref={messagesRef}
+                >
                     <LoaderCircle className="size-5 mr-2 animate-spin" />
                     <div>{status}</div>
                 </div>
             )}
             <div className="w-full h-px" ref={visibilityRef} />
             {!isReadOnly && <SearchBar handleSearch={stableHandleSearch} />}
+            <ButtonScrollToBottom
+                isAtBottom={isVisible}
+                scrollToBottom={scrollToBottom}
+            />
         </div>
     );
 }

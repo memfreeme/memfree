@@ -1,5 +1,5 @@
 import { StreamHandler } from '@/lib/llm/llm';
-import { HackerNewsPrompt } from '@/lib/llm/prompt';
+import { HackerNewsPrompt, SummaryPrompt } from '@/lib/llm/prompt';
 import { choosePrompt, getMaxOutputToken } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { SearchCategory, TextSource } from '@/lib/types';
@@ -17,6 +17,7 @@ export async function directlyAnswer(
 ) {
     try {
         const system = promptFormatterAnswer(source, searchContexts, history);
+        // console.log('directlyAnswer:', system);
         const maxTokens = getMaxOutputToken(isPro);
         try {
             const result = await streamText({
@@ -48,7 +49,11 @@ function promptFormatterAnswer(
         return util.format(
             HackerNewsPrompt,
             JSON.stringify(searchContexts, null, 2),
-            history,
+        );
+    } else if (source === SearchCategory.WEB_PAGE) {
+        return util.format(
+            SummaryPrompt,
+            JSON.stringify(searchContexts, null, 2),
         );
     }
     const context = searchContexts
