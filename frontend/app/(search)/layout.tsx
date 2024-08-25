@@ -2,7 +2,6 @@ import { SidebarDesktop } from '@/components/sidebar/sidebar-desktop';
 import { SidebarOpen } from '@/components/sidebar/sidebar-open';
 import { getCurrentUser } from '@/lib/session';
 import MobileHeader from '@/components/layout/mobile-header';
-import Featurebase from '@/components/featurebase';
 import { siteConfig } from '@/config';
 import OneTapComponent from '@/components/google-one-tap';
 
@@ -14,6 +13,11 @@ export const metadata = {
     canonical: siteConfig.url,
 };
 
+import dynamic from 'next/dynamic';
+const Featurebase = dynamic(() => import('@/components/featurebase'), {
+    loading: () => <></>,
+});
+
 export default async function MarketingLayout({
     children,
 }: MarketingLayoutProps) {
@@ -22,8 +26,8 @@ export default async function MarketingLayout({
         <div className="flex flex-col flex-1 min-h-screen">
             <MobileHeader user={user} />
             <OneTapComponent user={user} />
+            {user && <Featurebase user={user} />}
             <main className="relative flex h-lvh overflow-hidden">
-                <Featurebase user={user}></Featurebase>
                 <SidebarDesktop />
                 <SidebarOpen user={user} />
                 {children}
