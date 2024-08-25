@@ -43,14 +43,14 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     };
 
     return (
-        <div className="w-full px-6 text-center">
+        <div className="w-full text-center">
             <div className="flex items-center relative mx-auto w-full">
                 <TextareaAutosize
                     value={content}
-                    minRows={4}
+                    minRows={3}
                     maxRows={10}
                     aria-label="Search"
-                    className="w-full border-input bg-transparent px-4 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50  overflow-y-auto resize-none overflow-hidden border-2 rounded-xl"
+                    className="w-full border-input bg-transparent px-4 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:border-primary overflow-y-auto  outline-0 ring-0 resize-none border-2 rounded-xl"
                     onKeyDown={handleInputKeydown}
                     onChange={(e) => setContent(e.target.value)}
                 />

@@ -18,6 +18,7 @@ import { checkIsPro } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useSearchStore } from '@/lib/store/local-history';
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
+import { DemoQuestions } from '@/components/search/demo-questions';
 
 export interface SearchProps extends React.ComponentProps<'div'> {
     id?: string;
@@ -38,6 +39,7 @@ export function SearchWindow({
     const [messages, setMessages] = useState<Array<Message>>(
         initialMessages ?? [],
     );
+
     const messagesContentRef = useRef(messages);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -46,7 +48,7 @@ export function SearchWindow({
     const signInModal = useSigninModal();
     const upgradeModal = useUpgradeModal();
 
-    const { addSearch } = useSearchStore();
+    const { searches, addSearch } = useSearchStore();
 
     useEffect(() => {
         messagesContentRef.current = messages;
@@ -58,6 +60,9 @@ export function SearchWindow({
         }
     }, [id, path, messages.length, user?.id]);
 
+    const { messagesRef, scrollRef, visibilityRef, isVisible, scrollToBottom } =
+        useScrollAnchor();
+
     useEffect(() => {
         if (
             user?.id &&
@@ -65,12 +70,13 @@ export function SearchWindow({
             !isLoading &&
             path.includes('search')
         ) {
-            router.refresh();
+            const search = searches.find((s) => s.id === id);
+            if (Date.now() - new Date(search.createdAt).getTime() < 1000 * 2) {
+                router.refresh();
+                scrollToBottom();
+            }
         }
     }, [messages.length, user?.id, isLoading, router, path]);
-
-    const { messagesRef, scrollRef, visibilityRef, isVisible, scrollToBottom } =
-        useScrollAnchor();
 
     const checkMessagesLength = () => {
         if (!user && messagesContentRef.current.length > 20) {
@@ -251,7 +257,6 @@ export function SearchWindow({
                         }
                     },
                     onclose() {
-                        setIsLoading(false);
                         // console.log('related ', accumulatedRelated);
                         // console.log('message ', accumulatedMessage);
                         if (user) {
@@ -271,6 +276,7 @@ export function SearchWindow({
                                 messages: messagesContentRef.current,
                             });
                         }
+                        setIsLoading(false);
                         return;
                     },
                     onmessage(msg) {
@@ -351,7 +357,7 @@ export function SearchWindow({
 
     return (
         <div
-            className="group overflow-auto mx-auto px-4 w-full md:w-5/6 md:px-0 flex flex-col my-2"
+            className="group overflow-auto mx-auto w-full md:w-5/6  px-4 md:px-0 flex flex-col my-2"
             ref={scrollRef}
         >
             <div className="flex flex-col w-full">
@@ -379,6 +385,10 @@ export function SearchWindow({
                 </div>
             )}
             <div className="w-full h-px" ref={visibilityRef} />
+            {messages.length === 0 && (
+                <DemoQuestions onSelect={sendSelectedQuestion} />
+            )}
+
             {!isReadOnly && <SearchBar handleSearch={stableHandleSearch} />}
             <ButtonScrollToBottom
                 isAtBottom={isVisible}

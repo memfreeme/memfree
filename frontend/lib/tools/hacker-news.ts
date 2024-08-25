@@ -17,10 +17,9 @@ export async function get_top_stories(
         ids.slice(0, limit).map((id: number) => get_story_with_comments(id)),
     );
     stories.forEach((story) => {
-        console.log('story:', story.comments);
         texts.push({
             title: story.title,
-            url: story.url,
+            url: story.url ? story.url : story.hnUrl,
             content:
                 story.text && story.text.length >= 100
                     ? story.text
@@ -28,6 +27,7 @@ export async function get_top_stories(
             type: 'hacker-news story',
         });
     });
+    // console.log('texts:', texts);
     await streamResponse({ sources: texts, status: 'Searching ...' }, onStream);
     return { texts };
 }
@@ -49,6 +49,7 @@ export async function get_story_with_comments(id: number) {
     );
     return {
         ...data,
+        hnUrl: `https://news.ycombinator.com/item?id=${id}`,
         comments: comments.map((comment: any) => ({
             ...comment,
         })),

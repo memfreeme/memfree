@@ -13,6 +13,7 @@ export class EXASearch implements SearchSource {
     }
 
     async search(query: string): Promise<SearchResult> {
+        // console.log('EXA search:', query);
         try {
             const result = await exa.searchAndContents(query, {
                 numResults: 10,

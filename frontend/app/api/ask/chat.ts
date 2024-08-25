@@ -54,7 +54,7 @@ export async function chat(
 
         const maxTokens = getMaxOutputToken(isPro);
         const result = await streamText({
-            model: openai(GPT_4o_MIMI),
+            model: getLLM(GPT_4o_MIMI),
             system: system,
             prompt: query,
             maxTokens: maxTokens,
@@ -89,6 +89,7 @@ export async function chat(
         let hasAnswer = false;
         let fullAnswer = '';
         let rewriteQuery = query;
+        let toolCallCount = 0;
         for await (const delta of result.fullStream) {
             switch (delta.type) {
                 case 'text-delta': {
@@ -105,6 +106,8 @@ export async function chat(
                     break;
                 }
                 case 'tool-call':
+                    // console.log('Tool call:', delta.toolName);
+                    toolCallCount++;
                     onStream?.(
                         JSON.stringify({
                             status: 'Searching ...',
@@ -113,16 +116,22 @@ export async function chat(
                     break;
                 case 'tool-result':
                     if (delta.toolName === 'getInformation') {
-                        texts = delta.result.texts;
-                        images = delta.result.images;
+                        texts = texts.concat(delta.result.texts);
+                        images = images.concat(delta.result.images);
                         rewriteQuery = delta.args.question;
+                        // console.log(
+                        //     'delta.args.question ',
+                        //     delta.args.question,
+                        // );
+                        // console.log('texts', texts);
                     } else if (delta.toolName === 'accessWebPage') {
-                        texts = delta.result.texts;
+                        texts = texts.concat(delta.result.texts);
                         source = SearchCategory.WEB_PAGE;
-                        texts;
                     } else if (delta.toolName === 'getTopStories') {
+                        texts = texts.concat(delta.result.texts);
+                        // console.log('delta.result.texts', delta.result.texts);
+                        // console.log('texts', texts);
                         source = SearchCategory.HACKER_NEWS;
-                        texts = delta.result.texts;
                     }
                     break;
                 case 'error':
@@ -130,7 +139,11 @@ export async function chat(
             }
         }
 
+        // console.log('toolCallCount', toolCallCount);
         // console.log('texts', texts);
+        if (toolCallCount > 1) {
+            rewriteQuery = query;
+        }
 
         if (!hasAnswer) {
             await directlyAnswer(
@@ -157,7 +170,7 @@ export async function chat(
         await streamResponse({ images: images }, onStream);
 
         let fullRelated = '';
-        await getRelatedQuestions(rewriteQuery, texts, (msg) => {
+        await getRelatedQuestions(query, texts, (msg) => {
             fullRelated += msg;
             onStream?.(
                 JSON.stringify({

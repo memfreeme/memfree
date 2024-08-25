@@ -10,7 +10,7 @@ export interface SearchPageProps {
 }
 
 export default function SearchResult({ id, user }: SearchPageProps) {
-    const { searches, addSearch } = useSearchStore();
+    const { searches } = useSearchStore();
     const search = searches.find((s) => s.id === id);
     return (
         <SearchWindow

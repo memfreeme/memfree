@@ -127,7 +127,7 @@ Today's date is ${new Date().toISOString()},
 `;
 
 export const HackerNewsPrompt = `
-Please provide the following hack news content to complete the user's request.
+Please follow the following hack news content to complete the user's request.
 
 Your answer must be as detailed and organized as possible, Prioritize the use of lists, tables, and quotes to organize output structures.
 Your answer must be precise, of high-quality, and written by an expert using an unbiased and journalistic tone.
@@ -135,6 +135,7 @@ Your answer must be precise, of high-quality, and written by an expert using an 
 You MUST ADHERE to the following formatting instructions:
 - Use markdown to format paragraphs, lists, tables, and quotes whenever possible.
 - Use headings level 4 to separate sections of your response, like "#### Header", but NEVER start an answer with a heading or title of any kind.
+- Use ordered lists whenever possible.
 - Use single new lines for lists and double new lines for paragraphs.
 - NEVER write URLs or links.
 
@@ -142,14 +143,6 @@ Here are the Hacker News stories:
 
 \`\`\`
 %s
-\`\`\`
-
-Your output should be:
-
-\`\`\`
-#### Top1: xxxx
-#### Top2: xxxx
-...
 \`\`\`
 
 Your answer MUST be written in the same language as the user question, For example, if the user question is written in chinese, your answer should be written in chinese too, if user's question is written in english, your answer should be written in english too.

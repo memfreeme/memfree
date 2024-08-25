@@ -10,8 +10,7 @@ export const useScrollAnchor = () => {
     const scrollToBottom = useCallback(() => {
         if (visibilityRef.current) {
             visibilityRef.current.scrollIntoView({
-                block: 'center',
-                behavior: 'smooth',
+                block: 'end',
             });
         }
     }, []);
