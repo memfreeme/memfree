@@ -1,5 +1,6 @@
 'use server';
 
+import { getCache, setCache } from '@/lib/cache';
 import { incSearchCount } from '@/lib/db';
 import { getLLM, Message } from '@/lib/llm/llm';
 import { getHistory, streamResponse } from '@/lib/llm/utils';
@@ -9,7 +10,11 @@ import { getSearchEngine, IMAGE_LIMIT, TEXT_LIMIT } from '@/lib/search/search';
 import { saveSearch } from '@/lib/store/search';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { getRelatedQuestions } from '@/lib/tools/related';
-import { Message as StoreMessage, SearchCategory } from '@/lib/types';
+import {
+    Message as StoreMessage,
+    SearchCategory,
+    TextSource,
+} from '@/lib/types';
 import { generateId } from 'ai';
 
 export async function indieMakerSearch(
@@ -22,7 +27,6 @@ export async function indieMakerSearch(
     try {
         const newMessages = messages.slice(-1) as Message[];
         const query = newMessages[0].content;
-        const source = SearchCategory.INDIE_MAKER;
 
         const imageFetchPromise = getSearchEngine({
             categories: [SearchCategory.IMAGES],
@@ -40,15 +44,23 @@ export async function indieMakerSearch(
             'news.ycombinator.com',
         ];
         const randomIndex = Math.floor(Math.random() * domains.length);
+        const domain = domains[randomIndex];
+        const source = SearchCategory.INDIE_MAKER;
         const searchOptions = {
-            domain: domains[randomIndex],
+            domain: domain,
             categories: [source],
         };
 
-        let { texts, images } =
-            await getSearchEngine(searchOptions).search(query);
-        texts = texts.slice(0, TEXT_LIMIT);
-        images = images.slice(0, IMAGE_LIMIT);
+        let texts: TextSource[] = [];
+        const cacheResult = await getCache(query + domain);
+        if (cacheResult) {
+            texts = cacheResult.texts;
+        } else {
+            const searchResult =
+                await getSearchEngine(searchOptions).search(query);
+            texts = searchResult.texts.slice(0, TEXT_LIMIT);
+            setCache(query + domain, { texts });
+        }
 
         await streamResponse(
             { sources: texts, status: 'Thinking ...' },
@@ -78,7 +90,7 @@ export async function indieMakerSearch(
         );
 
         const fetchedImages = await imageFetchPromise;
-        images = [...images, ...fetchedImages];
+        const images = [...fetchedImages];
         await streamResponse({ images: images }, onStream);
 
         let fullRelated = '';

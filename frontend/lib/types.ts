@@ -10,10 +10,10 @@ export interface User {
 }
 
 export interface CachedResult {
-    webs: TextSource[];
-    images: ImageSource[];
-    answer: string;
-    related: string;
+    texts: TextSource[];
+    images?: ImageSource[];
+    answer?: string;
+    related?: string;
 }
 
 export interface TextSource {

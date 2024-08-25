@@ -71,7 +71,7 @@ export function SearchWindow({
             path.includes('search')
         ) {
             const search = searches.find((s) => s.id === id);
-            if (Date.now() - new Date(search.createdAt).getTime() < 1000 * 2) {
+            if (Date.now() - new Date(search.createdAt).getTime() < 1000 * 3) {
                 router.refresh();
                 scrollToBottom();
             }
@@ -267,7 +267,6 @@ export function SearchWindow({
                                           50,
                                       )
                                     : messageValue.substring(0, 50);
-
                             addSearch({
                                 id: id,
                                 title: title,
