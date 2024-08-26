@@ -1,8 +1,8 @@
 'use client';
 
-import React, { KeyboardEvent, useRef, useState } from 'react';
+import React, { KeyboardEvent, useMemo, useRef, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { SendHorizontal } from 'lucide-react';
+import { SendHorizontal, Image as ImageIcon } from 'lucide-react';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import {
     Tooltip,
@@ -15,7 +15,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { useUserStore } from '@/lib/store';
 import { toast } from 'sonner';
 import { Icons } from '@/components/shared/icons';
-import { Image } from 'lucide-react';
+import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
 
 interface Props {
@@ -35,6 +35,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         }
         handleSearch(content, file);
         setContent('');
+        setFile(undefined);
     };
 
     const handleInputKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -47,15 +48,24 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const [file, setFile] = useState<File>();
     const dropzoneRef = useRef(null);
 
+    const imageUrl = useMemo(() => {
+        if (file) {
+            return URL.createObjectURL(file);
+        }
+        return null;
+    }, [file]);
+
     const onDrop = (acceptedFiles) => {
-        // console.log(acceptedFiles);
-        setFile(acceptedFiles[0]);
+        const file = acceptedFiles[0];
+        setFile(file);
     };
+
     const { getInputProps } = useDropzone({
         onDrop,
         noClick: true,
         noKeyboard: true,
     });
+
     const openFileDialog = () => {
         dropzoneRef.current.click();
     };
@@ -63,15 +73,28 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     return (
         <div className="w-full text-center">
             <div className="flex items-center relative mx-auto w-full">
-                <TextareaAutosize
-                    value={content}
-                    minRows={3}
-                    maxRows={10}
-                    aria-label="Search"
-                    className="w-full border-input bg-transparent px-4 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:border-primary overflow-y-auto  outline-0 ring-0 resize-none border-2 rounded-xl"
-                    onKeyDown={handleInputKeydown}
-                    onChange={(e) => setContent(e.target.value)}
-                />
+                <div className="flex flex-col w-full">
+                    {file && (
+                        <Image
+                            src={imageUrl}
+                            key={file.name}
+                            alt={file.name}
+                            width={100}
+                            height={100}
+                            loading="lazy"
+                            className="aspect-square shrink-0 rounded-lg object-cover m-4"
+                        />
+                    )}
+                    <TextareaAutosize
+                        value={content}
+                        minRows={3}
+                        maxRows={10}
+                        aria-label="Search"
+                        className="w-full border-input bg-transparent px-4 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:border-primary overflow-y-auto  outline-0 ring-0 resize-none border-2 rounded-xl"
+                        onKeyDown={handleInputKeydown}
+                        onChange={(e) => setContent(e.target.value)}
+                    />
+                </div>
 
                 <div className="absolute left-0 bottom-0 mb-1 ml-2 flex items-center space-x-4">
                     <Tooltip>
@@ -121,7 +144,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                     <span className="sr-only">
                                         Image upload
                                     </span>
-                                    <Image size={24} strokeWidth={2} />
+                                    <ImageIcon size={24} strokeWidth={2} />
                                 </button>
                             </div>
                         </TooltipTrigger>

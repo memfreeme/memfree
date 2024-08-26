@@ -53,10 +53,10 @@ export async function POST(req: NextRequest) {
         formData.get('messages') as string,
     ) as StoreMessage[];
 
-    console.log('messages', messages);
-    console.log('model', model);
-    console.log('source', source);
-    console.log('image', image);
+    // console.log('messages', messages);
+    // console.log('model', model);
+    // console.log('source', source);
+    // console.log('image', image);
 
     if (!validModel(model)) {
         return NextResponse.json(
