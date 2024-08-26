@@ -107,7 +107,7 @@ export function SearchWindow({
     };
 
     const sendMessage = useCallback(
-        async (question?: string, messageIdToUpdate?: string) => {
+        async (question?: string, image?: File, messageIdToUpdate?: string) => {
             if (isReadOnly) {
                 toast.error('You cannot ask questions in share search page');
                 return;
@@ -137,6 +137,7 @@ export function SearchWindow({
                         id: messageId,
                         content: messageValue,
                         role: 'user',
+                        imageFile: image,
                     },
                 ]);
             }
@@ -217,30 +218,33 @@ export function SearchWindow({
                 if (messageIdToUpdate) {
                     resetMessages(messageIdToUpdate);
                 }
-                const model = configStore.getState().model;
-                const source = configStore.getState().source;
 
-                const url = `/api/ask`;
+                // console.log('image', image);
+
+                const url = `/api/search`;
+                const formData = new FormData();
+                formData.append('query', messageValue);
+                formData.append('model', configStore.getState().model);
+                formData.append('source', configStore.getState().source);
+                formData.append('image', image);
+                formData.append(
+                    'messages',
+                    JSON.stringify([
+                        ...messagesContentRef.current,
+                        {
+                            id: messageId,
+                            content: messageValue,
+                            role: 'user',
+                        },
+                    ]),
+                );
+
                 await fetchEventSource(url, {
                     method: 'post',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'text/event-stream',
+                        Accept: 'text/event-stream',
                     },
-                    body: JSON.stringify({
-                        query: messageValue,
-                        useCache: !messageIdToUpdate,
-                        model: model,
-                        source: source,
-                        messages: [
-                            ...messagesContentRef.current,
-                            {
-                                id: messageId,
-                                content: messageValue,
-                                role: 'user',
-                            },
-                        ],
-                    }),
+                    body: formData,
                     openWhenHidden: true,
                     onerror(err) {
                         throw err;
@@ -341,15 +345,15 @@ export function SearchWindow({
                     ? messagesContentRef.current[currentIndex - 1]
                     : null;
             if (previousMessage) {
-                await sendMessage(previousMessage.content, msgId);
+                await sendMessage(previousMessage.content, null, msgId);
             }
         },
         [sendMessage],
     );
 
     const stableHandleSearch = useCallback(
-        (key: string) => {
-            sendMessage(key);
+        (key: string, image?: File) => {
+            sendMessage(key, image);
         },
         [sendMessage],
     );

@@ -62,6 +62,7 @@ export type Message = {
     id: string;
     role: 'system' | 'user' | 'assistant' | 'tool';
     content: string;
+    imageFile?: File;
     sources?: TextSource[];
     images?: ImageSource[];
     related?: string;

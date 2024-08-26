@@ -1,6 +1,6 @@
 'use client';
 
-import React, { KeyboardEvent, useState } from 'react';
+import React, { KeyboardEvent, useRef, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { SendHorizontal } from 'lucide-react';
 import { useIndexModal } from '@/hooks/use-index-modal';
@@ -15,9 +15,11 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { useUserStore } from '@/lib/store';
 import { toast } from 'sonner';
 import { Icons } from '@/components/shared/icons';
+import { Image } from 'lucide-react';
+import { useDropzone } from 'react-dropzone';
 
 interface Props {
-    handleSearch: (key: string) => void;
+    handleSearch: (key: string, image?: File) => void;
 }
 
 const SearchBar: React.FC<Props> = ({ handleSearch }) => {
@@ -31,7 +33,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
             toast.error('Please input your question!');
             return;
         }
-        handleSearch(content);
+        handleSearch(content, file);
         setContent('');
     };
 
@@ -40,6 +42,22 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
             e.preventDefault();
             handleClick();
         }
+    };
+
+    const [file, setFile] = useState<File>();
+    const dropzoneRef = useRef(null);
+
+    const onDrop = (acceptedFiles) => {
+        // console.log(acceptedFiles);
+        setFile(acceptedFiles[0]);
+    };
+    const { getInputProps } = useDropzone({
+        onDrop,
+        noClick: true,
+        noKeyboard: true,
+    });
+    const openFileDialog = () => {
+        dropzoneRef.current.click();
     };
 
     return (
@@ -55,13 +73,13 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                     onChange={(e) => setContent(e.target.value)}
                 />
 
-                <div className="absolute left-0 bottom-0 mb-1 ml-2">
+                <div className="absolute left-0 bottom-0 mb-1 ml-2 flex items-center space-x-4">
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <button
                                 type="button"
                                 aria-label="Index"
-                                className="text-gray-500 hover:text-primary"
+                                className="text-gray-500 hover:text-primary flex items-center"
                                 onClick={() => {
                                     if (!user) {
                                         signInModal.onOpen();
@@ -78,6 +96,36 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                             Enhance AI Search by Indexing the Web Pages and
                             Local Files
                         </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <div>
+                                <input
+                                    {...getInputProps()}
+                                    ref={dropzoneRef}
+                                    className="hidden"
+                                />
+                                <button
+                                    type="button"
+                                    aria-label="Image upload"
+                                    className="text-gray-500 hover:text-primary flex items-center"
+                                    onClick={() => {
+                                        if (!user) {
+                                            signInModal.onOpen();
+                                        } else {
+                                            openFileDialog();
+                                        }
+                                    }}
+                                >
+                                    <span className="sr-only">
+                                        Image upload
+                                    </span>
+                                    <Image size={24} strokeWidth={2} />
+                                </button>
+                            </div>
+                        </TooltipTrigger>
+                        <TooltipContent>Attach Image</TooltipContent>
                     </Tooltip>
                 </div>
 

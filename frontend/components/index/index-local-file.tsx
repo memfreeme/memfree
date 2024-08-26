@@ -19,7 +19,6 @@ export function IndexLocalFile() {
                 body: formData,
             });
             const data = await res.json();
-            console.log('res', data);
         } catch (err) {
             console.error(err);
             toast.error(err);

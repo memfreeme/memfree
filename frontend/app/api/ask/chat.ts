@@ -19,8 +19,14 @@ import {
     SearchCategory,
     TextSource,
 } from '@/lib/types';
-import { openai } from '@ai-sdk/openai';
-import { generateId, streamText, tool } from 'ai';
+import {
+    CoreUserMessage,
+    generateId,
+    ImagePart,
+    streamText,
+    TextPart,
+    tool,
+} from 'ai';
 import util from 'util';
 import { z } from 'zod';
 
@@ -28,6 +34,7 @@ export async function chat(
     messages: StoreMessage[],
     isPro: boolean,
     userId: string,
+    image?: File,
     onStream?: (...args: any[]) => void,
     model = GPT_4o_MIMI,
     source = SearchCategory.ALL,
@@ -51,12 +58,35 @@ export async function chat(
 
         let history = getHistory(isPro, messages);
         const system = util.format(AutoAnswerPrompt, history);
+        let userMessages: CoreUserMessage[] = [
+            {
+                role: 'user',
+                content: [
+                    {
+                        type: 'text',
+                        text: query,
+                    },
+                ] as Array<TextPart | ImagePart>,
+            },
+        ];
+        if (image && image.size > 0) {
+            const imageContent: ImagePart = {
+                type: 'image',
+                image: await image.arrayBuffer(),
+            };
+
+            if (Array.isArray(userMessages[0].content)) {
+                userMessages[0].content.push(imageContent);
+            }
+        }
+
+        // console.log('userMessages', userMessages);
 
         const maxTokens = getMaxOutputToken(isPro);
         const result = await streamText({
             model: getLLM(GPT_4o_MIMI),
             system: system,
-            prompt: query,
+            messages: userMessages,
             maxTokens: maxTokens,
             temperature: 0.1,
             tools: {
