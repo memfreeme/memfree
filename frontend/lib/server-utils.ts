@@ -22,3 +22,9 @@ export const fetchWithTimeout = async (
         clearTimeout(id);
     }
 };
+
+export function extractFirstImageUrl(text: string): string | null {
+    const regex = /https?:\/\/[^ ]+\.(jpg|jpeg|png|gif|bmp|webp)/i;
+    const match = text.match(regex);
+    return match ? match[0] : null;
+}

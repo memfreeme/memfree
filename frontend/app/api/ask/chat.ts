@@ -7,6 +7,7 @@ import { getHistory, getMaxOutputToken, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine, IMAGE_LIMIT } from '@/lib/search/search';
+import { extractFirstImageUrl } from '@/lib/server-utils';
 import { saveSearch } from '@/lib/store/search';
 import { accessWebPage } from '@/lib/tools/access';
 import { directlyAnswer } from '@/lib/tools/answer';
@@ -19,14 +20,7 @@ import {
     SearchCategory,
     TextSource,
 } from '@/lib/types';
-import {
-    CoreUserMessage,
-    generateId,
-    ImagePart,
-    streamText,
-    TextPart,
-    tool,
-} from 'ai';
+import { CoreUserMessage, generateId, streamText, tool } from 'ai';
 import util from 'util';
 import { z } from 'zod';
 
@@ -58,29 +52,10 @@ export async function chat(
 
         let history = getHistory(isPro, messages);
         const system = util.format(AutoAnswerPrompt, history);
-        let userMessages: CoreUserMessage[] = [
-            {
-                role: 'user',
-                content: [
-                    {
-                        type: 'text',
-                        text: query,
-                    },
-                ] as Array<TextPart | ImagePart>,
-            },
-        ];
-        if (image && image.size > 0) {
-            const imageContent: ImagePart = {
-                type: 'image',
-                image: await image.arrayBuffer(),
-            };
 
-            if (Array.isArray(userMessages[0].content)) {
-                userMessages[0].content.push(imageContent);
-            }
-        }
+        let userMessages = await createUserMessages(query, image);
 
-        // console.log('userMessages', userMessages);
+        // console.log('userMessages', userMessages.toString());
 
         const maxTokens = getMaxOutputToken(isPro);
         const result = await streamText({
@@ -243,4 +218,63 @@ export async function chat(
         logError(error, 'llm-openai');
         onStream?.(null, true);
     }
+}
+
+async function createUserMessages(
+    query: string,
+    image?: File,
+): Promise<CoreUserMessage[]> {
+    let userMessages: CoreUserMessage[];
+    if (image && image.size > 0) {
+        // local image
+        userMessages = [
+            {
+                role: 'user',
+                content: [
+                    {
+                        type: 'text',
+                        text: query,
+                    },
+                    {
+                        type: 'image',
+                        image: await image.arrayBuffer(),
+                    },
+                ],
+            },
+        ];
+    } else {
+        // network image
+        const firstImageUrl = extractFirstImageUrl(query);
+        if (firstImageUrl) {
+            userMessages = [
+                {
+                    role: 'user',
+                    content: [
+                        {
+                            type: 'text',
+                            text: query.replace(firstImageUrl, ''),
+                        },
+                        {
+                            type: 'image',
+                            image: new URL(firstImageUrl),
+                        },
+                    ],
+                },
+            ];
+        } else {
+            userMessages = [
+                {
+                    role: 'user',
+                    content: [
+                        {
+                            type: 'text',
+                            text: query,
+                        },
+                    ],
+                },
+            ];
+        }
+    }
+
+    return userMessages;
 }
