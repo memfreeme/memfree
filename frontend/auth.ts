@@ -3,8 +3,10 @@ import { getUserById, redisDB } from '@/lib/db';
 import type { DefaultSession, NextAuthConfig } from 'next-auth';
 import GitHub from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
+import Resend from 'next-auth/providers/resend';
 import Credentials from 'next-auth/providers/credentials';
 import { UpstashRedisAdapter } from '@auth/upstash-redis-adapter';
+import { sendVerificationRequest } from '@/lib/auth/auth-sind-request';
 
 declare module 'next-auth' {
     interface Session {
@@ -25,6 +27,10 @@ export const config = {
     providers: [
         GitHub,
         Google,
+        Resend({
+            from: 'MemFree <email@email.memfree.me>',
+            sendVerificationRequest,
+        }),
         Credentials({
             id: 'googleonetap',
             name: 'google-one-tap',
