@@ -8,6 +8,17 @@ const exampleMessages = [
         source: SearchCategory.INDIE_MAKER,
     },
     {
+        title: 'Ask by Image Content',
+        message:
+            'What is the hybrid AI search https://www.memfree.me/memfree-hybrid-ai-search.webp',
+        source: SearchCategory.ALL,
+    },
+    {
+        title: 'OCR | Extract Text from Image',
+        message: 'Extract Text https://www.memfree.me/pricing-card.png',
+        source: SearchCategory.ALL,
+    },
+    {
         title: 'Summarize the Web Page and PDF',
         message:
             'Summarize the content of https://www.memfree.me/docs/index-bookmarks',
