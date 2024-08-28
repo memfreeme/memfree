@@ -7,6 +7,7 @@ import React, { memo } from 'react';
 import AnswerSection from '@/components/search/answer-section';
 import QuestionSection from '@/components/search/question-section';
 import ActionButtons from '@/components/search/action-buttons';
+import { extractFirstImageUrl } from '@/lib/shared-utils';
 
 const SearchMessageBubble = memo(
     (props: {
@@ -15,7 +16,7 @@ const SearchMessageBubble = memo(
         onSelect: (question: string) => void;
         reload: (msgId: string) => void;
     }) => {
-        const { id, role, content, imageFile, related } = props.message;
+        let { id, role, content, imageFile, related } = props.message;
         const onSelect = props.onSelect;
         const reload = props.reload;
         const isUser = role === 'user';
@@ -24,6 +25,10 @@ const SearchMessageBubble = memo(
         const sources = message.sources ?? [];
         const images = message.images ?? [];
         const searchId = props.searchId;
+
+        if (!imageFile && isUser) {
+            imageFile = extractFirstImageUrl(content);
+        }
 
         return (
             <div className="flex flex-col w-full  items-start space-y-6 pb-10">

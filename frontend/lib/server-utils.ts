@@ -23,12 +23,6 @@ export const fetchWithTimeout = async (
     }
 };
 
-export function extractFirstImageUrl(text: string): string | null {
-    const regex = /https?:\/\/[^ ]+\.(jpg|jpeg|png|gif|bmp|webp)/i;
-    const match = text.match(regex);
-    return match ? match[0] : null;
-}
-
 export function containsValidUrl(text: string) {
     const urlPattern = /https?:\/\/[^\s/$.?#].[^\s]*/i;
     return urlPattern.test(text);

@@ -7,7 +7,7 @@ import { getHistory, getMaxOutputToken, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine, IMAGE_LIMIT } from '@/lib/search/search';
-import { extractFirstImageUrl } from '@/lib/server-utils';
+import { extractFirstImageUrl } from '@/lib/shared-utils';
 import { saveSearch } from '@/lib/store/search';
 import { accessWebPage } from '@/lib/tools/access';
 import { directlyAnswer } from '@/lib/tools/answer';
