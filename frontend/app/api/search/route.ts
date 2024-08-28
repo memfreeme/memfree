@@ -10,6 +10,7 @@ import { chat } from '@/app/api/ask/chat';
 import { streamController } from '@/lib/llm/utils';
 import { SearchCategory } from '@/lib/types';
 import { indieMakerSearch } from '@/lib/tools/indie';
+import { containsValidUrl } from '@/lib/server-utils';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -17,6 +18,21 @@ const ratelimit = new Ratelimit({
     prefix: RATE_LIMIT_KEY,
     analytics: false,
 });
+
+const updateSource = function (source, messages) {
+    if (source === SearchCategory.ALL) {
+        return source;
+    }
+    const imageFile = messages[messages.length - 1].imageFile;
+    if (imageFile) {
+        return SearchCategory.ALL;
+    }
+    const query = messages[messages.length - 1].content;
+    if (containsValidUrl(query)) {
+        return SearchCategory.ALL;
+    }
+    return source;
+};
 
 export async function POST(req: NextRequest) {
     const session = await auth();
@@ -42,7 +58,7 @@ export async function POST(req: NextRequest) {
             );
         }
     }
-    const { model, source, messages } = await req.json();
+    let { model, source, messages } = await req.json();
 
     if (!validModel(model)) {
         return NextResponse.json(
@@ -52,6 +68,8 @@ export async function POST(req: NextRequest) {
             { status: 400 },
         );
     }
+
+    source = updateSource(source, messages);
 
     try {
         const readableStream = new ReadableStream({

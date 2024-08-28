@@ -28,3 +28,8 @@ export function extractFirstImageUrl(text: string): string | null {
     const match = text.match(regex);
     return match ? match[0] : null;
 }
+
+export function containsValidUrl(text: string) {
+    const urlPattern = /https?:\/\/[^\s/$.?#].[^\s]*/i;
+    return urlPattern.test(text);
+}

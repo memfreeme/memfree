@@ -43,10 +43,6 @@ export async function POST(req: NextRequest) {
         }
     }
     const { model, source, messages } = await req.json();
-
-    // console.log('messages', messages);
-    // console.log('query', query);
-
     if (!validModel(model)) {
         return NextResponse.json(
             {
