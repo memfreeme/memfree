@@ -37,8 +37,6 @@ export async function getSearches(
             return [];
         }
 
-        console.log('getSearches searches', searches.length);
-
         for (const searchid of searches) {
             pipeline.hgetall(searchid);
         }

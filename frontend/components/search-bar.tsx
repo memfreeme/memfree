@@ -105,7 +105,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                         minRows={3}
                         maxRows={10}
                         aria-label="Search"
-                        className="w-full border-input bg-transparent px-4 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:border-primary overflow-y-auto  outline-0 ring-0 resize-none border-2 rounded-xl"
+                        className="w-full border-input bg-transparent px-4 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:border-primary overflow-y-auto  outline-0 ring-0  focus-visible:outline-none focus-visible:ring-0 resize-none border-2 rounded-xl"
                         onKeyDown={handleInputKeydown}
                         onChange={(e) => setContent(e.target.value)}
                     />
