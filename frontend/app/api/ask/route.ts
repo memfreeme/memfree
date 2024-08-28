@@ -72,7 +72,6 @@ export async function POST(req: NextRequest) {
                         messages,
                         isPro,
                         userId,
-                        null,
                         streamController(controller),
                         model,
                         source,

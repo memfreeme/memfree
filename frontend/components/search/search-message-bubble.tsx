@@ -7,7 +7,6 @@ import React, { memo } from 'react';
 import AnswerSection from '@/components/search/answer-section';
 import QuestionSection from '@/components/search/question-section';
 import ActionButtons from '@/components/search/action-buttons';
-import Image from 'next/image';
 
 const SearchMessageBubble = memo(
     (props: {
@@ -25,11 +24,6 @@ const SearchMessageBubble = memo(
         const sources = message.sources ?? [];
         const images = message.images ?? [];
         const searchId = props.searchId;
-
-        let imageUrl = '';
-        if (imageFile) {
-            imageUrl = URL.createObjectURL(imageFile);
-        }
 
         return (
             <div className="flex flex-col w-full  items-start space-y-6 pb-10">
@@ -106,15 +100,17 @@ const SearchMessageBubble = memo(
                 {isUser && (
                     <QuestionSection content={content}></QuestionSection>
                 )}
-                {isUser && imageUrl && (
-                    <Image
-                        src={imageUrl}
-                        alt={imageFile.name}
-                        width={800}
-                        height={600}
-                        loading="lazy"
-                        className="aspect-square shrink-0 rounded-md object-contain"
-                    />
+                {isUser && imageFile && (
+                    <div className="flex items-center justify-center mx-auto">
+                        <img
+                            src={imageFile}
+                            alt="memfree search image"
+                            width={400}
+                            height={400}
+                            loading="lazy"
+                            className="aspect-square shrink-0 border rounded-md object-contain"
+                        />
+                    </div>
                 )}
             </div>
         );

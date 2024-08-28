@@ -28,12 +28,12 @@ export async function chat(
     messages: StoreMessage[],
     isPro: boolean,
     userId: string,
-    image?: File,
     onStream?: (...args: any[]) => void,
     model = GPT_4o_MIMI,
     source = SearchCategory.ALL,
 ) {
     try {
+        const imageFile = messages[messages.length - 1].imageFile;
         const newMessages = messages.slice(-1) as Message[];
         const query = newMessages[0].content;
 
@@ -53,7 +53,7 @@ export async function chat(
         let history = getHistory(isPro, messages);
         const system = util.format(AutoAnswerPrompt, history);
 
-        let userMessages = await createUserMessages(query, image);
+        let userMessages = await createUserMessages(query, imageFile);
 
         // console.log('userMessages', userMessages.toString());
 
@@ -197,6 +197,7 @@ export async function chat(
                 id: generateId(),
                 role: 'assistant',
                 content: fullAnswer,
+                imageFile: imageFile,
                 sources: texts,
                 images: images,
                 related: fullRelated,
@@ -222,11 +223,33 @@ export async function chat(
 
 async function createUserMessages(
     query: string,
-    image?: File,
+    image?: string,
 ): Promise<CoreUserMessage[]> {
     let userMessages: CoreUserMessage[];
-    if (image && image.size > 0) {
-        // local image
+    let text = query;
+    if (!image) {
+        image = extractFirstImageUrl(query);
+        if (image) {
+            text = query.replace(image, '');
+        }
+    }
+    if (image) {
+        userMessages = [
+            {
+                role: 'user',
+                content: [
+                    {
+                        type: 'text',
+                        text: text,
+                    },
+                    {
+                        type: 'image',
+                        image: new URL(image),
+                    },
+                ],
+            },
+        ];
+    } else {
         userMessages = [
             {
                 role: 'user',
@@ -235,45 +258,9 @@ async function createUserMessages(
                         type: 'text',
                         text: query,
                     },
-                    {
-                        type: 'image',
-                        image: await image.arrayBuffer(),
-                    },
                 ],
             },
         ];
-    } else {
-        // network image
-        const firstImageUrl = extractFirstImageUrl(query);
-        if (firstImageUrl) {
-            userMessages = [
-                {
-                    role: 'user',
-                    content: [
-                        {
-                            type: 'text',
-                            text: query.replace(firstImageUrl, ''),
-                        },
-                        {
-                            type: 'image',
-                            image: new URL(firstImageUrl),
-                        },
-                    ],
-                },
-            ];
-        } else {
-            userMessages = [
-                {
-                    role: 'user',
-                    content: [
-                        {
-                            type: 'text',
-                            text: query,
-                        },
-                    ],
-                },
-            ];
-        }
     }
 
     return userMessages;

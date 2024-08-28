@@ -17,9 +17,10 @@ import { toast } from 'sonner';
 import { Icons } from '@/components/shared/icons';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
+import { useUploadFile } from '@/hooks/use-upload-file';
 
 interface Props {
-    handleSearch: (key: string, image?: File) => void;
+    handleSearch: (key: string, image?: string) => void;
 }
 
 const SearchBar: React.FC<Props> = ({ handleSearch }) => {
@@ -33,9 +34,13 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
             toast.error('Please input your question!');
             return;
         }
-        handleSearch(content, file);
+        if (uploadedFiles && uploadedFiles.length > 0) {
+            handleSearch(content, uploadedFiles[0].url);
+            setFile(undefined);
+        } else {
+            handleSearch(content);
+        }
         setContent('');
-        setFile(undefined);
     };
 
     const handleInputKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -47,6 +52,8 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
 
     const [file, setFile] = useState<File>();
     const dropzoneRef = useRef(null);
+    const { onUpload, uploadedFiles, isUploading } =
+        useUploadFile('imageUploader');
 
     const imageUrl = useMemo(() => {
         if (file) {
@@ -58,6 +65,14 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const onDrop = (acceptedFiles) => {
         const file = acceptedFiles[0];
         setFile(file);
+        const target = file.name;
+        toast.promise(onUpload([file]), {
+            loading: `Uploading ${target}...`,
+            success: () => {
+                return `${target} uploaded`;
+            },
+            error: `Failed to upload ${target}`,
+        });
     };
 
     const { getInputProps } = useDropzone({
@@ -131,6 +146,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                 />
                                 <button
                                     type="button"
+                                    disabled={isUploading}
                                     aria-label="Image upload"
                                     className="text-gray-500 hover:text-primary flex items-center"
                                     onClick={() => {
@@ -144,7 +160,15 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                     <span className="sr-only">
                                         Image upload
                                     </span>
-                                    <ImageIcon size={24} strokeWidth={2} />
+                                    {isUploading ? (
+                                        <Icons.spinner
+                                            size={24}
+                                            strokeWidth={2}
+                                            className="animate-spin"
+                                        />
+                                    ) : (
+                                        <ImageIcon size={24} strokeWidth={2} />
+                                    )}
                                 </button>
                             </div>
                         </TooltipTrigger>
@@ -158,7 +182,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                             <button
                                 type="button"
                                 aria-label="Search"
-                                disabled={content.trim() === ''}
+                                disabled={content.trim() === '' || isUploading}
                                 className="text-gray-500 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                                 onClick={handleClick}
                             >

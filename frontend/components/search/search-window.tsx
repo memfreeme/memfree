@@ -107,7 +107,11 @@ export function SearchWindow({
     };
 
     const sendMessage = useCallback(
-        async (question?: string, image?: File, messageIdToUpdate?: string) => {
+        async (
+            question?: string,
+            image?: string,
+            messageIdToUpdate?: string,
+        ) => {
             if (isReadOnly) {
                 toast.error('You cannot ask questions in share search page');
                 return;
@@ -222,29 +226,24 @@ export function SearchWindow({
                 // console.log('image', image);
 
                 const url = `/api/search`;
-                const formData = new FormData();
-                formData.append('query', messageValue);
-                formData.append('model', configStore.getState().model);
-                formData.append('source', configStore.getState().source);
-                formData.append('image', image);
-                formData.append(
-                    'messages',
-                    JSON.stringify([
-                        ...messagesContentRef.current,
-                        {
-                            id: messageId,
-                            content: messageValue,
-                            role: 'user',
-                        },
-                    ]),
-                );
-
                 await fetchEventSource(url, {
                     method: 'post',
                     headers: {
                         Accept: 'text/event-stream',
                     },
-                    body: formData,
+                    body: JSON.stringify({
+                        model: configStore.getState().model,
+                        source: configStore.getState().source,
+                        messages: [
+                            ...messagesContentRef.current,
+                            {
+                                id: messageId,
+                                content: messageValue,
+                                imageFile: image,
+                                role: 'user',
+                            },
+                        ],
+                    }),
                     openWhenHidden: true,
                     onerror(err) {
                         throw err;
@@ -261,8 +260,6 @@ export function SearchWindow({
                         }
                     },
                     onclose() {
-                        // console.log('related ', accumulatedRelated);
-                        // console.log('message ', accumulatedMessage);
                         if (user) {
                             let title =
                                 messagesContentRef.current.length > 0
@@ -352,7 +349,7 @@ export function SearchWindow({
     );
 
     const stableHandleSearch = useCallback(
-        (key: string, image?: File) => {
+        (key: string, image?: string) => {
             sendMessage(key, image);
         },
         [sendMessage],

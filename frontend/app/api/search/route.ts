@@ -10,7 +10,6 @@ import { chat } from '@/app/api/ask/chat';
 import { streamController } from '@/lib/llm/utils';
 import { SearchCategory } from '@/lib/types';
 import { indieMakerSearch } from '@/lib/tools/indie';
-import { Message as StoreMessage, TextSource } from '@/lib/types';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -43,20 +42,7 @@ export async function POST(req: NextRequest) {
             );
         }
     }
-    // const { model, source, messages } = await req.json();
-
-    const formData = await req.formData();
-    const image = formData.get('image') as File;
-    const model = formData.get('model') as string;
-    const source = formData.get('source') as SearchCategory;
-    const messages = JSON.parse(
-        formData.get('messages') as string,
-    ) as StoreMessage[];
-
-    // console.log('messages', messages);
-    // console.log('model', model);
-    // console.log('source', source);
-    // console.log('image', image);
+    const { model, source, messages } = await req.json();
 
     if (!validModel(model)) {
         return NextResponse.json(
@@ -83,7 +69,6 @@ export async function POST(req: NextRequest) {
                         messages,
                         isPro,
                         userId,
-                        image,
                         streamController(controller),
                         model,
                         source,
