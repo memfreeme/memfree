@@ -4,10 +4,12 @@ import { Modal } from '@/components/shared/modal';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { IndexWebPage } from '@/components/index/index-web';
-import { IndexLocalFile } from '@/components/index/index-local-file';
+import { useIndexLocalFile } from '@/hooks/use-index-local-file';
+import { FileUploader } from '@/components/index/file-uploader';
 
 export const IndexModal = () => {
     const indexModal = useIndexModal();
+    const { isIndexing, uploadFile } = useIndexLocalFile();
 
     return (
         <Modal showModal={indexModal.isOpen} setShowModal={indexModal.onClose}>
@@ -39,7 +41,12 @@ export const IndexModal = () => {
                         <IndexWebPage></IndexWebPage>
                     </TabsContent>
                     <TabsContent value="local" className="w-full">
-                        <IndexLocalFile></IndexLocalFile>
+                        <FileUploader
+                            maxFileCount={1}
+                            maxSize={10 * 1024 * 1024}
+                            onUpload={uploadFile}
+                            disabled={isIndexing}
+                        />
                     </TabsContent>
                 </Tabs>
             </div>

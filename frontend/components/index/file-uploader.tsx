@@ -39,15 +39,6 @@ interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
      * @example onUpload={(files) => uploadFiles(files)}
      */
     onUpload?: (files: File[]) => Promise<void>;
-
-    /**
-     * Progress of the uploaded files.
-     * @type Record<string, number> | undefined
-     * @default undefined
-     * @example progresses={{ "file1.png": 50 }}
-     */
-    progresses?: Record<string, number>;
-
     /**
      * Accepted file types for the uploader.
      * @type { [key: string]: string[]}
@@ -97,7 +88,6 @@ export function FileUploader(props: FileUploaderProps) {
         value: valueProp,
         onValueChange,
         onUpload,
-        progresses,
         accept = {
             'application/pdf': ['.pdf'],
             'text/markdown': ['.md'],
@@ -262,7 +252,6 @@ export function FileUploader(props: FileUploaderProps) {
                                 key={index}
                                 file={file}
                                 onRemove={() => onRemove(index)}
-                                progress={progresses?.[file.name]}
                             />
                         ))}
                     </div>
@@ -295,7 +284,7 @@ function FileCard({ file, progress, onRemove }: FileCardProps) {
                     {progress ? <Progress value={progress} /> : null}
                 </div>
             </div>
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
                 <Button
                     type="button"
                     variant="outline"
@@ -306,7 +295,7 @@ function FileCard({ file, progress, onRemove }: FileCardProps) {
                     <Cross2Icon className="size-4" aria-hidden="true" />
                     <span className="sr-only">Remove file</span>
                 </Button>
-            </div>
+            </div> */}
         </div>
     );
 }

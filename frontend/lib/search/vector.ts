@@ -7,16 +7,18 @@ import { VECTOR_HOST } from '@/lib/env';
 
 export class VectorSearch implements SearchSource {
     private userId: string;
+    private url?: string;
 
-    constructor(userId: string) {
+    constructor(userId: string, url?: string) {
         this.userId = userId;
+        this.url = url;
     }
 
     async search(query: string): Promise<SearchResult> {
-        const url = `${VECTOR_HOST}/api/vector/search`;
+        const searchUrl = `${VECTOR_HOST}/api/vector/search`;
 
         try {
-            const response = await fetch(url, {
+            const response = await fetch(searchUrl, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -24,6 +26,7 @@ export class VectorSearch implements SearchSource {
                 },
                 body: JSON.stringify({
                     userId: this.userId,
+                    url: this.url,
                     query,
                 }),
             });
@@ -35,7 +38,7 @@ export class VectorSearch implements SearchSource {
             let images: ImageSource[] = [];
             const result = await response.json();
 
-            // console.log('vector search result:', result);
+            console.log('vector search result:', result);
 
             result
                 .filter((item) => item._distance <= 0.5)

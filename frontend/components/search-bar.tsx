@@ -2,7 +2,7 @@
 
 import React, { KeyboardEvent, useMemo, useRef, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { SendHorizontal, Image as ImageIcon } from 'lucide-react';
+import { SendHorizontal, Image as ImageIcon, FileTextIcon } from 'lucide-react';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import {
     Tooltip,
@@ -35,6 +35,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
             return;
         }
         if (uploadedFiles && uploadedFiles.length > 0) {
+            console.log('uploadedFiles', uploadedFiles[0].url);
             handleSearch(content, uploadedFiles[0].url);
             setFile(undefined);
         } else {
@@ -54,6 +55,8 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const dropzoneRef = useRef(null);
     const { onUpload, uploadedFiles, isUploading } =
         useUploadFile('imageUploader');
+
+    console.log('uploadedFiles', uploadedFiles);
 
     const imageUrl = useMemo(() => {
         if (file) {
@@ -79,6 +82,12 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         onDrop,
         accept: {
             'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp'],
+            'application/pdf': ['.pdf'],
+            'text/markdown': ['.md'],
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                ['.docx'],
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+                ['.pptx'],
         },
         noClick: true,
         noKeyboard: true,
@@ -91,17 +100,28 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     return (
         <div className="w-full text-center">
             <div className="flex flex-col relative mx-auto w-full border-2 rounded-lg focus-within:border-primary">
-                {file && (
-                    <Image
-                        src={imageUrl}
-                        key={file.name}
-                        alt={file.name}
-                        width={100}
-                        height={100}
-                        loading="lazy"
-                        className="aspect-square shrink-0 rounded-lg object-cover m-4"
-                    />
-                )}
+                {file &&
+                    (file.type.startsWith('image/') ? (
+                        <Image
+                            src={imageUrl}
+                            key={file.name}
+                            alt={file.name}
+                            width={100}
+                            height={100}
+                            loading="lazy"
+                            className="aspect-square shrink-0 rounded-lg object-cover m-4"
+                        />
+                    ) : (
+                        <div className="flex items-center gap-2 p-2">
+                            <FileTextIcon
+                                className="size-6 text-muted-foreground"
+                                aria-hidden="true"
+                            />
+                            <p className="line-clamp-1 text-sm font-medium text-foreground/80">
+                                {file.name}
+                            </p>
+                        </div>
+                    ))}
                 <TextareaAutosize
                     value={content}
                     minRows={1}

@@ -1,14 +1,10 @@
-'use client';
-
-import * as React from 'react';
-
-import { FileUploader } from '@/components/index/file-uploader';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
-export function IndexLocalFile() {
-    const [isUploading, setIsUploading] = React.useState(false);
+export function useIndexLocalFile() {
+    const [isIndexing, setIsUploading] = useState(false);
 
-    async function onUpload(files: File[]) {
+    const uploadFile = async (files: File[]) => {
         const endpoint = '/api/upload';
         setIsUploading(true);
         try {
@@ -19,20 +15,15 @@ export function IndexLocalFile() {
                 body: formData,
             });
             const data = await res.json();
+            return data;
         } catch (err) {
             console.error(err);
-            toast.error(err);
+            toast.error(String(err));
+            throw err;
         } finally {
             setIsUploading(false);
         }
-    }
+    };
 
-    return (
-        <FileUploader
-            maxFileCount={1}
-            maxSize={10 * 1024 * 1024}
-            onUpload={onUpload}
-            disabled={isUploading}
-        />
-    );
+    return { isIndexing, uploadFile };
 }

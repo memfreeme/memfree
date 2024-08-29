@@ -108,7 +108,13 @@ export async function POST(req: Request) {
             },
         });
 
-        return NextResponse.json({ status: 'success' });
+        return NextResponse.json([
+            {
+                url: url,
+                name: file.name,
+                type: file.type,
+            },
+        ]);
     } catch (error) {
         console.error('Failed to read file:', error);
         return new Response('Failed to read file', { status: 500 });

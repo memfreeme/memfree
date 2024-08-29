@@ -33,8 +33,8 @@ export interface SearchSource {
 export const TEXT_LIMIT = 16;
 export const IMAGE_LIMIT = 8;
 
-export function getVectorSearch(userId: string): SearchSource {
-    return new VectorSearch(userId);
+export function getVectorSearch(userId: string, url?: string): SearchSource {
+    return new VectorSearch(userId, url);
 }
 
 export function getSearchEngine(options: SearchOptions): SearchSource {

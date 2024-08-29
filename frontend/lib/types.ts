@@ -51,6 +51,7 @@ export enum SearchCategory {
     INDIE_MAKER = 'indie-maker',
     HACKER_NEWS = 'hacker-news',
     WEB_PAGE = 'web-page',
+    KNOWLEDGE_BASE = 'knowledge-base',
 }
 
 export interface ScoredURL {

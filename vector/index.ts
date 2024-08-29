@@ -27,9 +27,9 @@ export async function handleRequest(req: Request): Promise<Response> {
   }
 
   if (path === "/api/vector/search" && method === "POST") {
-    const { query, userId } = await req.json();
+    const { query, userId, url } = await req.json();
     try {
-      const result = await search(query, userId);
+      const result = await search(query, userId, url);
       return Response.json(result);
     } catch (unknownError) {
       let errorMessage: string | null = null;

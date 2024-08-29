@@ -11,6 +11,7 @@ import { streamController } from '@/lib/llm/utils';
 import { SearchCategory } from '@/lib/types';
 import { indieMakerSearch } from '@/lib/tools/indie';
 import { containsValidUrl } from '@/lib/server-utils';
+import { knowledgeBaseSearch } from '@/lib/tools/knowledge-base';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -20,11 +21,11 @@ const ratelimit = new Ratelimit({
 });
 
 const updateSource = function (source, messages) {
-    if (source === SearchCategory.ALL) {
-        return source;
-    }
-    const imageFile = messages[messages.length - 1].imageFile;
+    const imageFile = messages[0].imageFile;
     if (imageFile) {
+        if (imageFile.startsWith('local-')) {
+            return SearchCategory.KNOWLEDGE_BASE;
+        }
         return SearchCategory.ALL;
     }
     const query = messages[messages.length - 1].content;
@@ -71,26 +72,43 @@ export async function POST(req: NextRequest) {
 
     source = updateSource(source, messages);
 
+    console.log(messages);
+    console.log(source);
+
     try {
         const readableStream = new ReadableStream({
             async start(controller) {
-                if (source === SearchCategory.INDIE_MAKER) {
-                    await indieMakerSearch(
-                        messages,
-                        isPro,
-                        userId,
-                        streamController(controller),
-                        model,
-                    );
-                } else {
-                    await chat(
-                        messages,
-                        isPro,
-                        userId,
-                        streamController(controller),
-                        model,
-                        source,
-                    );
+                switch (source) {
+                    case SearchCategory.INDIE_MAKER: {
+                        await indieMakerSearch(
+                            messages,
+                            isPro,
+                            userId,
+                            streamController(controller),
+                            model,
+                        );
+                        break;
+                    }
+                    case SearchCategory.KNOWLEDGE_BASE: {
+                        await knowledgeBaseSearch(
+                            messages,
+                            isPro,
+                            userId,
+                            streamController(controller),
+                            model,
+                        );
+                        break;
+                    }
+                    default: {
+                        await chat(
+                            messages,
+                            isPro,
+                            userId,
+                            streamController(controller),
+                            model,
+                            source,
+                        );
+                    }
                 }
             },
             cancel() {

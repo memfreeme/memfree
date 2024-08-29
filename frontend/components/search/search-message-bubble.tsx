@@ -1,5 +1,11 @@
 import SourceBubble from '@/components/search/source-bubble';
-import { Images, ListPlusIcon, PlusIcon, TextSearchIcon } from 'lucide-react';
+import {
+    FileTextIcon,
+    Images,
+    ListPlusIcon,
+    PlusIcon,
+    TextSearchIcon,
+} from 'lucide-react';
 import ImageGallery from '@/components/search/image-gallery';
 import { Message } from '@/lib/types';
 
@@ -105,7 +111,7 @@ const SearchMessageBubble = memo(
                 {isUser && (
                     <QuestionSection content={content}></QuestionSection>
                 )}
-                {isUser && imageFile && (
+                {isUser && imageFile && imageFile.startsWith('http') && (
                     <div className="flex items-center justify-center mx-auto">
                         <img
                             src={imageFile}
@@ -115,6 +121,17 @@ const SearchMessageBubble = memo(
                             loading="lazy"
                             className="aspect-square shrink-0 border rounded-md object-contain"
                         />
+                    </div>
+                )}
+                {isUser && imageFile && imageFile.startsWith('local') && (
+                    <div className="flex items-center gap-2 p-2">
+                        <FileTextIcon
+                            className="size-6 text-muted-foreground"
+                            aria-hidden="true"
+                        />
+                        <p className="line-clamp-1 text-sm font-medium text-foreground/80">
+                            {imageFile}
+                        </p>
                     </div>
                 )}
             </div>

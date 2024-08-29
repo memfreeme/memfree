@@ -67,7 +67,7 @@ export async function append(tableName: string, data: lancedb.Data) {
   return table;
 }
 
-export async function search(query: string, table: string) {
+export async function search(query: string, table: string, url?: string) {
   const db = await getConnection();
   const tbl = await db.openTable(table);
 
@@ -76,12 +76,24 @@ export async function search(query: string, table: string) {
   console.timeEnd("embedding");
 
   console.time("search");
-  const results = await tbl
-    .vectorSearch(query_embedding)
-    .select(["title", "text", "url", "image"])
-    .distanceType("cosine")
-    .limit(10)
-    .toArray();
+  let results: any[] = [];
+  if (url) {
+    results = await tbl
+      .vectorSearch(query_embedding)
+      .where(`url == '${url}'`)
+      .select(["title", "text", "url", "image"])
+      .distanceType("cosine")
+      .limit(10)
+      .toArray();
+  } else {
+    results = await tbl
+      .vectorSearch(query_embedding)
+      .select(["title", "text", "url", "image"])
+      .distanceType("cosine")
+      .limit(10)
+      .toArray();
+  }
+
   console.timeEnd("search");
   return results;
 }

@@ -22,15 +22,44 @@ export function useUploadFile(
     const [uploadedFiles, setUploadedFiles] = React.useState<UploadedFile[]>();
     const [isUploading, setIsUploading] = React.useState(false);
 
+    console.log('uploadedFiles', uploadedFiles);
+
+    const indexLocalFile = async (files: File[]) => {
+        const endpoint = '/api/upload';
+        setIsUploading(true);
+        try {
+            const formData = new FormData();
+            formData.append('file', files[0]);
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await res.json();
+            console.log(data);
+            return data;
+        } catch (err) {
+            console.error(err);
+            toast.error(String(err));
+            throw err;
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
     async function onUpload(files: File[]) {
         setIsUploading(true);
         try {
-            const res = await uploadFiles(endpoint, {
-                ...props,
-                files,
-            });
-
-            setUploadedFiles((prev) => (prev ? [...prev, ...res] : res));
+            if (files[0].type.startsWith('image/')) {
+                const res = await uploadFiles(endpoint, {
+                    ...props,
+                    files,
+                });
+                setUploadedFiles((prev) => (prev ? [...prev, ...res] : res));
+            } else {
+                const res = await indexLocalFile(files);
+                console.log(res);
+                setUploadedFiles((prev) => (prev ? [...prev, ...res] : res));
+            }
         } catch (err) {
             console.error(err);
             toast.error('Something went wrong, please try again later.');
