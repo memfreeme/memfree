@@ -77,6 +77,9 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
 
     const { getInputProps } = useDropzone({
         onDrop,
+        accept: {
+            'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp'],
+        },
         noClick: true,
         noKeyboard: true,
     });
