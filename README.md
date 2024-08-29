@@ -1,7 +1,7 @@
 # MemFree
 
 <a href="https://www.memfree.me">
-  <img alt="MemFree – Hybrid AI Search Engine" src="https://utfs.io/f/fb5e8e49-ef72-4370-a881-1d16c5f18dc9-salech.gif" width="100%">
+  <img alt="MemFree – Hybrid AI Search Engine" src=".assets/memfree-ai-search.gif" width="100%">
 </a>
 <a href="https://www.memfree.me">
   <h1 align="center">MemFree</h1>
