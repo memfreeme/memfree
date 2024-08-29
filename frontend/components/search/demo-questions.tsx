@@ -19,7 +19,7 @@ const exampleMessages = [
         source: SearchCategory.ALL,
     },
     {
-        title: 'Summarize the Web Page and PDF',
+        title: 'Summarize and ask Web Page and PDF',
         message:
             'Summarize the content of https://www.memfree.me/docs/index-bookmarks',
         source: SearchCategory.ALL,
