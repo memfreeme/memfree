@@ -74,6 +74,7 @@ const components = {
                 'font-medium underline underline-offset-4 break-words overflow-hidden',
                 className,
             )}
+            target="_blank"
             {...props}
         />
     ),

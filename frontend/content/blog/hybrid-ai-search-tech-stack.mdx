@@ -2,7 +2,7 @@
 title: Hybrid AI Search 3 - The Full Tech Stack
 description: The Full Tech Stack of Hybrid AI Search
 image: /images/blog/blog-post-2.jpg
-date: '2024-07-08'
+date: '2024-08-29'
 authors:
     - MemFree
 ---
@@ -17,9 +17,19 @@ As a backend developer with 10 years of programming experience, who has deeply u
 
 So you will find that the main language of the [MemFree](https://github.com/memfreeme/memfree) memfree project is TS, but the embedding sub-project that requires high-performance computing uses Rust
 
+## AI Model: OpenAI + Anthropic + Google Gemini
+
+OpenAI's GPT-4o, Anthropic's Claude 3.5 Sonnet, and Google's Gemini 1.5 Pro are currently the most advanced AI models, and we need to allow users to choose according to their own scenarios.
+
+## Unified API for AI Model: Vercel AI SDK
+
+[Vercel AI SDK](https://github.com/vercel/ai)
+
+With the Vercel AI SDK, you can integrate an AI model with just a few lines of code, easily implement tool calls, and easily support image input.
+
 ## TP DataBase: Upstash Redis
 
-I have tried many databases, and the reason why I finally chose Upstash Redis is:
+I have tried many databases, and the reason why I finally chose [Upstash Redis](https://upstash.com/docs/redis/overall/getstarted) is:
 
 -   Fast
 -   ServerLess
@@ -28,7 +38,7 @@ I have tried many databases, and the reason why I finally chose Upstash Redis is
 
 ## Vector DataBase: LanceDB
 
-I have tried many databases, and also built a vectorized search service based on Faiss index. the reason why I finally chose LanceDB is:
+I have tried many databases, and also built a vectorized search service based on Faiss index. the reason why I finally chose [LanceDB](https://lancedb.github.io/lancedb/) is:
 
 -   High-Performance Column Store
 -   Native vector Support
@@ -39,48 +49,57 @@ I have tried many databases, and also built a vectorized search service based on
 
 ## Frontend Stack
 
--   [NextJS](https://github.com/memfreeme/memfree)
--   [React](https://github.com/facebook/react)
--   [Shadcn-UI](https://github.com/shadcn-ui/ui)
--   [Tailwindcss](https://github.com/tailwindlabs/tailwindcss)
+-   [Next.js](https://github.com/vercel/next.js) : The most popular open source React Framework
+-   [React](https://github.com/facebook/react) : The most popular open source JavaScript library for building user interfaces
+-   [Shadcn-UI](https://github.com/shadcn-ui/ui) : The most popular reusable open source component libraries based on Radix UI and Tailwind CSS
+-   [Tailwindcss](https://github.com/tailwindlabs/tailwindcss) : The most popular open source utility-first CSS framework
 -   [Prettier](https://github.com/prettier/prettier) : Code Formatter
--   [Stripe](https://github.com/stripe/stripe-node) : Payment
--   [Contentlayer](https://github.com/contentlayerdev/contentlayer) : The easiest way to build blogs and documentation for your website
+-   [Stripe](https://github.com/stripe/stripe-node) : The most popular and powerful payment method
+-   [Contentlayer](https://github.com/contentlayerdev/contentlayer) : The easiest way to build blogs and documentation for your website based on md or mdx files
 
 Why?
 
-Because they are the most popular and powerful front-end frameworks, when you encounter problems, most of them can quickly find solutions. **When you choose a framework, the ecosystem is the first thing you should consider**
+Because they are the most popular and powerful front-end frameworks, when you encounter problems, most of them can quickly find solutions. **When you choose a framework, the ecosystem is the first thing you should consider**, Even though AI can now help us solve most problems.
 
 ## TS Runtime：Bun
 
-https://github.com/oven-sh/bun
+[Bun](https://github.com/oven-sh/bun)
 
-I won't explain too much, I'll just say that if you haven't used bun yet, I highly recommend you spend a few minutes with it.
+I won't explain too much, I'll just say that if you haven't used bun yet, I highly recommend you spend a few minutes with it, which is super fast and easy to use.
 
 ## Auth：Auth.js
 
-https://github.com/nextauthjs/next-auth
+[Auth.js](https://github.com/nextauthjs/next-auth)
 
--   Powerful ecosystem
+-   Powerful ecosystem, Integration of google, github, x, email, etc. can be completed in a few minutes
 -   You should own your users’ authentication data and should not put it in other people’s hands
 
 ## Object Storage: Cloudflare R2 + AWS S3 Express
 
-Cloudflare R2 is cheap but fast, AWS S3 Express is fast but expensive.
+[Cloudflare R2](https://www.cloudflare.com/developer-platform/r2/) is cheap but fast, [AWS S3 Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/) is fast but expensive.
 
 So if you want to store some images, files, you could use Cloudflare R2,
-if you want to store database files, you should use AWS S3 Express
+if you want to store database files, you should use AWS S3 Express.
 
-## Search API: SearXNG + Serper
+Recently, I'm trying [uploadthing](https://uploadthing.com/) for temporary files and images in MemFree search. I'll update it in a month if I find uploadthing stable enough.
+
+## Search API: SearXNG + Serper + Exa
 
 [SearXNG](https://github.com/searxng/searxng) is cheap but slow and need to slef-host, [Serper](https://serper.dev/) is fast but expensive.
 
+[Exa](https://exa.ai/) is the most expensive. Currently, MemFree mainly uses Exa to support Twitter content search.
+
 You could refer to [MemFree](https://github.com/memfreeme/memfree) Mixed use
 
-## Deploy Platform：Vercel + Zeabur
+## Deploy Platform：Vercel + Fly.io
 
 -   [Vercel](https://vercel.com/home) is for next.js project Deployment
--   [Zeabur](https://zeabur.com?referralCode=memfree) is for backend stateful project Deployment
+-   [Fly.io](https://fly.io/) is for backend stateful project Deployment
+
+Why?
+
+-   Vercel has the arguably best support for nextjs
+-   For the reasons of choosing fly.io, you can refer to [The Advantages of deploying Searxng on Fly.io](https://www.memfree.me/docs/deploy-searxng-fly-io#the-advantages-of-deploying-searxng-on-flyio)
 
 ## Log System: Axiom
 
