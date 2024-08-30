@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, {
+    useRef,
+    useState,
+    useEffect,
+    useCallback,
+    useMemo,
+} from 'react';
 import SearchMessageBubble from '@/components/search/search-message-bubble';
 
 import { fetchEventSource } from '@microsoft/fetch-event-source';
@@ -40,6 +46,12 @@ export function SearchWindow({
         initialMessages ?? [],
     );
 
+    useEffect(() => {
+        if (messages.length === 0 && initialMessages.length > 0) {
+            setMessages(initialMessages);
+        }
+    }, [initialMessages]);
+
     const messagesContentRef = useRef(messages);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -54,29 +66,34 @@ export function SearchWindow({
         messagesContentRef.current = messages;
     }, [messages]);
 
+    const search = useMemo(() => {
+        return searches.find((s) => s.id === id);
+    }, [searches, id]);
+
     useEffect(() => {
-        if (user?.id && !path.includes('search') && messages.length === 1) {
-            window.history.replaceState({}, '', `/search/${id}`);
+        if (user?.id) {
+            if (!path.includes('search') && messages.length === 1) {
+                window.history.replaceState({}, '', `/search/${id}`);
+            }
+
+            if (
+                messages.length === 2 &&
+                !isLoading &&
+                path.includes('search')
+            ) {
+                if (
+                    search &&
+                    Date.now() - new Date(search.createdAt).getTime() < 1000 * 3
+                ) {
+                    router.refresh();
+                    scrollToBottom();
+                }
+            }
         }
-    }, [id, path, messages.length, user?.id]);
+    }, [id, path, messages.length, user?.id, isLoading, router, search]);
 
     const { messagesRef, scrollRef, visibilityRef, isVisible, scrollToBottom } =
         useScrollAnchor();
-
-    useEffect(() => {
-        if (
-            user?.id &&
-            messages.length == 2 &&
-            !isLoading &&
-            path.includes('search')
-        ) {
-            const search = searches.find((s) => s.id === id);
-            if (Date.now() - new Date(search.createdAt).getTime() < 1000 * 3) {
-                router.refresh();
-                scrollToBottom();
-            }
-        }
-    }, [messages.length, user?.id, isLoading, router, path]);
 
     const checkMessagesLength = () => {
         if (!user && messagesContentRef.current.length > 20) {

@@ -21,7 +21,7 @@ export default async function SharePage({ params }: SharePageProps) {
             <HeroLanding />
             <SearchWindow
                 id={search.id}
-                initialMessages={search?.messages}
+                initialMessages={search?.messages ?? []}
                 user={{}}
                 isReadOnly={true}
             ></SearchWindow>

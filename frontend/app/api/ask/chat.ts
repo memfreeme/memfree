@@ -55,7 +55,7 @@ export async function chat(
 
         let userMessages = await createUserMessages(query, imageFile);
 
-        console.log('userMessages', userMessages.toString());
+        // console.log('userMessages', userMessages.toString());
 
         const maxTokens = getMaxOutputToken(isPro);
         const result = await streamText({

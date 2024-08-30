@@ -72,8 +72,8 @@ export async function POST(req: NextRequest) {
 
     source = updateSource(source, messages);
 
-    console.log(messages);
-    console.log(source);
+    // console.log(messages);
+    // console.log(source);
 
     try {
         const readableStream = new ReadableStream({
