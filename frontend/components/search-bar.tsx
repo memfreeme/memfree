@@ -1,6 +1,12 @@
 'use client';
 
-import React, { KeyboardEvent, useMemo, useRef, useState } from 'react';
+import React, {
+    KeyboardEvent,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { SendHorizontal, Image as ImageIcon, FileTextIcon } from 'lucide-react';
 import { useIndexModal } from '@/hooks/use-index-modal';
@@ -16,7 +22,7 @@ import { useUserStore } from '@/lib/store';
 import { toast } from 'sonner';
 import { Icons } from '@/components/shared/icons';
 import Image from 'next/image';
-import { useDropzone } from 'react-dropzone';
+import { FileRejection, useDropzone } from 'react-dropzone';
 import { useUploadFile } from '@/hooks/use-upload-file';
 
 interface Props {
@@ -35,7 +41,6 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
             return;
         }
         if (uploadedFiles && uploadedFiles.length > 0) {
-            console.log('uploadedFiles', uploadedFiles[0].url);
             handleSearch(content, uploadedFiles[0].url);
             setFile(undefined);
         } else {
@@ -56,8 +61,6 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const { onUpload, uploadedFiles, isUploading } =
         useUploadFile('imageUploader');
 
-    console.log('uploadedFiles', uploadedFiles);
-
     const imageUrl = useMemo(() => {
         if (file) {
             return URL.createObjectURL(file);
@@ -65,7 +68,27 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         return null;
     }, [file]);
 
-    const onDrop = (acceptedFiles) => {
+    useEffect(() => {
+        return () => {
+            if (imageUrl) {
+                URL.revokeObjectURL(imageUrl);
+            }
+        };
+    }, [imageUrl]);
+
+    const onDrop = (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+        if (rejectedFiles.length > 0) {
+            rejectedFiles.forEach(({ file }) => {
+                toast.error(
+                    `The file ${file.name} you uploaded exceeds the maximum limit of 4MB. Please upload a file smaller than 4MB.`,
+                );
+            });
+            return;
+        }
+        if (acceptedFiles.length > 1) {
+            toast.error('Cannot upload more than 1 file at a time');
+            return;
+        }
         const file = acceptedFiles[0];
         setFile(file);
         const target = file.name;
@@ -89,8 +112,11 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
             'application/vnd.openxmlformats-officedocument.presentationml.presentation':
                 ['.pptx'],
         },
+        maxSize: 4 * 1024 * 1024,
         noClick: true,
         noKeyboard: true,
+        multiple: false,
+        disabled: isUploading || file?.size > 0,
     });
 
     const openFileDialog = () => {
@@ -167,7 +193,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                     />
                                     <button
                                         type="button"
-                                        disabled={isUploading}
+                                        disabled={isUploading || file?.size > 0}
                                         aria-label="Image upload"
                                         className="text-gray-500 hover:text-primary flex items-center"
                                         onClick={() => {
@@ -196,7 +222,9 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                     </button>
                                 </div>
                             </TooltipTrigger>
-                            <TooltipContent>Attach Image</TooltipContent>
+                            <TooltipContent>
+                                Attach Local Image and File
+                            </TooltipContent>
                         </Tooltip>
                     </div>
                     <div className="absolute right-0 bottom-0 mb-1 mr-2 mt-6">

@@ -223,7 +223,7 @@ export function SearchWindow({
                     resetMessages(messageIdToUpdate);
                 }
 
-                console.log('image', image);
+                // console.log('image', image);
 
                 const url = `/api/search`;
                 await fetchEventSource(url, {

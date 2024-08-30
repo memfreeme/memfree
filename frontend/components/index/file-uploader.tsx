@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Image from 'next/image';
-import { Cross2Icon, FileTextIcon, UploadIcon } from '@radix-ui/react-icons';
+import { FileTextIcon, UploadIcon } from '@radix-ui/react-icons';
 import Dropzone, {
     type DropzoneProps,
     type FileRejection,
@@ -16,70 +16,10 @@ import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
-    /**
-     * Value of the uploader.
-     * @type File[]
-     * @default undefined
-     * @example value={files}
-     */
     value?: File[];
-
-    /**
-     * Function to be called when the value changes.
-     * @type (files: File[]) => void
-     * @default undefined
-     * @example onValueChange={(files) => setFiles(files)}
-     */
     onValueChange?: (files: File[]) => void;
-
-    /**
-     * Function to be called when files are uploaded.
-     * @type (files: File[]) => Promise<void>
-     * @default undefined
-     * @example onUpload={(files) => uploadFiles(files)}
-     */
     onUpload?: (files: File[]) => Promise<void>;
-    /**
-     * Accepted file types for the uploader.
-     * @type { [key: string]: string[]}
-     * @default
-     * ```ts
-     * { "image/*": [] }
-     * ```
-     * @example accept={["image/png", "image/jpeg"]}
-     */
     accept?: DropzoneProps['accept'];
-
-    /**
-     * Maximum file size for the uploader.
-     * @type number | undefined
-     * @default 1024 * 1024 * 2 // 2MB
-     * @example maxSize={1024 * 1024 * 2} // 2MB
-     */
-    maxSize?: DropzoneProps['maxSize'];
-
-    /**
-     * Maximum number of files for the uploader.
-     * @type number | undefined
-     * @default 1
-     * @example maxFileCount={4}
-     */
-    maxFileCount?: DropzoneProps['maxFiles'];
-
-    /**
-     * Whether the uploader should accept multiple files.
-     * @type boolean
-     * @default false
-     * @example multiple
-     */
-    multiple?: boolean;
-
-    /**
-     * Whether the uploader is disabled.
-     * @type boolean
-     * @default false
-     * @example disabled
-     */
     disabled?: boolean;
 }
 
@@ -96,9 +36,6 @@ export function FileUploader(props: FileUploaderProps) {
             'application/vnd.openxmlformats-officedocument.presentationml.presentation':
                 ['.pptx'],
         },
-        maxSize = 1024 * 1024 * 2,
-        maxFileCount = 1,
-        multiple = false,
         disabled = false,
         className,
         ...dropzoneProps
@@ -111,13 +48,8 @@ export function FileUploader(props: FileUploaderProps) {
 
     const onDrop = React.useCallback(
         (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
-            if (!multiple && maxFileCount === 1 && acceptedFiles.length > 1) {
+            if (acceptedFiles.length > 1) {
                 toast.error('Cannot upload more than 1 file at a time');
-                return;
-            }
-
-            if ((files?.length ?? 0) + acceptedFiles.length > maxFileCount) {
-                toast.error(`Cannot upload more than ${maxFileCount} files`);
                 return;
             }
 
@@ -133,20 +65,15 @@ export function FileUploader(props: FileUploaderProps) {
 
             if (rejectedFiles.length > 0) {
                 rejectedFiles.forEach(({ file }) => {
-                    toast.error(`File ${file.name} was rejected`);
+                    toast.error(
+                        `The file ${file.name} you uploaded exceeds the maximum limit of 4MB. Please upload a file smaller than 4MB.`,
+                    );
                 });
+                return;
             }
 
-            if (
-                onUpload &&
-                updatedFiles.length > 0 &&
-                updatedFiles.length <= maxFileCount
-            ) {
-                const target =
-                    updatedFiles.length > 0
-                        ? `${updatedFiles.length} files`
-                        : `file`;
-
+            if (onUpload && updatedFiles.length > 0) {
+                const target = updatedFiles[0].name;
                 toast.promise(onUpload(updatedFiles), {
                     loading: `Uploading ${target}...`,
                     success: () => {
@@ -158,7 +85,7 @@ export function FileUploader(props: FileUploaderProps) {
             }
         },
 
-        [files, maxFileCount, multiple, onUpload, setFiles],
+        [files, onUpload, setFiles],
     );
 
     function onRemove(index: number) {
@@ -181,16 +108,16 @@ export function FileUploader(props: FileUploaderProps) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const isDisabled = disabled || (files?.length ?? 0) >= maxFileCount;
+    const isDisabled = disabled || (files?.length ?? 0) >= 1;
 
     return (
         <div className="relative flex flex-col gap-6 overflow-hidden mt-4">
             <Dropzone
                 onDrop={onDrop}
                 accept={accept}
-                maxSize={maxSize}
-                maxFiles={maxFileCount}
-                multiple={maxFileCount > 1 || multiple}
+                maxSize={1024 * 1024 * 4}
+                maxFiles={1}
+                multiple={false}
                 disabled={isDisabled}
             >
                 {({ getRootProps, getInputProps, isDragActive }) => (
@@ -232,11 +159,8 @@ export function FileUploader(props: FileUploaderProps) {
                                         select files
                                     </p>
                                     <p className="text-sm text-muted-foreground/70">
-                                        You can upload
-                                        {maxFileCount > 1
-                                            ? ` ${maxFileCount === Infinity ? 'multiple' : maxFileCount}
-                      files (up to ${formatBytes(maxSize)} each)`
-                                            : ` a file with ${formatBytes(maxSize)}`}
+                                        You can upload a file with{' '}
+                                        {formatBytes(4 * 1024 * 1024)}
                                     </p>
                                 </div>
                             </div>

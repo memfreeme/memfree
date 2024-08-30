@@ -31,19 +31,21 @@ export const useSearchStore = create<SearchStore>((set) => ({
             if (state.searches.length === 0) {
                 return { searches: newSearches };
             }
-            const lastSearch = state.searches[state.searches.length - 1];
-            const lastTimestamp = lastSearch
-                ? new Date(lastSearch.createdAt).getTime()
-                : 0;
 
-            const uniqueNewSearches = newSearches.filter((search) => {
-                return new Date(search.createdAt).getTime() < lastTimestamp;
-            });
+            const combinedSearches = [...state.searches, ...newSearches];
 
-            const updatedSearches = [
-                ...state.searches,
-                ...uniqueNewSearches,
-            ].sort((a, b) => {
+            const uniqueIds = new Set();
+            const uniqueSearches = [];
+
+            for (const search of combinedSearches) {
+                const searchId = search.id;
+                if (!uniqueIds.has(searchId)) {
+                    uniqueIds.add(searchId);
+                    uniqueSearches.push(search);
+                }
+            }
+
+            const updatedSearches = uniqueSearches.sort((a, b) => {
                 return (
                     new Date(b.createdAt).getTime() -
                     new Date(a.createdAt).getTime()

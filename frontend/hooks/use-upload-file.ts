@@ -22,7 +22,7 @@ export function useUploadFile(
     const [uploadedFiles, setUploadedFiles] = React.useState<UploadedFile[]>();
     const [isUploading, setIsUploading] = React.useState(false);
 
-    console.log('uploadedFiles', uploadedFiles);
+    // console.log('uploadedFiles', uploadedFiles);
 
     const indexLocalFile = async (files: File[]) => {
         const endpoint = '/api/upload';
@@ -35,7 +35,7 @@ export function useUploadFile(
                 body: formData,
             });
             const data = await res.json();
-            console.log(data);
+            // console.log(data);
             return data;
         } catch (err) {
             console.error(err);
@@ -57,7 +57,7 @@ export function useUploadFile(
                 setUploadedFiles((prev) => (prev ? [...prev, ...res] : res));
             } else {
                 const res = await indexLocalFile(files);
-                console.log(res);
+                // console.log(res);
                 setUploadedFiles((prev) => (prev ? [...prev, ...res] : res));
             }
         } catch (err) {

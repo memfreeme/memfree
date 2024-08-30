@@ -42,8 +42,6 @@ export const IndexModal = () => {
                     </TabsContent>
                     <TabsContent value="local" className="w-full">
                         <FileUploader
-                            maxFileCount={1}
-                            maxSize={10 * 1024 * 1024}
                             onUpload={uploadFile}
                             disabled={isIndexing}
                         />

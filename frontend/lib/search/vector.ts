@@ -38,10 +38,15 @@ export class VectorSearch implements SearchSource {
             let images: ImageSource[] = [];
             const result = await response.json();
 
-            console.log('vector search result:', result);
+            // console.log('vector search result:', result);
+
+            let distance = 0.5;
+            if (this.url) {
+                distance = 0.9;
+            }
 
             result
-                .filter((item) => item._distance <= 0.5)
+                .filter((item) => item._distance <= distance)
                 .map((item) => {
                     texts.push({
                         title: item.title,
