@@ -22,7 +22,6 @@ export const accessWebPage = async (
             );
         }
         const json = await response.json();
-        // console.log('accessWebPage:', json);
         texts.push({
             title: json.data.title,
             url: json.data.url,

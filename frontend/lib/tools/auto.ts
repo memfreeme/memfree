@@ -1,7 +1,7 @@
 'use server';
 
 import { incSearchCount } from '@/lib/db';
-import { getLLM, Message } from '@/lib/llm/llm';
+import { getAutoAnswerModel, getLLM, Message } from '@/lib/llm/llm';
 import { AutoAnswerPrompt } from '@/lib/llm/prompt';
 import { getHistory, getMaxOutputToken, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
@@ -59,7 +59,7 @@ export async function autoAnswer(
 
         const maxTokens = getMaxOutputToken(isPro);
         const result = await streamText({
-            model: getLLM(GPT_4o_MIMI),
+            model: getAutoAnswerModel(model),
             system: system,
             messages: userMessages,
             maxTokens: maxTokens,

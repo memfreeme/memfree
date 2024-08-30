@@ -42,9 +42,6 @@ export async function POST(req: NextRequest) {
     if (session) {
         userId = session.user.id;
         isPro = checkIsPro(session.user);
-        if (isPro) {
-            console.log(session.user.id + ' is a pro user');
-        }
     } else {
         const ip = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').split(
             ',',

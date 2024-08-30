@@ -14,4 +14,7 @@ const validModels = [
     GEMINI_PRO,
 ];
 
+const proModels = [GPT_4o, Claude_35_Sonnet, GEMINI_PRO];
+
 export const validModel = (model: string) => validModels.includes(model);
+export const isProModel = (model: string) => proModels.includes(model);
