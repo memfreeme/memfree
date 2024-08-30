@@ -6,12 +6,12 @@ import { RATE_LIMIT_KEY, redisDB } from '@/lib/db';
 import { validModel } from '@/lib/model';
 import { logError } from '@/lib/log';
 import { checkIsPro } from '@/lib/shared-utils';
-import { chat } from '@/app/api/ask/chat';
 import { streamController } from '@/lib/llm/utils';
 import { SearchCategory } from '@/lib/types';
 import { indieMakerSearch } from '@/lib/tools/indie';
 import { containsValidUrl } from '@/lib/server-utils';
 import { knowledgeBaseSearch } from '@/lib/tools/knowledge-base';
+import { autoAnswer } from '@/lib/tools/auto';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
                         break;
                     }
                     default: {
-                        await chat(
+                        await autoAnswer(
                             messages,
                             isPro,
                             userId,

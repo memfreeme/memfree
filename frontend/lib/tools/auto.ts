@@ -24,7 +24,7 @@ import { CoreUserMessage, generateId, streamText, tool } from 'ai';
 import util from 'util';
 import { z } from 'zod';
 
-export async function chat(
+export async function autoAnswer(
     messages: StoreMessage[],
     isPro: boolean,
     userId: string,
