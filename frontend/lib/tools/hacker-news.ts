@@ -21,9 +21,11 @@ export async function get_top_stories(
             title: story.title,
             url: story.url ? story.url : story.hnUrl,
             content:
-                story.text && story.text.length >= 100
-                    ? story.text
-                    : story.comments.map((comment) => comment.text).join('\n'),
+                (story.title || ' ') +
+                (story.text || ' ') +
+                (story.comments
+                    ? story.comments.map((comment) => comment.text).join('\n')
+                    : ' '),
             type: 'hacker-news story',
         });
     });
@@ -44,6 +46,14 @@ export async function get_story_with_comments(id: number) {
         `https://hacker-news.firebaseio.com/v0/item/${id}.json`,
     );
     const data = await response.json();
+    if (!data.kids) {
+        return {
+            ...data,
+            hnUrl: `https://news.ycombinator.com/item?id=${id}`,
+            comments: [],
+        };
+    }
+
     const comments = await Promise.all(
         data.kids.slice(0, 10).map((id: number) => get_story(id)),
     );

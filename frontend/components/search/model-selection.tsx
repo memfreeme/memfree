@@ -32,14 +32,14 @@ export const modelMap: Record<string, Model> = {
         name: 'GPT-4o mini',
         value: GPT_4o_MIMI,
     },
-    [GEMINI_FLASH]: {
-        name: 'Gemini 1.5 Flash',
-        value: GEMINI_FLASH,
-    },
-    [LLAMA_31_70B]: {
-        name: 'LLAMA 3.1 70B',
-        value: LLAMA_31_70B,
-    },
+    // [GEMINI_FLASH]: {
+    //     name: 'Gemini 1.5 Flash',
+    //     value: GEMINI_FLASH,
+    // },
+    // [LLAMA_31_70B]: {
+    //     name: 'LLAMA 3.1 70B',
+    //     value: LLAMA_31_70B,
+    // },
     [GPT_4o]: {
         name: 'GPT-4o',
         flag: 'Pro',
