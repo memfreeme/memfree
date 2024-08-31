@@ -1,5 +1,5 @@
 import { extractDomain } from '@/lib/utils';
-import { NotebookPen } from 'lucide-react';
+import { ReaderIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import React, { memo, useState } from 'react';
 
@@ -62,11 +62,7 @@ const SourceBubble = ({ source, onSelect }) => {
                                 onSelect(`please summarize ${source.url}`)
                             }
                         >
-                            <NotebookPen
-                                size={18}
-                                strokeWidth={2}
-                                className="peer"
-                            />
+                            <ReaderIcon className="peer size-4" />
                             <span className="absolute z-50 left-1/2 -translate-x-1/2 bottom-full mb-1 text-sm text-gray-700 opacity-0  peer-hover:opacity-100">
                                 Summarize
                             </span>
