@@ -41,6 +41,9 @@ export async function generateUserStripe(
                 mode: 'subscription',
                 billing_address_collection: 'auto',
                 customer_email: session.user.email,
+                automatic_tax: {
+                    enabled: true,
+                },
                 line_items: [
                     {
                         price: priceId,

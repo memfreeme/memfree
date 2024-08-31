@@ -1,6 +1,6 @@
 import { getUserById, getUserIdByEmail, updateUser } from "./redis";
 
-async function updateUserPeriodEnd(email: string) {
+async function RemoveSubscription(email: string) {
   const userId: string | null = await getUserIdByEmail(email);
   if (!userId) {
     console.log(`No user found with email ${email}`);
@@ -13,12 +13,15 @@ async function updateUserPeriodEnd(email: string) {
     return;
   }
   console.log("old user", user);
-  const oneYearAgo = new Date();
-  // oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-  oneYearAgo.setFullYear(oneYearAgo.getFullYear() + 1);
-  user.stripeCurrentPeriodEnd = oneYearAgo;
-  console.log("new user", user);
-  await updateUser(userId, user);
+  const newUser = {
+    ...user,
+    stripePriceId: null,
+    stripeCurrentPeriodEnd: null,
+    stripeSubscriptionId: null,
+    stripeCustomerId: null,
+  };
+  console.log("new user", newUser);
+  await updateUser(userId, newUser);
 }
 
 const email = process.argv[2];
@@ -28,4 +31,4 @@ if (!email) {
   process.exit(1);
 }
 
-await updateUserPeriodEnd(email);
+await RemoveSubscription(email);
