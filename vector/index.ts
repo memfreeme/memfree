@@ -1,6 +1,6 @@
 import { changeEmbedding, compact, deleteUrls, search } from "./db";
 import { log, logError } from "./log";
-import { addErrorUrl } from "./redis";
+import { addErrorUrl, addUrl, urlExists } from "./redis";
 import { isValidUrl } from "./util";
 import {
   ingest_url,
@@ -129,19 +129,36 @@ async function handleRequest(req: Request): Promise<Response> {
   }
 
   if (path === "/api/index/local-file" && method === "POST") {
+    const startTime = new Date().getTime();
     const token = await getToken(req, server.development);
     if (!token) {
       return Response.json("Unauthorized", { status: 401 });
     }
     const formData = await req.formData();
     const file = formData.get("file") as File;
-    const { type, url, markdown } = await getFileContent(file);
-    const title = file.name;
     const userId = token.sub;
+    let url = file.name;
     try {
+      const fileContent = await getFileContent(file);
+      const { type, markdown } = fileContent;
+      url = fileContent.url;
+      const title = file.name;
+
       if (!userId || !markdown || !title) {
         return Response.json("Invalid parameters", { status: 400 });
       }
+
+      const existedUrl = await urlExists(userId, url);
+      if (existedUrl) {
+        await deleteUrls(userId, [url]);
+        log({
+          service: "vector-index",
+          action: "delete-local-file",
+          userId: userId,
+          url: url,
+        });
+      }
+
       switch (type) {
         case "md":
           await ingest_md(url, userId, markdown, title);
@@ -154,6 +171,26 @@ async function handleRequest(req: Request): Promise<Response> {
         default:
           return Response.json("Invalid file type", { status: 400 });
       }
+
+      const indexCount = await addUrl(userId, url);
+      if (indexCount % 50 === 0) {
+        await compact(userId);
+        log({
+          service: "vector-index",
+          action: "compact-local-file",
+          userId: userId,
+          url: url,
+        });
+      }
+
+      log({
+        service: "vector-index",
+        action: "index-local-file",
+        userId: userId,
+        size: markdown.length,
+        time: new Date().getTime() - startTime,
+      });
+
       const response = Response.json([
         {
           url: url,
