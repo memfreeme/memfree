@@ -52,6 +52,7 @@ export function useUploadFile() {
             }
         } catch (err) {
             console.error(err);
+            setUploadedFiles([]);
             toast.error('Something went wrong, please try again later.');
         } finally {
             setIsUploading(false);

@@ -12,7 +12,7 @@ import {
 import { getFileContent } from "./parser";
 import { checkAuth, getToken } from "./auth";
 
-const allowedOrigins = ["http://localhost", "https://www.memfree.me"];
+const allowedOrigins = ["http://localhost:3000", "https://www.memfree.me"];
 
 async function handleRequest(req: Request): Promise<Response> {
   const path = new URL(req.url).pathname;
@@ -154,7 +154,13 @@ async function handleRequest(req: Request): Promise<Response> {
         default:
           return Response.json("Invalid file type", { status: 400 });
       }
-      const response = Response.json("Success");
+      const response = Response.json([
+        {
+          url: url,
+          name: file.name,
+          type: file.type,
+        },
+      ]);
       response.headers.set("Access-Control-Allow-Origin", "*");
       response.headers.set(
         "Access-Control-Allow-Methods",

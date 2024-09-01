@@ -32,7 +32,7 @@ export async function getToken(req: Request, host: string) {
 
 async function decryptToken(token: string, host: string) {
   const salt =
-    host === "localhost:3000"
+    host === "localhost"
       ? "authjs.session-token"
       : `__Secure-authjs.session-token`;
   const encryptionKey = await getDerivedEncryptionKey(enc, JWT_SECRET, salt);
