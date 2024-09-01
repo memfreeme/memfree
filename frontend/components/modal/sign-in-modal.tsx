@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-
 import { Modal } from '@/components/shared/modal';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { SignInGroup } from '@/components/layout/sign-in-group';

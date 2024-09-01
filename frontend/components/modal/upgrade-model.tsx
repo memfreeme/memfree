@@ -12,6 +12,7 @@ const benefits = [
     'More Expert AI Searches Per Month',
     'More Bookmarks and Web Pages to Index',
     'More Detailed Output Per Answer',
+    'Support Large Local Image and File to Ask',
     'Support GPT-4o & Claude-3.5-sonnet AI Model',
     'Support Context-based Continuous Search',
     'Support Rerank to get Better search results',

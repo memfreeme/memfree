@@ -24,6 +24,9 @@ import { Icons } from '@/components/shared/icons';
 import Image from 'next/image';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import { useUploadFile } from '@/hooks/use-upload-file';
+import { checkIsPro } from '@/lib/shared-utils';
+import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
+import { getFileSizeLimit } from '@/lib/utils';
 
 interface Props {
     handleSearch: (key: string, image?: string) => void;
@@ -32,7 +35,8 @@ interface Props {
 const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const [content, setContent] = useState<string>('');
     const signInModal = useSigninModal();
-    const uploadModal = useIndexModal();
+    const indexModal = useIndexModal();
+    const upgradeModal = useUpgradeModal();
     const user = useUserStore((state) => state.user);
 
     const handleClick = () => {
@@ -79,9 +83,10 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         if (rejectedFiles.length > 0) {
             rejectedFiles.forEach(({ file }) => {
                 toast.error(
-                    `The file ${file.name} you uploaded exceeds the maximum limit of 4MB. Please upload a file smaller than 4MB.`,
+                    `The file ${file.name} you uploaded exceeds the maximum limit of 4MB. Please upgrade your plan for larger file uploads.`,
                 );
             });
+            upgradeModal.onOpen();
             return;
         }
         if (acceptedFiles.length > 1) {
@@ -100,6 +105,8 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         });
     };
 
+    const maxSize = getFileSizeLimit(user);
+
     const { getInputProps } = useDropzone({
         onDrop,
         accept: {
@@ -111,7 +118,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
             'application/vnd.openxmlformats-officedocument.presentationml.presentation':
                 ['.pptx'],
         },
-        maxSize: 10 * 1024 * 1024,
+        maxSize: maxSize,
         noClick: true,
         noKeyboard: true,
         multiple: false,
@@ -168,7 +175,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                         if (!user) {
                                             signInModal.onOpen();
                                         } else {
-                                            uploadModal.onOpen();
+                                            indexModal.onOpen();
                                         }
                                     }}
                                 >
@@ -204,7 +211,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                         }}
                                     >
                                         <span className="sr-only">
-                                            Image upload
+                                            Image and Fileupload
                                         </span>
                                         {isUploading ? (
                                             <Icons.spinner

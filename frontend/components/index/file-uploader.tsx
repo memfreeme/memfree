@@ -2,18 +2,22 @@
 
 import * as React from 'react';
 import Image from 'next/image';
-import { FileTextIcon, UploadIcon } from '@radix-ui/react-icons';
+import { Cross2Icon, FileTextIcon, UploadIcon } from '@radix-ui/react-icons';
 import Dropzone, {
     type DropzoneProps,
     type FileRejection,
 } from 'react-dropzone';
 import { toast } from 'sonner';
 
-import { cn, formatBytes } from '@/lib/utils';
+import { cn, formatBytes, getFileSizeLimit } from '@/lib/utils';
 import { useControllableState } from '@/hooks/use-controllable-state';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useUserStore } from '@/lib/store';
+import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
+import { checkIsPro } from '@/lib/shared-utils';
+import { useIndexModal } from '@/hooks/use-index-modal';
 
 interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
     value?: File[];
@@ -46,6 +50,12 @@ export function FileUploader(props: FileUploaderProps) {
         onChange: onValueChange,
     });
 
+    const user = useUserStore((state) => state.user);
+    const upgradeModal = useUpgradeModal();
+    const indexModal = useIndexModal();
+
+    let maxSize = getFileSizeLimit(user);
+
     const onDrop = React.useCallback(
         (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
             if (acceptedFiles.length > 1) {
@@ -66,9 +76,11 @@ export function FileUploader(props: FileUploaderProps) {
             if (rejectedFiles.length > 0) {
                 rejectedFiles.forEach(({ file }) => {
                     toast.error(
-                        `The file ${file.name} you uploaded exceeds the maximum limit of 4MB. Please upload a file smaller than 4MB.`,
+                        `The file ${file.name} you uploaded exceeds the maximum limit of 4MB. Please upgrade your plan for larger file uploads.`,
                     );
                 });
+                indexModal.onClose();
+                upgradeModal.onOpen();
                 return;
             }
 
@@ -115,7 +127,7 @@ export function FileUploader(props: FileUploaderProps) {
             <Dropzone
                 onDrop={onDrop}
                 accept={accept}
-                maxSize={1024 * 1024 * 4}
+                maxSize={maxSize}
                 maxFiles={1}
                 multiple={false}
                 disabled={isDisabled}
@@ -208,7 +220,7 @@ function FileCard({ file, progress, onRemove }: FileCardProps) {
                     {progress ? <Progress value={progress} /> : null}
                 </div>
             </div>
-            {/* <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
                 <Button
                     type="button"
                     variant="outline"
@@ -219,7 +231,7 @@ function FileCard({ file, progress, onRemove }: FileCardProps) {
                     <Cross2Icon className="size-4" aria-hidden="true" />
                     <span className="sr-only">Remove file</span>
                 </Button>
-            </div> */}
+            </div>
         </div>
     );
 }
