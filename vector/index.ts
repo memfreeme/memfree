@@ -129,7 +129,7 @@ async function handleRequest(req: Request): Promise<Response> {
   }
 
   if (path === "/api/index/local-file" && method === "POST") {
-    const token = await getToken(req, server.hostname);
+    const token = await getToken(req, server.development);
     if (!token) {
       return Response.json("Unauthorized", { status: 401 });
     }

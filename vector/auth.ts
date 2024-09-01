@@ -17,24 +17,21 @@ export function checkAuth(req: Request, path: string) {
   }
 }
 
-export async function getToken(req: Request, host: string) {
+export async function getToken(req: Request, isDev: boolean) {
   try {
     const tokenStr = req.headers.get("Token");
     if (!tokenStr) {
       return null;
     }
-    return await decryptToken(tokenStr, host);
+    return await decryptToken(tokenStr, isDev);
   } catch (error) {
     logError(error as Error, "getToken");
     return null;
   }
 }
 
-async function decryptToken(token: string, host: string) {
-  const salt =
-    host === "localhost"
-      ? "authjs.session-token"
-      : `__Secure-authjs.session-token`;
+async function decryptToken(token: string, isDev: boolean) {
+  const salt = isDev ? "authjs.session-token" : `__Secure-authjs.session-token`;
   const encryptionKey = await getDerivedEncryptionKey(enc, JWT_SECRET, salt);
   const { payload } = await jwtDecrypt(token, encryptionKey, {
     clockTolerance: 15,
