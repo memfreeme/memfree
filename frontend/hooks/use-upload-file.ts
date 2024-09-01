@@ -1,42 +1,34 @@
 import * as React from 'react';
 import { toast } from 'sonner';
-import type { UploadFilesOptions } from 'uploadthing/types';
 
 import { uploadFiles } from '@/lib/uploadthing';
-import { type OurFileRouter } from '@/app/api/uploadthing/core';
 
 import { type ClientUploadedFileData } from 'uploadthing/types';
+import { getAuthToken } from '@/actions/token';
 
 export interface UploadedFile<T = unknown> extends ClientUploadedFileData<T> {}
 
-interface UseUploadFileProps
-    extends Pick<
-        UploadFilesOptions<OurFileRouter, keyof OurFileRouter>,
-        'headers' | 'onUploadBegin' | 'onUploadProgress' | 'skipPolling'
-    > {}
-
-export function useUploadFile(
-    endpoint: keyof OurFileRouter,
-    { ...props }: UseUploadFileProps = {},
-) {
+export function useUploadFile() {
     const [uploadedFiles, setUploadedFiles] = React.useState<UploadedFile[]>();
     const [isUploading, setIsUploading] = React.useState(false);
 
     // console.log('uploadedFiles', uploadedFiles);
 
     const indexLocalFile = async (files: File[]) => {
-        const endpoint = '/api/upload';
+        const endpoint = `${process.env.NEXT_PUBLIC_VECTOR_HOST}/api/index/local-file`;
         setIsUploading(true);
         try {
+            const token = await getAuthToken();
             const formData = new FormData();
             formData.append('file', files[0]);
             const res = await fetch(endpoint, {
                 method: 'POST',
                 body: formData,
+                headers: {
+                    Token: `${token.data}`,
+                },
             });
-            const data = await res.json();
-            // console.log(data);
-            return data;
+            return await res.json();
         } catch (err) {
             console.error(err);
             toast.error(String(err));
@@ -50,14 +42,12 @@ export function useUploadFile(
         setIsUploading(true);
         try {
             if (files[0].type.startsWith('image/')) {
-                const res = await uploadFiles(endpoint, {
-                    ...props,
+                const res = await uploadFiles('imageUploader', {
                     files,
                 });
                 setUploadedFiles((prev) => (prev ? [...prev, ...res] : res));
             } else {
                 const res = await indexLocalFile(files);
-                // console.log(res);
                 setUploadedFiles((prev) => (prev ? [...prev, ...res] : res));
             }
         } catch (err) {

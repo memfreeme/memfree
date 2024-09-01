@@ -15,7 +15,13 @@
     "@lancedb/lancedb": "0.8.0",
     "@langchain/openai": "^0.2.5",
     "@langchain/textsplitters": "^0.0.2",
+    "@panva/hkdf": "^1.2.1",
     "@upstash/redis": "^1.31.5",
-    "react-tweet": "^3.2.1"
+    "jose": "^5.8.0",
+    "react-tweet": "^3.2.1",
+    "@langchain/community": "^0.2.28",
+    "mammoth": "^1.8.0",
+    "officeparser": "^4.1.1",
+    "pdf-parse": "^1.1.1"
   }
 }

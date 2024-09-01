@@ -58,8 +58,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
 
     const [file, setFile] = useState<File>();
     const dropzoneRef = useRef(null);
-    const { onUpload, uploadedFiles, isUploading } =
-        useUploadFile('imageUploader');
+    const { onUpload, uploadedFiles, isUploading } = useUploadFile();
 
     const imageUrl = useMemo(() => {
         if (file) {
@@ -112,7 +111,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
             'application/vnd.openxmlformats-officedocument.presentationml.presentation':
                 ['.pptx'],
         },
-        maxSize: 4 * 1024 * 1024,
+        maxSize: 10 * 1024 * 1024,
         noClick: true,
         noKeyboard: true,
         multiple: false,

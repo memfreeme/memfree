@@ -9,19 +9,24 @@ import {
   ingest_text_content,
 } from "./ingest";
 
-const API_TOKEN = process.env.API_TOKEN!;
-function checkAuth(req: Request) {
-  const authorizationHeader = req.headers.get("Authorization");
-  if (!authorizationHeader || authorizationHeader !== `${API_TOKEN}`) {
-    return Response.json("Unauthorized", { status: 401 });
-  }
-}
+import { getFileContent } from "./parser";
+import { checkAuth, getToken } from "./auth";
 
-export async function handleRequest(req: Request): Promise<Response> {
+async function handleRequest(req: Request): Promise<Response> {
   const path = new URL(req.url).pathname;
   const { method } = req;
 
-  let authResponse = checkAuth(req);
+  if (server.development && method === "OPTIONS") {
+    return new Response("OK", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Authorization, Content-Type, Token",
+      },
+    });
+  }
+
+  let authResponse = checkAuth(req, path);
   if (authResponse) {
     return authResponse;
   }
@@ -116,6 +121,54 @@ export async function handleRequest(req: Request): Promise<Response> {
     }
   }
 
+  if (path === "/api/index/local-file" && method === "POST") {
+    const token = await getToken(req, server.hostname);
+    if (!token) {
+      return Response.json("Unauthorized", { status: 401 });
+    }
+    const formData = await req.formData();
+    const file = formData.get("file") as File;
+    const { type, url, markdown } = await getFileContent(file);
+    console.log("markdown", markdown);
+    const title = file.name;
+    const userId = token.sub;
+    try {
+      if (!userId || !markdown || !title) {
+        return Response.json("Invalid parameters", { status: 400 });
+      }
+      switch (type) {
+        case "md":
+          await ingest_md(url, userId, markdown, title);
+          break;
+        case "pdf":
+        case "docx":
+        case "pptx":
+          await ingest_text_content(url, userId, markdown, title);
+          break;
+        default:
+          return Response.json("Invalid file type", { status: 400 });
+      }
+      const response = Response.json("Success");
+      if (server.development) {
+        response.headers.set("Access-Control-Allow-Origin", "*");
+        response.headers.set(
+          "Access-Control-Allow-Methods",
+          "GET, POST, PUT, DELETE, OPTIONS"
+        );
+      }
+      return response;
+    } catch (error) {
+      log({
+        service: "vector-index",
+        action: "error-index-file",
+        error: `${error}`,
+        url: url,
+        userId: userId,
+      });
+      return Response.json("Failed to index markdown", { status: 500 });
+    }
+  }
+
   if (path === "/api/index/file" && method === "POST") {
     const { url, userId, markdown, title, type } = await req.json();
     try {
@@ -204,9 +257,10 @@ export async function handleRequest(req: Request): Promise<Response> {
   if (path === "/") return Response.json("Welcome to memfree vector service!");
   return Response.json("Page not found", { status: 404 });
 }
-const server = Bun.serve({
+
+export const server = Bun.serve({
   port: process.env.PORT || 3000,
   fetch: handleRequest,
 });
 
-console.log(`Listening on ${server.url}`);
+console.log(`Listening on ${server.url}, is dev: ${server.development}`);
