@@ -21,7 +21,6 @@ async function sendRequest(userId: string): Promise<void> {
   if (response.status !== 200 || text !== "Success") {
     throw new Error(`Request failed for userId: ${userId}`);
   }
-  console.log(`change-embedding completed for userId: ${userId}`);
 }
 
 import pLimit from "p-limit";
