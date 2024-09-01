@@ -12,18 +12,25 @@ import {
 import { getFileContent } from "./parser";
 import { checkAuth, getToken } from "./auth";
 
+const allowedOrigins = ["http://localhost", "https://www.memfree.me"];
+
 async function handleRequest(req: Request): Promise<Response> {
   const path = new URL(req.url).pathname;
   const { method } = req;
 
-  if (server.development && method === "OPTIONS") {
-    return new Response("OK", {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Authorization, Content-Type, Token",
-      },
-    });
+  if (method === "OPTIONS") {
+    const origin = req.headers.get("Origin");
+    if (origin && allowedOrigins.includes(origin)) {
+      return new Response("OK", {
+        headers: {
+          "Access-Control-Allow-Origin": origin,
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Authorization, Content-Type, Token",
+        },
+      });
+    } else {
+      return new Response("Forbidden", { status: 403 });
+    }
   }
 
   let authResponse = checkAuth(req, path);
@@ -129,7 +136,6 @@ async function handleRequest(req: Request): Promise<Response> {
     const formData = await req.formData();
     const file = formData.get("file") as File;
     const { type, url, markdown } = await getFileContent(file);
-    console.log("markdown", markdown);
     const title = file.name;
     const userId = token.sub;
     try {
@@ -149,13 +155,11 @@ async function handleRequest(req: Request): Promise<Response> {
           return Response.json("Invalid file type", { status: 400 });
       }
       const response = Response.json("Success");
-      if (server.development) {
-        response.headers.set("Access-Control-Allow-Origin", "*");
-        response.headers.set(
-          "Access-Control-Allow-Methods",
-          "GET, POST, PUT, DELETE, OPTIONS"
-        );
-      }
+      response.headers.set("Access-Control-Allow-Origin", "*");
+      response.headers.set(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, DELETE, OPTIONS"
+      );
       return response;
     } catch (error) {
       log({
