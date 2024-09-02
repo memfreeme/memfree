@@ -1,6 +1,0 @@
-fly.toml
-.git/
-target/
-.fastembed_cache
-fly.template.toml
-.env

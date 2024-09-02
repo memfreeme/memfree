@@ -31,15 +31,16 @@
 
 ## Introduction
 
-MemFree is a hybrid AI search engine that simultaneously performs searches on your personal knowledge base (such as bookmarks, notes, documents, etc.) and the Internet.
+MemFree is a Hybrid AI search engine that simultaneously performs searches on your personal knowledge base (such as bookmarks, notes, documents, etc.) and the Internet.
 
 ## Highlights
 
-- Hybrid AI Search Engine
-- One-Click Chrome Bookmarks Sync and Index
-- Support multiple traditional search engines as source
-- Self-hosted Super Fast Serverless Vector Database
-- Self-hosted Super Fast Local Embedding and Rerank Service
+- Hybrid AI Search Engine: Combines Knowledge Base and Internet Search
+- One-Click Chrome Bookmarks Sync and Indexing
+- Support Image-Based Search
+- Integrates Multiple Search Engines as Sources
+- Support multiple AI Models
+- Self-Hosted, Super-Fast Serverless Vector Database
 - Full Code Open Source
 - One-Click Deployment
 
@@ -71,7 +72,6 @@ MemFree is a hybrid AI search engine that simultaneously performs searches on yo
 
 - [One Command Deploy Searxng on Fly.io](https://www.memfree.me/docs/deploy-searxng-fly-io)
 - [One Command Deploy MemFree Vector on Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
-- [One Command Deploy MemFree Embedding on Fly.io](https://www.memfree.me/docs/deploy-embedding-fly-io)
 
 ## Self-Hosted Installation
 
@@ -130,18 +130,6 @@ cd extension
 bun i
 
 bun run build
-```
-
-### Embedding Service
-
-```
-Install Rust: (optional)  curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
-
-cd embedding
-
-cargo build --release
-
-./target/release/memfree-embedding
 ```
 
 ## Set MemFree as your search engine
