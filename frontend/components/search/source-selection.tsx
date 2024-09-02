@@ -25,6 +25,10 @@ export const sourceMap: Record<string, Source> = {
         name: 'All',
         value: SearchCategory.ALL,
     },
+    [SearchCategory.KNOWLEDGE_BASE]: {
+        name: 'Knowledge Base',
+        value: SearchCategory.KNOWLEDGE_BASE,
+    },
     [SearchCategory.NEWS]: {
         name: 'News',
         value: SearchCategory.NEWS,

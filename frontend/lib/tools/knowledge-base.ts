@@ -28,6 +28,13 @@ export async function knowledgeBaseSearch(
         const newMessages = messages.slice(-1) as Message[];
         const query = newMessages[0].content;
 
+        await streamResponse(
+            {
+                status: 'Searching ...',
+            },
+            onStream,
+        );
+
         const imageFetchPromise = getSearchEngine({
             categories: [SearchCategory.IMAGES],
         })
@@ -40,10 +47,28 @@ export async function knowledgeBaseSearch(
 
         const { texts } = await getVectorSearch(userId, url).search(query);
 
-        await streamResponse(
-            { sources: texts, status: 'Thinking ...' },
-            onStream,
-        );
+        if (texts.length > 0) {
+            await streamResponse(
+                { sources: texts, status: 'Thinking ...' },
+                onStream,
+            );
+        } else {
+            await streamResponse(
+                {
+                    sources: [
+                        {
+                            title: 'No Relevant Content In Your Knowledge Base',
+                            url: 'local-no-content',
+                            content: `Please indexing your knowledge base first.
+                            MemFree now supports indexing local files, web pages, and browser bookmarks.
+                            You can also choose All search source`,
+                        },
+                    ],
+                },
+                onStream,
+            );
+            onStream?.(null, true);
+        }
 
         let history = getHistory(isPro, messages);
         let fullAnswer = '';

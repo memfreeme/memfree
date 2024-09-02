@@ -24,7 +24,6 @@ import { Icons } from '@/components/shared/icons';
 import Image from 'next/image';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import { useUploadFile } from '@/hooks/use-upload-file';
-import { checkIsPro } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { getFileSizeLimit } from '@/lib/utils';
 
@@ -97,7 +96,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         setFile(file);
         const target = file.name;
         toast.promise(onUpload([file]), {
-            loading: `Uploading ${target}...`,
+            loading: `Uploading ${target}... \n You can type your question now`,
             success: () => {
                 return `${target} uploaded`;
             },
