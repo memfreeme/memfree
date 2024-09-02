@@ -1,7 +1,5 @@
 import type { Config } from 'tailwindcss';
 
-const { fontFamily } = require('tailwindcss/defaultTheme');
-
 const config = {
     darkMode: 'class',
     content: [
@@ -58,9 +56,6 @@ const config = {
                     DEFAULT: 'hsl(var(--card))',
                     foreground: 'hsl(var(--card-foreground))',
                 },
-            },
-            fontFamily: {
-                sans: ['San Francisco', 'Times New Roman'],
             },
             borderRadius: {
                 lg: 'var(--radius)',
@@ -163,47 +158,47 @@ const config = {
             },
             typography: (theme) => ({
                 DEFAULT: {
-                  css: {
-                    color: theme('colors.gray.800'),
-                    a: {
-                      color: theme('colors.blue.500'),
-                      '&:hover': {
-                        color: theme('colors.blue.700'),
-                      },
+                    css: {
+                        color: theme('colors.gray.800'),
+                        a: {
+                            'color': theme('colors.blue.500'),
+                            '&:hover': {
+                                color: theme('colors.blue.700'),
+                            },
+                        },
+                        h1: { color: theme('colors.gray.900') },
+                        h2: { color: theme('colors.gray.900') },
+                        h3: { color: theme('colors.gray.900') },
+                        h4: { color: theme('colors.gray.900') },
+                        strong: { color: theme('colors.gray.900') },
+                        blockquote: {
+                            borderLeftColor: theme('colors.gray.200'),
+                            color: theme('colors.gray.900'),
+                        },
                     },
-                    h1: { color: theme('colors.gray.900') },
-                    h2: { color: theme('colors.gray.900') },
-                    h3: { color: theme('colors.gray.900') },
-                    h4: { color: theme('colors.gray.900') },
-                    strong: { color: theme('colors.gray.900') },
-                    blockquote: {
-                      borderLeftColor: theme('colors.gray.200'),
-                      color: theme('colors.gray.900'),
-                    },
-                  },
                 },
                 dark: {
-                  css: {
-                    color: theme('colors.gray.300'),
-                    a: {
-                      color: theme('colors.blue.400'),
-                      '&:hover': {
-                        color: theme('colors.blue.600'),
-                      },
+                    css: {
+                        color: theme('colors.gray.300'),
+                        a: {
+                            'color': theme('colors.blue.400'),
+                            '&:hover': {
+                                color: theme('colors.blue.600'),
+                            },
+                        },
+                        h1: { color: theme('colors.gray.100') },
+                        h2: { color: theme('colors.gray.100') },
+                        h3: { color: theme('colors.gray.100') },
+                        h4: { color: theme('colors.gray.100') },
+                        strong: { color: theme('colors.gray.100') },
+                        blockquote: {
+                            borderLeftColor: theme('colors.gray.700'),
+                            color: theme('colors.gray.300'),
+                        },
                     },
-                    h1: { color: theme('colors.gray.100') },
-                    h2: { color: theme('colors.gray.100') },
-                    h3: { color: theme('colors.gray.100') },
-                    h4: { color: theme('colors.gray.100') },
-                    strong: { color: theme('colors.gray.100') },
-                    blockquote: {
-                      borderLeftColor: theme('colors.gray.700'),
-                      color: theme('colors.gray.300'),
-                    },
-                 },
-             }
-            })
-        }
+                },
+            }),
+        },
     },
     plugins: [
         require('tailwindcss-animate'),

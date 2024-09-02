@@ -1,0 +1,22 @@
+{
+    "HomePage": {
+        "hero": "Unlock Accurate Answers Faster",
+        "hero2": "AI Search from Knowledge Base and Internet"
+    },
+    "DemoQuestions": {
+        "title1": "Search and Ask Indie Maker Questions",
+        "question1": "How to get first 1000 users",
+        "title2": "Search and Ask by Image",
+        "question2": "What is the hybrid AI search https://www.memfree.me/memfree-hybrid-ai-search.webp",
+        "title3": "Extract Text from Image",
+        "question3": "Extract Text https://www.memfree.me/pricing-card.png",
+        "title4": "Summarize and Ask Web Page and PDF",
+        "question4": "Summarize the content of https://www.memfree.me/docs/index-bookmarks",
+        "title5": "Get Top Hacker News Stories",
+        "question5": "Get the top 3 Hacker News stories",
+        "title6": "Search and Ask Twitter Questions",
+        "question6": "Claude 3.5 Sonect VS GPT-4o",
+        "title7": "Expalin and Write Code",
+        "question7": "please use zustand and local storage implement a react user store hook, if user don't found in local storage, fetch from server. please write the TS."
+    }
+}

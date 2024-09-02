@@ -138,7 +138,7 @@ export async function knowledgeBaseSearch(
         }
         onStream?.(null, true);
     } catch (error) {
-        logError(error, 'indie-search');
+        logError(error, 'knowledge-base-search');
         onStream?.(null, true);
     }
 }

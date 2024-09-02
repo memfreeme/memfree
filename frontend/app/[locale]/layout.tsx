@@ -9,9 +9,8 @@ import Script from 'next/script';
 import { SidebarProvider } from '@/hooks/use-sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
-interface RootLayoutProps {
-    children: React.ReactNode;
-}
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 
 export const metadata = {
     title: {
@@ -64,13 +63,22 @@ export const metadata = {
     manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({
+    children,
+    params: { locale },
+}: {
+    children: React.ReactNode;
+    params: { locale: string };
+}) {
+    const messages = await getMessages();
+    const isZh = locale == 'zh';
+
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang={locale} suppressHydrationWarning>
             <head />
             <body
                 className={cn(
-                    'min-h-screen bg-background font-sans antialiased',
+                    `min-h-screen bg-background ${isZh ? 'font-serif' : 'font-sans'} antialiased`,
                 )}
             >
                 <Toaster position="top-center" />
@@ -81,7 +89,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     disableTransitionOnChange
                 >
                     <SidebarProvider>
-                        <TooltipProvider>{children}</TooltipProvider>
+                        <TooltipProvider>
+                            <NextIntlClientProvider messages={messages}>
+                                {children}
+                            </NextIntlClientProvider>
+                        </TooltipProvider>
                     </SidebarProvider>
                     <ModalProvider />
                 </ThemeProvider>

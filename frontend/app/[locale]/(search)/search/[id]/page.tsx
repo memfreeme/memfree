@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
 import { HeroLanding } from '@/components/layout/hero-landing';
 import { getCurrentUser } from '@/lib/session';
-import SearchResult from '@/app/(search)/search/[id]/search-result';
+import SearchResult from '@/app/[locale]/(search)/search/[id]/search-result';
 
 export interface SearchPageProps {
     params: {

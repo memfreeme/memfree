@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const { withContentlayer } = require('next-contentlayer2');
+const createNextIntlPlugin = require('next-intl/plugin');
+const withNextIntl = createNextIntlPlugin();
 
 const nextConfig = {
     reactStrictMode: true,
@@ -12,10 +14,10 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
-                hostname: 'image.memfree.me',
+                hostname: 'lh3.googleusercontent.com',
             },
         ],
     },
 };
 
-module.exports = withContentlayer(nextConfig);
+module.exports = withNextIntl(withContentlayer(nextConfig));
