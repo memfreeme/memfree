@@ -14,11 +14,36 @@ import { Icons } from '@/components/shared/icons';
 
 import { SubscriptionPlan } from '@/types/index';
 import { pricingData } from '@/config';
+import { useTranslations } from 'next-intl';
 
 interface PricingCardsProps {
     userId?: string;
     subscriptionPlan?: UserSubscriptionPlan;
 }
+
+const frees = ['Free1', 'Free2', 'Free3', 'Free5', 'Free6', 'Free7'] as const;
+
+const pros = [
+    'Pro1',
+    'Pro2',
+    'Pro3',
+    'Pro4',
+    'Pro5',
+    'Pro6',
+    'Pro7',
+    'Pro8',
+    'Pro9',
+] as const;
+
+const premiums = [
+    'Premium1',
+    'Premium2',
+    'Premium3',
+    'Premium4',
+    'Premium5',
+    'Premium6',
+    'Premium7',
+] as const;
 
 export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
     const isYearlyDefault =
@@ -31,6 +56,37 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
 
     const toggleBilling = () => {
         setIsYearly(!isYearly);
+    };
+
+    const t = useTranslations('Pricing');
+
+    const OfferList = ({ items }: { items: readonly string[] }) => (
+        <>
+            {items.map((key) => (
+                <li key={key} className="flex items-start gap-x-3">
+                    <Icons.check className="size-5 shrink-0 text-purple-500" />
+                    <p>{t(`${key}`)}</p>
+                </li>
+            ))}
+        </>
+    );
+
+    const OfferComponent = ({ offer }: { offer: { title: string } }) => {
+        let items;
+        switch (offer.title) {
+            case 'Free':
+                items = frees;
+                break;
+            case 'Pro':
+                items = pros;
+                break;
+            case 'Premium':
+                items = premiums;
+                break;
+            default:
+                items = [];
+        }
+        return <OfferList items={items} />;
     };
 
     const PricingCard = ({ offer }: { offer: SubscriptionPlan }) => {
@@ -79,32 +135,13 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
 
                 <div className="flex h-full flex-col justify-between gap-16 p-6">
                     <ul className="space-y-2 text-left text-sm font-medium leading-normal">
-                        {offer.benefits.map((feature) => (
-                            <li
-                                className="flex items-start gap-x-3"
-                                key={feature}
-                            >
-                                <Icons.check className="size-5 shrink-0 text-purple-500" />
-                                <p>{feature}</p>
-                            </li>
-                        ))}
-
-                        {offer.limitations.length > 0 &&
-                            offer.limitations.map((feature) => (
-                                <li
-                                    className="flex items-start text-muted-foreground"
-                                    key={feature}
-                                >
-                                    <Icons.close className="mr-3 size-5 shrink-0" />
-                                    <p>{feature}</p>
-                                </li>
-                            ))}
+                        <OfferComponent offer={offer} />
                     </ul>
 
                     {userId && subscriptionPlan ? (
                         offer.title === 'Free' ? (
                             <Link
-                                href="/dashboard"
+                                href="/"
                                 className={cn(
                                     buttonVariants({
                                         variant: 'outline',
@@ -113,7 +150,7 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
                                     'w-full',
                                 )}
                             >
-                                Go to dashboard
+                                {t('free-call')}
                             </Link>
                         ) : (
                             <BillingFormButton
@@ -142,10 +179,7 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
 
     return (
         <section className="container flex flex-col items-center text-center">
-            <HeaderSection
-                label="MemFree Pricing"
-                title="Get the Answers You Really Need, Instantly!"
-            />
+            <HeaderSection label={t('title')} title={t('description')} />
 
             <div className="mb-4 mt-10 flex items-center gap-5">
                 <ToggleGroup

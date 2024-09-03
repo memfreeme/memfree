@@ -6,6 +6,7 @@ import { SubscriptionPlan, UserSubscriptionPlan } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/shared/icons';
+import { useTranslations } from 'next-intl';
 
 interface BillingFormButtonProps {
     offer: SubscriptionPlan;
@@ -31,6 +32,8 @@ export function BillingFormButton({
         subscriptionPlan.stripePriceId ===
         offer.stripeIds[year ? 'yearly' : 'monthly'];
 
+    const t = useTranslations('Pricing');
+
     return (
         <Button
             rounded="full"
@@ -44,7 +47,7 @@ export function BillingFormButton({
                     Loading...
                 </>
             ) : (
-                <>{userOffer ? 'Manage Subscription' : 'Upgrade'}</>
+                <>{userOffer ? t('paid-call') : t('pre-call')}</>
             )}
         </Button>
     );
