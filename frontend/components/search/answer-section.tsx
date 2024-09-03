@@ -6,7 +6,7 @@ import MyMarkdown from '@/components/search/my-markdown';
 const AnswerSection = ({ content, sources }) => {
     return (
         <div className="flex w-full flex-col items-start space-y-2.5 py-4">
-            <div className="flex w-full items-center">
+            <div className="flex items-center space-x-2">
                 <BookKey className="text-primary size-22" />
                 <h3 className="py-2 text-lg text-primary font-bold">Answer</h3>
             </div>

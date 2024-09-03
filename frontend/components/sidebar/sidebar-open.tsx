@@ -18,6 +18,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
+import LocaleSelect from '@/components/locale-selection';
 
 interface NavBarProps {
     user: User;
@@ -95,16 +96,10 @@ export function SidebarOpen({ user }: NavBarProps) {
 
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Link
-                                href="/dashboard"
-                                className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 rounded-lg  p-2 m-2"
-                            >
-                                <LayoutDashboard size={20} strokeWidth={2} />
-                                <span className="sr-only">Dashboard</span>
-                            </Link>
+                            <LocaleSelect className="bg-transparent hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 m-2" />
                         </TooltipTrigger>
                         <TooltipContent className="bg-black text-white">
-                            <p>Dashboard</p>
+                            <p>Change Language</p>
                         </TooltipContent>
                     </Tooltip>
 

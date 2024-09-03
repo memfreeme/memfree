@@ -3,15 +3,10 @@
 import { getSearches, removeSearch } from '@/lib/store/search';
 import { ModeToggle } from '@/components/layout/mode-toggle';
 import Link from 'next/link';
-import { LayoutDashboard, Loader2, Settings } from 'lucide-react';
+import { Loader2, Settings } from 'lucide-react';
 import { User } from '@/lib/types';
 import { UserAccountNav } from '@/components/layout/user-account-nav';
 import { Button } from '@/components/ui/button';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
 
 interface SidebarListProps {
     user?: User;
@@ -23,6 +18,7 @@ import InfiniteScroll from '@/components/ui/infinite-scroll';
 import { useSearchStore } from '@/lib/store/local-history';
 import { SidebarItem } from '@/components/sidebar/sidebar-item';
 import { SidebarActions } from '@/components/sidebar/sidebar-actions';
+import LocaleSelect from '@/components/locale-selection';
 
 const limit = 20;
 
@@ -93,22 +89,7 @@ export function SidebarList({ user }: SidebarListProps) {
             <div className="flex items-center justify-between p-3 border-t">
                 {user && <UserAccountNav user={user} />}
                 <ModeToggle />
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <Link href="/dashboard">
-                            <Button
-                                variant="ghost"
-                                className="leading-none p-2 h-auto"
-                            >
-                                <LayoutDashboard className="size-4" />
-                            </Button>
-                        </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        <p>DashBoard</p>
-                    </TooltipContent>
-                </Tooltip>
-
+                <LocaleSelect className="hover:bg-accent hover:text-accent-foreground" />
                 <Link href="/settings">
                     <Button variant="ghost" className="leading-none p-2 h-auto">
                         <Settings className="size-4" />

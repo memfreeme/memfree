@@ -29,6 +29,23 @@ const SelectTrigger = React.forwardRef<
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 
+const RowSelectTrigger = React.forwardRef<
+    React.ElementRef<typeof SelectPrimitive.Trigger>,
+    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
+>(({ className, children, ...props }, ref) => (
+    <SelectPrimitive.Trigger
+        ref={ref}
+        className={cn(
+            'flex h-8 w-full items-center justify-between rounded-md hover:bg-gray-200  dark:hover:bg-gray-800 bg-background px-3  text-sm  text-gray-500 dark:text-gray-200 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+            className,
+        )}
+        {...props}
+    >
+        {children}
+    </SelectPrimitive.Trigger>
+));
+RowSelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
+
 const SelectScrollUpButton = React.forwardRef<
     React.ElementRef<typeof SelectPrimitive.ScrollUpButton>,
     React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>
@@ -156,4 +173,5 @@ export {
     SelectSeparator,
     SelectScrollUpButton,
     SelectScrollDownButton,
+    RowSelectTrigger,
 };
