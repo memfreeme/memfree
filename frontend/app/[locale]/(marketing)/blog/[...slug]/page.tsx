@@ -13,10 +13,13 @@ import { buttonVariants } from '@/components/ui/button';
 import { siteConfig } from '@/config';
 import { GitHubButton } from '@/components/shared/github-button';
 import { Newsletter } from '@/components/subscribe';
+import { unstable_setRequestLocale } from 'next-intl/server';
+import { Locale, routing } from '@/i18n/routing';
 
 interface PostPageProps {
     params: {
         slug: string[];
+        locale: Locale;
     };
 }
 
@@ -75,12 +78,17 @@ export async function generateMetadata({
 export async function generateStaticParams(): Promise<
     PostPageProps['params'][]
 > {
-    return allPosts.map((post) => ({
-        slug: post.slugAsParams.split('/'),
-    }));
+    const locales = routing.locales;
+    return allPosts.flatMap((post) =>
+        locales.map((locale) => ({
+            slug: post.slugAsParams.split('/'),
+            locale: locale,
+        })),
+    );
 }
 
 export default async function PostPage({ params }: PostPageProps) {
+    unstable_setRequestLocale(params.locale);
     const post = await getPostFromParams(params);
 
     if (!post) {

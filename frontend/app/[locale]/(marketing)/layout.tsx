@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import SiteHeader from '@/components/layout/site-header';
 import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
 import { mainNavConfig, siteConfig } from '@/config';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
 interface MarketingLayoutProps {
     children: React.ReactNode;
@@ -10,7 +11,9 @@ interface MarketingLayoutProps {
 
 export default async function MarketingLayout({
     children,
-}: MarketingLayoutProps) {
+    params: { locale },
+}) {
+    unstable_setRequestLocale(locale);
     const user = await getCurrentUser();
     return (
         <div className="flex min-h-screen flex-col">

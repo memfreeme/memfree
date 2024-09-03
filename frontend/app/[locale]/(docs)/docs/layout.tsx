@@ -1,12 +1,10 @@
 import { docsConfig } from '@/config';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { DocsSidebarNav } from '@/components/docs/sidebar-nav';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
-interface DocsLayoutProps {
-    children: React.ReactNode;
-}
-
-export default function DocsLayout({ children }: DocsLayoutProps) {
+export default function DocsLayout({ children, params: { locale } }) {
+    unstable_setRequestLocale(locale);
     return (
         <div className="flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-5 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
             <aside className="fixed top-14 z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block">

@@ -8,10 +8,13 @@ import { Metadata } from 'next';
 
 import { absoluteUrl } from '@/lib/utils';
 import { siteConfig } from '@/config';
+import { Locale, routing } from '@/i18n/routing';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
 interface PageProps {
     params: {
         slug: string[];
+        locale: Locale;
     };
 }
 
@@ -65,12 +68,17 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams(): Promise<PageProps['params'][]> {
-    return allPages.map((page) => ({
-        slug: page.slugAsParams.split('/'),
-    }));
+    const locales = routing.locales;
+    return allPages.flatMap((page) =>
+        locales.map((locale) => ({
+            slug: page.slugAsParams.split('/'),
+            locale: locale,
+        })),
+    );
 }
 
 export default async function PagePage({ params }: PageProps) {
+    unstable_setRequestLocale(params.locale);
     const page = await getPageFromParams(params);
 
     if (!page) {

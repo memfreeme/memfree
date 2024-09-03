@@ -14,10 +14,13 @@ import { Metadata } from 'next';
 import { absoluteUrl } from '@/lib/utils';
 import { siteConfig } from '@/config';
 import { GitHubButton } from '@/components/shared/github-button';
+import { Locale, routing } from '@/i18n/routing';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
 interface DocPageProps {
     params: {
         slug: string[];
+        locale: Locale;
     };
 }
 
@@ -77,12 +80,17 @@ export async function generateMetadata({
 export async function generateStaticParams(): Promise<
     DocPageProps['params'][]
 > {
-    return allDocs.map((doc) => ({
-        slug: doc.slugAsParams.split('/'),
-    }));
+    const locales = routing.locales;
+    return allDocs.flatMap((doc) =>
+        locales.map((locale) => ({
+            slug: doc.slugAsParams.split('/'),
+            locale: locale,
+        })),
+    );
 }
 
 export default async function DocPage({ params }: DocPageProps) {
+    unstable_setRequestLocale(params.locale);
     const doc = await getDocFromParams(params);
 
     if (!doc) {
