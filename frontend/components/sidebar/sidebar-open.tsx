@@ -3,13 +3,7 @@
 import * as React from 'react';
 
 import { useSidebar } from '@/hooks/use-sidebar';
-import {
-    ArrowRightToLine,
-    Home,
-    LayoutDashboard,
-    Plus,
-    Settings,
-} from 'lucide-react';
+import { ArrowRightToLine, Home, Plus, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { User } from 'next-auth';
 import { UserAccountNav } from '@/components/layout/user-account-nav';

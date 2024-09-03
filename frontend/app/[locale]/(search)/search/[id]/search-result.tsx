@@ -25,7 +25,7 @@ export default function SearchResult({ id, user }: SearchPageProps) {
             };
             fetchSearch();
         }
-    }, [id, user]);
+    }, [id, user, search]);
 
     return (
         <SearchWindow

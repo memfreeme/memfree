@@ -1,7 +1,12 @@
 {
     "HomePage": {
-        "hero": "更快 获取 准确的 答案",
+        "hero": "Hybrid AI 搜索引擎 更快 更准",
         "hero2": "从个人知识库和互联网进行 AI 搜索"
+    },
+    "MetaDate": {
+        "title": "MemFree - Hybrid AI Search",
+        "name": "MemFree",
+        "description": "MemFree - Hybrid AI Search from Knowledge base and Internet, get Accurate Answers Faster"
     },
     "DemoQuestions": {
         "title1": "搜索独立开发者问题",

@@ -8,10 +8,6 @@ interface MarketingLayoutProps {
     children: React.ReactNode;
 }
 
-export const metadata = {
-    canonical: siteConfig.url,
-};
-
 export default async function MarketingLayout({
     children,
 }: MarketingLayoutProps) {

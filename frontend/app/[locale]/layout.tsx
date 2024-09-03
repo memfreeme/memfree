@@ -10,58 +10,64 @@ import { SidebarProvider } from '@/hooks/use-sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, getTranslations } from 'next-intl/server';
 
-export const metadata = {
-    title: {
-        default: 'MemFree - Hybrid AI Search',
-        template: `%s | ${siteConfig.name}`,
-    },
-    description: siteConfig.description,
-    keywords: [
-        'Hybrid AI Search',
-        'Hybrid AI Ask',
-        'AI bookmark search',
-        'AI document search',
-        'AI ask everything',
-    ],
-    authors: [
-        {
-            name: 'MemFree',
+export async function generateMetadata({ params: { locale } }) {
+    const t = await getTranslations({ locale, namespace: 'MetaDate' });
+
+    const canonical = locale === 'en' ? '/' : `/${locale}`;
+
+    return {
+        title: {
+            default: t('title'),
+            template: `%s | ${t('name')}`,
         },
-    ],
-    creator: 'MemFree',
-    metadataBase: new URL(siteConfig.url),
-    openGraph: {
-        type: 'website',
-        locale: 'en_US',
-        url: siteConfig.url,
-        title: siteConfig.name,
-        description: siteConfig.description,
-        siteName: siteConfig.name,
-        images: [
+        description: t('description'),
+        authors: [
             {
-                url: siteConfig.ogImage,
-                width: 1200,
-                height: 630,
-                alt: siteConfig.name,
+                name: t('name'),
             },
         ],
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: siteConfig.name,
-        description: siteConfig.description,
-        images: [siteConfig.ogImage],
-        creator: '@MemFree',
-    },
-    icons: {
-        icon: '/favicon.ico',
-        shortcut: '/favicon-16x16.png',
-        apple: '/apple-touch-icon.png',
-    },
-    manifest: `${siteConfig.url}/site.webmanifest`,
-};
+        creator: t('name'),
+        metadataBase: new URL(siteConfig.url),
+        alternates: {
+            canonical: canonical,
+            languages: {
+                en: '/',
+                zh: '/zh',
+            },
+        },
+        openGraph: {
+            type: 'website',
+            locale: locale,
+            url: siteConfig.url,
+            title: t('title'),
+            description: t('description'),
+            siteName: t('name'),
+            images: [
+                {
+                    url: siteConfig.ogImage,
+                    width: 1200,
+                    height: 630,
+                    alt: t('name'),
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: t('title'),
+            description: t('description'),
+            images: [siteConfig.ogImage],
+            creator: '@MemFree',
+        },
+        icons: {
+            icon: '/favicon.ico',
+            shortcut: '/favicon-16x16.png',
+            apple: '/apple-touch-icon.png',
+        },
+        manifest: `${siteConfig.url}/site.webmanifest`,
+    };
+}
 
 export default async function RootLayout({
     children,

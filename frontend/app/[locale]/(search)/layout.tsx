@@ -2,16 +2,11 @@ import { SidebarDesktop } from '@/components/sidebar/sidebar-desktop';
 import { SidebarOpen } from '@/components/sidebar/sidebar-open';
 import { getCurrentUser } from '@/lib/session';
 import MobileHeader from '@/components/layout/mobile-header';
-import { siteConfig } from '@/config';
 import OneTapComponent from '@/components/google-one-tap';
 
 interface MarketingLayoutProps {
     children: React.ReactNode;
 }
-
-export const metadata = {
-    canonical: siteConfig.url,
-};
 
 import dynamic from 'next/dynamic';
 const Featurebase = dynamic(() => import('@/components/featurebase'), {

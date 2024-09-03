@@ -12,7 +12,6 @@ export type MainNavItem = NavItem;
 
 export type SiteConfig = {
     name: string;
-    description: string;
     footerDesc: string;
     url: string;
     ogImage: string;

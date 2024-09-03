@@ -1,7 +1,12 @@
 {
     "HomePage": {
-        "hero": "Unlock Accurate Answers Faster",
-        "hero2": "AI Search from Knowledge Base and Internet"
+        "hero": "Hybrid AI Search - Faster and more Accurate",
+        "hero2": "Hybrid AI Search from Knowledge Base and Internet"
+    },
+    "MetaDate": {
+        "title": "MemFree - Hybrid AI Search",
+        "name": "MemFree",
+        "description": "MemFree - Hybrid AI Search from Knowledge base and Internet, get Accurate Answers Faster"
     },
     "DemoQuestions": {
         "title1": "Search and Ask Indie Maker Questions",

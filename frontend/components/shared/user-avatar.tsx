@@ -14,6 +14,8 @@ export function UserAvatar({ user, ...props }: UserAvatarProps) {
             {user.image ? (
                 <AvatarImage
                     alt="Picture"
+                    width={16}
+                    height={16}
                     src={user.image}
                     referrerPolicy="no-referrer"
                 />

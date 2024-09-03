@@ -16,7 +16,6 @@ import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useUserStore } from '@/lib/store';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
-import { checkIsPro } from '@/lib/shared-utils';
 import { useIndexModal } from '@/hooks/use-index-modal';
 
 interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -97,7 +96,7 @@ export function FileUploader(props: FileUploaderProps) {
             }
         },
 
-        [files, onUpload, setFiles],
+        [files, onUpload, setFiles, indexModal, upgradeModal],
     );
 
     function onRemove(index: number) {

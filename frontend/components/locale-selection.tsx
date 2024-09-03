@@ -38,7 +38,7 @@ export default function LocaleSelect({ className }: LocaleSelectProps) {
             <RowSelectTrigger
                 aria-label="Locale select"
                 className={cn(
-                    'inline-flex items-center justify-center rounded-md text-sm leading-none h-auto w-auto p-2',
+                    'inline-flex items-center justify-center rounded-md text-sm leading-none size-auto p-2',
                     className,
                 )}
             >

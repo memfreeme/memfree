@@ -7,8 +7,6 @@ const site_url = 'https://www.memfree.me';
 
 export const siteConfig: SiteConfig = {
     name: 'MemFree',
-    description:
-        'AI search and ask everything about your bookmarks, notes, docs,  let MemFree enhance your knowledge management.',
     footerDesc:
         'Hybrid AI Search Engine: Get the Answers You Really Need, Instantly',
     url: site_url,
