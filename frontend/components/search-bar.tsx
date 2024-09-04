@@ -190,8 +190,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                 </button>
                             </TooltipTrigger>
                             <TooltipContent>
-                                Enhance AI Search by Indexing the Web Pages and
-                                Local Files
+                                Index Web Pages and Local Files
                             </TooltipContent>
                         </Tooltip>
 

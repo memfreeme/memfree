@@ -48,6 +48,10 @@ export const docsConfig: DocsConfig = {
                     href: '/docs',
                 },
                 {
+                    title: 'User Guide',
+                    href: '/docs/memfree-user-guide',
+                },
+                {
                     title: 'Chrome Extension',
                     href: '/docs/extension-user-guide',
                 },
