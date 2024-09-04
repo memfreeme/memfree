@@ -75,6 +75,11 @@ export async function knowledgeBaseSearch(
         let rewriteQuery = query;
 
         const source = SearchCategory.ALL;
+        onStream?.(
+            JSON.stringify({
+                status: 'Answering ...',
+            }),
+        );
         await directlyAnswer(
             isPro,
             source,
@@ -87,7 +92,6 @@ export async function knowledgeBaseSearch(
                 onStream?.(
                     JSON.stringify({
                         answer: msg,
-                        status: 'Answering ...',
                     }),
                 );
             },
@@ -98,14 +102,14 @@ export async function knowledgeBaseSearch(
         await streamResponse({ images: images }, onStream);
 
         let fullRelated = '';
+        onStream?.(
+            JSON.stringify({
+                status: 'Generating related questions ...',
+            }),
+        );
         await getRelatedQuestions(rewriteQuery, texts, (msg) => {
             fullRelated += msg;
-            onStream?.(
-                JSON.stringify({
-                    related: msg,
-                    status: 'Generating related questions ...',
-                }),
-            );
+            onStream?.(JSON.stringify({ related: msg }));
         });
 
         incSearchCount(userId).catch((error) => {

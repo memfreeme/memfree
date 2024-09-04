@@ -63,7 +63,7 @@ export async function indieMakerSearch(
         }
 
         await streamResponse(
-            { sources: texts, status: 'Thinking ...' },
+            { sources: texts, status: 'Answering ...' },
             onStream,
         );
 
@@ -83,7 +83,6 @@ export async function indieMakerSearch(
                 onStream?.(
                     JSON.stringify({
                         answer: msg,
-                        status: 'Answering ...',
                     }),
                 );
             },
@@ -94,12 +93,16 @@ export async function indieMakerSearch(
         await streamResponse({ images: images }, onStream);
 
         let fullRelated = '';
+        onStream?.(
+            JSON.stringify({
+                status: 'Generating related questions ...',
+            }),
+        );
         await getRelatedQuestions(rewriteQuery, texts, (msg) => {
             fullRelated += msg;
             onStream?.(
                 JSON.stringify({
                     related: msg,
-                    status: 'Generating related questions ...',
                 }),
             );
         });

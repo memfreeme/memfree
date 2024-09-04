@@ -55,8 +55,6 @@ export async function autoAnswer(
 
         let userMessages = await createUserMessages(query, imageFile);
 
-        // console.log('userMessages', userMessages.toString());
-
         const maxTokens = getMaxOutputToken(isPro);
         const result = await streamText({
             model: getAutoAnswerModel(model),
@@ -99,19 +97,20 @@ export async function autoAnswer(
             switch (delta.type) {
                 case 'text-delta': {
                     if (delta.textDelta) {
-                        hasAnswer = true;
+                        if (!hasAnswer) {
+                            hasAnswer = true;
+                            onStream?.(
+                                JSON.stringify({
+                                    status: 'Answering ...',
+                                }),
+                            );
+                        }
                         fullAnswer += delta.textDelta;
-                        onStream?.(
-                            JSON.stringify({
-                                answer: delta.textDelta,
-                                status: 'Answering ...',
-                            }),
-                        );
+                        onStream?.(JSON.stringify({ answer: delta.textDelta }));
                     }
                     break;
                 }
                 case 'tool-call':
-                    // console.log('Tool call:', delta.toolName);
                     toolCallCount++;
                     onStream?.(
                         JSON.stringify({
@@ -124,18 +123,11 @@ export async function autoAnswer(
                         texts = texts.concat(delta.result.texts);
                         images = images.concat(delta.result.images);
                         rewriteQuery = delta.args.question;
-                        // console.log(
-                        //     'delta.args.question ',
-                        //     delta.args.question,
-                        // );
-                        // console.log('texts', texts);
                     } else if (delta.toolName === 'accessWebPage') {
                         texts = texts.concat(delta.result.texts);
                         source = SearchCategory.WEB_PAGE;
                     } else if (delta.toolName === 'getTopStories') {
                         texts = texts.concat(delta.result.texts);
-                        // console.log('delta.result.texts', delta.result.texts);
-                        // console.log('texts', texts);
                         source = SearchCategory.HACKER_NEWS;
                     }
                     break;
@@ -144,13 +136,16 @@ export async function autoAnswer(
             }
         }
 
-        // console.log('toolCallCount', toolCallCount);
-        // console.log('texts', texts);
         if (toolCallCount > 1) {
             rewriteQuery = query;
         }
 
         if (!hasAnswer) {
+            onStream?.(
+                JSON.stringify({
+                    status: 'Answering ...',
+                }),
+            );
             await directlyAnswer(
                 isPro,
                 source,
@@ -160,12 +155,7 @@ export async function autoAnswer(
                 texts,
                 (msg) => {
                     fullAnswer += msg;
-                    onStream?.(
-                        JSON.stringify({
-                            answer: msg,
-                            status: 'Answering ...',
-                        }),
-                    );
+                    onStream?.(JSON.stringify({ answer: msg }));
                 },
             );
         }
@@ -175,14 +165,14 @@ export async function autoAnswer(
         await streamResponse({ images: images }, onStream);
 
         let fullRelated = '';
+        onStream?.(
+            JSON.stringify({
+                status: 'Generating related questions ...',
+            }),
+        );
         await getRelatedQuestions(query, texts, (msg) => {
             fullRelated += msg;
-            onStream?.(
-                JSON.stringify({
-                    related: msg,
-                    status: 'Generating related questions ...',
-                }),
-            );
+            onStream?.(JSON.stringify({ related: msg }));
         });
 
         incSearchCount(userId).catch((error) => {
