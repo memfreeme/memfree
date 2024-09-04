@@ -1,7 +1,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.memfree.me/</loc>
-    <lastmod>2024-08-05</lastmod>
+    <lastmod>2024-09-04</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://www.memfree.me/zh</loc>
+    <lastmod>2024-09-04</lastmod>
     <changefreq>daily</changefreq>
   </url>
   <url>
@@ -46,12 +51,17 @@
   </url>
   <url>
     <loc>https://www.memfree.me/blog</loc>
-    <lastmod>2024-08-05</lastmod>
+    <lastmod>2024-09-04</lastmod>
     <changefreq>daily</changefreq>
   </url>
   <url>
     <loc>https://www.memfree.me/pricing</loc>
-    <lastmod>2024-07-10</lastmod>
+    <lastmod>2024-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.memfree.me/zh/pricing</loc>
+    <lastmod>2024-09-04</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
@@ -60,8 +70,13 @@
     <changefreq>daily</changefreq>
   </url>
   <url>
+    <loc>https://www.memfree.me/blog/nextjs-integrate-next-intl</loc>
+    <lastmod>2024-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
     <loc>https://www.memfree.me/blog/hybrid-ai-search-tech-stack</loc>
-    <lastmod>2024-08-29</lastmod>
+    <lastmod>2024-09-04</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>

@@ -1,0 +1,78 @@
+---
+title: The latest guide to integrating next‑intl with nextjs
+description: The key points of nextjs integration next‑intl
+image: /images/blog/blog-post-3.jpg
+date: '2024-09-04'
+authors:
+    - MemFree
+---
+
+Recently, I enabled multilingual support for MemFree using next-intl. During the process, I encountered some issues.
+In this blog, I will share some key points about integrating next-intl with Next.js 14.
+
+## 1 Quickly Complete Basic Configuration
+
+When learning and using any system, the official documentation is usually the best reference. You can refer to this official document to complete the basic setup:
+[Next.js i18n Routing with next-intl](https://next-intl-docs.vercel.app/docs/getting-started/app-router/with-i18n-routing)
+
+Points to note:
+
+-   The configuration of Middleware needs to be set correctly to allow next-intl to handle all pages requiring multilingual support. You can refer to this memfree example: [Middleware Configuration](https://github.com/memfreeme/memfree/blob/main/frontend/middleware.ts).
+-   You might need to set different fonts for different languages.
+-   To remove the default language prefix from URLs, set localePrefix to 'as-needed'. You can refer to this MemFree example: [Routing Configuration](https://github.com/memfreeme/memfree/blob/main/frontend/i18n/routing.ts)
+
+## 2 Implement LocaleSwitcher
+
+You need to implement a small component called LocaleSwitcher that allows users to manually switch languages. You can refer to MemFree's implementation: [Locale Selection Component](https://github.com/memfreeme/memfree/blob/main/frontend/components/locale-selection.tsx).
+
+## 3 Enable Multilingual Support for Webpage Metadata
+
+The core is to use Next.js's generateMetadata method. You can refer to this example: [Metadata Configuration](https://github.com/memfreeme/memfree/blob/main/frontend/app/%5Blocale%5D/layout.tsx#L24).
+
+## 4 Handling Arrays for Multilingual Support
+
+It seems that the support provided by next-intl is not particularly elegant. You need to individually handle each element of an array in the JSON file for each language and then concatenate them into an array in the code.
+
+Typically, we need to handle arrays for the description of payment points on the Pricing page. You can refer to MemFree's implementation here: [Pricing Cards Component](https://github.com/memfreeme/memfree/blob/main/frontend/components/pricing-cards.tsx).
+
+## 5 Usage of next-intl APIs in Server Components Currently Opts into Dynamic Rendering
+
+The biggest issue I encountered was that everything tested fine in the local development environment, but the production environment on Vercel reported the above error.
+Not all pages reported this error, but static pages generated using MDX did.
+The solution is to use the unstable_setRequestLocale API, and it needs to be set in the root layout file, as well as in every layout and page file related to the error.
+**The most crucial part is that we need to call `unstable_setRequestLocale` before calling each hook from next-intl**.
+
+You can refer to this commit from MemFree for a [fix to the i18n Server Components currently opting into dynamic rendering issue](https://github.com/memfreeme/memfree/commit/1e75a74eabee7a5085cc30bd27e4e6c3c6b90bbc).
+
+## 6 Combining unstable_setRequestLocale and generateStaticParams
+
+In solving the previous issue, one problem encountered was how to combine `unstable_setRequestLocale` with `generateStaticParams`.
+I found the answer through MemFree search, and the core solution involves a for loop.
+
+```ts
+export async function generateStaticParams(): Promise<
+    DocPageProps['params'][]
+> {
+    const locales = routing.locales;
+    return allDocs.flatMap((doc) =>
+        locales.map((locale) => ({
+            slug: doc.slugAsParams.split('/'),
+            locale: locale,
+        })),
+    );
+}
+```
+
+## Recap
+
+When creating a product or using a new system, it's important to have an MVP (Minimum Viable Product) concept, which means quickly going through the entire core process.
+Initially, we don't need to support many languages or all pages. We can start by supporting just two languages and the homepage to complete the entire process, push it online,
+and once confirmed that there are no issues, we can continue to support more languages and complete multilingual support for more web pages.
+Below is the entire code submission process for supporting next-intl, which you can refer to:
+
+-   [Support multi language with next i18n](https://github.com/memfreeme/memfree/commit/18b18b02c08fa7c3e78a665d7512a4554d00109c)
+-   [Support setting language in UI](https://github.com/memfreeme/memfree/commit/72b12949d64a00be11d9ca8165e2f10a98cc96a4)
+-   [Page metadata support multi language](https://github.com/memfreeme/memfree/commit/e33c291478a25d42686e479adcdcdf2d4b3eba6d)
+-   [Pricing page supports multi language 1](https://github.com/memfreeme/memfree/commit/56bde020f8da62996a0c522a257a2bf32d5fafdd)
+-   [Fix i18n Server Components currently opts into dynamic rendering issue](https://github.com/memfreeme/memfree/commit/1e75a74eabee7a5085cc30bd27e4e6c3c6b90bbc)
+-   [Pricing page supports multi language done](https://github.com/memfreeme/memfree/commit/bb289cb7d28cd0e7e6e5bb2157392be708a6d64e)
