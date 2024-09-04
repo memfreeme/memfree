@@ -8,7 +8,12 @@ import React, {
     useState,
 } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { SendHorizontal, Image as ImageIcon, FileTextIcon } from 'lucide-react';
+import {
+    SendHorizontal,
+    Image as ImageIcon,
+    FileTextIcon,
+    Database,
+} from 'lucide-react';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import {
     Tooltip,
@@ -169,7 +174,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                 <button
                                     type="button"
                                     aria-label="Index"
-                                    className="text-gray-500 hover:text-primary flex items-center"
+                                    className="text-gray-500 hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 flex items-center space-x-1"
                                     onClick={() => {
                                         if (!user) {
                                             signInModal.onOpen();
@@ -178,8 +183,10 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                         }
                                     }}
                                 >
-                                    <span className="sr-only">Index</span>
-                                    <Icons.mylink size={24} strokeWidth={2} />
+                                    <Database size={20} strokeWidth={2} />
+                                    <span className="font-serif text-sm">
+                                        Index
+                                    </span>
                                 </button>
                             </TooltipTrigger>
                             <TooltipContent>
@@ -199,8 +206,8 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                     <button
                                         type="button"
                                         disabled={isUploading || file?.size > 0}
-                                        aria-label="Image upload"
-                                        className="text-gray-500 hover:text-primary flex items-center"
+                                        aria-label="Attach"
+                                        className="text-gray-500 hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 flex items-center"
                                         onClick={() => {
                                             if (!user) {
                                                 signInModal.onOpen();
@@ -209,20 +216,22 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                             }
                                         }}
                                     >
-                                        <span className="sr-only">
-                                            Image and Fileupload
-                                        </span>
                                         {isUploading ? (
                                             <Icons.spinner
-                                                size={24}
+                                                size={20}
                                                 strokeWidth={2}
                                                 className="animate-spin"
                                             />
                                         ) : (
-                                            <ImageIcon
-                                                size={24}
-                                                strokeWidth={2}
-                                            />
+                                            <div className="flex items-center">
+                                                <Icons.mylink
+                                                    size={20}
+                                                    strokeWidth={2}
+                                                />
+                                                <span className="font-serif text-sm">
+                                                    Attach
+                                                </span>
+                                            </div>
                                         )}
                                     </button>
                                 </div>
