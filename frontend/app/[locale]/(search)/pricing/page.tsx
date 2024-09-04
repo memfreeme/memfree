@@ -3,13 +3,19 @@ import { PricingFaq } from '@/components/pricing-faq';
 import { siteConfig } from '@/config';
 import { getCurrentUser } from '@/lib/session';
 import { getUserSubscriptionPlan } from '@/lib/subscription';
+import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
-export const metadata = {
-    title: 'MemFree Pricing',
-    alternates: {
-        canonical: siteConfig.url + '/pricing',
-    },
-};
+export async function generateMetadata({ params: { locale } }) {
+    unstable_setRequestLocale(locale);
+    const t = await getTranslations({ locale, namespace: 'Pricing' });
+    const canonical = locale === 'en' ? '' : `/${locale}`;
+    return {
+        title: t('title'),
+        alternates: {
+            canonical: siteConfig.url + canonical + '/pricing',
+        },
+    };
+}
 
 export default async function PricingPage() {
     const user = await getCurrentUser();
@@ -25,7 +31,6 @@ export default async function PricingPage() {
                 userId={user?.id}
                 subscriptionPlan={subscriptionPlan}
             />
-            <hr className="container" />
             <PricingFaq />
         </div>
     );

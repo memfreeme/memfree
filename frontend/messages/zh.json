@@ -10,7 +10,7 @@
     },
     "Pricing": {
         "title": "MemFree 价格",
-        "description": "立即获取让你满意的答案！",
+        "description": "立即获取无限使用权限！",
         "Free1": "每天最多进行 10 次基础AI搜索",
         "Free2": "最多可索引 10 个书签和网页",
         "Free3": "每个答案最多输出 1024个 Token",
@@ -37,6 +37,17 @@
         "free-call": "继续使用免费版本",
         "pre-call": "升级",
         "paid-call": "管理订阅"
+    },
+    "PricingFAQ": {
+        "title": "常见问题",
+        "question1": "Memfree 的独特之处",
+        "answer1": "Memfree 是一个混合 AI 搜索引擎，它同时从您的个人知识库和互联网中检索最相关的信息，再让 AI 模型能够提供最佳答案。",
+        "question2": "Index 的含义是什么？",
+        "answer2": "Memfree 使用 AI 索引收集和存储您的书签、网页和本地文件, 这使您能够快速搜索和检索最相关的内容, 为你提供最佳的答案，您的索引文件是私密的，仅您可访问。",
+        "question3": "为什么 Memfree 收取月费？",
+        "answer3": "Memfree 收取月费是因为我们使用的 AI 服务、搜索服务和向量索引服务需要持续的月度支付。",
+        "question4": "如何联系我们？",
+        "answer4": "如果您在支付或订阅方面遇到任何问题，请通过电子邮件 support@memfree.me 或通过 feedback.memfree.me 联系我们。"
     },
     "DemoQuestions": {
         "title1": "搜索独立开发者问题",

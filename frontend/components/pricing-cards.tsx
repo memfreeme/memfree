@@ -179,7 +179,14 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
 
     return (
         <section className="container flex flex-col items-center text-center">
-            <HeaderSection label={t('title')} title={t('description')} />
+            <div className="flex flex-col items-center text-center">
+                <h1 className="text-gradient_indigo-purple mb-4 font-semibold">
+                    {t('title')}
+                </h1>
+                <h2 className="font-heading text-3xl md:text-4xl lg:text-[40px]">
+                    {t('description')}
+                </h2>
+            </div>
 
             <div className="mb-4 mt-10 flex items-center gap-5">
                 <ToggleGroup
@@ -212,18 +219,6 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
                     <PricingCard offer={offer} key={offer.title} />
                 ))}
             </div>
-
-            <p className="mt-3 text-balance text-center text-base text-muted-foreground">
-                Email{' '}
-                <a
-                    className="font-medium text-primary hover:underline"
-                    href="mailto:support@memfree.me"
-                >
-                    support@memfree.me
-                </a>{' '}
-                for to contact our support team.
-                <br />
-            </p>
         </section>
     );
 }

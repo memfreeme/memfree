@@ -10,7 +10,7 @@
     },
     "Pricing": {
         "title": "MemFree Pricing",
-        "description": "Get the Answers You Really Need, Instantly!",
+        "description": "Get Unlimited Access Now",
         "Free1": "Up to 10 Basic AI Searches per day",
         "Free2": "Up to 10 bookmarks and web pages to index",
         "Free3": "Up to 1024 tokens output per answer",
@@ -37,6 +37,17 @@
         "free-call": "Continuou with Free",
         "pre-call": "Upgrade",
         "paid-call": "Manage Subscription"
+    },
+    "PricingFAQ": {
+        "title": "Frequently Asked Questions",
+        "question1": "What makes Memfree Unqiue?",
+        "answer1": "Memfree is a hybrid AI search engine that simultaneously retrieves the most relevant information from both your personal knowledge base and the Internet, then let the AI model to provide the best possible answer.",
+        "question2": "What is the meaning is Index?",
+        "answer2": "Memfree collects and stores your bookmarks, web pages, and local files using AI indexing. This enables you to quickly search for and retrieve the most relevant content and provide the best possible answer, Your index file is private and accessible only to you.",
+        "question3": "Why Memfree charges monthly fee?",
+        "answer3": "Memfree charges a monthly fee because the AI services, search services, and vector indexing services we utilize require continuous monthly payments",
+        "question4": "How to Contact Us?",
+        "answer4": "If you experience any issues with payment or subscription, please contact us via email at support@memfree.me or through feedback.memfree.me"
     },
     "DemoQuestions": {
         "title1": "Search and Ask Indie Maker Questions",
