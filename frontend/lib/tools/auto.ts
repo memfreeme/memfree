@@ -9,7 +9,6 @@ import { GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine, IMAGE_LIMIT } from '@/lib/search/search';
 import { saveMessages } from '@/lib/server-utils';
 import { extractFirstImageUrl } from '@/lib/shared-utils';
-import { saveSearch } from '@/lib/store/search';
 import { accessWebPage } from '@/lib/tools/access';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { getTopStories } from '@/lib/tools/hacker-news';
@@ -58,9 +57,9 @@ export async function autoAnswer(
 
         const maxTokens = getMaxOutputToken(isPro);
         const result = await streamText({
-            model: getAutoAnswerModel(model),
+            model: getLLM(model),
             system: system,
-            messages: userMessages,
+            messages: userMessages as CoreUserMessage[],
             maxTokens: maxTokens,
             temperature: 0.1,
             tools: {
@@ -86,7 +85,7 @@ export async function autoAnswer(
                         return await accessWebPage(url, onStream);
                     },
                 }),
-                getTopStories: getTopStories(onStream),
+                // getTopStories: getTopStories(onStream),
             },
         });
 
@@ -127,10 +126,11 @@ export async function autoAnswer(
                     } else if (delta.toolName === 'accessWebPage') {
                         texts = texts.concat(delta.result.texts);
                         source = SearchCategory.WEB_PAGE;
-                    } else if (delta.toolName === 'getTopStories') {
-                        texts = texts.concat(delta.result.texts);
-                        source = SearchCategory.HACKER_NEWS;
                     }
+                    // } else if (delta.toolName === 'getTopStories') {
+                    //     texts = texts.concat(delta.result.texts);
+                    //     source = SearchCategory.HACKER_NEWS;
+                    // }
                     break;
                 case 'error':
                     console.log('Error: ' + delta.error);
@@ -141,10 +141,12 @@ export async function autoAnswer(
             rewriteQuery = query;
         }
 
-        if (!hasAnswer) {
+        if (toolCallCount > 0) {
+            fullAnswer = '';
             onStream?.(
                 JSON.stringify({
                     status: 'Answering ...',
+                    clear: true,
                 }),
             );
             await directlyAnswer(
@@ -198,47 +200,23 @@ export async function autoAnswer(
     }
 }
 
-async function createUserMessages(
-    query: string,
-    image?: string,
-): Promise<CoreUserMessage[]> {
-    let userMessages: CoreUserMessage[];
+async function createUserMessages(query: string, image?: string) {
     let text = query;
-    if (!image) {
-        image = extractFirstImageUrl(query);
-        if (image) {
-            text = query.replace(image, '');
+    let imageUrl = image;
+    if (!imageUrl) {
+        imageUrl = extractFirstImageUrl(query);
+        if (imageUrl) {
+            text = query.replace(imageUrl, '').trim();
         }
     }
-    if (image) {
-        userMessages = [
-            {
-                role: 'user',
-                content: [
-                    {
-                        type: 'text',
-                        text: text,
-                    },
-                    {
-                        type: 'image',
-                        image: new URL(image),
-                    },
-                ],
-            },
-        ];
-    } else {
-        userMessages = [
-            {
-                role: 'user',
-                content: [
-                    {
-                        type: 'text',
-                        text: query,
-                    },
-                ],
-            },
-        ];
+
+    const content: Array<{ type: string; text?: string; image?: URL }> = [
+        { type: 'text', text },
+    ];
+
+    if (imageUrl) {
+        content.push({ type: 'image', image: new URL(imageUrl) });
     }
 
-    return userMessages;
+    return [{ role: 'user', content }];
 }

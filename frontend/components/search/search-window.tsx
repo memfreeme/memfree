@@ -298,6 +298,10 @@ export function SearchWindow({
                     },
                     onmessage(msg) {
                         const parsedData = JSON.parse(msg.data);
+                        if (parsedData.clear) {
+                            accumulatedMessage = '';
+                            updateMessages(accumulatedMessage);
+                        }
                         if (parsedData.answer) {
                             accumulatedMessage += parsedData.answer;
                             updateMessages(accumulatedMessage);

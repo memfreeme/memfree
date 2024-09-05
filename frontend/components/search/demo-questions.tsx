@@ -6,11 +6,11 @@ export function DemoQuestions({ onSelect }) {
     const { setSource } = useSourceStore();
     const t = useTranslations('DemoQuestions');
     const demoQuestions = [
-        {
-            title: t('title1'),
-            question: t('question1'),
-            source: SearchCategory.INDIE_MAKER,
-        },
+        // {
+        //     title: t('title1'),
+        //     question: t('question1'),
+        //     source: SearchCategory.INDIE_MAKER,
+        // },
         {
             title: t('title2'),
             question: t('question2'),
@@ -26,11 +26,11 @@ export function DemoQuestions({ onSelect }) {
             question: t('question4'),
             source: SearchCategory.ALL,
         },
-        {
-            title: t('title5'),
-            question: t('question5'),
-            source: SearchCategory.ALL,
-        },
+        // {
+        //     title: t('title5'),
+        //     question: t('question5'),
+        //     source: SearchCategory.ALL,
+        // },
         {
             title: t('title6'),
             question: t('question6'),

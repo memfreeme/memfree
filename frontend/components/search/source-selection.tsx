@@ -29,14 +29,14 @@ export const sourceMap: Record<string, Source> = {
         name: 'Knowledge Base',
         value: SearchCategory.KNOWLEDGE_BASE,
     },
-    [SearchCategory.NEWS]: {
-        name: 'News',
-        value: SearchCategory.NEWS,
-    },
-    [SearchCategory.INDIE_MAKER]: {
-        name: 'Indie Maker',
-        value: SearchCategory.INDIE_MAKER,
-    },
+    // [SearchCategory.NEWS]: {
+    //     name: 'News',
+    //     value: SearchCategory.NEWS,
+    // },
+    // [SearchCategory.INDIE_MAKER]: {
+    //     name: 'Indie Maker',
+    //     value: SearchCategory.INDIE_MAKER,
+    // },
     [SearchCategory.ACADEMIC]: {
         name: 'Paper',
         flag: 'Pro',
