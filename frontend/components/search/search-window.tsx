@@ -408,7 +408,7 @@ export function SearchWindow({
             )}
             <div className="w-full h-px" ref={visibilityRef} />
             {messages.length === 0 && (
-                <DemoQuestions onSelect={sendSelectedQuestion} />
+                <DemoQuestions/>
             )}
 
             {!isReadOnly && <SearchBar handleSearch={stableHandleSearch} />}
