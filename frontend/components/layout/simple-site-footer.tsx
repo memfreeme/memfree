@@ -1,6 +1,7 @@
 import { siteConfig } from '@/config';
 import { Icons } from '@/components/shared/icons';
 import Link from 'next/link';
+import { BookText } from 'lucide-react';
 
 export function SimpleSiteFooter() {
     return (
@@ -17,7 +18,7 @@ export function SimpleSiteFooter() {
                             <Icons.gitHub className="size-5 hover:text-primary" />
                         </Link>
                     </li>
-                    <li className="mx-2">
+                    {/* <li className="mx-2">
                         <Link
                             href={siteConfig.links.twitter}
                             target="_blank"
@@ -26,7 +27,7 @@ export function SimpleSiteFooter() {
                         >
                             <Icons.twitter className="size-5 hover:text-primary" />
                         </Link>
-                    </li>
+                    </li> */}
                     <li className="mx-2">
                         <Link
                             data-featurebase-link
@@ -40,14 +41,14 @@ export function SimpleSiteFooter() {
                     </li>
                     <li className="mx-2">
                         <Link
-                            href="/docs/extension-user-guide"
+                            href="/docs/memfree-user-guide"
                             target="_blank"
                             aria-label="MemFree Browser Extension"
                         >
-                            <Icons.chrome className="size-5 hover:text-primary" />
+                            <BookText className="size-5 hover:text-primary" />
                         </Link>
                     </li>
-                    <li className="mx-2">
+                    {/* <li className="mx-2">
                         <a
                             href={siteConfig.links.discord}
                             target="_blank"
@@ -56,7 +57,7 @@ export function SimpleSiteFooter() {
                         >
                             <Icons.discord className="size-5 hover:text-primary" />
                         </a>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
         </footer>

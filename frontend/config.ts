@@ -59,10 +59,6 @@ export const docsConfig: DocsConfig = {
                     title: 'Index BookMarks',
                     href: '/docs/index-bookmarks',
                 },
-                {
-                    title: 'Search Engine',
-                    href: '/docs/search-engine',
-                },
             ],
         },
         {

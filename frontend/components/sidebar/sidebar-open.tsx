@@ -3,7 +3,13 @@
 import * as React from 'react';
 
 import { useSidebar } from '@/hooks/use-sidebar';
-import { ArrowRightToLine, Home, Plus, Settings } from 'lucide-react';
+import {
+    ArrowRightToLine,
+    CircleHelp,
+    Home,
+    Plus,
+    Settings,
+} from 'lucide-react';
 import Link from 'next/link';
 import { User } from 'next-auth';
 import { UserAccountNav } from '@/components/layout/user-account-nav';
@@ -90,12 +96,20 @@ export function SidebarOpen({ user }: NavBarProps) {
 
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <LocaleSelect className="bg-transparent hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 m-2" />
+                            <Link
+                                href="/docs/memfree-user-guide"
+                                className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 rounded-lg  p-2 m-2"
+                            >
+                                <CircleHelp size={20} strokeWidth={2} />
+                                <span className="sr-only">Doc & Help</span>
+                            </Link>
                         </TooltipTrigger>
                         <TooltipContent className="bg-black text-white">
-                            <p>Change Language</p>
+                            <p>Doc & FAQ</p>
                         </TooltipContent>
                     </Tooltip>
+
+                    <LocaleSelect className="bg-transparent hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 m-2" />
 
                     {user && (
                         <div className="items-center justify-center rounded-lg p-2">

@@ -15,6 +15,11 @@
     <changefreq>daily</changefreq>
   </url>
   <url>
+    <loc>https://www.memfree.me/docs/memfree-user-guide</loc>
+    <lastmod>2024-09-05</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
     <loc>https://www.memfree.me/docs/deploy-searxng-fly-io</loc>
     <lastmod>2024-07-22</lastmod>
     <changefreq>daily</changefreq>
