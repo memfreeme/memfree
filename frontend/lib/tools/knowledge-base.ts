@@ -10,6 +10,7 @@ import {
     getVectorSearch,
     IMAGE_LIMIT,
 } from '@/lib/search/search';
+import { saveMessages } from '@/lib/server-utils';
 import { saveSearch } from '@/lib/store/search';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { getRelatedQuestions } from '@/lib/tools/related';
@@ -53,20 +54,12 @@ export async function knowledgeBaseSearch(
                 onStream,
             );
         } else {
-            await streamResponse(
-                {
-                    sources: [
-                        {
-                            title: 'No Relevant Content In Your Knowledge Base',
-                            url: 'local-no-content',
-                            content: `Please indexing your knowledge base first.
-                            MemFree now supports indexing local files, web pages, and browser bookmarks.
-                            You can also choose All search source`,
-                        },
-                    ],
-                },
-                onStream,
-            );
+            const answer = `#### No relevant content in your Knowledge Base
+#### Please indexing your Knowledge Base first
+#### MemFree now supports indexing local files, web pages, and browser bookmarks.
+#### You can also choose All search source`;
+            await streamResponse({ answer: answer }, onStream);
+            await saveMessages(userId, messages, answer);
             onStream?.(null, true);
         }
 
@@ -119,27 +112,14 @@ export async function knowledgeBaseSearch(
             );
         });
 
-        if (userId) {
-            messages.push({
-                id: generateId(),
-                role: 'assistant',
-                content: fullAnswer,
-                sources: texts,
-                images: images,
-                related: fullRelated,
-            });
-
-            await saveSearch(
-                {
-                    id: messages[0].id,
-                    title: messages[0].content.substring(0, 50),
-                    createdAt: new Date(),
-                    userId: userId,
-                    messages: messages,
-                },
-                userId,
-            );
-        }
+        await saveMessages(
+            userId,
+            messages,
+            fullAnswer,
+            texts,
+            images,
+            fullRelated,
+        );
         onStream?.(null, true);
     } catch (error) {
         logError(error, 'knowledge-base-search');

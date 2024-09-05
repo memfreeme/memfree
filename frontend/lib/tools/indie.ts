@@ -7,6 +7,7 @@ import { getHistory, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine, IMAGE_LIMIT, TEXT_LIMIT } from '@/lib/search/search';
+import { saveMessages } from '@/lib/server-utils';
 import { saveSearch } from '@/lib/store/search';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { getRelatedQuestions } from '@/lib/tools/related';
@@ -114,27 +115,14 @@ export async function indieMakerSearch(
             );
         });
 
-        if (userId) {
-            messages.push({
-                id: generateId(),
-                role: 'assistant',
-                content: fullAnswer,
-                sources: texts,
-                images: images,
-                related: fullRelated,
-            });
-
-            await saveSearch(
-                {
-                    id: messages[0].id,
-                    title: messages[0].content.substring(0, 50),
-                    createdAt: new Date(),
-                    userId: userId,
-                    messages: messages,
-                },
-                userId,
-            );
-        }
+        await saveMessages(
+            userId,
+            messages,
+            fullAnswer,
+            texts,
+            images,
+            fullRelated,
+        );
         onStream?.(null, true);
     } catch (error) {
         logError(error, 'indie-search');
