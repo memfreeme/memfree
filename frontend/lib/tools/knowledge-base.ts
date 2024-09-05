@@ -11,11 +11,9 @@ import {
     IMAGE_LIMIT,
 } from '@/lib/search/search';
 import { saveMessages } from '@/lib/server-utils';
-import { saveSearch } from '@/lib/store/search';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { getRelatedQuestions } from '@/lib/tools/related';
 import { Message as StoreMessage, SearchCategory } from '@/lib/types';
-import { generateId } from 'ai';
 
 export async function knowledgeBaseSearch(
     messages: StoreMessage[],
@@ -29,12 +27,7 @@ export async function knowledgeBaseSearch(
         const newMessages = messages.slice(-1) as Message[];
         const query = newMessages[0].content;
 
-        await streamResponse(
-            {
-                status: 'Searching ...',
-            },
-            onStream,
-        );
+        await streamResponse({ status: 'Searching ...' }, onStream);
 
         const imageFetchPromise = getSearchEngine({
             categories: [SearchCategory.IMAGES],
@@ -68,11 +61,7 @@ export async function knowledgeBaseSearch(
         let rewriteQuery = query;
 
         const source = SearchCategory.ALL;
-        onStream?.(
-            JSON.stringify({
-                status: 'Answering ...',
-            }),
-        );
+        await streamResponse({ status: 'Answering ...' }, onStream);
         await directlyAnswer(
             isPro,
             source,
@@ -92,14 +81,12 @@ export async function knowledgeBaseSearch(
 
         const fetchedImages = await imageFetchPromise;
         const images = [...fetchedImages];
-        await streamResponse({ images: images }, onStream);
+        await streamResponse(
+            { images: images, status: 'Generating related questions ...' },
+            onStream,
+        );
 
         let fullRelated = '';
-        onStream?.(
-            JSON.stringify({
-                status: 'Generating related questions ...',
-            }),
-        );
         await getRelatedQuestions(rewriteQuery, texts, (msg) => {
             fullRelated += msg;
             onStream?.(JSON.stringify({ related: msg }));

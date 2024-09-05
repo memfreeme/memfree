@@ -143,12 +143,7 @@ export async function autoAnswer(
 
         if (toolCallCount > 0) {
             fullAnswer = '';
-            onStream?.(
-                JSON.stringify({
-                    status: 'Answering ...',
-                    clear: true,
-                }),
-            );
+            await streamResponse({ status: 'Answering ...', clear: true}, onStream);
             await directlyAnswer(
                 isPro,
                 source,
@@ -165,14 +160,12 @@ export async function autoAnswer(
 
         const fetchedImages = await imageFetchPromise;
         images = [...images, ...fetchedImages];
-        await streamResponse({ images: images }, onStream);
+        await streamResponse(
+            { images: images, status: 'Generating related questions ...' },
+            onStream,
+        );
 
         let fullRelated = '';
-        onStream?.(
-            JSON.stringify({
-                status: 'Generating related questions ...',
-            }),
-        );
         await getRelatedQuestions(query, texts, (msg) => {
             fullRelated += msg;
             onStream?.(JSON.stringify({ related: msg }));
