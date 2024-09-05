@@ -1,29 +1,7 @@
 import 'server-only';
 
-import { SearchCategory } from '@/lib/types';
-import {
-    AcademicPrompet,
-    DirectAnswerPrompt,
-    HackerNewsPrompt,
-    MoreQuestionsPrompt,
-    NewsPrompt,
-} from './prompt';
-
-export function choosePrompt(source: SearchCategory) {
-    if (source === SearchCategory.ACADEMIC) {
-        return AcademicPrompet;
-    }
-    if (source === SearchCategory.NEWS) {
-        return NewsPrompt;
-    }
-    if (source === SearchCategory.HACKER_NEWS) {
-        return HackerNewsPrompt;
-    }
-    return DirectAnswerPrompt;
-}
-
 export function getMaxOutputToken(isPro: boolean) {
-    return isPro ? 4096 : 1024;
+    return isPro ? 8192 : 2048;
 }
 
 export function getHistory(isPro: boolean, messages: any[]) {

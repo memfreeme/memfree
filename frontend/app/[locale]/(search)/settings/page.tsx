@@ -6,6 +6,7 @@ import { DashboardShell } from '@/components/dashboard/shell';
 import { DeleteHistoryCard } from '@/components/delete-history-card';
 import { BillingInfo } from '@/components/billing-info';
 import { getUserSubscriptionPlan } from '@/lib/subscription';
+import { CustomProfile } from '@/components/profile';
 
 export const metadata = {
     title: 'MemFree Settings',
@@ -28,6 +29,7 @@ export default async function SettingsPage() {
                     text="Manage account and website settings."
                 />
                 <div className="grid gap-10">
+                    <CustomProfile></CustomProfile>
                     <BillingInfo userSubscriptionPlan={userSubscriptionPlan} />
                     <DeleteHistoryCard></DeleteHistoryCard>
                 </div>

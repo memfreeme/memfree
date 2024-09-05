@@ -76,6 +76,7 @@ export async function indieMakerSearch(
             isPro,
             source,
             history,
+            '', // profile
             getLLM(model),
             rewriteQuery,
             texts,

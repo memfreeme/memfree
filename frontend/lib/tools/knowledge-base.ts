@@ -66,6 +66,7 @@ export async function knowledgeBaseSearch(
             isPro,
             source,
             history,
+            '',
             getLLM(model),
             rewriteQuery,
             texts,

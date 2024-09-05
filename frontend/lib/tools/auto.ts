@@ -28,6 +28,7 @@ export async function autoAnswer(
     messages: StoreMessage[],
     isPro: boolean,
     userId: string,
+    profile?: string,
     onStream?: (...args: any[]) => void,
     model = GPT_4o_MIMI,
     source = SearchCategory.ALL,
@@ -51,7 +52,8 @@ export async function autoAnswer(
             );
 
         let history = getHistory(isPro, messages);
-        const system = util.format(AutoAnswerPrompt, history);
+        const system = util.format(AutoAnswerPrompt, profile, history);
+        // console.log('Auto Answering:', system);
 
         let userMessages = await createUserMessages(query, imageFile);
 
@@ -87,6 +89,9 @@ export async function autoAnswer(
                 }),
                 // getTopStories: getTopStories(onStream),
             },
+            // onFinish: async (event) => {
+            //     console.log('finishReason', event.finishReason, event.usage);
+            // },
         });
 
         let hasAnswer = false;
@@ -143,11 +148,15 @@ export async function autoAnswer(
 
         if (toolCallCount > 0) {
             fullAnswer = '';
-            await streamResponse({ status: 'Answering ...', clear: true}, onStream);
+            await streamResponse(
+                { status: 'Answering ...', clear: true },
+                onStream,
+            );
             await directlyAnswer(
                 isPro,
                 source,
                 history,
+                profile,
                 getLLM(model),
                 rewriteQuery,
                 texts,

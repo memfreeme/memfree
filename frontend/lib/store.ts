@@ -1,6 +1,24 @@
 import { create } from 'zustand';
 import { User } from '@/lib/types';
 import { GPT_4o_MIMI } from '@/lib/model';
+import { persist } from 'zustand/middleware';
+
+interface ProfileState {
+    profile: string;
+    setProfile: (content: string) => void;
+}
+
+export const useProfileStore = create<ProfileState>()(
+    persist(
+        (set) => ({
+            profile: '',
+            setProfile: (content: string) => set({ profile: content }),
+        }),
+        {
+            name: 'profile-storage',
+        },
+    ),
+);
 
 type UserState = {
     user: User | null;

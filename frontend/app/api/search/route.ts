@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
             );
         }
     }
-    let { model, source, messages } = await req.json();
+    let { model, source, messages, profile } = await req.json();
 
     if (!validModel(model)) {
         return NextResponse.json(
@@ -72,6 +72,7 @@ export async function POST(req: NextRequest) {
 
     // console.log(messages);
     // console.log(source);
+    // console.log('profile ', profile);
 
     try {
         const readableStream = new ReadableStream({
@@ -102,6 +103,7 @@ export async function POST(req: NextRequest) {
                             messages,
                             isPro,
                             userId,
+                            profile,
                             streamController(controller),
                             model,
                             source,

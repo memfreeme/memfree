@@ -1,6 +1,12 @@
 import { StreamHandler } from '@/lib/llm/llm';
-import { HackerNewsPrompt, SummaryPrompt } from '@/lib/llm/prompt';
-import { choosePrompt, getMaxOutputToken } from '@/lib/llm/utils';
+import {
+    AcademicPrompt,
+    DirectAnswerPrompt,
+    HackerNewsPrompt,
+    NewsPrompt,
+    SummaryPrompt,
+} from '@/lib/llm/prompt';
+import { getMaxOutputToken } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { SearchCategory, TextSource } from '@/lib/types';
 import { LanguageModel, streamText } from 'ai';
@@ -10,13 +16,19 @@ export async function directlyAnswer(
     isPro: boolean,
     source: SearchCategory,
     history: string,
+    profile: string,
     model: LanguageModel,
     query: string,
     searchContexts: TextSource[],
     onStream: StreamHandler,
 ) {
     try {
-        const system = promptFormatterAnswer(source, searchContexts, history);
+        const system = promptFormatterAnswer(
+            source,
+            profile,
+            searchContexts,
+            history,
+        );
         // console.log('directlyAnswer:', system);
         const maxTokens = getMaxOutputToken(isPro);
         try {
@@ -42,23 +54,34 @@ export async function directlyAnswer(
 
 function promptFormatterAnswer(
     source: SearchCategory,
+    profile: string,
     searchContexts: any[],
     history: string,
 ) {
-    if (source === SearchCategory.HACKER_NEWS) {
-        return util.format(
-            HackerNewsPrompt,
-            JSON.stringify(searchContexts, null, 2),
-        );
-    } else if (source === SearchCategory.WEB_PAGE) {
-        return util.format(
-            SummaryPrompt,
-            JSON.stringify(searchContexts, null, 2),
-        );
-    }
     const context = searchContexts
         .map((item, index) => `[citation:${index + 1}] ${item.content}`)
         .join('\n\n');
-    let prompt = choosePrompt(source);
-    return util.format(prompt, context, history);
+
+    switch (source) {
+        case SearchCategory.HACKER_NEWS:
+            return util.format(
+                HackerNewsPrompt,
+                JSON.stringify(searchContexts, null, 2),
+            );
+
+        case SearchCategory.WEB_PAGE:
+            return util.format(
+                SummaryPrompt,
+                JSON.stringify(searchContexts, null, 2),
+            );
+
+        case SearchCategory.ACADEMIC:
+            return util.format(AcademicPrompt, context);
+
+        case SearchCategory.NEWS:
+            return util.format(NewsPrompt, context);
+
+        default:
+            return util.format(DirectAnswerPrompt, profile, context, history);
+    }
 }

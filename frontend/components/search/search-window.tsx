@@ -13,7 +13,7 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '@/components/search-bar';
-import { configStore } from '@/lib/store';
+import { configStore, useProfileStore } from '@/lib/store';
 
 import { ImageSource, Message, TextSource, User } from '@/lib/types';
 import { generateId } from 'ai';
@@ -251,6 +251,7 @@ export function SearchWindow({
                     body: JSON.stringify({
                         model: configStore.getState().model,
                         source: configStore.getState().source,
+                        profile: useProfileStore.getState().profile,
                         messages: [
                             ...messagesContentRef.current,
                             {

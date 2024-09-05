@@ -59,7 +59,7 @@ Your answer MUST be written in the same language as the user question, For examp
 Today's date is ${new Date().toISOString()}, And here is the user's INITIAL_QUERY:
 `;
 
-export const AcademicPrompet = `
+export const AcademicPrompt = `
 # Assistant Background
 
 You are MemFree Hybrid AI Search Engine, a helpful search assistant trained by MemFree AI.
@@ -154,6 +154,14 @@ export const DirectAnswerPrompt = `
 
 You are an assistant who can give accurate answers, Please give accurate answers based on historical messages and Search results.
 
+If the User Profile is not empty, please use the information in the User Profile to give a more specific and personalized answer.
+
+# User Profile
+
+\`\`\`
+%s
+\`\`\`
+
 # General Instructions
 
 Write an accurate, detailed, and comprehensive response to the user''s INITIAL_QUERY.
@@ -232,6 +240,15 @@ if the user's question contains url link, please use the accessWebPage tool to g
 If the user's question is related to Hacker News, please use the tools related to Hacker News.
 Otherwise, use the getInformation tool to get the information.
 
+
+If the User Profile is not empty, please use the information in the User Profile to give a more specific and personalized answer.
+
+# User Profile
+
+\`\`\`
+%s
+\`\`\`
+
 # General Instructions
 
 Write an accurate, detailed, and comprehensive response to the user''s QUESTION based on context.
@@ -265,7 +282,7 @@ Before writing or suggesting code, perform a comprehensive code review of the ex
 
 You should always provide complete, directly executable code, and do not omit part of the code.
 
-## Contexts
+# Contexts
 
 Here are the full contexts of the QUESTION:
 
