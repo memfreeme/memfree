@@ -39,7 +39,7 @@ const SearchMessageBubble = memo(
         }
 
         return (
-            <div className="flex flex-col w-full  items-start space-y-6 pb-10">
+            <div className="flex flex-col w-full items-start space-y-6 pb-10">
                 {!isUser && sources.length > 0 && (
                     <div className="flex w-full flex-col items-start space-y-2.5 py-4">
                         <div className="flex items-center space-x-2">
