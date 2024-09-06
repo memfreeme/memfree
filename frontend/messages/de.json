@@ -1,0 +1,65 @@
+{
+    "HomePage": {
+        "hero": "Hybride KI-Suche - Schneller und genauer",
+        "hero2": "Hybride KI-Suche aus Wissensdatenbank und Internet",
+        "index-button": "Indexieren",
+        "attach-button": "Anhängen"
+    },
+    "MetaDate": {
+        "title": "MemFree - Hybride KI-Suche",
+        "name": "MemFree",
+        "description": "MemFree - Hybride KI-Suche aus Wissensdatenbank und Internet, erhalten Sie schneller genaue Antworten"
+    },
+    "Pricing": {
+        "title": "MemFree Preisgestaltung",
+        "description": "Erhalten Sie jetzt unbegrenzten Zugang",
+        "Free1": "Bis zu 10 grundlegende KI-Suchen pro Tag",
+        "Free2": "Bis zu 10 Lesezeichen und Webseiten zum Indexieren",
+        "Free3": "Bis zu 1024 Token Ausgabe pro Antwort",
+        "Free4": "Bis zu 4MB für einzelne Datei und Bild zum Fragen",
+        "Free5": "Speichern Sie bis zu 100 Suchverläufe",
+        "Free6": "Unterstützung für GPT-4o-mini KI-Modell",
+        "Free7": "Unterstützung für Web und Chrome-Erweiterung",
+        "Pro1": "Unbegrenzte grundlegende KI-Suchen pro Monat",
+        "Pro2": "Bis zu 1000 Experten-KI-Suchen pro Monat",
+        "Pro3": "Bis zu 1000 Lesezeichen und Webseiten zum Indexieren",
+        "Pro4": "Bis zu 4096 Token Ausgabe pro Antwort",
+        "Pro5": "Bis zu 20MB für einzelne Datei und Bild zum Fragen",
+        "Pro6": "Unbegrenztes Speichern des Suchverlaufs",
+        "Pro7": "Unterstützung für GPT-4o & Claude-3.5-sonnet KI-Modell",
+        "Pro8": "Unterstützung für kontextbasierte kontinuierliche Suche",
+        "Pro9": "Unterstützung für Neuordnung, um bessere Suchergebnisse zu erhalten",
+        "Premium1": "Unbegrenzte grundlegende KI-Suchen pro Monat",
+        "Premium2": "Unbegrenzte Experten-KI-Suchen pro Monat",
+        "Premium3": "Unbegrenzte Lesezeichen und Webseiten zum Indexieren",
+        "Premium4": "Unbegrenztes Speichern des Suchverlaufs",
+        "Premium5": "Bis zu 50MB für einzelne Datei und Bild zum Fragen",
+        "Premium6": "Bis zu 16384 Token Ausgabe pro Antwort",
+        "Premium7": "Priorisierter Kundensupport",
+        "free-call": "Weiter mit Kostenlos",
+        "pre-call": "Upgrade",
+        "paid-call": "Abonnement verwalten",
+        "upgrade-call": "Erweiterte Funktionen mit MemFree Pro freischalten",
+        "upgrade-button": "Jetzt upgraden"
+    },
+    "PricingFAQ": {
+        "title": "Häufig gestellte Fragen",
+        "question1": "Was macht Memfree einzigartig?",
+        "answer1": "Memfree ist eine hybride KI-Suchmaschine, die gleichzeitig die relevantesten Informationen sowohl aus Ihrer persönlichen Wissensdatenbank als auch aus dem Internet abruft und dann das KI-Modell die bestmögliche Antwort liefern lässt.",
+        "question2": "Was bedeutet Indexieren?",
+        "answer2": "Memfree sammelt und speichert Ihre Lesezeichen, Webseiten und lokalen Dateien mithilfe von KI-Indexierung. Dies ermöglicht es Ihnen, schnell nach den relevantesten Inhalten zu suchen und sie abzurufen sowie die bestmögliche Antwort zu liefern. Ihre Indexdatei ist privat und nur für Sie zugänglich.",
+        "question3": "Warum erhebt Memfree eine monatliche Gebühr?",
+        "answer3": "Memfree erhebt eine monatliche Gebühr, weil die KI-Dienste, Suchdienste und Vektor-Indexierungsdienste, die wir nutzen, kontinuierliche monatliche Zahlungen erfordern",
+        "question4": "Wie können Sie uns kontaktieren?",
+        "answer4": "Wenn Sie Probleme mit der Zahlung oder dem Abonnement haben, kontaktieren Sie uns bitte per E-Mail an support@memfree.me oder über feedback.memfree.me"
+    },
+    "DemoQuestions": {
+        "title1": "Suchen und Fragen zu unabhängigen Entwicklern stellen",
+        "title2": "Suchen und Fragen anhand von Bildern",
+        "title3": "Text aus Bild extrahieren",
+        "title4": "Webseite und PDF zusammenfassen und Fragen stellen",
+        "title5": "Top Hacker News Geschichten erhalten",
+        "title6": "Twitter-Fragen suchen und stellen",
+        "title7": "Code erklären und schreiben"
+    }
+}

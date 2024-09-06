@@ -1,0 +1,65 @@
+{
+    "HomePage": {
+        "hero": "Recherche IA Hybride - Plus Rapide et plus Précise",
+        "hero2": "Recherche IA Hybride à partir de la Base de Connaissances et d'Internet",
+        "index-button": "Indexer",
+        "attach-button": "Joindre"
+    },
+    "MetaDate": {
+        "title": "MemFree - Recherche IA Hybride",
+        "name": "MemFree",
+        "description": "MemFree - Recherche IA Hybride à partir de la base de connaissances et d'Internet, obtenez des Réponses Précises plus Rapidement"
+    },
+    "Pricing": {
+        "title": "Tarification MemFree",
+        "description": "Obtenez un Accès Illimité Maintenant",
+        "Free1": "Jusqu'à 10 recherches IA basiques par jour",
+        "Free2": "Jusqu'à 10 signets et pages web à indexer",
+        "Free3": "Jusqu'à 1024 tokens de sortie par réponse",
+        "Free4": "Jusqu'à 4 Mo pour un seul fichier et image à interroger",
+        "Free5": "Sauvegardez jusqu'à 100 historiques de recherche",
+        "Free6": "Prise en charge du modèle IA GPT-4o-mini",
+        "Free7": "Prise en charge du Web et de l'extension Chrome",
+        "Pro1": "Recherches IA basiques illimitées par mois",
+        "Pro2": "Jusqu'à 1000 recherches IA expertes par mois",
+        "Pro3": "Jusqu'à 1000 signets et pages web à indexer",
+        "Pro4": "Jusqu'à 4096 tokens de sortie par réponse",
+        "Pro5": "Jusqu'à 20 Mo pour un seul fichier et image à interroger",
+        "Pro6": "Sauvegarde illimitée de l'historique de recherche",
+        "Pro7": "Prise en charge des modèles IA GPT-4o et Claude-3.5-sonnet",
+        "Pro8": "Prise en charge de la recherche continue basée sur le contexte",
+        "Pro9": "Prise en charge du reclassement pour obtenir de meilleurs résultats de recherche",
+        "Premium1": "Recherches IA basiques illimitées par mois",
+        "Premium2": "Recherches IA expertes illimitées par mois",
+        "Premium3": "Signets et pages web illimités à indexer",
+        "Premium4": "Sauvegarde illimitée de l'historique de recherche",
+        "Premium5": "Jusqu'à 50 Mo pour un seul fichier et image à interroger",
+        "Premium6": "Jusqu'à 16384 tokens de sortie par réponse",
+        "Premium7": "Support client prioritaire",
+        "free-call": "Continuer avec la version gratuite",
+        "pre-call": "Mettre à niveau",
+        "paid-call": "Gérer l'abonnement",
+        "upgrade-call": "Débloquez les fonctionnalités avancées avec MemFree Pro",
+        "upgrade-button": "Mettre à niveau maintenant"
+    },
+    "PricingFAQ": {
+        "title": "Questions fréquemment posées",
+        "question1": "Qu'est-ce qui rend Memfree unique ?",
+        "answer1": "Memfree est un moteur de recherche IA hybride qui récupère simultanément les informations les plus pertinentes à la fois de votre base de connaissances personnelle et d'Internet, puis laisse le modèle IA fournir la meilleure réponse possible.",
+        "question2": "Que signifie Indexer ?",
+        "answer2": "Memfree collecte et stocke vos signets, pages web et fichiers locaux en utilisant l'indexation IA. Cela vous permet de rechercher et de récupérer rapidement le contenu le plus pertinent et de fournir la meilleure réponse possible. Votre fichier d'index est privé et accessible uniquement par vous.",
+        "question3": "Pourquoi Memfree facture-t-il des frais mensuels ?",
+        "answer3": "Memfree facture des frais mensuels car les services d'IA, les services de recherche et les services d'indexation vectorielle que nous utilisons nécessitent des paiements mensuels continus",
+        "question4": "Comment nous contacter ?",
+        "answer4": "Si vous rencontrez des problèmes avec le paiement ou l'abonnement, veuillez nous contacter par e-mail à support@memfree.me ou via feedback.memfree.me"
+    },
+    "DemoQuestions": {
+        "title1": "Rechercher et poser des questions sur les créateurs indépendants",
+        "title2": "Rechercher et poser des questions par image",
+        "title3": "Extraire du texte d'une image",
+        "title4": "Résumer et poser des questions sur une page Web et un PDF",
+        "title5": "Obtenir les meilleures histoires de Hacker News",
+        "title6": "Rechercher et poser des questions Twitter",
+        "title7": "Expliquer et écrire du code"
+    }
+}

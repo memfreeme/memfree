@@ -1,0 +1,65 @@
+{
+    "HomePage": {
+        "hero": "Búsqueda de IA Híbrida - Más Rápida y Precisa",
+        "hero2": "Búsqueda de IA Híbrida desde Base de Conocimientos e Internet",
+        "index-button": "Indexar",
+        "attach-button": "Adjuntar"
+    },
+    "MetaDate": {
+        "title": "MemFree - Búsqueda de IA Híbrida",
+        "name": "MemFree",
+        "description": "MemFree - Búsqueda de IA Híbrida desde base de conocimientos e Internet, obtén Respuestas Precisas Más Rápido"
+    },
+    "Pricing": {
+        "title": "Precios de MemFree",
+        "description": "Obtén Acceso Ilimitado Ahora",
+        "Free1": "Hasta 10 búsquedas básicas de IA por día",
+        "Free2": "Hasta 10 marcadores y páginas web para indexar",
+        "Free3": "Hasta 1024 tokens de salida por respuesta",
+        "Free4": "Hasta 4MB para archivo único e imagen para preguntar",
+        "Free5": "Guarda hasta 100 historiales de búsqueda",
+        "Free6": "Soporte para modelo de IA GPT-4o-mini",
+        "Free7": "Soporte para Web y Extensión de Chrome",
+        "Pro1": "Búsquedas básicas de IA ilimitadas por mes",
+        "Pro2": "Hasta 1000 búsquedas de IA experta por mes",
+        "Pro3": "Hasta 1000 marcadores y páginas web para indexar",
+        "Pro4": "Hasta 4096 tokens de salida por respuesta",
+        "Pro5": "Hasta 20MB para archivo único e imagen para preguntar",
+        "Pro6": "Guardado ilimitado de historial de búsqueda",
+        "Pro7": "Soporte para modelos de IA GPT-4o y Claude-3.5-sonnet",
+        "Pro8": "Soporte para búsqueda continua basada en contexto",
+        "Pro9": "Soporte para reordenamiento para obtener mejores resultados de búsqueda",
+        "Premium1": "Búsquedas básicas de IA ilimitadas por mes",
+        "Premium2": "Búsquedas de IA experta ilimitadas por mes",
+        "Premium3": "Marcadores y páginas web ilimitados para indexar",
+        "Premium4": "Guardado ilimitado de historial de búsqueda",
+        "Premium5": "Hasta 50MB para archivo único e imagen para preguntar",
+        "Premium6": "Hasta 16384 tokens de salida por respuesta",
+        "Premium7": "Soporte al cliente prioritario",
+        "free-call": "Continuar con Gratis",
+        "pre-call": "Actualizar",
+        "paid-call": "Gestionar Suscripción",
+        "upgrade-call": "Desbloquea Funciones Avanzadas Con MemFree Pro",
+        "upgrade-button": "Actualizar Ahora"
+    },
+    "PricingFAQ": {
+        "title": "Preguntas Frecuentes",
+        "question1": "¿Qué hace único a Memfree?",
+        "answer1": "Memfree es un motor de búsqueda de IA híbrido que recupera simultáneamente la información más relevante tanto de tu base de conocimientos personal como de Internet, luego deja que el modelo de IA proporcione la mejor respuesta posible.",
+        "question2": "¿Qué significa Indexar?",
+        "answer2": "Memfree recopila y almacena tus marcadores, páginas web y archivos locales utilizando indexación de IA. Esto te permite buscar y recuperar rápidamente el contenido más relevante y proporcionar la mejor respuesta posible. Tu archivo de índice es privado y accesible solo para ti.",
+        "question3": "¿Por qué Memfree cobra una tarifa mensual?",
+        "answer3": "Memfree cobra una tarifa mensual porque los servicios de IA, servicios de búsqueda y servicios de indexación vectorial que utilizamos requieren pagos mensuales continuos",
+        "question4": "¿Cómo contactarnos?",
+        "answer4": "Si experimentas algún problema con el pago o la suscripción, contáctanos por correo electrónico a support@memfree.me o a través de feedback.memfree.me"
+    },
+    "DemoQuestions": {
+        "title1": "Buscar y Hacer Preguntas de Creadores Independientes",
+        "title2": "Buscar y Preguntar por Imagen",
+        "title3": "Extraer Texto de Imagen",
+        "title4": "Resumir y Preguntar Página Web y PDF",
+        "title5": "Obtener Historias Principales de Hacker News",
+        "title6": "Buscar y Hacer Preguntas de Twitter",
+        "title7": "Explicar y Escribir Código"
+    }
+}

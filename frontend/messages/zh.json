@@ -55,18 +55,11 @@
     },
     "DemoQuestions": {
         "title1": "搜索独立开发者问题",
-        "question1": "How to get first 1000 users",
         "title2": "通过图像搜索",
-        "question2": "什么是 Hybrid AI Search https://www.memfree.me/memfree-hybrid-ai-search.webp",
         "title3": "图像中提取文本",
-        "question3": "提取文本 https://www.memfree.me/pricing-card.png",
         "title4": "总结询问网页和 PDF",
-        "question4": "总结 https://www.memfree.me/docs/index-bookmarks 的内容",
         "title5": "获取 Hacker News 头条",
-        "question5": "Get the top 3 Hacker News stories",
         "title6": "搜索 Twitter 问题",
-        "question6": "Claude 3.5 Sonect VS GPT-4o",
-        "title7": "代码解释和编写",
-        "question7": "请使用 zustand 和本地存储实现一个 react 用户存储钩子，如果在本地存储中找不到用户，则从服务器获取。请用 TS 编写"
+        "title7": "代码解释和编写"
     }
 }
