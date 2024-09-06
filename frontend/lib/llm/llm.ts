@@ -3,7 +3,7 @@ import 'server-only';
 import { LanguageModel } from 'ai';
 import { createOpenAI, openai } from '@ai-sdk/openai';
 import { anthropic } from '@ai-sdk/anthropic';
-import { GPT_4o, GPT_4o_MIMI, isProModel } from '@/lib/model';
+import { GPT_4o } from '@/lib/model';
 import { google } from '@ai-sdk/google';
 
 export type RoleType = 'user' | 'assistant' | 'system';
@@ -35,12 +35,4 @@ export function getLLM(model: string): LanguageModel {
         }
         return openai(model);
     }
-}
-
-// other model is poor quality for auto answer
-export function getAutoAnswerModel(model: string) {
-    if (isProModel(model)) {
-        return openai('gpt-4o-2024-08-06');
-    }
-    return openai(GPT_4o_MIMI);
 }

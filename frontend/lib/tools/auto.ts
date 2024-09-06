@@ -1,7 +1,7 @@
 'use server';
 
 import { incSearchCount } from '@/lib/db';
-import { getAutoAnswerModel, getLLM, Message } from '@/lib/llm/llm';
+import { getLLM, Message } from '@/lib/llm/llm';
 import { AutoAnswerPrompt } from '@/lib/llm/prompt';
 import { getHistory, getMaxOutputToken, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
@@ -20,7 +20,7 @@ import {
     SearchCategory,
     TextSource,
 } from '@/lib/types';
-import { CoreUserMessage, generateId, streamText, tool } from 'ai';
+import { CoreUserMessage, streamText, tool } from 'ai';
 import util from 'util';
 import { z } from 'zod';
 
@@ -146,6 +146,7 @@ export async function autoAnswer(
             rewriteQuery = query;
         }
 
+        let fullRelated = '';
         if (toolCallCount > 0) {
             fullAnswer = '';
             await streamResponse(
@@ -165,20 +166,18 @@ export async function autoAnswer(
                     onStream?.(JSON.stringify({ answer: msg }));
                 },
             );
+
+            const fetchedImages = await imageFetchPromise;
+            images = [...images, ...fetchedImages];
+            await streamResponse(
+                { images: images, status: 'Generating related questions ...' },
+                onStream,
+            );
+            await getRelatedQuestions(query, texts, (msg) => {
+                fullRelated += msg;
+                onStream?.(JSON.stringify({ related: msg }));
+            });
         }
-
-        const fetchedImages = await imageFetchPromise;
-        images = [...images, ...fetchedImages];
-        await streamResponse(
-            { images: images, status: 'Generating related questions ...' },
-            onStream,
-        );
-
-        let fullRelated = '';
-        await getRelatedQuestions(query, texts, (msg) => {
-            fullRelated += msg;
-            onStream?.(JSON.stringify({ related: msg }));
-        });
 
         incSearchCount(userId).catch((error) => {
             console.error(

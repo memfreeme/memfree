@@ -391,6 +391,7 @@ export function SearchWindow({
                             message={{ ...m }}
                             onSelect={sendSelectedQuestion}
                             reload={reload}
+                            isLoading={isLoading}
                         ></SearchMessageBubble>
                     ))
                 ) : (
@@ -407,9 +408,7 @@ export function SearchWindow({
                 </div>
             )}
             <div className="w-full h-px" ref={visibilityRef} />
-            {messages.length === 0 && (
-                <DemoQuestions/>
-            )}
+            {messages.length === 0 && <DemoQuestions />}
 
             {!isReadOnly && <SearchBar handleSearch={stableHandleSearch} />}
             <ButtonScrollToBottom

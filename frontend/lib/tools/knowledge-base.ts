@@ -5,14 +5,9 @@ import { getLLM, Message } from '@/lib/llm/llm';
 import { getHistory, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
-import {
-    getSearchEngine,
-    getVectorSearch,
-    IMAGE_LIMIT,
-} from '@/lib/search/search';
+import { getVectorSearch } from '@/lib/search/search';
 import { saveMessages } from '@/lib/server-utils';
 import { directlyAnswer } from '@/lib/tools/answer';
-import { getRelatedQuestions } from '@/lib/tools/related';
 import { Message as StoreMessage, SearchCategory } from '@/lib/types';
 
 export async function knowledgeBaseSearch(
@@ -29,16 +24,6 @@ export async function knowledgeBaseSearch(
 
         await streamResponse({ status: 'Searching ...' }, onStream);
 
-        const imageFetchPromise = getSearchEngine({
-            categories: [SearchCategory.IMAGES],
-        })
-            .search(query)
-            .then((results) =>
-                results.images
-                    .filter((img) => img.image.startsWith('https'))
-                    .slice(0, IMAGE_LIMIT),
-            );
-
         const { texts } = await getVectorSearch(userId, url).search(query);
 
         if (texts.length > 0) {
@@ -54,6 +39,7 @@ export async function knowledgeBaseSearch(
             await streamResponse({ answer: answer }, onStream);
             await saveMessages(userId, messages, answer);
             onStream?.(null, true);
+            return;
         }
 
         let history = getHistory(isPro, messages);
@@ -80,19 +66,6 @@ export async function knowledgeBaseSearch(
             },
         );
 
-        const fetchedImages = await imageFetchPromise;
-        const images = [...fetchedImages];
-        await streamResponse(
-            { images: images, status: 'Generating related questions ...' },
-            onStream,
-        );
-
-        let fullRelated = '';
-        await getRelatedQuestions(rewriteQuery, texts, (msg) => {
-            fullRelated += msg;
-            onStream?.(JSON.stringify({ related: msg }));
-        });
-
         incSearchCount(userId).catch((error) => {
             console.error(
                 `Failed to increment search count for user ${userId}:`,
@@ -100,14 +73,7 @@ export async function knowledgeBaseSearch(
             );
         });
 
-        await saveMessages(
-            userId,
-            messages,
-            fullAnswer,
-            texts,
-            images,
-            fullRelated,
-        );
+        await saveMessages(userId, messages, fullAnswer, texts, [], '');
         onStream?.(null, true);
     } catch (error) {
         logError(error, 'knowledge-base-search');

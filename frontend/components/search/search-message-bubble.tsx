@@ -21,10 +21,12 @@ const SearchMessageBubble = memo(
         message: Message;
         onSelect: (question: string) => void;
         reload: (msgId: string) => void;
+        isLoading: boolean;
     }) => {
         let { id, role, content, imageFile, related } = props.message;
         const onSelect = props.onSelect;
         const reload = props.reload;
+        const isLoading = props.isLoading;
         const isUser = role === 'user';
 
         const message = props.message;
@@ -61,7 +63,7 @@ const SearchMessageBubble = memo(
                 {!isUser && content && (
                     <AnswerSection content={content} sources={sources} />
                 )}
-                {(images.length > 0 || related) && (
+                {(images.length > 0 || !isLoading) && !isUser && (
                     <ActionButtons
                         content={content}
                         searchId={searchId}

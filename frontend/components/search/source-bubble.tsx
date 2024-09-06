@@ -52,7 +52,7 @@ const SourceBubble = ({ source, onSelect }) => {
                 >
                     {source.content}
                 </p>
-                {!isLocalUrl && (
+                {!isLocalUrl && !isVector && (
                     <div className="absolute bottom-2 right-2">
                         <button
                             type="button"
