@@ -1,7 +1,9 @@
 {
     "HomePage": {
         "hero": "Hybrid AI Search - Faster and more Accurate",
-        "hero2": "Hybrid AI Search from Knowledge Base and Internet"
+        "hero2": "Hybrid AI Search from Knowledge Base and Internet",
+        "index-button": "Index",
+        "attach-button": "Attach"
     },
     "MetaDate": {
         "title": "MemFree - Hybrid AI Search",
@@ -26,7 +28,7 @@
         "Pro6": "Unlimited Saving of Search History",
         "Pro7": "Support GPT-4o & Claude-3.5-sonnet AI Model",
         "Pro8": "Support Context-based Continuous Search",
-        "Pro9": "Support Rerank to get Better search results",
+        "Pro9": "Support Rerank to get better search results",
         "Premium1": "Unlimited Basic AI Searches Per Month",
         "Premium2": "Unlimited Expert AI Searches Per Month",
         "Premium3": "Unlimited Bookmarks and Web Pages to Index",
@@ -36,7 +38,9 @@
         "Premium7": "Priority customer support",
         "free-call": "Continuou with Free",
         "pre-call": "Upgrade",
-        "paid-call": "Manage Subscription"
+        "paid-call": "Manage Subscription",
+        "upgrade-call": "Unlock Advanced Features With MemFree Pro",
+        "upgrade-button": "Upgrade Now"
     },
     "PricingFAQ": {
         "title": "Frequently Asked Questions",

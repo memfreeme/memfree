@@ -109,10 +109,10 @@ export default async function RootLayout({
                         <TooltipProvider>
                             <NextIntlClientProvider messages={messages}>
                                 {children}
+                                <ModalProvider />
                             </NextIntlClientProvider>
                         </TooltipProvider>
                     </SidebarProvider>
-                    <ModalProvider />
                 </ThemeProvider>
                 <Script
                     defer

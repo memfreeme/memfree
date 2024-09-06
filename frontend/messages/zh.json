@@ -1,7 +1,9 @@
 {
     "HomePage": {
         "hero": "Hybrid AI 搜索引擎 更快 更准",
-        "hero2": "从个人知识库和互联网进行 AI 搜索"
+        "hero2": "从个人知识库和互联网进行 AI 搜索",
+        "index-button": "索引",
+        "attach-button": "上传"
     },
     "MetaDate": {
         "title": "MemFree - Hybrid AI Search",
@@ -36,7 +38,9 @@
         "Premium7": "优先客户支持",
         "free-call": "继续使用免费版本",
         "pre-call": "升级",
-        "paid-call": "管理订阅"
+        "paid-call": "管理订阅",
+        "upgrade-call": "解锁更多高级功能",
+        "upgrade-button": "立即升级"
     },
     "PricingFAQ": {
         "title": "常见问题",

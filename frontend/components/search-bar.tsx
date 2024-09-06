@@ -10,7 +10,6 @@ import React, {
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import {
     SendHorizontal,
-    Image as ImageIcon,
     FileTextIcon,
     Database,
 } from 'lucide-react';
@@ -31,6 +30,7 @@ import { FileRejection, useDropzone } from 'react-dropzone';
 import { useUploadFile } from '@/hooks/use-upload-file';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { getFileSizeLimit } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 interface Props {
     handleSearch: (key: string, image?: string) => void;
@@ -133,6 +133,8 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         dropzoneRef.current.click();
     };
 
+    const t = useTranslations('HomePage');
+
     return (
         <div className="w-full text-center">
             <div className="flex flex-col relative mx-auto w-full border-2 rounded-lg focus-within:border-primary">
@@ -185,7 +187,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                 >
                                     <Database size={20} strokeWidth={2} />
                                     <span className="font-serif text-sm">
-                                        Index
+                                        {t('index-button')}
                                     </span>
                                 </button>
                             </TooltipTrigger>
@@ -228,7 +230,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                                     strokeWidth={2}
                                                 />
                                                 <span className="font-serif text-sm">
-                                                    Attach
+                                                    {t('attach-button')}
                                                 </span>
                                             </div>
                                         )}
