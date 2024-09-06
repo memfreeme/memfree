@@ -59,6 +59,17 @@ export async function POST(req: NextRequest) {
     }
     let { model, source, messages, profile } = await req.json();
 
+    console.log(
+        'model',
+        model,
+        'source',
+        source,
+        'messages',
+        messages,
+        'profile',
+        profile,
+    );
+
     if (!validModel(model)) {
         return NextResponse.json(
             {
@@ -69,10 +80,6 @@ export async function POST(req: NextRequest) {
     }
 
     source = updateSource(source, messages);
-
-    // console.log(messages);
-    // console.log(source);
-    // console.log('profile ', profile);
 
     try {
         const readableStream = new ReadableStream({

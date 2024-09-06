@@ -6,23 +6,23 @@ export function DemoQuestions() {
     const demoQuestions = [
         {
             title: t('title2'),
-            link: '/share/74ZchTP',
+            link: '/share/GgxtPak',
         },
         {
             title: t('title3'),
-            link: '/share/J6y6Vwf',
+            link: '/share/cTWwJvL',
         },
         {
             title: t('title4'),
-            link: '/share/yoMrqA5',
+            link: '/share/WreYuQn',
         },
         {
             title: t('title6'),
-            link: '/share/AjgHzvH',
+            link: '/share/37XsFk6',
         },
         {
             title: t('title7'),
-            link: '/share/ucVgsci',
+            link: '/share/TZ3wyPV',
         },
     ];
     return (

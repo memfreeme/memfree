@@ -2,22 +2,19 @@ import * as React from 'react';
 
 import Link from 'next/link';
 
-import { cn } from '@/lib/utils';
 import { SidebarList } from './sidebar-list';
-import { buttonVariants } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
 import { Icons } from '@/components/shared/icons';
 import { siteConfig } from '@/config';
 import { SidebarClose } from '@/components/sidebar/sidebar-close';
 import { SignInButton } from '@/components/layout/sign-in-button';
 import { User } from '@/lib/types';
+import { NewSearchButton } from '@/components/shared/new-search-button';
 
 interface SearchHistoryProps {
     user: User;
 }
 
 export async function SearchHistory({ user }: SearchHistoryProps) {
-    const newSearchUrl = user ? '/' : '/new';
     return (
         <div className="flex flex-col h-full">
             <div className="flex items-center mt-4 md:col-span-1 mx-4">
@@ -33,19 +30,7 @@ export async function SearchHistory({ user }: SearchHistoryProps) {
             </div>
             {!user && <SignInButton />}
 
-            <div className="mb-2 px-4 my-4">
-                <Link
-                    href={newSearchUrl}
-                    rel="nofollow"
-                    className={cn(
-                        buttonVariants({ variant: 'outline' }),
-                        'h-10 w-full justify-start bg-zinc-50 px-4 shadow-none transition-colors hover:bg-zinc-200/40 dark:bg-zinc-900 dark:hover:bg-zinc-300/10',
-                    )}
-                >
-                    <Plus className="-translate-x-2" strokeWidth={1.5} />
-                    New Search
-                </Link>
-            </div>
+            <NewSearchButton />
             <SidebarList user={user} />
         </div>
     );

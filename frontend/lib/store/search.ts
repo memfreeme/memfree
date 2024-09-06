@@ -85,6 +85,9 @@ export async function clearSearches() {
 
 export async function saveSearch(search: Search, userId: string) {
     try {
+        if (!search.id) {
+            return;
+        }
         const pipeline = redis.pipeline();
         pipeline.hmset(SEARCH_KEY + search.id, search);
         pipeline.zadd(USER_SEARCH_KEY + userId, {

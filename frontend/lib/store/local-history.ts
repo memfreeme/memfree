@@ -3,26 +3,36 @@ import { create } from 'zustand';
 
 interface SearchStore {
     searches: Search[];
+    activeId: string | undefined;
+    activeSearch: Search | undefined;
     addSearch: (search: Search) => void;
     addSearches: (searches: Search[]) => void;
     setSearches: (searches: Search[]) => void;
     removeSearch: (id: string) => void;
     clearSearches: () => void;
+    setActiveSearch: (id: string) => void;
+    updateActiveSearch: (updatedSearch: Partial<Search>) => void;
 }
 
 export const useSearchStore = create<SearchStore>((set) => ({
     searches: [],
+    activeId: undefined,
+    activeSearch: undefined,
     addSearch: (search) => {
         set((state) => {
+            console.log('addSearch', search);
             const existingSearchIndex = state.searches.findIndex(
                 (s) => s.id === search.id,
             );
             if (existingSearchIndex !== -1) {
                 const updatedSearches = [...state.searches];
                 updatedSearches[existingSearchIndex] = search;
-                return { searches: updatedSearches };
+                return { searches: updatedSearches, activeSearch: search };
             } else {
-                return { searches: [search, ...state.searches] };
+                return {
+                    searches: [search, ...state.searches],
+                    activeSearch: search,
+                };
             }
         });
     },
@@ -38,6 +48,10 @@ export const useSearchStore = create<SearchStore>((set) => ({
             const uniqueSearches = [];
 
             for (const search of combinedSearches) {
+                if (!search || !search.id) {
+                    console.error('Search is missing', search);
+                    continue;
+                }
                 const searchId = search.id;
                 if (!uniqueIds.has(searchId)) {
                     uniqueIds.add(searchId);
@@ -64,5 +78,27 @@ export const useSearchStore = create<SearchStore>((set) => ({
 
     clearSearches: () => {
         set({ searches: [] });
+    },
+
+    setActiveSearch: (id) => {
+        set((state) => {
+            const search = state.searches.find((s) => s.id === id);
+            console.log('setActiveSearch', search, id);
+            return { activeSearch: search || undefined, activeId: id };
+        });
+    },
+
+    updateActiveSearch: (updatedSearch) => {
+        set((state) => {
+            if (!state.activeSearch) return state;
+            const newSearch = { ...state.activeSearch, ...updatedSearch };
+            console.log('updateActiveSearch', newSearch.messages);
+            return {
+                activeSearch: newSearch,
+                searches: state.searches.map((s) =>
+                    s.id === newSearch.id ? newSearch : s,
+                ),
+            };
+        });
     },
 }));

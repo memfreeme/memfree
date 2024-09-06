@@ -1,16 +1,10 @@
 'use client';
 
-import React, {
-    useRef,
-    useState,
-    useEffect,
-    useCallback,
-    useMemo,
-} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import SearchMessageBubble from '@/components/search/search-message-bubble';
 
 import { fetchEventSource } from '@microsoft/fetch-event-source';
-import { usePathname, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '@/components/search-bar';
 import { configStore, useProfileStore } from '@/lib/store';
@@ -39,82 +33,41 @@ export function SearchWindow({
     user,
     isReadOnly = false,
 }: SearchProps) {
-    const router = useRouter();
-    const path = usePathname();
-
-    const [messages, setMessages] = useState<Array<Message>>(
-        initialMessages ?? [],
-    );
-
-    useEffect(() => {
-        if (messages.length === 0 && initialMessages.length > 0) {
-            setMessages(initialMessages);
-        }
-    }, [initialMessages]);
-
-    const messagesContentRef = useRef(messages);
+    const searchParams = useSearchParams();
+    const signInModal = useSigninModal();
+    const upgradeModal = useUpgradeModal();
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [status, setStatus] = useState('Thinking...');
 
-    const signInModal = useSigninModal();
-    const upgradeModal = useUpgradeModal();
-
-    const { searches, addSearch } = useSearchStore();
-
-    useEffect(() => {
-        messagesContentRef.current = messages;
-    }, [messages]);
-
-    const search = useMemo(() => {
-        return searches.find((s) => s.id === id);
-    }, [searches, id]);
-
-    useEffect(() => {
-        if (user?.id) {
-            if (!path.includes('search') && messages.length === 1) {
-                window.history.replaceState({}, '', `/search/${id}`);
-            }
-
-            if (
-                messages.length === 2 &&
-                !isLoading &&
-                path.includes('search')
-            ) {
-                if (
-                    search &&
-                    Date.now() - new Date(search.createdAt).getTime() < 1000 * 3
-                ) {
-                    router.refresh();
-                    scrollToBottom();
-                }
-            }
-        }
-    }, [id, path, messages.length, user?.id, isLoading, router, search]);
+    const {
+        addSearch,
+        activeId,
+        activeSearch,
+        setActiveSearch,
+        updateActiveSearch,
+    } = useSearchStore();
 
     const { messagesRef, scrollRef, visibilityRef, isVisible, scrollToBottom } =
         useScrollAnchor();
 
     const checkMessagesLength = () => {
-        if (!user && messagesContentRef.current.length > 20) {
+        const messages = useSearchStore.getState().activeSearch?.messages ?? [];
+        if (!user && messages.length > 20) {
             toast.error(
                 'You need to sign in to ask more questions in one search thread.',
             );
             signInModal.onOpen();
             return false;
         }
-        if (
-            user &&
-            !checkIsPro(user) &&
-            messagesContentRef.current.length > 40
-        ) {
+        if (user && !checkIsPro(user) && messages.length > 40) {
             toast.error(
                 'You need to upgrade to Pro to ask more questions in one search thread.',
             );
             upgradeModal.onOpen();
             return false;
         }
-        if (messagesContentRef.current.length > 100) {
+        if (messages.length > 100) {
             toast.error(
                 'You have reached the limit of questions in one search thread, please start a new thread.',
             );
@@ -122,6 +75,19 @@ export function SearchWindow({
         }
         return true;
     };
+
+    useEffect(() => {
+        const searchId = searchParams.get('id');
+        if (searchId && searchId !== activeId) {
+            setActiveSearch(searchId);
+            return;
+        }
+        if (!searchId && id && id != activeId) {
+            console.log('setActiveSearch prope id', id);
+            setActiveSearch(id);
+            return;
+        }
+    }, [id, activeId, searchParams, setActiveSearch]);
 
     const sendMessage = useCallback(
         async (
@@ -134,63 +100,20 @@ export function SearchWindow({
                 return;
             }
 
-            if (isLoading) {
-                return;
-            }
-
-            if (!checkMessagesLength()) {
+            if (isLoading || !checkMessagesLength()) {
                 return;
             }
 
             const messageValue = question ?? input;
             if (messageValue === '') return;
 
-            let messageId = id;
-            if (messagesContentRef.current.length > 0) {
-                messageId = generateId();
-            }
-
-            if (!messageIdToUpdate) {
-                setInput('');
-                setMessages((prevMessages) => [
-                    ...prevMessages,
-                    {
-                        id: messageId,
-                        content: messageValue,
-                        role: 'user',
-                        imageFile: image,
-                    },
-                ]);
-            }
-
-            setStatus('Thinking...');
+            setInput('');
             setIsLoading(true);
+            setStatus('Thinking...');
+
             let accumulatedMessage = '';
             let accumulatedRelated = '';
             let messageIndex: number | null = null;
-
-            const resetMessages = (messageIdToUpdate: string) => {
-                setMessages((prevMessages) => {
-                    if (!messageIndex) {
-                        messageIndex = prevMessages.findIndex(
-                            (msg) => msg.id === messageIdToUpdate,
-                        );
-                    }
-
-                    if (messageIndex === -1) return prevMessages;
-
-                    const newMessages = [...prevMessages];
-                    newMessages[messageIndex] = {
-                        ...newMessages[messageIndex],
-                        content: '',
-                        sources: [],
-                        images: [],
-                        related: '',
-                    };
-
-                    return newMessages;
-                });
-            };
 
             const updateMessages = (
                 parsedResult?: string,
@@ -198,19 +121,17 @@ export function SearchWindow({
                 newImages?: ImageSource[],
                 newRelated?: string,
             ) => {
-                setMessages((prevMessages) => {
-                    if (!messageIndex) {
-                        messageIndex = prevMessages.findIndex(
-                            (msg) => msg.id === messageIdToUpdate,
-                        );
-                    }
-
-                    if (messageIndex === null || !prevMessages[messageIndex]) {
-                        messageIndex = prevMessages.length;
-                        return [
-                            ...prevMessages,
+                const activeSearch = useSearchStore.getState().activeSearch;
+                if (
+                    messageIndex === null ||
+                    !activeSearch.messages[messageIndex]
+                ) {
+                    messageIndex = activeSearch.messages.length;
+                    updateActiveSearch({
+                        messages: [
+                            ...activeSearch.messages,
                             {
-                                id: Math.random().toString(),
+                                id: generateId(),
                                 content: parsedResult
                                     ? parsedResult.trim()
                                     : '',
@@ -219,48 +140,78 @@ export function SearchWindow({
                                 related: newRelated || '',
                                 role: 'assistant',
                             },
-                        ];
-                    }
+                        ],
+                    });
+                    return;
+                }
 
-                    const newMessages = [...prevMessages];
-                    const msg = newMessages[messageIndex];
-
-                    if (parsedResult) msg.content = parsedResult.trim();
-                    if (newSources) msg.sources = newSources;
-                    if (newImages) msg.images = newImages;
-                    if (newRelated) msg.related = newRelated;
-
-                    newMessages[messageIndex] = { ...msg };
-                    return newMessages;
+                updateActiveSearch({
+                    messages: activeSearch.messages.map((msg, index) => {
+                        if (index === messageIndex) {
+                            return {
+                                ...msg,
+                                content: parsedResult
+                                    ? parsedResult.trim()
+                                    : msg.content,
+                                sources: newSources || msg.sources,
+                                images: newImages || msg.images,
+                                related: newRelated || msg.related,
+                            };
+                        }
+                        return msg;
+                    }),
                 });
             };
 
-            try {
-                if (messageIdToUpdate) {
-                    resetMessages(messageIdToUpdate);
+            if (!messageIdToUpdate) {
+                const activeSearch = useSearchStore.getState().activeSearch;
+                const activeId = useSearchStore.getState().activeId;
+                let title = messageValue.substring(0, 50);
+                if (!activeSearch) {
+                    addSearch({
+                        id: activeId,
+                        title: title,
+                        createdAt: new Date(),
+                        userId: user?.id,
+                        messages: [
+                            {
+                                id: activeId,
+                                content: messageValue,
+                                role: 'user',
+                                imageFile: image,
+                            },
+                        ],
+                    });
+                    console.log('addSearch done');
+                } else {
+                    updateActiveSearch({
+                        messages: [
+                            ...activeSearch.messages,
+                            {
+                                id: generateId(),
+                                content: messageValue,
+                                role: 'user',
+                                imageFile: image,
+                            },
+                        ],
+                    });
                 }
+            }
 
-                // console.log('image', image);
-
+            try {
                 const url = `/api/search`;
                 await fetchEventSource(url, {
                     method: 'post',
                     headers: {
-                        Accept: 'text/event-stream',
+                        'Content-Type': 'application/json',
+                        'Accept': 'text/event-stream',
                     },
                     body: JSON.stringify({
                         model: configStore.getState().model,
                         source: configStore.getState().source,
                         profile: useProfileStore.getState().profile,
-                        messages: [
-                            ...messagesContentRef.current,
-                            {
-                                id: messageId,
-                                content: messageValue,
-                                imageFile: image,
-                                role: 'user',
-                            },
-                        ],
+                        messages:
+                            useSearchStore.getState().activeSearch.messages,
                     }),
                     openWhenHidden: true,
                     onerror(err) {
@@ -278,70 +229,52 @@ export function SearchWindow({
                         }
                     },
                     onclose() {
-                        if (user) {
-                            let title =
-                                messagesContentRef.current.length > 0
-                                    ? messagesContentRef.current[0].content.substring(
-                                          0,
-                                          50,
-                                      )
-                                    : messageValue.substring(0, 50);
-                            addSearch({
-                                id: id,
-                                title: title,
-                                createdAt: new Date(),
-                                userId: user?.id,
-                                messages: messagesContentRef.current,
-                            });
-                        }
                         setIsLoading(false);
-                        return;
                     },
                     onmessage(msg) {
-                        const parsedData = JSON.parse(msg.data);
-                        if (parsedData.clear) {
+                        const {
+                            clear,
+                            answer,
+                            status,
+                            sources,
+                            images,
+                            related,
+                        } = JSON.parse(msg.data);
+                        if (clear) {
                             accumulatedMessage = '';
                             updateMessages(accumulatedMessage);
                         }
-                        if (parsedData.answer) {
-                            accumulatedMessage += parsedData.answer;
-                            updateMessages(accumulatedMessage);
+                        if (status) {
+                            setStatus(status);
                         }
-                        if (parsedData.status) {
-                            setStatus(parsedData.status);
-                        }
-                        if (parsedData.sources) {
-                            updateMessages(undefined, parsedData.sources);
-                        }
-                        if (parsedData.images) {
-                            updateMessages(
-                                undefined,
-
-                                undefined,
-                                parsedData.images,
-                            );
-                        }
-                        if (parsedData.related) {
-                            accumulatedRelated += parsedData.related;
-                            updateMessages(
-                                undefined,
-                                undefined,
-                                undefined,
-                                accumulatedRelated,
-                            );
-                        }
+                        updateMessages(
+                            answer ? (accumulatedMessage += answer) : undefined,
+                            sources,
+                            images,
+                            related
+                                ? (accumulatedRelated += related)
+                                : undefined,
+                        );
                     },
                 });
             } catch (e) {
-                if (!messageIdToUpdate) {
-                    setMessages((prevMessages) => prevMessages.slice(0, -1));
-                }
                 setIsLoading(false);
                 setInput(messageValue);
-                throw e;
+                toast.error(
+                    'An error occurred while searching, please try again',
+                );
             }
         },
-        [id, input, isReadOnly, isLoading, signInModal],
+        [
+            input,
+            isReadOnly,
+            isLoading,
+            signInModal,
+            addSearch,
+            checkMessagesLength,
+            updateActiveSearch,
+            user?.id,
+        ],
     );
 
     const sendSelectedQuestion = useCallback(
@@ -351,23 +284,40 @@ export function SearchWindow({
                 scrollToBottom();
             }, 500);
         },
-        [sendMessage],
+        [sendMessage, scrollToBottom],
     );
 
     const reload = useCallback(
         async (msgId: string) => {
-            const currentIndex = messagesContentRef.current.findIndex(
+            const activeSearch = useSearchStore.getState().activeSearch;
+            if (!activeSearch) {
+                return;
+            }
+            const currentIndex = activeSearch.messages.findIndex(
                 (msg) => msg.id === msgId,
             );
-            const previousMessage =
-                currentIndex > 0
-                    ? messagesContentRef.current[currentIndex - 1]
-                    : null;
+            if (currentIndex === -1) return;
+
+            const updatedMessages = [...activeSearch.messages];
+            updatedMessages.splice(currentIndex, 1);
+
+            let previousMessage;
+            if (currentIndex > 0) {
+                previousMessage = updatedMessages.splice(
+                    currentIndex - 1,
+                    1,
+                )[0];
+                updatedMessages.push(previousMessage);
+            }
+
+            updateActiveSearch({
+                messages: updatedMessages,
+            });
             if (previousMessage) {
                 await sendMessage(previousMessage.content, null, msgId);
             }
         },
-        [sendMessage],
+        [sendMessage, updateActiveSearch],
     );
 
     const stableHandleSearch = useCallback(
@@ -377,6 +327,7 @@ export function SearchWindow({
         [sendMessage],
     );
 
+    const messages = activeSearch?.messages ?? initialMessages ?? [];
     return (
         <div
             className="group overflow-auto mx-auto w-full md:w-5/6  px-4 md:px-0 flex flex-col my-2"
