@@ -58,7 +58,6 @@ export function SearchWindow({
             return;
         }
         if (!searchId && id && id != activeId) {
-            console.log('setActiveSearch prope id', id);
             setActiveSearch(id);
             return;
         }
@@ -183,7 +182,6 @@ export function SearchWindow({
                             },
                         ],
                     });
-                    console.log('addSearch done');
                 } else {
                     updateActiveSearch({
                         messages: [

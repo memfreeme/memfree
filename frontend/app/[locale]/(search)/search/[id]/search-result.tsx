@@ -17,6 +17,7 @@ export default function SearchResult({ id, user }: SearchPageProps) {
 
     useEffect(() => {
         if (!search) {
+            console.error('fetching search:', id, searches.length);
             const fetchSearch = async () => {
                 const search = await getSearch(id, user.id);
                 if (search) {
