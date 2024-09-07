@@ -51,31 +51,6 @@ export function SearchWindow({
     const { messagesRef, scrollRef, visibilityRef, isVisible, scrollToBottom } =
         useScrollAnchor();
 
-    const checkMessagesLength = () => {
-        const messages = useSearchStore.getState().activeSearch?.messages ?? [];
-        if (!user && messages.length > 20) {
-            toast.error(
-                'You need to sign in to ask more questions in one search thread.',
-            );
-            signInModal.onOpen();
-            return false;
-        }
-        if (user && !checkIsPro(user) && messages.length > 40) {
-            toast.error(
-                'You need to upgrade to Pro to ask more questions in one search thread.',
-            );
-            upgradeModal.onOpen();
-            return false;
-        }
-        if (messages.length > 100) {
-            toast.error(
-                'You have reached the limit of questions in one search thread, please start a new thread.',
-            );
-            return false;
-        }
-        return true;
-    };
-
     useEffect(() => {
         const searchId = searchParams.get('id');
         if (searchId && searchId !== activeId) {
@@ -99,6 +74,32 @@ export function SearchWindow({
                 toast.error('You cannot ask questions in share search page');
                 return;
             }
+
+            const checkMessagesLength = () => {
+                const messages =
+                    useSearchStore.getState().activeSearch?.messages ?? [];
+                if (!user && messages.length > 20) {
+                    toast.error(
+                        'You need to sign in to ask more questions in one search thread.',
+                    );
+                    signInModal.onOpen();
+                    return false;
+                }
+                if (user && !checkIsPro(user) && messages.length > 40) {
+                    toast.error(
+                        'You need to upgrade to Pro to ask more questions in one search thread.',
+                    );
+                    upgradeModal.onOpen();
+                    return false;
+                }
+                if (messages.length > 100) {
+                    toast.error(
+                        'You have reached the limit of questions in one search thread, please start a new thread.',
+                    );
+                    return false;
+                }
+                return true;
+            };
 
             if (isLoading || !checkMessagesLength()) {
                 return;
@@ -271,7 +272,6 @@ export function SearchWindow({
             isLoading,
             signInModal,
             addSearch,
-            checkMessagesLength,
             updateActiveSearch,
             user?.id,
         ],
