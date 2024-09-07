@@ -7,5 +7,6 @@
     "bracketSpacing": true,
     "singleAttributePerLine": false,
     "arrowParens": "always",
-    "quoteProps": "consistent"
+    "quoteProps": "consistent",
+    "printWidth": 160
 }

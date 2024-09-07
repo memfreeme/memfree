@@ -14,13 +14,8 @@ import { directlyAnswer } from '@/lib/tools/answer';
 import { getTopStories } from '@/lib/tools/hacker-news';
 import { getRelatedQuestions } from '@/lib/tools/related';
 import { searchRelevantContent } from '@/lib/tools/search';
-import {
-    ImageSource,
-    Message as StoreMessage,
-    SearchCategory,
-    TextSource,
-} from '@/lib/types';
-import { CoreUserMessage, streamText, tool } from 'ai';
+import { ImageSource, Message as StoreMessage, SearchCategory, TextSource } from '@/lib/types';
+import { CoreUserMessage, ImagePart, streamText, TextPart, tool } from 'ai';
 import util from 'util';
 import { z } from 'zod';
 
@@ -34,7 +29,7 @@ export async function autoAnswer(
     source = SearchCategory.ALL,
 ) {
     try {
-        const imageFile = messages[messages.length - 1].imageFile;
+        const attachments = messages[messages.length - 1].attachments;
         const newMessages = messages.slice(-1) as Message[];
         const query = newMessages[0].content;
 
@@ -45,17 +40,13 @@ export async function autoAnswer(
             categories: [SearchCategory.IMAGES],
         })
             .search(query)
-            .then((results) =>
-                results.images
-                    .filter((img) => img.image.startsWith('https'))
-                    .slice(0, IMAGE_LIMIT),
-            );
+            .then((results) => results.images.filter((img) => img.image.startsWith('https')).slice(0, IMAGE_LIMIT));
 
         let history = getHistory(isPro, messages);
         const system = util.format(AutoAnswerPrompt, profile, history);
         // console.log('Auto Answering:', system);
 
-        let userMessages = await createUserMessages(query, imageFile);
+        let userMessages = createUserMessages(query, attachments);
 
         const maxTokens = getMaxOutputToken(isPro);
         const result = await streamText({
@@ -70,13 +61,7 @@ export async function autoAnswer(
                     parameters: z.object({
                         question: z.string().describe('the users question'),
                     }),
-                    execute: async ({ question }) =>
-                        searchRelevantContent(
-                            question,
-                            userId,
-                            source,
-                            onStream,
-                        ),
+                    execute: async ({ question }) => searchRelevantContent(question, userId, source, onStream),
                 }),
                 accessWebPage: tool({
                     description: `access a webpage or url and return the content.`,
@@ -149,30 +134,15 @@ export async function autoAnswer(
         let fullRelated = '';
         if (toolCallCount > 0) {
             fullAnswer = '';
-            await streamResponse(
-                { status: 'Answering ...', clear: true },
-                onStream,
-            );
-            await directlyAnswer(
-                isPro,
-                source,
-                history,
-                profile,
-                getLLM(model),
-                rewriteQuery,
-                texts,
-                (msg) => {
-                    fullAnswer += msg;
-                    onStream?.(JSON.stringify({ answer: msg }));
-                },
-            );
+            await streamResponse({ status: 'Answering ...', clear: true }, onStream);
+            await directlyAnswer(isPro, source, history, profile, getLLM(model), rewriteQuery, texts, (msg) => {
+                fullAnswer += msg;
+                onStream?.(JSON.stringify({ answer: msg }));
+            });
 
             const fetchedImages = await imageFetchPromise;
             images = [...images, ...fetchedImages];
-            await streamResponse(
-                { images: images, status: 'Generating related questions ...' },
-                onStream,
-            );
+            await streamResponse({ images: images, status: 'Generating related questions ...' }, onStream);
             await getRelatedQuestions(query, texts, (msg) => {
                 fullRelated += msg;
                 onStream?.(JSON.stringify({ related: msg }));
@@ -180,20 +150,10 @@ export async function autoAnswer(
         }
 
         incSearchCount(userId).catch((error) => {
-            console.error(
-                `Failed to increment search count for user ${userId}:`,
-                error,
-            );
+            console.error(`Failed to increment search count for user ${userId}:`, error);
         });
 
-        await saveMessages(
-            userId,
-            messages,
-            fullAnswer,
-            texts,
-            images,
-            fullRelated,
-        );
+        await saveMessages(userId, messages, fullAnswer, texts, images, fullRelated);
         onStream?.(null, true);
     } catch (error) {
         logError(error, 'llm-openai');
@@ -201,23 +161,39 @@ export async function autoAnswer(
     }
 }
 
-async function createUserMessages(query: string, image?: string) {
+function createUserMessages(query: string, attachments?: string[]) {
     let text = query;
-    let imageUrl = image;
-    if (!imageUrl) {
-        imageUrl = extractFirstImageUrl(query);
+    if (!attachments) {
+        const imageUrl = extractFirstImageUrl(query);
         if (imageUrl) {
             text = query.replace(imageUrl, '').trim();
         }
+        const content: Array<{ type: string; text?: string; image?: URL }> = [{ type: 'text', text }];
+        if (imageUrl) {
+            content.push({ type: 'image', image: new URL(imageUrl) });
+        }
+
+        return [{ role: 'user', content }];
+    } else {
+        return [
+            {
+                role: 'user',
+                content: attachments ? [{ type: 'text', text: query }, ...attachmentsToParts(attachments)] : query,
+            },
+        ];
+    }
+}
+
+type ContentPart = TextPart | ImagePart;
+
+function attachmentsToParts(attachments: string[]): ContentPart[] {
+    const parts: ContentPart[] = [];
+
+    for (const attachment of attachments) {
+        parts.push({ type: 'image', image: attachment });
     }
 
-    const content: Array<{ type: string; text?: string; image?: URL }> = [
-        { type: 'text', text },
-    ];
+    console.log('parts', parts);
 
-    if (imageUrl) {
-        content.push({ type: 'image', image: new URL(imageUrl) });
-    }
-
-    return [{ role: 'user', content }];
+    return parts;
 }

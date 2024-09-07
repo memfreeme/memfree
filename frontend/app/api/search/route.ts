@@ -44,9 +44,7 @@ export async function POST(req: NextRequest) {
         userId = session.user.id;
         isPro = checkIsPro(session.user);
     } else {
-        const ip = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').split(
-            ',',
-        )[0];
+        const ip = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0];
         const { success } = await ratelimit.limit(ip);
         if (!success) {
             return NextResponse.json(
@@ -59,16 +57,7 @@ export async function POST(req: NextRequest) {
     }
     let { model, source, messages, profile } = await req.json();
 
-    console.log(
-        'model',
-        model,
-        'source',
-        source,
-        'messages',
-        messages,
-        'profile',
-        profile,
-    );
+    console.log('model', model, 'source', source, 'messages', messages, 'profile', profile);
 
     if (!validModel(model)) {
         return NextResponse.json(
@@ -86,35 +75,15 @@ export async function POST(req: NextRequest) {
             async start(controller) {
                 switch (source) {
                     case SearchCategory.INDIE_MAKER: {
-                        await indieMakerSearch(
-                            messages,
-                            isPro,
-                            userId,
-                            streamController(controller),
-                            model,
-                        );
+                        await indieMakerSearch(messages, isPro, userId, streamController(controller), model);
                         break;
                     }
                     case SearchCategory.KNOWLEDGE_BASE: {
-                        await knowledgeBaseSearch(
-                            messages,
-                            isPro,
-                            userId,
-                            streamController(controller),
-                            model,
-                        );
+                        await knowledgeBaseSearch(messages, isPro, userId, streamController(controller), model);
                         break;
                     }
                     default: {
-                        await autoAnswer(
-                            messages,
-                            isPro,
-                            userId,
-                            profile,
-                            streamController(controller),
-                            model,
-                            source,
-                        );
+                        await autoAnswer(messages, isPro, userId, profile, streamController(controller), model, source);
                     }
                 }
             },

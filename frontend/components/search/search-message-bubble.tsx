@@ -1,11 +1,5 @@
 import SourceBubble from '@/components/search/source-bubble';
-import {
-    FileTextIcon,
-    Images,
-    ListPlusIcon,
-    PlusIcon,
-    TextSearchIcon,
-} from 'lucide-react';
+import { FileTextIcon, Images, ListPlusIcon, PlusIcon, TextSearchIcon } from 'lucide-react';
 import ImageGallery from '@/components/search/image-gallery';
 import { Message } from '@/lib/types';
 
@@ -16,14 +10,8 @@ import ActionButtons from '@/components/search/action-buttons';
 import { extractFirstImageUrl } from '@/lib/shared-utils';
 
 const SearchMessageBubble = memo(
-    (props: {
-        searchId: string;
-        message: Message;
-        onSelect: (question: string) => void;
-        reload: (msgId: string) => void;
-        isLoading: boolean;
-    }) => {
-        let { id, role, content, imageFile, related } = props.message;
+    (props: { searchId: string; message: Message; onSelect: (question: string) => void; reload: (msgId: string) => void; isLoading: boolean }) => {
+        let { id, role, content, related } = props.message;
         const onSelect = props.onSelect;
         const reload = props.reload;
         const isLoading = props.isLoading;
@@ -34,8 +22,12 @@ const SearchMessageBubble = memo(
         const images = message.images ?? [];
         const searchId = props.searchId;
 
-        if (!imageFile && isUser) {
-            imageFile = extractFirstImageUrl(content);
+        let attachments = props.message.attachments ?? [];
+        if (isUser) {
+            const firstImageUrl = extractFirstImageUrl(content);
+            if (firstImageUrl) {
+                attachments.push(firstImageUrl);
+            }
         }
 
         return (
@@ -44,41 +36,25 @@ const SearchMessageBubble = memo(
                     <div className="flex w-full flex-col items-start space-y-2.5 py-4">
                         <div className="flex items-center space-x-2">
                             <TextSearchIcon className="text-primary size-22"></TextSearchIcon>
-                            <h3 className="text-lg font-bold text-primary">
-                                Sources
-                            </h3>
+                            <h3 className="text-lg font-bold text-primary">Sources</h3>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-full overflow-auto ">
                             {sources.map((source, index) => (
                                 <div key={index}>
-                                    <SourceBubble
-                                        source={source}
-                                        onSelect={onSelect}
-                                    />
+                                    <SourceBubble source={source} onSelect={onSelect} />
                                 </div>
                             ))}
                         </div>
                     </div>
                 )}
-                {!isUser && content && (
-                    <AnswerSection content={content} sources={sources} />
-                )}
-                {(images.length > 0 || !isLoading) && !isUser && (
-                    <ActionButtons
-                        content={content}
-                        searchId={searchId}
-                        msgId={id}
-                        reload={reload}
-                    />
-                )}
+                {!isUser && content && <AnswerSection content={content} sources={sources} />}
+                {(images.length > 0 || !isLoading) && !isUser && <ActionButtons content={content} searchId={searchId} msgId={id} reload={reload} />}
 
                 {images.length > 0 && (
                     <div className="flex w-full flex-col items-start space-y-2.5 py-4">
                         <div className="flex items-center space-x-2">
                             <Images className="text-primary size-22"></Images>
-                            <h3 className="py-2 text-lg font-bold text-primary">
-                                Images
-                            </h3>
+                            <h3 className="py-2 text-lg font-bold text-primary">Images</h3>
                         </div>
                         <ImageGallery initialImages={images}></ImageGallery>
                     </div>
@@ -88,9 +64,7 @@ const SearchMessageBubble = memo(
                     <div className="flex w-full flex-col items-start space-y-2.5">
                         <div className="flex items-center space-x-2">
                             <ListPlusIcon className="text-primary size-22"></ListPlusIcon>
-                            <h3 className="py-2 text-lg font-bold text-primary">
-                                Related
-                            </h3>
+                            <h3 className="py-2 text-lg font-bold text-primary">Related</h3>
                         </div>
                         <div className="w-full divide-y border-t mt-2">
                             {related.split('\n').map((reletedQ, index) => (
@@ -100,40 +74,39 @@ const SearchMessageBubble = memo(
                                     onClick={() => onSelect(reletedQ)}
                                 >
                                     <span>{reletedQ.toLowerCase()}</span>
-                                    <PlusIcon
-                                        className="text-tint mr-2"
-                                        size={20}
-                                    />
+                                    <PlusIcon className="text-tint mr-2" size={20} />
                                 </div>
                             ))}
                         </div>
                     </div>
                 )}
 
-                {isUser && (
-                    <QuestionSection content={content}></QuestionSection>
-                )}
-                {isUser && imageFile && imageFile.startsWith('http') && (
-                    <div className="flex items-center justify-center mx-auto">
-                        <img
-                            src={imageFile}
-                            alt="memfree search image"
-                            width={400}
-                            height={400}
-                            loading="lazy"
-                            className="aspect-square shrink-0 border rounded-md object-contain"
-                        />
-                    </div>
-                )}
-                {isUser && imageFile && imageFile.startsWith('local') && (
-                    <div className="flex items-center gap-2 p-2">
-                        <FileTextIcon
-                            className="size-6 text-muted-foreground"
-                            aria-hidden="true"
-                        />
-                        <p className="line-clamp-1 text-sm font-medium text-foreground/80">
-                            {imageFile}
-                        </p>
+                {isUser && <QuestionSection content={content}></QuestionSection>}
+                {isUser && attachments && attachments.length > 0 && (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4">
+                        {attachments.map((attachment, index) => (
+                            <div key={index}>
+                                {attachment.startsWith('http') ? (
+                                    <div className="flex items-center justify-center mx-auto">
+                                        <img
+                                            src={attachment}
+                                            alt={`memfree search image ${index + 1}`}
+                                            width={400}
+                                            height={400}
+                                            loading="lazy"
+                                            className="aspect-square shrink-0 border rounded-md object-contain"
+                                        />
+                                    </div>
+                                ) : (
+                                    attachment.startsWith('local') && (
+                                        <div className="flex items-center gap-2 p-2">
+                                            <FileTextIcon className="size-6 text-muted-foreground" aria-hidden="true" />
+                                            <p className="line-clamp-1 text-sm font-medium text-foreground/80">{attachment}</p>
+                                        </div>
+                                    )
+                                )}
+                            </div>
+                        ))}
                     </div>
                 )}
             </div>

@@ -66,7 +66,7 @@ export function SearchWindow({
     const sendMessage = useCallback(
         async (
             question?: string,
-            image?: string,
+            attachments?: string[],
             messageIdToUpdate?: string,
         ) => {
             if (isReadOnly) {
@@ -178,7 +178,7 @@ export function SearchWindow({
                                 id: activeId,
                                 content: messageValue,
                                 role: 'user',
-                                imageFile: image,
+                                attachments: attachments,
                             },
                         ],
                     });
@@ -190,7 +190,7 @@ export function SearchWindow({
                                 id: generateId(),
                                 content: messageValue,
                                 role: 'user',
-                                imageFile: image,
+                                attachments: attachments,
                             },
                         ],
                     });
@@ -319,8 +319,8 @@ export function SearchWindow({
     );
 
     const stableHandleSearch = useCallback(
-        (key: string, image?: string) => {
-            sendMessage(key, image);
+        (key: string, attachments?: string[]) => {
+            sendMessage(key, attachments);
         },
         [sendMessage],
     );
