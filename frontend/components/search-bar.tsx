@@ -8,11 +8,7 @@ import React, {
     useState,
 } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import {
-    SendHorizontal,
-    FileTextIcon,
-    Database,
-} from 'lucide-react';
+import { SendHorizontal, FileTextIcon, Database } from 'lucide-react';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import {
     Tooltip,
@@ -114,7 +110,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const { getInputProps } = useDropzone({
         onDrop,
         accept: {
-            'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp'],
+            'image/*': ['.png', '.jpeg', '.gif', '.webp'],
             'application/pdf': ['.pdf'],
             'text/markdown': ['.md'],
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
