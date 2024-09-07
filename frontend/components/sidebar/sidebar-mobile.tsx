@@ -5,14 +5,23 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Sidebar } from '@/components/sidebar/sidebar';
 import { Button } from '@/components/ui/button';
 import { AlignJustify } from 'lucide-react';
+import React from 'react';
+import { useSidebar } from '@/hooks/use-sidebar';
+import useMediaQuery from '@/hooks/use-media-query';
 
 interface SidebarMobileProps {
     children: React.ReactNode;
 }
 
 export function SidebarMobile({ children }: SidebarMobileProps) {
+    const { isMobile } = useMediaQuery();
+    const { isSidebarOpen, toggleSidebar } = useSidebar();
     return (
-        <Sheet>
+        <Sheet
+            open={isMobile && isSidebarOpen}
+            defaultOpen={false}
+            onOpenChange={toggleSidebar}
+        >
             <SheetTrigger asChild>
                 <Button
                     variant="ghost"
