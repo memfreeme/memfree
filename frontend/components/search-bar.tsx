@@ -22,6 +22,10 @@ interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
 }
 
+interface FileWithPreview extends File {
+    preview?: string;
+}
+
 const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const [content, setContent] = useState<string>('');
     const signInModal = useSigninModal();
@@ -53,28 +57,22 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         }
     };
 
-    const [files, setFiles] = useState<File[]>([]);
+    const [files, setFiles] = useState<FileWithPreview[]>([]);
     const dropzoneRef = useRef(null);
     const { onUpload, uploadedFiles, setUploadedFiles, isUploading } = useUploadFile();
 
-    const imageUrls = useMemo(() => {
-        return files?.map((file) => {
-            if (file.type.startsWith('image/')) {
-                return URL.createObjectURL(file);
-            }
-            return null;
-        });
-    }, [files]);
-
-    useEffect(() => {
+    // Revoke preview url when component unmounts
+    React.useEffect(() => {
         return () => {
-            imageUrls?.forEach((url) => {
-                if (url) {
-                    URL.revokeObjectURL(url);
+            if (!files) return;
+            files.forEach((file) => {
+                if (file.preview) {
+                    URL.revokeObjectURL(file.preview);
                 }
             });
         };
-    }, [imageUrls]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const onDrop = (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
         if (rejectedFiles.length > 0) {
@@ -110,7 +108,14 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
 
         console.log('acceptedFiles', acceptedFiles);
 
-        setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+        const newFiles = acceptedFiles.map(
+            (file) =>
+                Object.assign(file, {
+                    preview: URL.createObjectURL(file),
+                }) as FileWithPreview,
+        );
+
+        setFiles((prevFiles) => [...prevFiles, ...newFiles]);
         toast.promise(onUpload(acceptedFiles), {
             loading: `Uploading file... You can type your question now`,
             success: () => {
@@ -152,12 +157,12 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         <div className="w-full text-center">
             <div className="flex flex-col relative mx-auto w-full border-2 rounded-lg focus-within:border-primary">
                 {files && files.length > 0 && (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-4">
+                    <div className="flex p-2 space-x-4">
                         {files.map((file, index) => (
-                            <div key={index} className="flex">
+                            <div key={index}>
                                 {file.type.startsWith('image/') ? (
                                     <Image
-                                        src={imageUrls[index]}
+                                        src={file.preview}
                                         alt={file.name}
                                         width={100}
                                         height={100}
@@ -170,12 +175,6 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                         <p className="line-clamp-1 text-sm font-medium text-foreground/80">{file.name}</p>
                                     </div>
                                 )}
-                                {/* <div className="flex items-center gap-2">
-                                    <Button type="button" variant="outline" size="icon" className="size-7" onClick={() => removeFile(index)}>
-                                        <Cross2Icon className="size-4" aria-hidden="true" />
-                                        <span className="sr-only">Remove file</span>
-                                    </Button>
-                                </div> */}
                             </div>
                         ))}
                     </div>

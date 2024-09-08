@@ -3,7 +3,7 @@ import { FileTextIcon, Images, ListPlusIcon, PlusIcon, TextSearchIcon } from 'lu
 import ImageGallery from '@/components/search/image-gallery';
 import { Message } from '@/lib/types';
 
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import AnswerSection from '@/components/search/answer-section';
 import QuestionSection from '@/components/search/question-section';
 import ActionButtons from '@/components/search/action-buttons';
@@ -22,13 +22,16 @@ const SearchMessageBubble = memo(
         const images = message.images ?? [];
         const searchId = props.searchId;
 
-        let attachments = props.message.attachments ?? [];
-        if (isUser) {
-            const imageUrls = extractAllImageUrls(content);
-            if (imageUrls.length > 0) {
-                attachments = attachments.concat(imageUrls);
+        const attachments = useMemo(() => {
+            let initialAttachments = message.attachments ?? [];
+            if (isUser) {
+                const imageUrls = extractAllImageUrls(content);
+                if (imageUrls.length > 0) {
+                    initialAttachments = initialAttachments.concat(imageUrls);
+                }
             }
-        }
+            return initialAttachments;
+        }, [message.attachments, isUser, content]);
 
         return (
             <div className="flex flex-col w-full items-start space-y-6 pb-10">
@@ -94,7 +97,7 @@ const SearchMessageBubble = memo(
                                             width={400}
                                             height={400}
                                             loading="lazy"
-                                            className="aspect-square shrink-0 border rounded-md object-contain"
+                                            className="aspect-square shrink-0 rounded-lg object-cover"
                                         />
                                     </div>
                                 ) : (
