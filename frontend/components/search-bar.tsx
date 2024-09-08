@@ -38,7 +38,8 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         if (uploadedFiles && uploadedFiles.length > 0) {
             const fileUrls = uploadedFiles.map((file) => file.url);
             handleSearch(content, fileUrls);
-            setFiles(undefined);
+            setFiles([]);
+            setUploadedFiles([]);
         } else {
             handleSearch(content);
         }
@@ -52,9 +53,9 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         }
     };
 
-    const [files, setFiles] = useState<File[]>();
+    const [files, setFiles] = useState<File[]>([]);
     const dropzoneRef = useRef(null);
-    const { onUpload, uploadedFiles, isUploading } = useUploadFile();
+    const { onUpload, uploadedFiles, setUploadedFiles, isUploading } = useUploadFile();
 
     const imageUrls = useMemo(() => {
         return files?.map((file) => {
@@ -84,12 +85,34 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
             return;
         }
         if (acceptedFiles.length > 5) {
-            toast.error('Cannot upload more than 5 file at a time');
+            toast.error('Cannot upload more than 5 local file at a time');
             return;
         }
-        setFiles(acceptedFiles);
+
+        console.log('acceptedFiles', acceptedFiles);
+
+        const imageFiles = acceptedFiles.filter((file) => file.type.startsWith('image/'));
+        const otherFiles = acceptedFiles.filter((file) => !file.type.startsWith('image/'));
+
+        console.log('Files:', files);
+        const currentImageCount = files.filter((file) => file.type.startsWith('image/')).length;
+        const currentOtherFileCount = files.filter((file) => !file.type.startsWith('image/')).length;
+
+        if (currentImageCount + imageFiles.length > 5) {
+            toast.error('Cannot upload more than 5 local images at a time, if you need it, please feedback to us, we will support it later');
+            return;
+        }
+
+        if (currentOtherFileCount + otherFiles.length > 1) {
+            toast.error('Cannot upload more than 1 local text file at a time, if you need it, please feedback to us, we will support it later');
+            return;
+        }
+
+        console.log('acceptedFiles', acceptedFiles);
+
+        setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
         toast.promise(onUpload(acceptedFiles), {
-            loading: `Uploading file... \n You can type your question now`,
+            loading: `Uploading file... You can type your question now`,
             success: () => {
                 return `Uploaded successfully`;
             },
@@ -129,9 +152,9 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         <div className="w-full text-center">
             <div className="flex flex-col relative mx-auto w-full border-2 rounded-lg focus-within:border-primary">
                 {files && files.length > 0 && (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-4">
                         {files.map((file, index) => (
-                            <div key={index} className="relative">
+                            <div key={index} className="flex">
                                 {file.type.startsWith('image/') ? (
                                     <Image
                                         src={imageUrls[index]}
@@ -147,13 +170,12 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                         <p className="line-clamp-1 text-sm font-medium text-foreground/80">{file.name}</p>
                                     </div>
                                 )}
-                                <button
-                                    onClick={() => removeFile(index)}
-                                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                                    aria-label="Remove file"
-                                >
-                                    <XIcon className="size-4" />
-                                </button>
+                                {/* <div className="flex items-center gap-2">
+                                    <Button type="button" variant="outline" size="icon" className="size-7" onClick={() => removeFile(index)}>
+                                        <Cross2Icon className="size-4" aria-hidden="true" />
+                                        <span className="sr-only">Remove file</span>
+                                    </Button>
+                                </div> */}
                             </div>
                         ))}
                     </div>

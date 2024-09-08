@@ -8,7 +8,7 @@ import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine, IMAGE_LIMIT } from '@/lib/search/search';
 import { saveMessages } from '@/lib/server-utils';
-import { extractFirstImageUrl } from '@/lib/shared-utils';
+import { extractAllImageUrls, extractFirstImageUrl, replaceImageUrl } from '@/lib/shared-utils';
 import { accessWebPage } from '@/lib/tools/access';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { getTopStories } from '@/lib/tools/hacker-news';
@@ -29,7 +29,7 @@ export async function autoAnswer(
     source = SearchCategory.ALL,
 ) {
     try {
-        const attachments = messages[messages.length - 1].attachments;
+        const attachments = messages[messages.length - 1].attachments ?? [];
         const newMessages = messages.slice(-1) as Message[];
         const query = newMessages[0].content;
 
@@ -47,6 +47,7 @@ export async function autoAnswer(
         // console.log('Auto Answering:', system);
 
         let userMessages = createUserMessages(query, attachments);
+        console.log('userMessages', JSON.stringify(userMessages, null, 2));
 
         const maxTokens = getMaxOutputToken(isPro);
         const result = await streamText({
@@ -161,39 +162,28 @@ export async function autoAnswer(
     }
 }
 
-function createUserMessages(query: string, attachments?: string[]) {
+function createUserMessages(query: string, attachments: string[] = []) {
     let text = query;
-    if (!attachments) {
-        const imageUrl = extractFirstImageUrl(query);
-        if (imageUrl) {
-            text = query.replace(imageUrl, '').trim();
+    if (attachments.length === 0) {
+        attachments = extractAllImageUrls(query);
+        if (attachments.length > 0) {
+            text = replaceImageUrl(query, attachments);
         }
-        const content: Array<{ type: string; text?: string; image?: URL }> = [{ type: 'text', text }];
-        if (imageUrl) {
-            content.push({ type: 'image', image: new URL(imageUrl) });
-        }
-
-        return [{ role: 'user', content }];
-    } else {
-        return [
-            {
-                role: 'user',
-                content: attachments ? [{ type: 'text', text: query }, ...attachmentsToParts(attachments)] : query,
-            },
-        ];
     }
+    return [
+        {
+            role: 'user',
+            content: [{ type: 'text', text: text }, ...attachmentsToParts(attachments)],
+        },
+    ];
 }
 
 type ContentPart = TextPart | ImagePart;
 
 function attachmentsToParts(attachments: string[]): ContentPart[] {
     const parts: ContentPart[] = [];
-
     for (const attachment of attachments) {
         parts.push({ type: 'image', image: attachment });
     }
-
-    console.log('parts', parts);
-
     return parts;
 }

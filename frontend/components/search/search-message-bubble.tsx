@@ -7,7 +7,7 @@ import React, { memo } from 'react';
 import AnswerSection from '@/components/search/answer-section';
 import QuestionSection from '@/components/search/question-section';
 import ActionButtons from '@/components/search/action-buttons';
-import { extractFirstImageUrl } from '@/lib/shared-utils';
+import { extractAllImageUrls } from '@/lib/shared-utils';
 
 const SearchMessageBubble = memo(
     (props: { searchId: string; message: Message; onSelect: (question: string) => void; reload: (msgId: string) => void; isLoading: boolean }) => {
@@ -24,9 +24,9 @@ const SearchMessageBubble = memo(
 
         let attachments = props.message.attachments ?? [];
         if (isUser) {
-            const firstImageUrl = extractFirstImageUrl(content);
-            if (firstImageUrl) {
-                attachments.push(firstImageUrl);
+            const imageUrls = extractAllImageUrls(content);
+            if (imageUrls.length > 0) {
+                attachments = attachments.concat(imageUrls);
             }
         }
 

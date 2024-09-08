@@ -14,7 +14,7 @@ import { generateId } from 'ai';
 import { LoaderCircle } from 'lucide-react';
 import { useScrollAnchor } from '@/hooks/use-scroll-anchor';
 import { toast } from 'sonner';
-import { checkIsPro } from '@/lib/shared-utils';
+import { checkIsPro, extractAllImageUrls, replaceImageUrl } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useSearchStore } from '@/lib/store/local-history';
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
@@ -27,12 +27,7 @@ export interface SearchProps extends React.ComponentProps<'div'> {
     isReadOnly?: boolean;
 }
 
-export function SearchWindow({
-    id,
-    initialMessages,
-    user,
-    isReadOnly = false,
-}: SearchProps) {
+export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: SearchProps) {
     const searchParams = useSearchParams();
     const signInModal = useSigninModal();
     const upgradeModal = useUpgradeModal();
@@ -40,16 +35,9 @@ export function SearchWindow({
     const [isLoading, setIsLoading] = useState(false);
     const [status, setStatus] = useState('Thinking...');
 
-    const {
-        addSearch,
-        activeId,
-        activeSearch,
-        setActiveSearch,
-        updateActiveSearch,
-    } = useSearchStore();
+    const { addSearch, activeId, activeSearch, setActiveSearch, updateActiveSearch } = useSearchStore();
 
-    const { messagesRef, scrollRef, visibilityRef, isVisible, scrollToBottom } =
-        useScrollAnchor();
+    const { messagesRef, scrollRef, visibilityRef, isVisible, scrollToBottom } = useScrollAnchor();
 
     useEffect(() => {
         const searchId = searchParams.get('id');
@@ -64,37 +52,26 @@ export function SearchWindow({
     }, [id, activeId, searchParams, setActiveSearch]);
 
     const sendMessage = useCallback(
-        async (
-            question?: string,
-            attachments?: string[],
-            messageIdToUpdate?: string,
-        ) => {
+        async (question?: string, attachments?: string[], messageIdToUpdate?: string) => {
             if (isReadOnly) {
                 toast.error('You cannot ask questions in share search page');
                 return;
             }
 
             const checkMessagesLength = () => {
-                const messages =
-                    useSearchStore.getState().activeSearch?.messages ?? [];
+                const messages = useSearchStore.getState().activeSearch?.messages ?? [];
                 if (!user && messages.length > 20) {
-                    toast.error(
-                        'You need to sign in to ask more questions in one search thread.',
-                    );
+                    toast.error('You need to sign in to ask more questions in one search thread.');
                     signInModal.onOpen();
                     return false;
                 }
                 if (user && !checkIsPro(user) && messages.length > 40) {
-                    toast.error(
-                        'You need to upgrade to Pro to ask more questions in one search thread.',
-                    );
+                    toast.error('You need to upgrade to Pro to ask more questions in one search thread.');
                     upgradeModal.onOpen();
                     return false;
                 }
                 if (messages.length > 100) {
-                    toast.error(
-                        'You have reached the limit of questions in one search thread, please start a new thread.',
-                    );
+                    toast.error('You have reached the limit of questions in one search thread, please start a new thread.');
                     return false;
                 }
                 return true;
@@ -104,8 +81,16 @@ export function SearchWindow({
                 return;
             }
 
-            const messageValue = question ?? input;
+            let messageValue = question ?? input;
             if (messageValue === '') return;
+            const imageUrls = extractAllImageUrls(messageValue);
+            console.log('imageUrls', imageUrls);
+            if (imageUrls.length > 5) {
+                toast.error(
+                    'You can only attach up to 5 images per message, if you need to attach more images, please give us feedback, we could support it later.',
+                );
+                return;
+            }
 
             setInput('');
             setIsLoading(true);
@@ -115,26 +100,16 @@ export function SearchWindow({
             let accumulatedRelated = '';
             let messageIndex: number | null = null;
 
-            const updateMessages = (
-                parsedResult?: string,
-                newSources?: TextSource[],
-                newImages?: ImageSource[],
-                newRelated?: string,
-            ) => {
+            const updateMessages = (parsedResult?: string, newSources?: TextSource[], newImages?: ImageSource[], newRelated?: string) => {
                 const activeSearch = useSearchStore.getState().activeSearch;
-                if (
-                    messageIndex === null ||
-                    !activeSearch.messages[messageIndex]
-                ) {
+                if (messageIndex === null || !activeSearch.messages[messageIndex]) {
                     messageIndex = activeSearch.messages.length;
                     updateActiveSearch({
                         messages: [
                             ...activeSearch.messages,
                             {
                                 id: generateId(),
-                                content: parsedResult
-                                    ? parsedResult.trim()
-                                    : '',
+                                content: parsedResult ? parsedResult.trim() : '',
                                 sources: newSources || [],
                                 images: newImages || [],
                                 related: newRelated || '',
@@ -150,9 +125,7 @@ export function SearchWindow({
                         if (index === messageIndex) {
                             return {
                                 ...msg,
-                                content: parsedResult
-                                    ? parsedResult.trim()
-                                    : msg.content,
+                                content: parsedResult ? parsedResult.trim() : msg.content,
                                 sources: newSources || msg.sources,
                                 images: newImages || msg.images,
                                 related: newRelated || msg.related,
@@ -178,7 +151,7 @@ export function SearchWindow({
                                 id: activeId,
                                 content: messageValue,
                                 role: 'user',
-                                attachments: attachments,
+                                attachments: attachments ?? [],
                             },
                         ],
                     });
@@ -190,7 +163,7 @@ export function SearchWindow({
                                 id: generateId(),
                                 content: messageValue,
                                 role: 'user',
-                                attachments: attachments,
+                                attachments: attachments ?? [],
                             },
                         ],
                     });
@@ -209,8 +182,7 @@ export function SearchWindow({
                         model: configStore.getState().model,
                         source: configStore.getState().source,
                         profile: useProfileStore.getState().profile,
-                        messages:
-                            useSearchStore.getState().activeSearch.messages,
+                        messages: useSearchStore.getState().activeSearch.messages,
                     }),
                     openWhenHidden: true,
                     onerror(err) {
@@ -222,23 +194,14 @@ export function SearchWindow({
                             signInModal.onOpen();
                             return;
                         } else {
-                            console.error(
-                                `Received unexpected status code: ${response.status}`,
-                            );
+                            console.error(`Received unexpected status code: ${response.status}`);
                         }
                     },
                     onclose() {
                         setIsLoading(false);
                     },
                     onmessage(msg) {
-                        const {
-                            clear,
-                            answer,
-                            status,
-                            sources,
-                            images,
-                            related,
-                        } = JSON.parse(msg.data);
+                        const { clear, answer, status, sources, images, related } = JSON.parse(msg.data);
                         if (clear) {
                             accumulatedMessage = '';
                             updateMessages(accumulatedMessage);
@@ -250,29 +213,17 @@ export function SearchWindow({
                             answer ? (accumulatedMessage += answer) : undefined,
                             sources,
                             images,
-                            related
-                                ? (accumulatedRelated += related)
-                                : undefined,
+                            related ? (accumulatedRelated += related) : undefined,
                         );
                     },
                 });
             } catch (e) {
                 setIsLoading(false);
                 setInput(messageValue);
-                toast.error(
-                    'An error occurred while searching, please try again',
-                );
+                toast.error('An error occurred while searching, please refresh your page and try again');
             }
         },
-        [
-            input,
-            isReadOnly,
-            isLoading,
-            signInModal,
-            addSearch,
-            updateActiveSearch,
-            user?.id,
-        ],
+        [input, isReadOnly, isLoading, signInModal, addSearch, updateActiveSearch, user?.id],
     );
 
     const sendSelectedQuestion = useCallback(
@@ -291,9 +242,7 @@ export function SearchWindow({
             if (!activeSearch) {
                 return;
             }
-            const currentIndex = activeSearch.messages.findIndex(
-                (msg) => msg.id === msgId,
-            );
+            const currentIndex = activeSearch.messages.findIndex((msg) => msg.id === msgId);
             if (currentIndex === -1) return;
 
             const updatedMessages = [...activeSearch.messages];
@@ -301,10 +250,7 @@ export function SearchWindow({
 
             let previousMessage;
             if (currentIndex > 0) {
-                previousMessage = updatedMessages.splice(
-                    currentIndex - 1,
-                    1,
-                )[0];
+                previousMessage = updatedMessages.splice(currentIndex - 1, 1)[0];
                 updatedMessages.push(previousMessage);
             }
 
@@ -327,10 +273,7 @@ export function SearchWindow({
 
     const messages = activeSearch?.messages ?? initialMessages ?? [];
     return (
-        <div
-            className="group overflow-auto mx-auto w-full md:w-5/6  px-4 md:px-0 flex flex-col my-2"
-            ref={scrollRef}
-        >
+        <div className="group overflow-auto mx-auto w-full md:w-5/6  px-4 md:px-0 flex flex-col my-2" ref={scrollRef}>
             <div className="flex flex-col w-full">
                 {messages.length > 0 ? (
                     [...messages].map((m, index) => (
@@ -348,10 +291,7 @@ export function SearchWindow({
                 )}
             </div>
             {isLoading && (
-                <div
-                    className="my-6 w-1/2 mx-auto flex justify-center items-center text-md text-violet-800 dark:text-violet-200"
-                    ref={messagesRef}
-                >
+                <div className="my-6 w-1/2 mx-auto flex justify-center items-center text-md text-violet-800 dark:text-violet-200" ref={messagesRef}>
                     <LoaderCircle className="size-5 mr-2 animate-spin" />
                     <div>{status}</div>
                 </div>
@@ -360,10 +300,7 @@ export function SearchWindow({
             {messages.length === 0 && <DemoQuestions />}
 
             {!isReadOnly && <SearchBar handleSearch={stableHandleSearch} />}
-            <ButtonScrollToBottom
-                isAtBottom={isVisible}
-                scrollToBottom={scrollToBottom}
-            />
+            <ButtonScrollToBottom isAtBottom={isVisible} scrollToBottom={scrollToBottom} />
         </div>
     );
 }

@@ -61,6 +61,7 @@ export function useUploadFile() {
 
     return {
         onUpload,
+        setUploadedFiles,
         uploadedFiles,
         isUploading,
     };
