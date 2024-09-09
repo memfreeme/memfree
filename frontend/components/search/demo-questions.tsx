@@ -5,6 +5,10 @@ export function DemoQuestions() {
     const t = useTranslations('DemoQuestions');
     const demoQuestions = [
         {
+            title: t('title1'),
+            link: '/share/Ed21pa5',
+        },
+        {
             title: t('title2'),
             link: '/share/GgxtPak',
         },
@@ -31,17 +35,9 @@ export function DemoQuestions() {
                 .sort(() => Math.random() - 0.5)
                 .slice(0, 4)
                 .map((example, index) => (
-                    <Link
-                        key={example.link}
-                        href={example.link}
-                        target="_blank"
-                    >
-                        <div
-                            className={`cursor-pointer rounded-lg border bg-white p-4 hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900`}
-                        >
-                            <div className="text-sm font-semibold">
-                                {example.title}
-                            </div>
+                    <Link key={example.link} href={example.link} target="_blank">
+                        <div className={`cursor-pointer rounded-lg border bg-white p-4 hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900`}>
+                            <div className="text-sm font-semibold">{example.title}</div>
                         </div>
                     </Link>
                 ))}

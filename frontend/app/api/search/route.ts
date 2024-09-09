@@ -22,7 +22,6 @@ const ratelimit = new Ratelimit({
 
 const updateSource = function (source, messages) {
     const file = messages[0].attachments?.[0];
-    // console.log('imageFile', imageFile);
     if (file) {
         if (file.startsWith('local-')) {
             return SearchCategory.KNOWLEDGE_BASE;

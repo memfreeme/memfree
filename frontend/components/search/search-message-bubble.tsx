@@ -97,7 +97,7 @@ const SearchMessageBubble = memo(
                                             width={400}
                                             height={400}
                                             loading="lazy"
-                                            className="aspect-square shrink-0 rounded-lg object-cover"
+                                            className="aspect-square shrink-0 rounded-lg object-contain"
                                         />
                                     </div>
                                 ) : (
