@@ -1,14 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import TextareaAutosize from 'react-textarea-autosize';
 import React, { useEffect, useState } from 'react';
 import { Label } from '@/components/ui/label';
@@ -21,7 +14,6 @@ export function CustomProfile() {
     const { profile, setProfile } = useProfileStore();
 
     useEffect(() => {
-        console.log('Profile', profile);
         setContent(profile);
     }, [profile]);
 
@@ -30,11 +22,8 @@ export function CustomProfile() {
             toast.error('Profile content cannot be empty');
             return;
         }
-        console.log('content', content.length);
         if (content.length > 500) {
-            toast.error(
-                'Profile content is too long, the maximum length is 500',
-            );
+            toast.error('Profile content is too long, the maximum length is 500');
             return;
         }
 
@@ -52,22 +41,16 @@ export function CustomProfile() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Custom Profile</CardTitle>
+                <CardTitle>Customize Profile</CardTitle>
                 <CardDescription className="text-gray-700 py-2">
-                    Introduce yourself for personalized answers. Share any
-                    information or instructions that MemFree should know.
+                    Introduce yourself for personalized answers. Share any information or instructions that MemFree should know.
                 </CardDescription>
                 <CardDescription>
-                    Your profile is private and only used to instruct MemFree to
-                    be more useful to you. Pause or clear your profile at any
-                    time.
+                    Your profile is private and only used to instruct MemFree to be more useful to you. Pause or clear your profile at any time.
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col space-y-2">
-                <Label htmlFor="profile-content">
-                    Introduce yourself, your profession, your favorite tools or
-                    technology stack, etc.
-                </Label>
+                <Label htmlFor="profile-content">Introduce yourself, your profession, your favorite tools or technology stack, etc.</Label>
                 <TextareaAutosize
                     id="profile-content"
                     placeholder="I am a software engineer, my technology stack is nextjs, reactjs, shadcn UI and tailwind css"
@@ -79,11 +62,7 @@ export function CustomProfile() {
                 ></TextareaAutosize>
             </CardContent>
             <CardFooter>
-                <Button
-                    className="p-4"
-                    disabled={isPending}
-                    onClick={handleSave}
-                >
+                <Button className="p-4" disabled={isPending} onClick={handleSave}>
                     Save your profile
                 </Button>
             </CardFooter>
