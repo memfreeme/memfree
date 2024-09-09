@@ -53,12 +53,11 @@ export function getSearchEngine(options: SearchOptions): SearchSource {
         case SearchCategory.IMAGES:
             return new SerperSearch(options);
         case SearchCategory.TWEET:
-            return new EXASearch({ categories: [categories[0]] });
+            return new SerperSearch({ domain: 'x.com' });
         case SearchCategory.ACADEMIC:
             return new SearxngSearch({
                 engines: ['arxiv', 'google scholar', 'internetarchivescholar', 'pubmed'],
             });
-
         default:
             return new SearxngSearch(options);
     }

@@ -1,12 +1,6 @@
 import * as React from 'react';
 
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Globe } from 'lucide-react';
 import { useSourceStore, useUserStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
@@ -38,7 +32,7 @@ export const sourceMap: Record<string, Source> = {
     //     value: SearchCategory.INDIE_MAKER,
     // },
     [SearchCategory.ACADEMIC]: {
-        name: 'Paper',
+        name: 'Academic',
         flag: 'Pro',
         value: SearchCategory.ACADEMIC,
     },
@@ -50,16 +44,10 @@ export const sourceMap: Record<string, Source> = {
 };
 
 const SourceItem: React.FC<{ source: Source }> = ({ source }) => (
-    <SelectItem
-        key={source.value}
-        value={source.value}
-        className="w-full p-2 block"
-    >
+    <SelectItem key={source.value} value={source.value} className="w-full p-2 block">
         <div className="flex w-full justify-between">
             <span className="text-md mr-2">{source.name}</span>
-            <span
-                className={`text-xs flex items-center justify-center ${source.flag === 'Pro' ? ' text-primary bg-purple-300 rounded-xl px-2' : ''}`}
-            >
+            <span className={`text-xs flex items-center justify-center ${source.flag === 'Pro' ? ' text-primary bg-purple-300 rounded-xl px-2' : ''}`}>
                 {source.flag}
             </span>
         </div>
@@ -101,17 +89,11 @@ export function SourceSelection() {
                 }
             }}
         >
-            <SelectTrigger
-                aria-label="Search Source"
-                className="focus:ring-0 border-none outline-none"
-            >
+            <SelectTrigger aria-label="Search Source" className="focus:ring-0 border-none outline-none">
                 <SelectValue>
                     <div className="flex items-center space-x-1">
                         <Globe></Globe>
-                        <span className="font-semibold">
-                            {' '}
-                            {selectedSource.name}
-                        </span>
+                        <span className="font-semibold"> {selectedSource.name}</span>
                     </div>
                 </SelectValue>
             </SelectTrigger>

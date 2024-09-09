@@ -8,7 +8,7 @@ import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine } from '@/lib/search/search';
 import { saveMessages } from '@/lib/server-utils';
-import { extractAllImageUrls, extractFirstImageUrl, replaceImageUrl } from '@/lib/shared-utils';
+import { extractAllImageUrls, replaceImageUrl } from '@/lib/shared-utils';
 import { accessWebPage } from '@/lib/tools/access';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { getTopStories } from '@/lib/tools/hacker-news';
@@ -124,6 +124,7 @@ export async function autoAnswer(
 
         if (toolCallCount > 1) {
             rewriteQuery = query;
+            await streamResponse({ sources: texts, status: 'Thinking ...' }, onStream);
         }
 
         let fullRelated = '';
