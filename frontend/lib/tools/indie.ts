@@ -6,25 +6,13 @@ import { getLLM, Message } from '@/lib/llm/llm';
 import { getHistory, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
-import { getSearchEngine, IMAGE_LIMIT, TEXT_LIMIT } from '@/lib/search/search';
+import { getSearchEngine, TEXT_LIMIT } from '@/lib/search/search';
 import { saveMessages } from '@/lib/server-utils';
-import { saveSearch } from '@/lib/store/search';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { getRelatedQuestions } from '@/lib/tools/related';
-import {
-    Message as StoreMessage,
-    SearchCategory,
-    TextSource,
-} from '@/lib/types';
-import { generateId } from 'ai';
+import { Message as StoreMessage, SearchCategory, TextSource } from '@/lib/types';
 
-export async function indieMakerSearch(
-    messages: StoreMessage[],
-    isPro: boolean,
-    userId: string,
-    onStream?: (...args: any[]) => void,
-    model = GPT_4o_MIMI,
-) {
+export async function indieMakerSearch(messages: StoreMessage[], isPro: boolean, userId: string, onStream?: (...args: any[]) => void, model = GPT_4o_MIMI) {
     try {
         const newMessages = messages.slice(-1) as Message[];
         const query = newMessages[0].content;
@@ -33,17 +21,9 @@ export async function indieMakerSearch(
             categories: [SearchCategory.IMAGES],
         })
             .search(query)
-            .then((results) =>
-                results.images
-                    .filter((img) => img.image.startsWith('https'))
-                    .slice(0, IMAGE_LIMIT),
-            );
+            .then((results) => results.images.filter((img) => img.image.startsWith('https')));
 
-        const domains = [
-            'indiehackers.com',
-            'producthunt.com',
-            'news.ycombinator.com',
-        ];
+        const domains = ['indiehackers.com', 'producthunt.com', 'news.ycombinator.com'];
         const randomIndex = Math.floor(Math.random() * domains.length);
         const domain = domains[randomIndex];
         const source = SearchCategory.INDIE_MAKER;
@@ -57,16 +37,12 @@ export async function indieMakerSearch(
         if (cacheResult) {
             texts = cacheResult.texts;
         } else {
-            const searchResult =
-                await getSearchEngine(searchOptions).search(query);
+            const searchResult = await getSearchEngine(searchOptions).search(query);
             texts = searchResult.texts.slice(0, TEXT_LIMIT);
             setCache(query + domain, { texts });
         }
 
-        await streamResponse(
-            { sources: texts, status: 'Answering ...' },
-            onStream,
-        );
+        await streamResponse({ sources: texts, status: 'Answering ...' }, onStream);
 
         let history = getHistory(isPro, messages);
         let fullAnswer = '';
@@ -110,20 +86,10 @@ export async function indieMakerSearch(
         });
 
         incSearchCount(userId).catch((error) => {
-            console.error(
-                `Failed to increment search count for user ${userId}:`,
-                error,
-            );
+            console.error(`Failed to increment search count for user ${userId}:`, error);
         });
 
-        await saveMessages(
-            userId,
-            messages,
-            fullAnswer,
-            texts,
-            images,
-            fullRelated,
-        );
+        await saveMessages(userId, messages, fullAnswer, texts, images, fullRelated);
         onStream?.(null, true);
     } catch (error) {
         logError(error, 'indie-search');

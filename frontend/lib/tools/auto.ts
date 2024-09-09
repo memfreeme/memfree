@@ -6,7 +6,7 @@ import { AutoAnswerPrompt } from '@/lib/llm/prompt';
 import { getHistory, getMaxOutputToken, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
-import { getSearchEngine, IMAGE_LIMIT } from '@/lib/search/search';
+import { getSearchEngine } from '@/lib/search/search';
 import { saveMessages } from '@/lib/server-utils';
 import { extractAllImageUrls, extractFirstImageUrl, replaceImageUrl } from '@/lib/shared-utils';
 import { accessWebPage } from '@/lib/tools/access';
@@ -35,12 +35,6 @@ export async function autoAnswer(
 
         let texts: TextSource[] = [];
         let images: ImageSource[] = [];
-
-        const imageFetchPromise = getSearchEngine({
-            categories: [SearchCategory.IMAGES],
-        })
-            .search(query)
-            .then((results) => results.images.filter((img) => img.image.startsWith('https')).slice(0, IMAGE_LIMIT));
 
         let history = getHistory(isPro, messages);
         const system = util.format(AutoAnswerPrompt, profile, history);
@@ -134,6 +128,12 @@ export async function autoAnswer(
 
         let fullRelated = '';
         if (toolCallCount > 0) {
+            const imageFetchPromise = getSearchEngine({
+                categories: [SearchCategory.IMAGES],
+            })
+                .search(query)
+                .then((results) => results.images.filter((img) => img.image.startsWith('https')));
+
             fullAnswer = '';
             await streamResponse({ status: 'Answering ...', clear: true }, onStream);
             await directlyAnswer(isPro, source, history, profile, getLLM(model), rewriteQuery, texts, (msg) => {

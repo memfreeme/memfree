@@ -31,7 +31,6 @@ export interface SearchSource {
 }
 
 export const TEXT_LIMIT = 16;
-export const IMAGE_LIMIT = 8;
 
 export function getVectorSearch(userId: string, url?: string): SearchSource {
     return new VectorSearch(userId, url);
@@ -51,17 +50,13 @@ export function getSearchEngine(options: SearchOptions): SearchSource {
     switch (categories[0]) {
         case SearchCategory.ALL:
             return new SerperSearch();
+        case SearchCategory.IMAGES:
+            return new SerperSearch(options);
         case SearchCategory.TWEET:
             return new EXASearch({ categories: [categories[0]] });
-
         case SearchCategory.ACADEMIC:
             return new SearxngSearch({
-                engines: [
-                    'arxiv',
-                    'google scholar',
-                    'internetarchivescholar',
-                    'pubmed',
-                ],
+                engines: ['arxiv', 'google scholar', 'internetarchivescholar', 'pubmed'],
             });
 
         default:
