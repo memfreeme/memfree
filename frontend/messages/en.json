@@ -1,9 +1,7 @@
 {
     "HomePage": {
         "hero": "Hybrid AI Search - Faster and more Accurate",
-        "hero2": "Hybrid AI Search from Knowledge Base and Internet",
-        "index-button": "Index",
-        "attach-button": "Attach"
+        "hero2": "Hybrid AI Search from Knowledge Base and Internet"
     },
     "MetaDate": {
         "title": "MemFree - Hybrid AI Search",
@@ -61,5 +59,36 @@
         "title5": "Get Top Hacker News Stories",
         "title6": "Search and Ask Twitter Questions",
         "title7": "Expalin and Write Code"
+    },
+    "SearchBar": {
+        "index-button": "Index",
+        "attach-button": "Attach",
+        "index-tip": "Index Web Pages and Local Files",
+        "attach-tip": "Attach Image and File to Ask",
+        "search-tip": "Enter to send, Shift + Enter to wrap"
+    },
+    "IndexModal": {
+        "title": "Enhance your search results with AI indexing",
+        "note": "It takes about a few seconds to index a web page or local file.",
+        "web-page": "Web Page",
+        "local-file": "Local File"
+    },
+    "IndexWeb": {
+        "placeholder": "Please enter the URL of the public web pages you value. Memfree will let you search the content of these pages by AI.",
+        "index-button": "Index Web Page",
+        "index-extension": "Index Web Page By Chrome or Edge Extension",
+        "extension-note": "Browser Extension for faster indexing and better quality"
+    },
+    "IndexLocal": {
+        "note": "Drag and drop files here, or click to select files"
+    },
+    "Attach": {
+        "size-limit": "The file you uploaded exceeds the maximum limit of 4MB. Please upgrade your plan for larger file uploads.",
+        "number-limit-1": "Free user can only upload one file at a time, please upgrade your plan",
+        "image-limit-5": "Cannot upload more than 5 local image files at a time. if you need it, please feedback to us, we will support it later",
+        "file-limit-1": "Cannot upload more than 1 local text file at a time. if you need it, please feedback to us, we will support it later",
+        "loading": "Uploading file... You can type your question now",
+        "success": "Files uploaded successfully",
+        "error": "Failed to upload"
     }
 }

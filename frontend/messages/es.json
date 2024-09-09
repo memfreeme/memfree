@@ -61,5 +61,36 @@
         "title5": "Obtener Historias Principales de Hacker News",
         "title6": "Buscar y Hacer Preguntas de Twitter",
         "title7": "Explicar y Escribir Código"
+    },
+    "SearchBar": {
+        "index-button": "Indexar",
+        "attach-button": "Adjuntar",
+        "index-tip": "Indexar Páginas Web y Archivos Locales",
+        "attach-tip": "Adjuntar Imagen y Archivo para Preguntar",
+        "search-tip": "Presione Enter para enviar, Shift + Enter para saltar"
+    },
+    "IndexModal": {
+        "title": "Mejore sus resultados de búsqueda con indexación AI",
+        "note": "Toma unos segundos indexar una página web o un archivo local.",
+        "web-page": "Página Web",
+        "local-file": "Archivo Local"
+    },
+    "IndexWeb": {
+        "placeholder": "Por favor, ingrese la URL de las páginas web públicas que valora. Memfree le permitirá buscar el contenido de estas páginas mediante AI.",
+        "index-button": "Indexar Página Web",
+        "index-extension": "Indexar Página Web mediante la Extensión de Chrome o Edge",
+        "extension-note": "Extensión del navegador para una indexación más rápida y de mejor calidad"
+    },
+    "IndexLocal": {
+        "note": "Arrastre y suelte archivos aquí, o haga clic para seleccionar archivos"
+    },
+    "Attach": {
+        "size-limit": "El archivo que subió excede el límite máximo de 4MB. Por favor, actualice su plan para subir archivos más grandes.",
+        "number-limit-1": "El usuario gratuito solo puede subir un archivo a la vez, por favor, actualice su plan",
+        "image-limit-5": "No se pueden subir más de 5 archivos de imagen locales a la vez. Si lo necesita, por favor, háganoslo saber, lo apoyaremos más adelante.",
+        "file-limit-1": "No se puede subir más de 1 archivo de texto local a la vez. Si lo necesita, por favor, háganoslo saber, lo apoyaremos más adelante.",
+        "loading": "Subiendo archivo... Puede escribir su pregunta ahora",
+        "success": "Archivos subidos con éxito",
+        "error": "Error al subir"
     }
 }

@@ -61,5 +61,36 @@
         "title5": "获取 Hacker News 头条",
         "title6": "搜索 Twitter 问题",
         "title7": "代码解释和编写"
+    },
+    "SearchBar": {
+        "index-button": "索引",
+        "attach-button": "上传",
+        "index-tip": "索引网页和本地文件",
+        "attach-tip": "上传 图片和文件以提问",
+        "search-tip": "按 Enter 发送，Shift + Enter 换行"
+    },
+    "IndexModal": {
+        "title": "通过 AI索引增强您的搜索结果",
+        "note": "索引网页或本地文件大约需要几秒钟",
+        "web-page": "网页",
+        "local-file": "本地文件"
+    },
+    "IndexWeb": {
+        "placeholder": "请输入公开网页的URL，Memfree将让您通过AI搜索这些网页的内容",
+        "index-button": "索引网页",
+        "index-extension": "通过Chrome或Edge扩展索引网页",
+        "extension-note": "浏览器扩展以更快的索引和更好的质量"
+    },
+    "IndexLocal": {
+        "note": "将文件拖放到此处，或单击选择文件"
+    },
+    "Attach": {
+        "size-limit": "您上传的文件超过最大限制4MB。请升级您的计划以上传更大的文件",
+        "number-limit-1": "免费用户一次只能上传一个文件，请升级您的计划",
+        "image-limit-5": "一次不能上传超过5个本地图像文件。如果您需要，请反馈给我们，我们将支持它",
+        "file-limit-1": "一次不能上传超过1个本地文本文件。如果您需要，请反馈给我们，我们将支持它",
+        "loading": "正在上传文件... 您现在可以输入您的问题",
+        "success": "文件上传成功",
+        "error": "上传失败"
     }
 }

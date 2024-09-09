@@ -61,5 +61,36 @@
         "title5": "Obtenir les meilleures histoires de Hacker News",
         "title6": "Rechercher et poser des questions Twitter",
         "title7": "Expliquer et écrire du code"
+    },
+    "SearchBar": {
+        "index-button": "Indexer",
+        "attach-button": "Joindre",
+        "index-tip": "Indexer des pages Web et des fichiers locaux",
+        "attach-tip": "Joindre une image et un fichier pour poser une question",
+        "search-tip": "Appuyez sur Entrée pour envoyer, Shift + Entrée pour un retour à la ligne"
+    },
+    "IndexModal": {
+        "title": "Améliorez vos résultats de recherche avec l'indexation AI",
+        "note": "Il faut environ quelques secondes pour indexer une page Web ou un fichier local.",
+        "web-page": "Page Web",
+        "local-file": "Fichier Local"
+    },
+    "IndexWeb": {
+        "placeholder": "Veuillez entrer l'URL des pages Web publiques que vous appréciez. Memfree vous permettra de rechercher le contenu de ces pages par AI.",
+        "index-button": "Indexer la Page Web",
+        "index-extension": "Indexer la Page Web par l'Extension Chrome ou Edge",
+        "extension-note": "Extension de navigateur pour une indexation plus rapide et de meilleure qualité"
+    },
+    "IndexLocal": {
+        "note": "Faites glisser et déposez des fichiers ici, ou cliquez pour sélectionner des fichiers"
+    },
+    "Attach": {
+        "size-limit": "Le fichier que vous avez téléchargé dépasse la limite maximale de 4 Mo. Veuillez mettre à niveau votre plan pour des téléchargements de fichiers plus volumineux.",
+        "number-limit-1": "L'utilisateur gratuit ne peut télécharger qu'un seul fichier à la fois, veuillez mettre à niveau votre plan",
+        "image-limit-5": "Impossible de télécharger plus de 5 fichiers image locaux à la fois. Si vous en avez besoin, veuillez nous faire part de vos commentaires, nous le prendrons en charge plus tard.",
+        "file-limit-1": "Impossible de télécharger plus d'un fichier texte local à la fois. Si vous en avez besoin, veuillez nous faire part de vos commentaires, nous le prendrons en charge plus tard.",
+        "loading": "Téléchargement du fichier... Vous pouvez maintenant taper votre question",
+        "success": "Fichiers téléchargés avec succès",
+        "error": "Échec du téléchargement"
     }
 }

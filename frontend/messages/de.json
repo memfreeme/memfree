@@ -61,5 +61,36 @@
         "title5": "Top Hacker News Geschichten erhalten",
         "title6": "Twitter-Fragen suchen und stellen",
         "title7": "Code erklären und schreiben"
+    },
+    "SearchBar": {
+        "index-button": "Indexieren",
+        "attach-button": "Anhängen",
+        "index-tip": "Webseiten und lokale Dateien indexieren",
+        "attach-tip": "Bild und Datei zum Fragen anhängen",
+        "search-tip": "Enter zum Senden, Shift + Enter zum Umbruch"
+    },
+    "IndexModal": {
+        "title": "Verbessern Sie Ihre Suchergebnisse mit AI-Indexierung",
+        "note": "Es dauert etwa einige Sekunden, um eine Webseite oder lokale Datei zu indexieren.",
+        "web-page": "Webseite",
+        "local-file": "Lokale Datei"
+    },
+    "IndexWeb": {
+        "placeholder": "Bitte geben Sie die URL der öffentlichen Webseiten ein, die Ihnen wichtig sind. Memfree ermöglicht es Ihnen, den Inhalt dieser Seiten mit AI zu durchsuchen.",
+        "index-button": "Webseite indexieren",
+        "index-extension": "Webseite mit Chrome- oder Edge-Erweiterung indexieren",
+        "extension-note": "Browsererweiterung für schnellere Indexierung und bessere Qualität"
+    },
+    "IndexLocal": {
+        "note": "Ziehen Sie Dateien hierher oder klicken Sie, um Dateien auszuwählen"
+    },
+    "Attach": {
+        "size-limit": "Die von Ihnen hochgeladene Datei überschreitet das maximale Limit von 4 MB. Bitte upgraden Sie Ihren Plan für größere Datei-Uploads.",
+        "number-limit-1": "Kostenlose Benutzer können nur eine Datei gleichzeitig hochladen, bitte upgraden Sie Ihren Plan",
+        "image-limit-5": "Es können nicht mehr als 5 lokale Bilddateien gleichzeitig hochgeladen werden. Wenn Sie dies benötigen, geben Sie uns bitte Feedback, wir werden es später unterstützen.",
+        "file-limit-1": "Es kann nicht mehr als 1 lokale Textdatei gleichzeitig hochgeladen werden. Wenn Sie dies benötigen, geben Sie uns bitte Feedback, wir werden es später unterstützen.",
+        "loading": "Datei wird hochgeladen... Sie können jetzt Ihre Frage eingeben",
+        "success": "Dateien erfolgreich hochgeladen",
+        "error": "Hochladen fehlgeschlagen"
     }
 }

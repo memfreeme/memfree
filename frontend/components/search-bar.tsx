@@ -1,6 +1,6 @@
 'use client';
 
-import React, { KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
+import React, { KeyboardEvent, useRef, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { SendHorizontal, FileTextIcon, Database, XIcon } from 'lucide-react';
 import { useIndexModal } from '@/hooks/use-index-modal';
@@ -17,6 +17,7 @@ import { useUploadFile } from '@/hooks/use-upload-file';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { getFileSizeLimit } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
+import { checkIsPro } from '@/lib/shared-utils';
 
 interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
@@ -34,11 +35,6 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const user = useUserStore((state) => state.user);
 
     const handleClick = () => {
-        if (content.trim() === '') {
-            toast.error('Please input your question!');
-            return;
-        }
-        console.log('uploadedFiles', uploadedFiles);
         if (uploadedFiles && uploadedFiles.length > 0) {
             const fileUrls = uploadedFiles.map((file) => file.url);
             handleSearch(content, fileUrls);
@@ -74,39 +70,41 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const attach = useTranslations('Attach');
+
     const onDrop = (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
         if (rejectedFiles.length > 0) {
             rejectedFiles.forEach(({ file }) => {
-                toast.error(`The file ${file.name} you uploaded exceeds the maximum limit of 4MB. Please upgrade your plan for larger file uploads.`);
+                toast.error(attach('size-limit'));
             });
             upgradeModal.onOpen();
             return;
         }
-        if (acceptedFiles.length > 5) {
-            toast.error('Cannot upload more than 5 local file at a time');
+        if (acceptedFiles.length > 1 && !checkIsPro(user)) {
+            toast.error(attach('number-limit-1'));
+            upgradeModal.onOpen();
             return;
         }
-
-        console.log('acceptedFiles', acceptedFiles);
+        if (acceptedFiles.length > 5) {
+            toast.error(attach('image-limit-5'));
+            return;
+        }
 
         const imageFiles = acceptedFiles.filter((file) => file.type.startsWith('image/'));
         const otherFiles = acceptedFiles.filter((file) => !file.type.startsWith('image/'));
 
-        console.log('Files:', files);
         const currentImageCount = files.filter((file) => file.type.startsWith('image/')).length;
         const currentOtherFileCount = files.filter((file) => !file.type.startsWith('image/')).length;
 
-        if (currentImageCount + imageFiles.length > 5) {
-            toast.error('Cannot upload more than 5 local images at a time, if you need it, please feedback to us, we will support it later');
-            return;
-        }
-
         if (currentOtherFileCount + otherFiles.length > 1) {
-            toast.error('Cannot upload more than 1 local text file at a time, if you need it, please feedback to us, we will support it later');
+            toast.error(attach('file-limit-1'));
             return;
         }
 
-        console.log('acceptedFiles', acceptedFiles);
+        if (currentImageCount + imageFiles.length > 5) {
+            toast.error(attach('image-limit-5'));
+            return;
+        }
 
         const newFiles = acceptedFiles.map(
             (file) =>
@@ -117,11 +115,11 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
 
         setFiles((prevFiles) => [...prevFiles, ...newFiles]);
         toast.promise(onUpload(acceptedFiles), {
-            loading: `Uploading file... You can type your question now`,
+            loading: attach('loading'),
             success: () => {
-                return `Uploaded successfully`;
+                return attach('success');
             },
-            error: `Failed to upload`,
+            error: attach('error'),
         });
     };
 
@@ -147,7 +145,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         dropzoneRef.current.click();
     };
 
-    const t = useTranslations('HomePage');
+    const t = useTranslations('SearchBar');
 
     const removeFile = (index: number) => {
         setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
@@ -194,7 +192,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                             <TooltipTrigger asChild>
                                 <button
                                     type="button"
-                                    aria-label="Index"
+                                    aria-label={t('index-tip')}
                                     className="text-gray-500 hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 flex items-center space-x-1"
                                     onClick={() => {
                                         if (!user) {
@@ -208,7 +206,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                     <span className="font-serif text-sm">{t('index-button')}</span>
                                 </button>
                             </TooltipTrigger>
-                            <TooltipContent>Index Web Pages and Local Files</TooltipContent>
+                            <TooltipContent>{t('index-tip')}</TooltipContent>
                         </Tooltip>
 
                         <Tooltip>
@@ -218,7 +216,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                     <button
                                         type="button"
                                         disabled={isUploading}
-                                        aria-label="Attach"
+                                        aria-label={t('attach-button')}
                                         className="text-gray-500 hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 flex items-center"
                                         onClick={() => {
                                             if (!user) {
@@ -239,7 +237,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                     </button>
                                 </div>
                             </TooltipTrigger>
-                            <TooltipContent>Attach Local Image and File</TooltipContent>
+                            <TooltipContent>{t('attach-tip')}</TooltipContent>
                         </Tooltip>
                     </div>
                     <div className="absolute right-0 bottom-0 mb-1 mr-2 mt-6">
@@ -247,16 +245,16 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                             <TooltipTrigger asChild>
                                 <button
                                     type="button"
-                                    aria-label="Search"
+                                    aria-label={t('search-tip')}
                                     disabled={content.trim() === '' || isUploading}
                                     className="text-gray-500 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                                     onClick={handleClick}
                                 >
-                                    <span className="sr-only">Search</span>
+                                    <span className="sr-only">{t('search-tip')}</span>
                                     <SendHorizontal size={24} strokeWidth={2} />
                                 </button>
                             </TooltipTrigger>
-                            <TooltipContent>Send (Enter)</TooltipContent>
+                            <TooltipContent>{t('search-tip')}</TooltipContent>
                         </Tooltip>
                     </div>
                 </div>

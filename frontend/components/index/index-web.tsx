@@ -10,6 +10,7 @@ import { useIndexModal } from '@/hooks/use-index-modal';
 import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export function IndexWebPage() {
     const [isLoading, setLoading] = useState(false);
@@ -33,10 +34,7 @@ export function IndexWebPage() {
             if (invalidUrls.length > 0) {
                 toast.success(
                     <div className="flex flex-col items-center">
-                        <div className="font-bold pb-2">
-                            Please enter valid URLs, they should start with
-                            http:// or https://
-                        </div>
+                        <div className="font-bold pb-2">Please enter valid URLs, they should start with http:// or https://</div>
                         <div className="font-bold pt-2">
                             Your invalid input: {}
                             {} {invalidUrls.join(', ')}
@@ -65,23 +63,14 @@ export function IndexWebPage() {
                 const { failedUrls } = res;
                 if (failedUrls.length === 0) {
                     setUrl('');
-                    toast.success(
-                        <div className="font-bold p-2">
-                            All URLs were successfully indexed!, you could try
-                            to search them now.
-                        </div>,
-                    );
+                    toast.success(<div className="font-bold p-2">All URLs were successfully indexed!, you could try to search them now.</div>);
                 } else {
                     setUrl(failedUrls.map((f) => f.url).join('\n'));
                     toast.success(
                         <div className="flex flex-col items-center">
-                            <div className="font-bold pb-2">
-                                Some URLs failed to index.
-                            </div>
+                            <div className="font-bold pb-2">Some URLs failed to index.</div>
                             <div>The following URLs failed:</div>
-                            <div className="font-bold pt-2">
-                                {failedUrls.map((f) => f.url).join(', ')}
-                            </div>
+                            <div className="font-bold pt-2">{failedUrls.map((f) => f.url).join(', ')}</div>
                             <div>You can try indexing them again.</div>
                         </div>,
                     );
@@ -90,9 +79,7 @@ export function IndexWebPage() {
                 const error = await resp.json();
                 toast.error(
                     <div className="flex flex-col items-center">
-                        <div className="font-bold pb-2">
-                            Indexing failed, please try again.
-                        </div>
+                        <div className="font-bold pb-2">Indexing failed, please try again.</div>
                         <div>{error.error}</div>
                     </div>,
                 );
@@ -103,27 +90,17 @@ export function IndexWebPage() {
             setLoading(false);
             indexModal.onClose();
             console.log('index failed: ', e);
-            toast.success(
-                'Indexing failed due to an unexpected error. please try again',
-            );
+            toast.success('Indexing failed due to an unexpected error. please try again');
         }
     };
 
+    const t = useTranslations('IndexWeb');
+
     return (
         <div className="flex flex-col w-full space-y-6 mt-4">
-            <Textarea
-                placeholder="Please enter the URL of the web pages you value. Memfree will let you search the content of these pages by AI."
-                rows={3}
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-            />
-            <LoadingButton
-                className="rounded-full"
-                loading={isLoading}
-                variant={'outline'}
-                onClick={handleIndex}
-            >
-                Index Web Page
+            <Textarea placeholder={t('placeholder')} rows={3} value={url} onChange={(e) => setUrl(e.target.value)} />
+            <LoadingButton className="rounded-full" loading={isLoading} variant={'outline'} onClick={handleIndex}>
+                {t('index-button')}
             </LoadingButton>
             <Link
                 href="/docs/extension-user-guide"
@@ -135,11 +112,9 @@ export function IndexWebPage() {
                     'w-full',
                 )}
             >
-                <span>Index Web Page By Chrome Extension</span>
+                <span> {t('index-extension')}</span>
             </Link>
-            <p className="text-center text-sm">
-                Chrome Extension for faster indexing and better quality
-            </p>
+            <p className="text-center text-sm">{t('extension-note')}</p>
         </div>
     );
 }
