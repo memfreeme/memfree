@@ -10,7 +10,7 @@ const AnswerSection = ({ content, sources }) => {
                 <BookKey className="text-primary size-22" />
                 <h3 className="py-2 text-lg text-primary font-bold">Answer</h3>
             </div>
-            <div className="prose dark:prose-dark w-full max-w-full">
+            <div className="prose dark:prose-dark w-full max-w-full" dir="auto">
                 <MyMarkdown content={content} sources={sources} />
             </div>
         </div>

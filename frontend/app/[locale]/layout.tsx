@@ -10,11 +10,7 @@ import { SidebarProvider } from '@/hooks/use-sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 import { NextIntlClientProvider } from 'next-intl';
-import {
-    getMessages,
-    getTranslations,
-    unstable_setRequestLocale,
-} from 'next-intl/server';
+import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 
 export function generateStaticParams() {
@@ -79,13 +75,7 @@ export async function generateMetadata({ params: { locale } }) {
     };
 }
 
-export default async function RootLayout({
-    children,
-    params: { locale },
-}: {
-    children: React.ReactNode;
-    params: { locale: string };
-}) {
+export default async function RootLayout({ children, params: { locale } }: { children: React.ReactNode; params: { locale: string } }) {
     unstable_setRequestLocale(locale);
     const messages = await getMessages();
     const isZh = locale == 'zh';
@@ -93,18 +83,9 @@ export default async function RootLayout({
     return (
         <html lang={locale} suppressHydrationWarning>
             <head />
-            <body
-                className={cn(
-                    `min-h-screen bg-background ${isZh ? 'font-serif' : 'font-sans'} antialiased`,
-                )}
-            >
+            <body className={cn(`min-h-screen bg-background ${isZh ? 'font-serif' : 'font-sans'} antialiased`)}>
                 <Toaster position="top-center" />
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
+                <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                     <SidebarProvider>
                         <TooltipProvider>
                             <NextIntlClientProvider messages={messages}>

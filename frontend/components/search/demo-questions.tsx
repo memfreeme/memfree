@@ -30,7 +30,7 @@ export function DemoQuestions() {
         },
     ];
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" dir="auto">
             {demoQuestions
                 .sort(() => Math.random() - 0.5)
                 .slice(0, 4)
