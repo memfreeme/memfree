@@ -55,9 +55,7 @@ export function getSearchEngine(options: SearchOptions): SearchSource {
         case SearchCategory.TWEET:
             return new SerperSearch({ domain: 'x.com' });
         case SearchCategory.ACADEMIC:
-            return new SearxngSearch({
-                engines: ['arxiv', 'google scholar', 'internetarchivescholar', 'pubmed'],
-            });
+            return new EXASearch({ categories: ['research paper'] });
         default:
             return new SearxngSearch(options);
     }
