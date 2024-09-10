@@ -19,21 +19,15 @@ You could refer to [One Click Deploy You Own Hybrid AI Search Engine](/docs/one-
 
 -   Install `flyctl` by following the instructions [here](https://fly.io/docs/flyctl/install/).
 
-### Clone MemFree Code From GitHub
+### Clone Embedding Code From GitHub
 
 ```js
-git clone https://github.com/memfreeme/memfree.git
+git clone https://github.com/memfreeme/fast-embedding.git
 ```
 
-### Deploy MemFree Vector Service
+### Deploy Embedding Service
 
 ```js
-cd embedding
-
-cp fly.example.toml fly.toml
-
-change the APP_NAME in fly.toml to your app name
-
 fly deploy
 
 fly secrets set API_TOKEN={your token}

@@ -70,7 +70,6 @@ MemFree is a Hybrid AI search engine that simultaneously performs searches on yo
 
 ### 3 One Command Deploy Backend with Fly.io
 
-- [One Command Deploy Searxng on Fly.io](https://www.memfree.me/docs/deploy-searxng-fly-io)
 - [One Command Deploy MemFree Vector on Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
 
 ## Self-Hosted Installation
@@ -91,14 +90,9 @@ Create a Redis compatible database in seconds: [Upstash Redis](https://upstash.c
 
 Get an OpenAI API Key: [OpenAI](https://platform.openai.com)
 
-#### Searxng Search
+#### Serper API Key
 
-<a href="https://zeabur.com/templates/CE71SC?referralCode=memfree"><img src="https://zeabur.com/button.svg" alt="Deploy on Zeabur"/></a>
-
-You could one click get the Searxng Search Service.
-
-- [MemFree One-Click Deployment guide](https://www.memfree.me/docs/one-click-deploy-ai-search)
-- [One Command Deploy Searxng on Fly.io](https://www.memfree.me/docs/deploy-searxng-fly-io)
+Get a Serper API Key: [Serper](https://serper.dev/api-key)
 
 ### Frontend
 
@@ -131,10 +125,6 @@ bun i
 
 bun run build
 ```
-
-## Set MemFree as your search engine
-
-[Set MemFree as your search engine](https://www.memfree.me/docs/search-engine)
 
 ## Contributing
 
