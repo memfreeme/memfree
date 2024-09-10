@@ -12,7 +12,6 @@ import { absoluteUrl, cn, formatDate } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { siteConfig } from '@/config';
 import { GitHubButton } from '@/components/shared/github-button';
-import { Newsletter } from '@/components/subscribe';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import { Locale, routing } from '@/i18n/routing';
 
@@ -168,7 +167,6 @@ export default async function PostPage({ params }: PostPageProps) {
                     See all posts
                 </Link>
             </div>
-            <Newsletter />
         </article>
     );
 }
