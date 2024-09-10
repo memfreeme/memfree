@@ -7,9 +7,7 @@ if (process.env.VECTOR_INDEX_HOST) {
 } else if (process.env.MEMFREE_HOST) {
     VECTOR_INDEX_HOST = `${process.env.MEMFREE_HOST}/vector`;
 } else {
-    throw new Error(
-        'Neither VECTOR_INDEX_HOST, VECTOR_HOST, nor MEMFREE_HOST is defined',
-    );
+    throw new Error('Neither VECTOR_INDEX_HOST, VECTOR_HOST, nor MEMFREE_HOST is defined');
 }
 
 const memfreeHost = process.env.MEMFREE_HOST;
@@ -19,16 +17,6 @@ if (process.env.VECTOR_HOST) {
     VECTOR_HOST = process.env.VECTOR_HOST;
 } else if (memfreeHost) {
     VECTOR_HOST = `${memfreeHost}/vector`;
-} else {
-    throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
-}
-
-export let SEARXNG_HOST = '';
-// Let open source users could one click deploy
-if (process.env.SEARXNG_HOST) {
-    SEARXNG_HOST = process.env.SEARXNG_HOST;
-} else if (process.env.MEMFREE_HOST) {
-    SEARXNG_HOST = process.env.MEMFREE_HOST;
 } else {
     throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
 }

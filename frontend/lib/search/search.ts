@@ -1,11 +1,9 @@
 import 'server-only';
 
-import { SearxngSearch } from '@/lib/search/searxng';
 import { SerperSearch } from '@/lib/search/serper';
 import { VectorSearch } from '@/lib/search/vector';
 import { ImageSource, SearchCategory, TextSource } from '@/lib/types';
 import { EXASearch } from '@/lib/search/exa';
-import { SEARXNG_HOST, SERPER_API_KEY } from '@/lib/env';
 
 export interface SearchOptions {
     categories?: string[];
@@ -37,14 +35,6 @@ export function getVectorSearch(userId: string, url?: string): SearchSource {
 }
 
 export function getSearchEngine(options: SearchOptions): SearchSource {
-    // Let open source user could start more easily
-    if (!SEARXNG_HOST) {
-        return new SerperSearch();
-    }
-    if (!SERPER_API_KEY) {
-        return new SearxngSearch();
-    }
-
     const categories = options.categories || [];
 
     switch (categories[0]) {
@@ -57,6 +47,6 @@ export function getSearchEngine(options: SearchOptions): SearchSource {
         case SearchCategory.ACADEMIC:
             return new EXASearch({ categories: ['research paper'] });
         default:
-            return new SearxngSearch(options);
+            return new SerperSearch(options);
     }
 }
