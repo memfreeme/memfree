@@ -15,7 +15,7 @@ import Image from 'next/image';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import { useUploadFile } from '@/hooks/use-upload-file';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
-import { getFileSizeLimit } from '@/lib/utils';
+import { getFileSizeLimit, processImageFiles } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { checkIsPro } from '@/lib/shared-utils';
 
@@ -72,7 +72,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
 
     const attach = useTranslations('Attach');
 
-    const onDrop = (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+    const onDrop = async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
         if (rejectedFiles.length > 0) {
             rejectedFiles.forEach(({ file }) => {
                 toast.error(attach('size-limit'));
@@ -106,7 +106,9 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
             return;
         }
 
-        const newFiles = acceptedFiles.map(
+        const processedImageFiles = await processImageFiles(acceptedFiles);
+
+        const newFiles = processedImageFiles.map(
             (file) =>
                 Object.assign(file, {
                     preview: URL.createObjectURL(file),
@@ -114,7 +116,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
         );
 
         setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-        toast.promise(onUpload(acceptedFiles), {
+        toast.promise(onUpload(processedImageFiles), {
             loading: attach('loading'),
             success: () => {
                 return attach('success');
@@ -128,7 +130,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const { getInputProps } = useDropzone({
         onDrop,
         accept: {
-            'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
+            'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.HEIC'],
             'application/pdf': ['.pdf'],
             'text/markdown': ['.md'],
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],

@@ -104,6 +104,10 @@ export async function removeSearch({ id, path }: { id: string; path: string }) {
 
     try {
         const uid = String(await redis.hget(SEARCH_KEY + id, 'userId'));
+        if (uid === null) {
+            console.warn('removeSearch, uid is null', id);
+            return;
+        }
         if (uid !== session?.user?.id) {
             return {
                 error: 'Unauthorized, you cannot remove this search',
