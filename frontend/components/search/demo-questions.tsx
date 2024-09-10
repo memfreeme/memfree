@@ -22,7 +22,7 @@ export function DemoQuestions() {
         },
         {
             title: t('title5'),
-            link: '/share/ltEmpsE',
+            link: '/share/yrj8rCs',
         },
         {
             title: t('title6'),
