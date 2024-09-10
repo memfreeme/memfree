@@ -15,23 +15,14 @@ const redis = new Redis({
 const SEARCH_KEY = 'search:';
 const USER_SEARCH_KEY = 'user:search:';
 
-export async function getSearches(
-    userId: string,
-    offset: number = 0,
-    limit: number = 20,
-) {
+export async function getSearches(userId: string, offset: number = 0, limit: number = 20) {
     console.log('getSearches all userId', userId, offset, limit);
 
     try {
         const pipeline = redis.pipeline();
-        const searches: string[] = await redis.zrange(
-            USER_SEARCH_KEY + userId,
-            offset,
-            offset + limit - 1,
-            {
-                rev: true,
-            },
-        );
+        const searches: string[] = await redis.zrange(USER_SEARCH_KEY + userId, offset, offset + limit - 1, {
+            rev: true,
+        });
 
         if (searches.length === 0) {
             return [];
@@ -57,11 +48,7 @@ export async function clearSearches() {
         }
         const userId = session.user.id;
 
-        const searches: string[] = await redis.zrange(
-            USER_SEARCH_KEY + userId,
-            0,
-            -1,
-        );
+        const searches: string[] = await redis.zrange(USER_SEARCH_KEY + userId, 0, -1);
         if (!searches.length) {
             return;
         }
@@ -111,7 +98,7 @@ export async function removeSearch({ id, path }: { id: string; path: string }) {
     const session = await auth();
     if (!session) {
         return {
-            error: 'Unauthorized',
+            error: 'Unauthorized, please retry',
         };
     }
 
@@ -119,7 +106,7 @@ export async function removeSearch({ id, path }: { id: string; path: string }) {
         const uid = String(await redis.hget(SEARCH_KEY + id, 'userId'));
         if (uid !== session?.user?.id) {
             return {
-                error: 'Unauthorized',
+                error: 'Unauthorized, you cannot remove this search',
             };
         }
         await redis.del(SEARCH_KEY + id);
@@ -196,10 +183,10 @@ export async function getSearch(id: string, userId: string) {
     console.log('getSearch userId', userId, id);
     try {
         const search = await redis.hgetall<Search>(SEARCH_KEY + id);
-        if (!search) {
+        if (!search || search.userId !== userId) {
             console.warn('getSearch, No search found:', id, userId);
+            return null;
         }
-        // console.log('getSearch userId', userId, id, search);
         return search;
     } catch (error) {
         console.error('Failed to get search:', error, id, userId);

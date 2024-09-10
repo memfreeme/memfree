@@ -1,9 +1,9 @@
 import 'server-only';
 
 import { SearchOptions, SearchResult, SearchSource } from '@/lib/search/search';
-import { ImageSource, SearchCategory, TextSource } from '@/lib/types';
+import { ImageSource, SearchCategory, TextSource, VideoSource } from '@/lib/types';
 import { logError } from '@/lib/log';
-import { fetchWithTimeout } from '@/lib/server-utils';
+import { extractYouTubeId, fetchWithTimeout } from '@/lib/server-utils';
 import { SERPER_API_KEY } from '@/lib/env';
 
 const serperUrl = 'https://google.serper.dev/';
@@ -16,6 +16,8 @@ function formatUrl(options: SearchOptions) {
                 return `${serperUrl}images`;
             case SearchCategory.NEWS:
                 return `${serperUrl}news`;
+            case SearchCategory.VIDEOS:
+                return `${serperUrl}videos`;
             default:
                 return `${serperUrl}search`;
         }
@@ -39,6 +41,7 @@ export class SerperSearch implements SearchSource {
 
         let texts: TextSource[] = [];
         let images: ImageSource[] = [];
+        let videos: VideoSource[] = [];
         let jsonResponse;
         try {
             const response = await fetchWithTimeout(url, {
@@ -90,6 +93,23 @@ export class SerperSearch implements SearchSource {
                 );
             }
 
+            if (jsonResponse.videos) {
+                videos = videos.concat(
+                    jsonResponse.videos
+                        .map((v: any) => {
+                            const videoId = extractYouTubeId(v.link);
+                            if (!videoId) {
+                                return null;
+                            }
+                            return {
+                                title: v.title,
+                                id: videoId,
+                            };
+                        })
+                        .filter((video): video is NonNullable<typeof video> => video !== null),
+                );
+            }
+
             if (jsonResponse.organic) {
                 texts = texts.concat(
                     jsonResponse.organic.map((c: any) => ({
@@ -109,10 +129,10 @@ export class SerperSearch implements SearchSource {
                     })),
                 );
             }
-            return { texts, images };
+            return { texts, images, videos };
         } catch (error) {
             logError(error, 'search-serper');
-            return { texts, images };
+            return { texts, images, videos };
         }
     }
 }

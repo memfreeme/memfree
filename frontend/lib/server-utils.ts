@@ -1,17 +1,14 @@
 import 'server-only';
 
 import { generateId } from 'ai';
-import { ImageSource, Message as StoreMessage, TextSource } from '@/lib/types';
+import { ImageSource, Message as StoreMessage, TextSource, VideoSource } from '@/lib/types';
 import { saveSearch } from '@/lib/store/search';
 
 interface FetchWithTimeoutOptions extends RequestInit {
     timeout?: number;
 }
 
-export const fetchWithTimeout = async (
-    resource: RequestInfo,
-    options: FetchWithTimeoutOptions = {},
-): Promise<Response> => {
+export const fetchWithTimeout = async (resource: RequestInfo, options: FetchWithTimeoutOptions = {}): Promise<Response> => {
     const { timeout = 10000 } = options;
 
     const controller = new AbortController();
@@ -27,6 +24,12 @@ export const fetchWithTimeout = async (
     }
 };
 
+export function extractYouTubeId(url: string): string {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : '';
+}
+
 export function containsValidUrl(text: string) {
     const urlPattern = /https?:\/\/[^\s/$.?#].[^\s]*/i;
     return urlPattern.test(text);
@@ -38,6 +41,7 @@ export async function saveMessages(
     answer: string,
     texts?: TextSource[],
     images?: ImageSource[],
+    videos?: VideoSource[],
     related?: string,
 ) {
     if (!userId) {
@@ -50,6 +54,7 @@ export async function saveMessages(
         content: answer,
         sources: texts,
         images: images,
+        videos: videos,
         related: related,
     });
 

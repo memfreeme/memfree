@@ -89,7 +89,7 @@ export async function indieMakerSearch(messages: StoreMessage[], isPro: boolean,
             console.error(`Failed to increment search count for user ${userId}:`, error);
         });
 
-        await saveMessages(userId, messages, fullAnswer, texts, images, fullRelated);
+        await saveMessages(userId, messages, fullAnswer, texts, images, [], fullRelated);
         onStream?.(null, true);
     } catch (error) {
         logError(error, 'indie-search');

@@ -14,7 +14,7 @@ import { directlyAnswer } from '@/lib/tools/answer';
 import { getTopStories } from '@/lib/tools/hacker-news';
 import { getRelatedQuestions } from '@/lib/tools/related';
 import { searchRelevantContent } from '@/lib/tools/search';
-import { ImageSource, Message as StoreMessage, SearchCategory, TextSource } from '@/lib/types';
+import { ImageSource, Message as StoreMessage, SearchCategory, TextSource, VideoSource } from '@/lib/types';
 import { CoreUserMessage, ImagePart, streamText, TextPart, tool } from 'ai';
 import util from 'util';
 import { z } from 'zod';
@@ -35,6 +35,7 @@ export async function autoAnswer(
 
         let texts: TextSource[] = [];
         let images: ImageSource[] = [];
+        let videos: VideoSource[] = [];
 
         let history = getHistory(isPro, messages);
         const system = util.format(AutoAnswerPrompt, profile, history);
@@ -135,6 +136,10 @@ export async function autoAnswer(
                 .search(query)
                 .then((results) => results.images.filter((img) => img.image.startsWith('https')));
 
+            const videoFetchPromise = getSearchEngine({
+                categories: [SearchCategory.VIDEOS],
+            }).search(query);
+
             fullAnswer = '';
             await streamResponse({ status: 'Answering ...', clear: true }, onStream);
             await directlyAnswer(isPro, source, history, profile, getLLM(model), rewriteQuery, texts, (msg) => {
@@ -142,13 +147,19 @@ export async function autoAnswer(
                 onStream?.(JSON.stringify({ answer: msg }));
             });
 
-            const fetchedImages = await imageFetchPromise;
-            images = [...images, ...fetchedImages];
-            await streamResponse({ images: images, status: 'Generating related questions ...' }, onStream);
+            await streamResponse({ status: 'Generating related questions ...' }, onStream);
             await getRelatedQuestions(query, texts, (msg) => {
                 fullRelated += msg;
                 onStream?.(JSON.stringify({ related: msg }));
             });
+
+            const fetchedImages = await imageFetchPromise;
+            images = [...images, ...fetchedImages];
+            await streamResponse({ images: images, status: 'Fetch related videos ...' }, onStream);
+
+            const fetchedVideos = await videoFetchPromise;
+            videos = fetchedVideos.videos;
+            await streamResponse({ videos: videos }, onStream);
         } else {
             await streamResponse({ status: 'Generating related questions ...' }, onStream);
             await getRelatedQuestions(query, texts, (msg) => {
@@ -161,7 +172,7 @@ export async function autoAnswer(
             console.error(`Failed to increment search count for user ${userId}:`, error);
         });
 
-        await saveMessages(userId, messages, fullAnswer, texts, images, fullRelated);
+        await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated);
         onStream?.(null, true);
     } catch (error) {
         logError(error, 'llm-openai');

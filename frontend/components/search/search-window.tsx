@@ -9,7 +9,7 @@ import { useSigninModal } from '@/hooks/use-signin-modal';
 import SearchBar from '@/components/search-bar';
 import { configStore, useProfileStore } from '@/lib/store';
 
-import { ImageSource, Message, TextSource, User } from '@/lib/types';
+import { ImageSource, Message, TextSource, User, VideoSource } from '@/lib/types';
 import { generateId } from 'ai';
 import { LoaderCircle } from 'lucide-react';
 import { useScrollAnchor } from '@/hooks/use-scroll-anchor';
@@ -99,7 +99,13 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
             let accumulatedRelated = '';
             let messageIndex: number | null = null;
 
-            const updateMessages = (parsedResult?: string, newSources?: TextSource[], newImages?: ImageSource[], newRelated?: string) => {
+            const updateMessages = (
+                parsedResult?: string,
+                newSources?: TextSource[],
+                newImages?: ImageSource[],
+                newRelated?: string,
+                newVideos?: VideoSource[],
+            ) => {
                 const activeSearch = useSearchStore.getState().activeSearch;
                 if (messageIndex === null || !activeSearch.messages[messageIndex]) {
                     messageIndex = activeSearch.messages.length;
@@ -112,6 +118,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                                 sources: newSources || [],
                                 images: newImages || [],
                                 related: newRelated || '',
+                                videos: newVideos || [],
                                 role: 'assistant',
                             },
                         ],
@@ -127,6 +134,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                                 content: parsedResult ? parsedResult.trim() : msg.content,
                                 sources: newSources || msg.sources,
                                 images: newImages || msg.images,
+                                videos: newVideos || msg.videos,
                                 related: newRelated || msg.related,
                             };
                         }
@@ -200,7 +208,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                         setIsLoading(false);
                     },
                     onmessage(msg) {
-                        const { clear, answer, status, sources, images, related } = JSON.parse(msg.data);
+                        const { clear, answer, status, sources, images, related, videos } = JSON.parse(msg.data);
                         if (clear) {
                             accumulatedMessage = '';
                             updateMessages(accumulatedMessage);
@@ -213,6 +221,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                             sources,
                             images,
                             related ? (accumulatedRelated += related) : undefined,
+                            videos,
                         );
                     },
                 });
@@ -222,7 +231,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                 toast.error('An error occurred while searching, please refresh your page and try again');
             }
         },
-        [input, isReadOnly, isLoading, signInModal, addSearch, updateActiveSearch, user?.id],
+        [input, isReadOnly, isLoading, signInModal, addSearch, updateActiveSearch, upgradeModal, user],
     );
 
     const sendSelectedQuestion = useCallback(

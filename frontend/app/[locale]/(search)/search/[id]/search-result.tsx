@@ -17,7 +17,6 @@ export default function SearchResult({ id, user }: SearchPageProps) {
 
     useEffect(() => {
         if (!search) {
-            console.error('fetching search:', id, searches.length);
             const fetchSearch = async () => {
                 const search = await getSearch(id, user.id);
                 if (search) {
@@ -28,11 +27,5 @@ export default function SearchResult({ id, user }: SearchPageProps) {
         }
     }, [id, user, search]);
 
-    return (
-        <SearchWindow
-            id={id}
-            initialMessages={search?.messages ?? []}
-            user={user}
-        ></SearchWindow>
-    );
+    return <SearchWindow id={id} initialMessages={search?.messages ?? []} user={user}></SearchWindow>;
 }

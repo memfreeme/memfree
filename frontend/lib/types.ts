@@ -30,6 +30,11 @@ export interface ImageSource {
     type?: string;
 }
 
+export interface VideoSource {
+    title: string;
+    id: string;
+}
+
 export type ServerActionResult<Result> = Promise<
     | Result
     | {
@@ -67,6 +72,7 @@ export type Message = {
     attachments?: string[];
     sources?: TextSource[];
     images?: ImageSource[];
+    videos?: VideoSource[];
     related?: string;
 };
 

@@ -1,5 +1,5 @@
 import SourceBubble from '@/components/search/source-bubble';
-import { FileTextIcon, Images, ListPlusIcon, PlusIcon, TextSearchIcon } from 'lucide-react';
+import { FileTextIcon, Film, Images, ListPlusIcon, PlusIcon, TextSearchIcon, Youtube } from 'lucide-react';
 import ImageGallery from '@/components/search/image-gallery';
 import { Message } from '@/lib/types';
 
@@ -8,6 +8,8 @@ import AnswerSection from '@/components/search/answer-section';
 import QuestionSection from '@/components/search/question-section';
 import ActionButtons from '@/components/search/action-buttons';
 import { extractAllImageUrls } from '@/lib/shared-utils';
+import VideoGallery from '@/components/search/video-gallery';
+import ExpandableSection from '@/components/search/expandable-section';
 
 const SearchMessageBubble = memo(
     (props: { searchId: string; message: Message; onSelect: (question: string) => void; reload: (msgId: string) => void; isLoading: boolean }) => {
@@ -20,6 +22,7 @@ const SearchMessageBubble = memo(
         const message = props.message;
         const sources = message.sources ?? [];
         const images = message.images ?? [];
+        const videos = message.videos ?? [];
         const searchId = props.searchId;
 
         const attachments = useMemo(() => {
@@ -37,30 +40,28 @@ const SearchMessageBubble = memo(
             <div className="flex flex-col w-full items-start space-y-6 pb-10">
                 {!isUser && content && <AnswerSection content={content} sources={sources} />}
                 {(images.length > 0 || !isLoading) && !isUser && <ActionButtons content={content} searchId={searchId} msgId={id} reload={reload} />}
-                {!isUser && sources.length > 0 && (
-                    <div className="flex w-full flex-col items-start space-y-2.5 py-4">
-                        <div className="flex items-center space-x-2">
-                            <TextSearchIcon className="text-primary size-22"></TextSearchIcon>
-                            <h3 className="text-lg font-bold text-primary">Sources</h3>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-full overflow-auto ">
+                {sources.length > 0 && (
+                    <ExpandableSection title="Sources" icon={TextSearchIcon}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {sources.map((source, index) => (
                                 <div key={index}>
                                     <SourceBubble source={source} onSelect={onSelect} />
                                 </div>
                             ))}
                         </div>
-                    </div>
+                    </ExpandableSection>
                 )}
 
                 {images.length > 0 && (
-                    <div className="flex w-full flex-col items-start space-y-2.5 py-4">
-                        <div className="flex items-center space-x-2">
-                            <Images className="text-primary size-22"></Images>
-                            <h3 className="py-2 text-lg font-bold text-primary">Images</h3>
-                        </div>
+                    <ExpandableSection title="Images" icon={Images}>
                         <ImageGallery initialImages={images}></ImageGallery>
-                    </div>
+                    </ExpandableSection>
+                )}
+
+                {videos.length > 0 && (
+                    <ExpandableSection title="Videos" icon={Film}>
+                        <VideoGallery videos={videos} />
+                    </ExpandableSection>
                 )}
 
                 {related && (

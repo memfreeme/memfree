@@ -16,27 +16,17 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { LoaderCircle, Share2, Trash2 } from 'lucide-react';
 import { SearchShareDialog } from '@/components/search/search-share-dialog';
 import { useSearchStore } from '@/lib/store/local-history';
 
 interface SidebarActionsProps {
     search: Search;
-    removeSearch: (args: {
-        id: string;
-        path: string;
-    }) => ServerActionResult<void>;
+    removeSearch: (args: { id: string; path: string }) => ServerActionResult<void>;
 }
 
-export function SidebarActions({
-    search: search,
-    removeSearch: removeSearch,
-}: SidebarActionsProps) {
+export function SidebarActions({ search: search, removeSearch: removeSearch }: SidebarActionsProps) {
     const router = useRouter();
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
     const [shareDialogOpen, setShareDialogOpen] = React.useState(false);
@@ -47,11 +37,7 @@ export function SidebarActions({
             <div>
                 <Tooltip>
                     <TooltipTrigger asChild>
-                        <Button
-                            variant="ghost"
-                            className="leading-none p-2 h-auto hover:bg-background"
-                            onClick={() => setShareDialogOpen(true)}
-                        >
+                        <Button variant="ghost" className="leading-none p-2 h-auto hover:bg-background" onClick={() => setShareDialogOpen(true)}>
                             <Share2 className="size-4" />
                             <span className="sr-only">Share</span>
                         </Button>
@@ -73,30 +59,15 @@ export function SidebarActions({
                     <TooltipContent>Delete It</TooltipContent>
                 </Tooltip>
             </div>
-            <SearchShareDialog
-                search={search}
-                open={shareDialogOpen}
-                onOpenChange={setShareDialogOpen}
-                onCopy={() => setShareDialogOpen(false)}
-            />
-            <AlertDialog
-                open={deleteDialogOpen}
-                onOpenChange={setDeleteDialogOpen}
-            >
+            <SearchShareDialog search={search} open={shareDialogOpen} onOpenChange={setShareDialogOpen} onCopy={() => setShareDialogOpen(false)} />
+            <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>
-                            Are you absolutely sure?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                            This will permanently delete your search message and
-                            remove your data from our servers.
-                        </AlertDialogDescription>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>This will permanently delete your search message and remove your data from our servers.</AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel disabled={isRemovePending}>
-                            Cancel
-                        </AlertDialogCancel>
+                        <AlertDialogCancel disabled={isRemovePending}>Cancel</AlertDialogCancel>
                         <AlertDialogAction
                             disabled={isRemovePending}
                             onClick={(event) => {
@@ -115,15 +86,12 @@ export function SidebarActions({
                                     }
 
                                     setDeleteDialogOpen(false);
-                                    // router.refresh();
                                     router.push('/');
                                     toast.success('Search deleted');
                                 });
                             }}
                         >
-                            {isRemovePending && (
-                                <LoaderCircle className="mr-2 animate-spin" />
-                            )}
+                            {isRemovePending && <LoaderCircle className="mr-2 animate-spin" />}
                             Delete
                         </AlertDialogAction>
                     </AlertDialogFooter>

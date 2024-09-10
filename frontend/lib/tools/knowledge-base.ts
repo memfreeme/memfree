@@ -52,7 +52,7 @@ export async function knowledgeBaseSearch(messages: StoreMessage[], isPro: boole
             console.error(`Failed to increment search count for user ${userId}:`, error);
         });
 
-        await saveMessages(userId, messages, fullAnswer, texts, [], '');
+        await saveMessages(userId, messages, fullAnswer, texts, [], [], '');
         onStream?.(null, true);
     } catch (error) {
         logError(error, 'knowledge-base-search');

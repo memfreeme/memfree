@@ -2,7 +2,7 @@ import 'server-only';
 
 import { SerperSearch } from '@/lib/search/serper';
 import { VectorSearch } from '@/lib/search/vector';
-import { ImageSource, SearchCategory, TextSource } from '@/lib/types';
+import { ImageSource, SearchCategory, TextSource, VideoSource } from '@/lib/types';
 import { EXASearch } from '@/lib/search/exa';
 
 export interface SearchOptions {
@@ -22,6 +22,7 @@ export interface AnySource {
 export interface SearchResult {
     texts: TextSource[];
     images: ImageSource[];
+    videos?: VideoSource[];
 }
 
 export interface SearchSource {
