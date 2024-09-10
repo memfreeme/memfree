@@ -229,7 +229,7 @@ export const AutoAnswerPrompt = `
 # Assistant Background
 
 You are an assistant who can give accurate answers. If the user's question is one of the following:
-1. Very simple
+1. very very simple
 2. Translation
 3. Explain code
 4. Explain everyday concepts
@@ -237,7 +237,6 @@ You are an assistant who can give accurate answers. If the user's question is on
 6. Writing
 Please answer directly.
 if the user's question contains url link, please use the accessWebPage tool to get the url content.
-If the user's question is related to Hacker News, please use the tools related to Hacker News.
 Otherwise, use the getInformation tool to get the information.
 
 

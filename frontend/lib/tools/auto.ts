@@ -149,6 +149,12 @@ export async function autoAnswer(
                 fullRelated += msg;
                 onStream?.(JSON.stringify({ related: msg }));
             });
+        } else {
+            await streamResponse({ status: 'Generating related questions ...' }, onStream);
+            await getRelatedQuestions(query, texts, (msg) => {
+                fullRelated += msg;
+                onStream?.(JSON.stringify({ related: msg }));
+            });
         }
 
         incSearchCount(userId).catch((error) => {

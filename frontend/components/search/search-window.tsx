@@ -14,7 +14,7 @@ import { generateId } from 'ai';
 import { LoaderCircle } from 'lucide-react';
 import { useScrollAnchor } from '@/hooks/use-scroll-anchor';
 import { toast } from 'sonner';
-import { checkIsPro, extractAllImageUrls, replaceImageUrl } from '@/lib/shared-utils';
+import { checkIsPro, extractAllImageUrls } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useSearchStore } from '@/lib/store/local-history';
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
@@ -37,7 +37,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
 
     const { addSearch, activeId, activeSearch, setActiveSearch, updateActiveSearch } = useSearchStore();
 
-    const { messagesRef, scrollRef, visibilityRef, isVisible, scrollToBottom } = useScrollAnchor();
+    const { scrollRef, visibilityRef, isVisible, scrollToBottom } = useScrollAnchor();
 
     useEffect(() => {
         const searchId = searchParams.get('id');
@@ -84,7 +84,6 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
             let messageValue = question ?? input;
             if (messageValue === '') return;
             const imageUrls = extractAllImageUrls(messageValue);
-            console.log('imageUrls', imageUrls);
             if (imageUrls.length > 5) {
                 toast.error(
                     'You can only attach up to 5 images per message, if you need to attach more images, please give us feedback, we could support it later.',
@@ -258,10 +257,13 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                 messages: updatedMessages,
             });
             if (previousMessage) {
+                setTimeout(() => {
+                    scrollToBottom();
+                }, 500);
                 await sendMessage(previousMessage.content, null, msgId);
             }
         },
-        [sendMessage, updateActiveSearch],
+        [sendMessage, updateActiveSearch, scrollToBottom],
     );
 
     const stableHandleSearch = useCallback(
@@ -291,7 +293,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                 )}
             </div>
             {isLoading && (
-                <div className="my-6 w-1/2 mx-auto flex justify-center items-center text-md text-violet-800 dark:text-violet-200" ref={messagesRef}>
+                <div className="my-6 w-1/2 mx-auto flex justify-center items-center text-md text-violet-800 dark:text-violet-200">
                     <LoaderCircle className="size-5 mr-2 animate-spin" />
                     <div>{status}</div>
                 </div>

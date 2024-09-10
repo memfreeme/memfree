@@ -49,11 +49,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = memo(({ initialImages }) => {
                     target="_blank"
                     className={`aspect-video size-full overflow-hidden hover:scale-110 duration-150 rounded-lg transition-all ${image.type === 'vector' ? 'border-2 border-purple-500 border-solid' : ''}`}
                 >
-                    <img
-                        src={image.image}
-                        alt={image.title}
-                        className="size-full object-cover max-h-[80vh]"
-                    />
+                    <img src={image.image} alt={image.title} className="size-full object-cover max-h-[80vh]" loading="lazy" />
                 </a>
             ))}
         </div>
