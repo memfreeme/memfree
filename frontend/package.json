@@ -47,6 +47,8 @@
     "google-auth-library": "^9.4.1",
     "heic2any": "^0.0.4",
     "lucide-react": "^0.377.0",
+    "markmap-lib": "^0.17.0",
+    "markmap-view": "^0.17.0",
     "next": "^14.0.2",
     "next-auth": "^5.0.0-beta.17",
     "next-contentlayer2": "^0.4.6",

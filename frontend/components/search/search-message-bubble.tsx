@@ -1,5 +1,5 @@
 import SourceBubble from '@/components/search/source-bubble';
-import { FileTextIcon, Film, Images, ListPlusIcon, PlusIcon, TextSearchIcon, Youtube } from 'lucide-react';
+import { FileTextIcon, Film, Images, ListPlusIcon, PlusIcon, TextSearchIcon, Map } from 'lucide-react';
 import ImageGallery from '@/components/search/image-gallery';
 import { Message } from '@/lib/types';
 
@@ -10,6 +10,7 @@ import ActionButtons from '@/components/search/action-buttons';
 import { extractAllImageUrls } from '@/lib/shared-utils';
 import VideoGallery from '@/components/search/video-gallery';
 import ExpandableSection from '@/components/search/expandable-section';
+import MindMap from '@/components/search/mindmap';
 
 const SearchMessageBubble = memo(
     (props: { searchId: string; message: Message; onSelect: (question: string) => void; reload: (msgId: string) => void; isLoading: boolean }) => {
@@ -40,6 +41,11 @@ const SearchMessageBubble = memo(
             <div className="flex flex-col w-full items-start space-y-6 pb-10">
                 {!isUser && content && <AnswerSection content={content} sources={sources} />}
                 {(images.length > 0 || !isLoading) && !isUser && <ActionButtons content={content} searchId={searchId} msgId={id} reload={reload} />}
+                {!isUser && content && !isLoading && (
+                    <ExpandableSection title="MindMap" icon={Map} open={false}>
+                        <MindMap value={content} />
+                    </ExpandableSection>
+                )}
                 {sources.length > 0 && (
                     <ExpandableSection title="Sources" icon={TextSearchIcon}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
