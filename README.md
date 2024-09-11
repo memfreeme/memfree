@@ -29,17 +29,47 @@
 
 <br/>
 
-## Introduction
+## What's the MemFree
 
-MemFree is a Hybrid AI search engine that simultaneously performs searches on your personal knowledge base (such as bookmarks, notes, documents, etc.) and the Internet.
+MemFree is a <b>Hybrid AI Search Engine</b>.
 
-## Highlights
+With MemFree, you can instantly get Accurate Answers from your knowledge base and the whole internet.
 
-- Hybrid AI Search Engine: Combines Knowledge Base and Internet Search
+## What can you do with MemFree
+
+- Search and ask questions with **text, images, files, and web pages**.
+- Get search results for **text, mind maps, images, and videos** with one click
+- Compare, summarize and search **multiple images**.
+- Summarize web pages and PDFs, and ask questions about their content
+- Ask Twitter and Academic Questions
+- Explain and generate code efficiently
+- Perform most tasks available in ChatGPT Plus, Claude Pro, and Gemini Advanced.
+
+## What value does MemFree bring to you
+
+- **Streamlined Knowledge Management**: No need to manually organize your knowledge base (notes, bookmarks and documents). When you need information or answers, just search in memfree with one click, freeing up your memory capacity and improving your productivity.
+- **Time-Saving Efficiency**: No need to click on multiple web pages one by one in the Google search results. Memfree uses AI to immediately summarize the best answers from multiple web pages and your knowledge base, saving you a lot of time every day.
+- **Cost-Effective Solution**: No need to subscribe to multiple AI tools such as ChatGPT Plus, Claude Pro, and Gemini Advanced, which will significantly reduce your monthly subscription fees
+
+## MemFree Feature List
+
+- Multi AI Models: ChatGPT, Claude, Gemini
+
+- Milti Search Engines: Google, Exa, Vector
+
+- Multi Local file formats: Txt, PDF, Docx, PPTX, Markdown
+
+- Save search history and search results and multi devices sync
+
+- Multi languages support: English, Chinese, German, French, Spanish, Japanese and Arabic
+
 - One-Click Chrome Bookmarks Sync and Indexing
-- Support Image-Based Search
-- Integrates Multiple Search Engines as Sources
-- Support multiple AI Models
+
+- Share your search results
+
+- Context-based continuous search
+
+- Automatically decide whether to search the Internet
 - Self-Hosted, Super-Fast Serverless Vector Database
 - Full Code Open Source
 - One-Click Deployment

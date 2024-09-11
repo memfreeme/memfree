@@ -29,7 +29,7 @@ export function SimpleSiteFooter() {
                         </Link>
                     </li>
                     <li className="mx-2">
-                        <Link href="/docs/memfree-user-guide" target="_blank" aria-label="MemFree Browser Extension">
+                        <Link href="/docs" target="_blank" aria-label="MemFree Browser Extension">
                             <BookText className="size-5 hover:text-primary" />
                         </Link>
                     </li>
