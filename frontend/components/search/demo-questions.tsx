@@ -20,10 +20,10 @@ export function DemoQuestions() {
             title: t('title4'),
             link: '/share/WreYuQn',
         },
-        // {
-        //     title: t('title5'),
-        //     link: '/share/yrj8rCs',
-        // },
+        {
+            title: t('title5'),
+            link: '/share/WkKsbm8',
+        },
         {
             title: t('title6'),
             link: '/share/lXNTOIT',
@@ -38,7 +38,7 @@ export function DemoQuestions() {
             {demoQuestions
                 .sort(() => Math.random() - 0.5)
                 .slice(0, 4)
-                .map((example, index) => (
+                .map((example) => (
                     <Link key={example.link} href={example.link} target="_blank">
                         <div className={`cursor-pointer rounded-lg border bg-white p-4 hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900`}>
                             <div className="text-sm font-semibold">{example.title}</div>
