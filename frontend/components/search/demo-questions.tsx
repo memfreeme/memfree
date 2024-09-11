@@ -20,10 +20,10 @@ export function DemoQuestions() {
             title: t('title4'),
             link: '/share/WreYuQn',
         },
-        {
-            title: t('title5'),
-            link: '/share/yrj8rCs',
-        },
+        // {
+        //     title: t('title5'),
+        //     link: '/share/yrj8rCs',
+        // },
         {
             title: t('title6'),
             link: '/share/lXNTOIT',

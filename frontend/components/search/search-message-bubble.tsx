@@ -13,18 +13,26 @@ import ExpandableSection from '@/components/search/expandable-section';
 import MindMap from '@/components/search/mindmap';
 
 const SearchMessageBubble = memo(
-    (props: { searchId: string; message: Message; onSelect: (question: string) => void; reload: (msgId: string) => void; isLoading: boolean }) => {
-        let { id, role, content, related } = props.message;
-        const onSelect = props.onSelect;
-        const reload = props.reload;
-        const isLoading = props.isLoading;
+    (props: {
+        searchId: string;
+        message: Message;
+        onSelect: (question: string) => void;
+        reload: (msgId: string) => void;
+        isLoading: boolean;
+        isReadOnly: boolean;
+    }) => {
+        const {
+            message: { id, role, content, related, sources = [], images = [], videos = [] },
+            onSelect,
+            reload,
+            isLoading,
+            isReadOnly,
+            searchId,
+        } = props;
+
         const isUser = role === 'user';
 
         const message = props.message;
-        const sources = message.sources ?? [];
-        const images = message.images ?? [];
-        const videos = message.videos ?? [];
-        const searchId = props.searchId;
 
         const attachments = useMemo(() => {
             let initialAttachments = message.attachments ?? [];
@@ -42,7 +50,7 @@ const SearchMessageBubble = memo(
                 {!isUser && content && <AnswerSection content={content} sources={sources} />}
                 {(images.length > 0 || !isLoading) && !isUser && <ActionButtons content={content} searchId={searchId} msgId={id} reload={reload} />}
                 {!isUser && content && !isLoading && (
-                    <ExpandableSection title="MindMap" icon={Map} open={false}>
+                    <ExpandableSection title="MindMap" icon={Map} open={isReadOnly}>
                         <MindMap value={content} />
                     </ExpandableSection>
                 )}

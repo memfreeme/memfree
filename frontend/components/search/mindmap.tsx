@@ -36,7 +36,7 @@ export default function MindMap({ value }) {
         const updateMarkmap = async () => {
             try {
                 if (!transformer) {
-                    const markmapModule = await import('./markmap');
+                    const markmapModule = await import('@/lib/markmap');
                     transformer = markmapModule.transformer;
                 }
                 const { root } = transformer.transform(value);

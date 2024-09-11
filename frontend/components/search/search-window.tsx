@@ -287,7 +287,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
         <div className="group overflow-auto mx-auto w-full md:w-5/6  px-4 md:px-0 flex flex-col my-2" ref={scrollRef}>
             <div className="flex flex-col w-full">
                 {messages.length > 0 ? (
-                    [...messages].map((m, index) => (
+                    [...messages].map((m) => (
                         <SearchMessageBubble
                             key={m.id}
                             searchId={id}
@@ -295,6 +295,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                             onSelect={sendSelectedQuestion}
                             reload={reload}
                             isLoading={isLoading}
+                            isReadOnly={isReadOnly}
                         ></SearchMessageBubble>
                     ))
                 ) : (
