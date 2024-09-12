@@ -46,6 +46,7 @@
     "exa-js": "^1.0.14",
     "google-auth-library": "^9.4.1",
     "heic2any": "^0.0.4",
+    "html2canvas": "^1.4.1",
     "lucide-react": "^0.377.0",
     "markmap-lib": "^0.17.0",
     "markmap-view": "^0.17.0",
