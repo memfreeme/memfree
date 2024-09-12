@@ -7,13 +7,11 @@ const site_url = 'https://www.memfree.me';
 
 export const siteConfig: SiteConfig = {
     name: 'MemFree',
-    footerDesc:
-        'Hybrid AI Search Engine: Get the Answers You Really Need, Instantly',
+    footerDesc: 'Hybrid AI Search Engine: Get the Answers You Really Need, Instantly',
     url: site_url,
-    ogImage: `${site_url}/og.png`,
+    ogImage: `${site_url}/memfree.png`,
     links: {
-        twitter:
-            'https://twitter.com/intent/user?&region=follow&screen_name=ahaapple2023',
+        twitter: 'https://twitter.com/intent/user?&region=follow&screen_name=ahaapple2023',
         github: 'https://github.com/memfreeme/memfree',
         discord: 'https://discord.gg/7QqyMSTaRq',
     },
@@ -88,8 +86,7 @@ export const docsConfig: DocsConfig = {
 export const pricingData: SubscriptionPlan[] = [
     {
         title: 'Free',
-        description:
-            'Upgrade to Pro, Unlock Advanced Features and Get Better Answers.',
+        description: 'Upgrade to Pro, Unlock Advanced Features and Get Better Answers.',
         benefits: [
             'Up to 10 Basic AI Searches per day',
             'Up to 10 bookmarks and web pages to index',
