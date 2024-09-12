@@ -90,5 +90,25 @@
         "loading": "Uploading file... You can type your question now",
         "success": "Files uploaded successfully",
         "error": "Failed to upload"
+    },
+    "Source": {
+        "Hybrid": "Hybrid",
+        "Knowledge": "Knowledge Base",
+        "Academic": "Academic",
+        "Twitter": "Twitter"
+    },
+    "SearchMessage": {
+        "Answer": "Answer",
+        "Sources": "Sources",
+        "Images": "Images",
+        "Videos": "Videos",
+        "MindMap": "MindMap",
+        "Related": "Related"
+    },
+    "ActionButtons": {
+        "Copy": "Copy Answer",
+        "Reload": "Reload",
+        "Feedback": "Feedback",
+        "Share": "Share"
     }
 }

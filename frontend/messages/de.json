@@ -92,5 +92,25 @@
         "loading": "Datei wird hochgeladen... Sie können jetzt Ihre Frage eingeben",
         "success": "Dateien erfolgreich hochgeladen",
         "error": "Hochladen fehlgeschlagen"
+    },
+    "Source": {
+        "Hybrid": "Hybrid",
+        "Knowledge": "Wissensdatenbank",
+        "Academic": "Akademisch",
+        "Twitter": "Twitter"
+    },
+    "SearchMessage": {
+        "Answer": "Antwort",
+        "Sources": "Quellen",
+        "Images": "Bilder",
+        "Videos": "Videos",
+        "MindMap": "Mindmap",
+        "Related": "Verwandt"
+    },
+    "ActionButtons": {
+        "Copy": "Antwort kopieren",
+        "Reload": "Neu laden",
+        "Feedback": "Feedback",
+        "Share": "Teilen"
     }
 }

@@ -92,5 +92,25 @@
         "loading": "ファイルをアップロード中... 今すぐ質問を入力できます",
         "success": "ファイルが正常にアップロードされました",
         "error": "アップロードに失敗しました"
+    },
+    "Source": {
+        "Hybrid": "ハイブリッド",
+        "Knowledge": "ナレッジベース",
+        "Academic": "アカデミック",
+        "Twitter": "ツイッター"
+    },
+    "SearchMessage": {
+        "Answer": "回答",
+        "Sources": "ソース",
+        "Images": "画像",
+        "Videos": "ビデオ",
+        "MindMap": "マインドマップ",
+        "Related": "関連"
+    },
+    "ActionButtons": {
+        "Copy": "回答をコピー",
+        "Reload": "リロード",
+        "Feedback": "フィードバック",
+        "Share": "共有"
     }
 }

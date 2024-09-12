@@ -92,5 +92,25 @@
         "loading": "Subiendo archivo... Puede escribir su pregunta ahora",
         "success": "Archivos subidos con éxito",
         "error": "Error al subir"
+    },
+    "Source": {
+        "Hybrid": "Híbrido",
+        "Knowledge": "Base de Conocimiento",
+        "Academic": "Académico",
+        "Twitter": "Twitter"
+    },
+    "SearchMessage": {
+        "Answer": "Respuesta",
+        "Sources": "Fuentes",
+        "Images": "Imágenes",
+        "Videos": "Videos",
+        "MindMap": "Mapa Mental",
+        "Related": "Relacionado"
+    },
+    "ActionButtons": {
+        "Copy": "Copiar Respuesta",
+        "Reload": "Recargar",
+        "Feedback": "Retroalimentación",
+        "Share": "Compartir"
     }
 }

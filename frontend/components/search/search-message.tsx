@@ -11,8 +11,9 @@ import { extractAllImageUrls } from '@/lib/shared-utils';
 import VideoGallery from '@/components/search/video-gallery';
 import ExpandableSection from '@/components/search/expandable-section';
 import MindMap from '@/components/search/mindmap';
+import { useTranslations } from 'next-intl';
 
-const SearchMessageBubble = memo(
+const SearchMessage = memo(
     (props: {
         searchId: string;
         message: Message;
@@ -45,17 +46,19 @@ const SearchMessageBubble = memo(
             return initialAttachments;
         }, [message.attachments, isUser, content]);
 
+        const t = useTranslations('SearchMessage');
+
         return (
             <div className="flex flex-col w-full items-start space-y-6 pb-10">
-                {!isUser && content && <AnswerSection content={content} sources={sources} />}
+                {!isUser && content && <AnswerSection title={t('Answer')} content={content} sources={sources} />}
                 {(images.length > 0 || !isLoading) && !isUser && <ActionButtons content={content} searchId={searchId} msgId={id} reload={reload} />}
                 {!isUser && content && !isLoading && (
-                    <ExpandableSection title="MindMap" icon={Map} open={isReadOnly}>
+                    <ExpandableSection title={t('MindMap')} icon={Map} open={isReadOnly}>
                         <MindMap value={content} />
                     </ExpandableSection>
                 )}
                 {sources.length > 0 && (
-                    <ExpandableSection title="Sources" icon={TextSearchIcon}>
+                    <ExpandableSection title={t('Sources')} icon={TextSearchIcon}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {sources.map((source, index) => (
                                 <div key={index}>
@@ -67,13 +70,13 @@ const SearchMessageBubble = memo(
                 )}
 
                 {images.length > 0 && (
-                    <ExpandableSection title="Images" icon={Images}>
+                    <ExpandableSection title={t('Images')} icon={Images}>
                         <ImageGallery initialImages={images}></ImageGallery>
                     </ExpandableSection>
                 )}
 
                 {videos.length > 0 && (
-                    <ExpandableSection title="Videos" icon={Film}>
+                    <ExpandableSection title={t('Videos')} icon={Film}>
                         <VideoGallery videos={videos} />
                     </ExpandableSection>
                 )}
@@ -82,7 +85,7 @@ const SearchMessageBubble = memo(
                     <div className="flex w-full flex-col items-start space-y-2.5">
                         <div className="flex items-center space-x-2">
                             <ListPlusIcon className="text-primary size-22"></ListPlusIcon>
-                            <h3 className="py-2 text-lg font-bold text-primary">Related</h3>
+                            <h3 className="py-2 text-lg font-bold text-primary">{t('Related')}</h3>
                         </div>
                         <div className="w-full divide-y border-t mt-2">
                             {related.split('\n').map((reletedQ, index) => (
@@ -90,6 +93,7 @@ const SearchMessageBubble = memo(
                                     key={`question-${index}`}
                                     className="flex cursor-pointer items-center py-2 justify-between hover:scale-110 hover:text-primary duration-300"
                                     onClick={() => onSelect(reletedQ)}
+                                    dir="auto"
                                 >
                                     <span>{reletedQ.toLowerCase()}</span>
                                     <PlusIcon className="text-tint mr-2" size={20} />
@@ -132,5 +136,5 @@ const SearchMessageBubble = memo(
     },
 );
 
-SearchMessageBubble.displayName = 'SearchMessageBubble';
-export default SearchMessageBubble;
+SearchMessage.displayName = 'SearchMessage';
+export default SearchMessage;

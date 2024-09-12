@@ -90,5 +90,25 @@
         "loading": "جارٍ تحميل الملف... يمكنك كتابة سؤالك الآن",
         "success": "تم تحميل الملفات بنجاح",
         "error": "فشل التحميل"
+    },
+    "Source": {
+        "Hybrid": "هجين",
+        "Knowledge": "قاعدة المعرفة",
+        "Academic": "أكاديمي",
+        "Twitter": "تويتر"
+    },
+    "SearchMessage": {
+        "Answer": "إجابة",
+        "Sources": "مصادر",
+        "Images": "صور",
+        "Videos": "فيديوهات",
+        "MindMap": "خريطة ذهنية",
+        "Related": "ذات صلة"
+    },
+    "ActionButtons": {
+        "Copy": "نسخ الإجابة",
+        "Reload": "إعادة تحميل",
+        "Feedback": "ملاحظات",
+        "Share": "مشاركة"
     }
 }

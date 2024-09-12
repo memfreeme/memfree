@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import SearchMessageBubble from '@/components/search/search-message-bubble';
+import SearchMessage from '@/components/search/search-message';
 
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useSearchParams } from 'next/navigation';
@@ -288,7 +288,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
             <div className="flex flex-col w-full">
                 {messages.length > 0 ? (
                     [...messages].map((m) => (
-                        <SearchMessageBubble
+                        <SearchMessage
                             key={m.id}
                             searchId={id}
                             message={{ ...m }}
@@ -296,7 +296,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                             reload={reload}
                             isLoading={isLoading}
                             isReadOnly={isReadOnly}
-                        ></SearchMessageBubble>
+                        ></SearchMessage>
                     ))
                 ) : (
                     <></>

@@ -34,7 +34,9 @@ const SourceBubble = ({ source, onSelect }) => {
                         <img src={faviconUrl} alt={`${site} favicon`} className="size-4 mr-2" />
                         <p className="text-xs font-medium text-gray-600 dark:text-gray-50">{site}</p>
                     </div>
-                    <h3 className="truncate text-xs text-blue-600 font-medium pb-2">{source.title}</h3>
+                    <h3 className="truncate text-xs text-blue-600 font-medium pb-2" dir="auto">
+                        {source.title}
+                    </h3>
                 </Link>
                 <p
                     className={`text-xs ${showFullContent ? 'text-gray-900' : 'overflow-hidden text-gray-600'}  dark:text-gray-50 mr-1`}
@@ -43,6 +45,7 @@ const SourceBubble = ({ source, onSelect }) => {
                         minHeight: '4.5em',
                         maxHeight: showFullContent ? 'none' : '4.5em',
                     }}
+                    dir="auto"
                 >
                     {source.content}
                 </p>

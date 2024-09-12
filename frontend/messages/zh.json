@@ -92,5 +92,25 @@
         "loading": "正在上传文件... 您现在可以输入您的问题",
         "success": "文件上传成功",
         "error": "上传失败"
+    },
+    "Source": {
+        "Hybrid": "混合",
+        "Knowledge": "知识库",
+        "Academic": "学术",
+        "Twitter": "推特"
+    },
+    "SearchMessage": {
+        "Answer": "答案",
+        "Sources": "来源",
+        "Images": "图片",
+        "Videos": "视频",
+        "MindMap": "思维导图",
+        "Related": "相关问题"
+    },
+    "ActionButtons": {
+        "Copy": "复制",
+        "Reload": "重新加载",
+        "Feedback": "反馈",
+        "Share": "分享"
     }
 }

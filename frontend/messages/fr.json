@@ -92,5 +92,25 @@
         "loading": "Téléchargement du fichier... Vous pouvez maintenant taper votre question",
         "success": "Fichiers téléchargés avec succès",
         "error": "Échec du téléchargement"
+    },
+    "Source": {
+        "Hybrid": "Hybride",
+        "Knowledge": "Base de Connaissances",
+        "Academic": "Académique",
+        "Twitter": "Twitter"
+    },
+    "SearchMessage": {
+        "Answer": "Réponse",
+        "Sources": "Sources",
+        "Images": "Images",
+        "Videos": "Vidéos",
+        "MindMap": "Carte Mentale",
+        "Related": "Lié"
+    },
+    "ActionButtons": {
+        "Copy": "Copier la Réponse",
+        "Reload": "Recharger",
+        "Feedback": "Retour d'information",
+        "Share": "Partager"
     }
 }

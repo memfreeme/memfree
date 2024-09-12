@@ -7,6 +7,7 @@ import { useSigninModal } from '@/hooks/use-signin-modal';
 import { SearchCategory } from '@/lib/types';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { checkIsPro } from '@/lib/shared-utils';
+import { useTranslations } from 'next-intl';
 
 type Source = {
     name: string;
@@ -16,21 +17,13 @@ type Source = {
 
 export const sourceMap: Record<string, Source> = {
     [SearchCategory.ALL]: {
-        name: 'All',
+        name: 'Hybrid',
         value: SearchCategory.ALL,
     },
     [SearchCategory.KNOWLEDGE_BASE]: {
         name: 'Knowledge Base',
         value: SearchCategory.KNOWLEDGE_BASE,
     },
-    // [SearchCategory.NEWS]: {
-    //     name: 'News',
-    //     value: SearchCategory.NEWS,
-    // },
-    // [SearchCategory.INDIE_MAKER]: {
-    //     name: 'Indie Maker',
-    //     value: SearchCategory.INDIE_MAKER,
-    // },
     [SearchCategory.ACADEMIC]: {
         name: 'Academic',
         flag: 'Pro',
@@ -55,6 +48,28 @@ const SourceItem: React.FC<{ source: Source }> = ({ source }) => (
 );
 
 export function SourceSelection() {
+    const t = useTranslations('Source');
+    const sourceMap: Record<string, Source> = {
+        [SearchCategory.ALL]: {
+            name: t('Hybrid'),
+            value: SearchCategory.ALL,
+        },
+        [SearchCategory.KNOWLEDGE_BASE]: {
+            name: t('Knowledge'),
+            value: SearchCategory.KNOWLEDGE_BASE,
+        },
+        [SearchCategory.ACADEMIC]: {
+            name: t('Academic'),
+            flag: 'Pro',
+            value: SearchCategory.ACADEMIC,
+        },
+        [SearchCategory.TWEET]: {
+            name: t('Twitter'),
+            flag: 'Pro',
+            value: SearchCategory.TWEET,
+        },
+    };
+
     const { source, setSource, initSource } = useSourceStore();
     const selectedSource = sourceMap[source] ?? sourceMap[SearchCategory.ALL];
 
