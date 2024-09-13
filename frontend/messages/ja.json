@@ -112,5 +112,10 @@
         "Reload": "リロード",
         "Feedback": "フィードバック",
         "Share": "共有"
+    },
+    "Question": {
+        "title": "質問を編集",
+        "Cancel": "キャンセル",
+        "Search": "検索"
     }
 }

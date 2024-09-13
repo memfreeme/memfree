@@ -112,5 +112,10 @@
         "Reload": "Neu laden",
         "Feedback": "Feedback",
         "Share": "Teilen"
+    },
+    "Question": {
+        "title": "Frage bearbeiten",
+        "Cancel": "Abbrechen",
+        "Search": "Suche"
     }
 }

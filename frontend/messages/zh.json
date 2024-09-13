@@ -112,5 +112,10 @@
         "Reload": "重新加载",
         "Feedback": "反馈",
         "Share": "分享"
+    },
+    "Question": {
+        "title": "编辑问题",
+        "Cancel": "取消",
+        "Search": "搜索"
     }
 }

@@ -110,5 +110,10 @@
         "Reload": "Reload",
         "Feedback": "Feedback",
         "Share": "Share"
+    },
+    "Question": {
+        "title": "Edit Question",
+        "Cancel": "Cancel",
+        "Search": "Search"
     }
 }

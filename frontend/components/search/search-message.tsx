@@ -103,7 +103,7 @@ const SearchMessage = memo(
                     </div>
                 )}
 
-                {isUser && <QuestionSection content={content}></QuestionSection>}
+                {isUser && <QuestionSection content={content} onContentChange={onSelect}></QuestionSection>}
                 {isUser && attachments && attachments.length > 0 && (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4">
                         {attachments.map((attachment, index) => (
