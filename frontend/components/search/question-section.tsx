@@ -37,4 +37,5 @@ const QuestionSection: React.FC<QuestionSectionProps> = React.memo(({ content })
     );
 });
 
+QuestionSection.displayName = 'QuestionSection';
 export default QuestionSection;
