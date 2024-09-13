@@ -7,21 +7,12 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { SearchShareDialog } from '@/components/search/search-share-dialog';
 import { useTranslations } from 'next-intl';
+import useCopyToClipboard from '@/hooks/use-copy-clipboard';
 
 const ActionButtons = ({ content, searchId, msgId, reload }) => {
-    const [hasCopied, setHasCopied] = React.useState(false);
     const [shareDialogOpen, setShareDialogOpen] = React.useState(false);
 
-    React.useEffect(() => {
-        setTimeout(() => {
-            setHasCopied(false);
-        }, 2000);
-    }, [hasCopied]);
-
-    const handleCopyValue = (value: string) => {
-        navigator.clipboard.writeText(value);
-        setHasCopied(true);
-    };
+    const { hasCopied, copyToClipboard } = useCopyToClipboard();
 
     const handleReloadClick = React.useCallback(() => {
         reload(msgId);
@@ -35,7 +26,7 @@ const ActionButtons = ({ content, searchId, msgId, reload }) => {
                 <Tooltip>
                     <TooltipTrigger asChild>
                         <Button
-                            onClick={() => handleCopyValue(content)}
+                            onClick={() => copyToClipboard(content)}
                             variant="ghost"
                             className="p-2 border-2 border-dashed rounded-full hover:bg-purple-300"
                         >
