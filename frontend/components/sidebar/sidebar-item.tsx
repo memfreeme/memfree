@@ -19,7 +19,7 @@ export function SidebarItem({ search: search, children }: SidebarItemProps) {
     const pathname = usePathname();
     const router = useRouter();
 
-    const isActive = pathname === `/search/${search?.id}`;
+    const isActive = pathname.endsWith(`/search/${search?.id}`);
 
     const { toggleSidebar } = useSidebar();
     const { isMobile } = useMediaQuery();
@@ -41,20 +41,14 @@ export function SidebarItem({ search: search, children }: SidebarItemProps) {
                 className={cn(
                     buttonVariants({ variant: 'ghost' }),
                     'group w-full px-4 transition-colors hover:bg-zinc-200/40 dark:hover:bg-zinc-300/10',
-                    isActive &&
-                        'bg-zinc-200 pr-16 font-semibold dark:bg-zinc-800',
+                    isActive && 'bg-zinc-200 pr-16 font-semibold dark:bg-zinc-800',
                 )}
             >
-                <div
-                    className="relative flex w-full items-center justify-start overflow-hidden"
-                    title={search.title}
-                >
+                <div className="relative flex w-full items-center justify-start overflow-hidden" title={search.title}>
                     <span className="truncate text-left">{search.title}</span>
                 </div>
             </button>
-            {isActive && (
-                <div className="absolute right-2 top-1">{children}</div>
-            )}
+            {isActive && <div className="absolute right-2 top-1">{children}</div>}
         </div>
     );
 }
