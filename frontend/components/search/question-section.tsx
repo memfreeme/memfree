@@ -43,7 +43,6 @@ const QuestionSection: React.FC<QuestionSectionProps> = React.memo(({ content, o
                 className="group/question relative flex w-full items-start space-x-2 p-4 my-4 rounded-xl bg-violet-50 dark:bg-violet-800 hover:bg-violet-100 dark:hover:bg-violet-900 transition-colors"
                 dir="auto"
             >
-                <Icons.question className="text-primary size-4 dark:text-gray-50 mt-1" />
                 <div className="grow">
                     <h2 className={`text-gray-800 dark:text-gray-50 whitespace-pre-wrap ${textSizeClass}`}>{content}</h2>
                 </div>

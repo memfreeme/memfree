@@ -19,6 +19,7 @@ import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useSearchStore } from '@/lib/store/local-history';
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
 import { DemoQuestions } from '@/components/search/demo-questions';
+import useSearchLimit from '@/lib/store/local-limit';
 
 export interface SearchProps extends React.ComponentProps<'div'> {
     id?: string;
@@ -51,6 +52,8 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
         }
     }, [id, activeId, searchParams, setActiveSearch]);
 
+    const { incrementSearchCount, canSearch } = useSearchLimit();
+
     const sendMessage = useCallback(
         async (question?: string, attachments?: string[], messageIdToUpdate?: string) => {
             if (isReadOnly) {
@@ -78,6 +81,12 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
             };
 
             if (isLoading || !checkMessagesLength()) {
+                return;
+            }
+
+            if (user && !checkIsPro(user) && !canSearch()) {
+                toast.error('You have reached the limit of free searches for today, please upgrade your plan.');
+                upgradeModal.onOpen();
                 return;
             }
 
@@ -206,6 +215,9 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                     },
                     onclose() {
                         setIsLoading(false);
+                        if (user && !checkIsPro(user)) {
+                            incrementSearchCount();
+                        }
                     },
                     onmessage(msg) {
                         const { clear, answer, status, sources, images, related, videos } = JSON.parse(msg.data);
