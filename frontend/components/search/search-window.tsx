@@ -20,6 +20,7 @@ import { useSearchStore } from '@/lib/store/local-history';
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
 import { DemoQuestions } from '@/components/search/demo-questions';
 import useSearchLimit from '@/lib/store/local-limit';
+import { useTranslations } from 'next-intl';
 
 export interface SearchProps extends React.ComponentProps<'div'> {
     id?: string;
@@ -29,12 +30,13 @@ export interface SearchProps extends React.ComponentProps<'div'> {
 }
 
 export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: SearchProps) {
+    const t = useTranslations('Search');
     const searchParams = useSearchParams();
     const signInModal = useSigninModal();
     const upgradeModal = useUpgradeModal();
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [status, setStatus] = useState('Thinking...');
+    const [status, setStatus] = useState(t('status-think'));
 
     const { addSearch, activeId, activeSearch, setActiveSearch, updateActiveSearch } = useSearchStore();
 
@@ -57,24 +59,24 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
     const sendMessage = useCallback(
         async (question?: string, attachments?: string[], messageIdToUpdate?: string) => {
             if (isReadOnly) {
-                toast.error('You cannot ask questions in share search page');
+                toast.error(t('read-only-error'));
                 return;
             }
 
             const checkMessagesLength = () => {
                 const messages = useSearchStore.getState().activeSearch?.messages ?? [];
-                if (!user && messages.length > 20) {
-                    toast.error('You need to sign in to ask more questions in one search thread.');
+                if (!user && messages.length > 10) {
+                    toast.error(t('msg-length-sign-in'));
                     signInModal.onOpen();
                     return false;
                 }
-                if (user && !checkIsPro(user) && messages.length > 40) {
-                    toast.error('You need to upgrade to Pro to ask more questions in one search thread.');
+                if (user && !checkIsPro(user) && messages.length > 20) {
+                    toast.error(t('msg-length-pro'));
                     upgradeModal.onOpen();
                     return false;
                 }
                 if (messages.length > 100) {
-                    toast.error('You have reached the limit of questions in one search thread, please start a new thread.');
+                    toast.error(t('msg-length-all'));
                     return false;
                 }
                 return true;
@@ -85,7 +87,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
             }
 
             if (user && !checkIsPro(user) && !canSearch()) {
-                toast.error('You have reached the limit of free searches for today, please upgrade your plan.');
+                toast.error(t('free-search-limit'));
                 upgradeModal.onOpen();
                 return;
             }
@@ -93,16 +95,19 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
             let messageValue = question ?? input;
             if (messageValue === '') return;
             const imageUrls = extractAllImageUrls(messageValue);
+            if (imageUrls.length > 1 && user && !checkIsPro(user)) {
+                toast.error(t('multi-image-free-limit'));
+                upgradeModal.onOpen();
+                return;
+            }
             if (imageUrls.length > 5) {
-                toast.error(
-                    'You can only attach up to 5 images per message, if you need to attach more images, please give us feedback, we could support it later.',
-                );
+                toast.error(t('multi-image-pro-limit'));
                 return;
             }
 
             setInput('');
             setIsLoading(true);
-            setStatus('Thinking...');
+            setStatus(t('status-think'));
 
             let accumulatedMessage = '';
             let accumulatedRelated = '';
@@ -240,7 +245,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
             } catch (e) {
                 setIsLoading(false);
                 setInput(messageValue);
-                toast.error('An error occurred while searching, please refresh your page and try again');
+                toast.error(t('search-error'));
             }
         },
         [input, isReadOnly, isLoading, signInModal, addSearch, updateActiveSearch, upgradeModal, user],

@@ -1,6 +1,7 @@
 {
     "HomePage": {
-        "hero": "Hybrid AI Search - Faster and more Accurate",
+        "hero": "Unlock Accurate Answers Faster",
+        "hero-h1": "Hybrid AI Search - get Accurate Answers Faster",
         "hero2": "Hybrid AI Search from Knowledge Base and Internet"
     },
     "MetaDate": {
@@ -23,6 +24,7 @@
         "Pro3": "Up to 1000 Bookmarks and Web Pages to Index",
         "Pro4": "Up to 4096 tokens output per answer",
         "Pro5": "Up to 20MB For Single File and Image to Ask",
+        "Pro10": "Upload multiple images at once",
         "Pro6": "Unlimited Saving of Search History",
         "Pro7": "Support GPT-4o & Claude-3.5-sonnet AI Model",
         "Pro8": "Support Context-based Continuous Search",
@@ -31,7 +33,7 @@
         "Premium2": "Unlimited Expert AI Searches Per Month",
         "Premium3": "Unlimited Bookmarks and Web Pages to Index",
         "Premium4": "Unlimited Saving of Search History",
-        "Premium5": "Up to 50MB For Single File and Image to Ask",
+        "Premium5": "Up to 50MB For Single File to Ask",
         "Premium6": "Up to 16384 tokens output Per Answer",
         "Premium7": "Priority customer support",
         "free-call": "Continuou with Free",
@@ -84,9 +86,9 @@
     },
     "Attach": {
         "size-limit": "The file you uploaded exceeds the maximum limit of 4MB. Please upgrade your plan for larger file uploads.",
-        "number-limit-1": "Free user can only upload one file at a time, please upgrade your plan",
-        "image-limit-5": "Cannot upload more than 5 local image files at a time. if you need it, please feedback to us, we will support it later",
-        "file-limit-1": "Cannot upload more than 1 local text file at a time. if you need it, please feedback to us, we will support it later",
+        "number-limit-1": "Free user can upload one file at a time, please upgrade your plan",
+        "image-limit-5": "Cannot upload more than 5 local image files at a time. Provide feedback if more support is needed.",
+        "file-limit-1": "Cannot upload more than 1 local text file at a time. Provide feedback if more support is needed.",
         "loading": "Uploading file... You can type your question now",
         "success": "Files uploaded successfully",
         "error": "Failed to upload"
@@ -115,5 +117,25 @@
         "title": "Edit Question",
         "Cancel": "Cancel",
         "Search": "Search"
+    },
+    "Search": {
+        "summarize": "Summarize",
+        "read-only-error": "You cannot search question in share search page",
+        "msg-length-sign-in": "Sign in to search more questions in one thread",
+        "msg-length-pro": "Upgrade to Pro to search more questions in one thread",
+        "msg-length-all": "Maximum number of questions reached in one thread. Please start a new thread",
+        "free-search-limit": "Free user can search 10 questions per day. Please upgrade your plan",
+        "multi-image-free-limit": "Please upgrade to Pro to attach multiple images in one message",
+        "multi-image-pro-limit": "Attach up to 5 images per message. Provide feedback if more support is needed",
+        "status-think": "Thinking...",
+        "search-error": "An error occurred while searching, please refresh your page and try again"
+    },
+    "Share": {
+        "title": "Share Search via Link",
+        "description": "Anyone with the URL can view the shared search.",
+        "copy-error": "Failed to copy share link to clipboard. Please try again.",
+        "copy-success": "Share link copied to clipboard",
+        "copying": "Copying...",
+        "copy-button": "Copy Link"
     }
 }

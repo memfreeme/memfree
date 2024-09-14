@@ -47,6 +47,9 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     };
 
     const handleInputKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+        if (isUploading || !content) {
+            return;
+        }
         if (e.code === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleClick();
@@ -181,6 +184,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                 )}
                 <TextareaAutosize
                     value={content}
+                    placeholder={t('search-tip')}
                     minRows={1}
                     maxRows={10}
                     aria-label="Search"

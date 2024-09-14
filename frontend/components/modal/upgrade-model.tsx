@@ -8,7 +8,7 @@ import { Icons } from '@/components/shared/icons';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
-const benefits = ['Premium1', 'Premium2', 'Premium3', 'Premium4', 'Premium5', 'Premium6', 'Pro7', 'Pro8', 'Pro9'] as const;
+const benefits = ['Premium1', 'Premium2', 'Premium3', 'Premium4', 'Premium5', 'Pro10', 'Premium6', 'Pro7', 'Pro8', 'Pro9'] as const;
 
 export const UpgradeModal = () => {
     const upgradeModal = useUpgradeModal();

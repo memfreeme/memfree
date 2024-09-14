@@ -15,27 +15,6 @@ type Source = {
     value: string;
 };
 
-export const sourceMap: Record<string, Source> = {
-    [SearchCategory.ALL]: {
-        name: 'Hybrid',
-        value: SearchCategory.ALL,
-    },
-    [SearchCategory.KNOWLEDGE_BASE]: {
-        name: 'Knowledge Base',
-        value: SearchCategory.KNOWLEDGE_BASE,
-    },
-    [SearchCategory.ACADEMIC]: {
-        name: 'Academic',
-        flag: 'Pro',
-        value: SearchCategory.ACADEMIC,
-    },
-    [SearchCategory.TWEET]: {
-        name: 'Twitter',
-        flag: 'Pro',
-        value: SearchCategory.TWEET,
-    },
-};
-
 const SourceItem: React.FC<{ source: Source }> = ({ source }) => (
     <SelectItem key={source.value} value={source.value} className="w-full p-2 block">
         <div className="flex w-full justify-between">

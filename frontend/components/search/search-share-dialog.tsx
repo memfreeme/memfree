@@ -5,28 +5,18 @@ import { type DialogProps } from '@radix-ui/react-dialog';
 
 import { type Search } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { LoaderCircle } from 'lucide-react';
 import { shareSearch } from '@/lib/store/search';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 interface SearchShareDialogProps extends DialogProps {
     search: Pick<Search, 'id'>;
     onCopy: () => void;
 }
 
-export function SearchShareDialog({
-    search,
-    onCopy,
-    ...props
-}: SearchShareDialogProps) {
+export function SearchShareDialog({ search, onCopy, ...props }: SearchShareDialogProps) {
     const [isSharePending, startShareTransition] = React.useTransition();
 
     const [hasCopied, setHasCopied] = React.useState(false);
@@ -37,10 +27,12 @@ export function SearchShareDialog({
         }, 2000);
     }, [hasCopied]);
 
+    const t = useTranslations('Share');
+
     const copyShareLink = React.useCallback(
         async (search: Search) => {
             if (!search.sharePath) {
-                return toast.error('Could not copy share link to clipboard');
+                return toast.error(t('copy-error'));
             }
 
             const handleCopyValue = (value: string) => {
@@ -52,7 +44,7 @@ export function SearchShareDialog({
             url.pathname = search.sharePath;
             handleCopyValue(url.toString());
             onCopy();
-            toast.success('Share link copied to clipboard');
+            toast.success(t('copy-success'));
         },
         [onCopy],
     );
@@ -61,11 +53,8 @@ export function SearchShareDialog({
         <Dialog {...props}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Share Search By Link</DialogTitle>
-                    <DialogDescription>
-                        Anyone with the URL will be able to view the shared
-                        search.
-                    </DialogDescription>
+                    <DialogTitle>{t('title')}</DialogTitle>
+                    <DialogDescription>{t('description')}</DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="items-center">
                     <Button
@@ -87,10 +76,10 @@ export function SearchShareDialog({
                         {isSharePending ? (
                             <>
                                 <LoaderCircle className="mr-2 animate-spin" />
-                                Copying...
+                                {t('copying')}
                             </>
                         ) : (
-                            <>Copy link</>
+                            <>{t('copy-button')}</>
                         )}
                     </Button>
                 </DialogFooter>

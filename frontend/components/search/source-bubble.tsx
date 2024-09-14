@@ -1,5 +1,6 @@
 import { extractDomain } from '@/lib/utils';
 import { ReaderIcon } from '@radix-ui/react-icons';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import React, { memo, useState } from 'react';
 
@@ -23,6 +24,8 @@ const SourceBubble = ({ source, onSelect }) => {
             setShowFullContent((prev) => !prev);
         }
     };
+
+    const t = useTranslations('Search');
 
     return (
         <div
@@ -59,7 +62,7 @@ const SourceBubble = ({ source, onSelect }) => {
                         >
                             <ReaderIcon className="peer size-4" />
                             <span className="absolute z-50 left-1/2 -translate-x-1/2 bottom-full mb-1 text-sm text-gray-700 opacity-0  peer-hover:opacity-100">
-                                Summarize
+                                {t('summarize')}
                             </span>
                         </button>
                     </div>

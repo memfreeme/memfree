@@ -1,84 +1,84 @@
 {
     "HomePage": {
-        "hero": "Recherche IA Hybride - Plus Rapide et plus Précise",
-        "hero2": "Recherche IA Hybride à partir de la Base de Connaissances et d'Internet",
-        "index-button": "Indexer",
-        "attach-button": "Joindre"
+        "hero": "Débloquez des réponses précises plus rapidement",
+        "hero-h1": "Recherche hybride IA - obtenez des réponses précises plus rapidement",
+        "hero2": "Recherche hybride IA à partir de la base de connaissances et d'Internet"
     },
     "MetaDate": {
-        "title": "MemFree - Recherche IA Hybride",
+        "title": "MemFree - Recherche hybride IA",
         "name": "MemFree",
-        "description": "MemFree - Recherche IA Hybride à partir de la base de connaissances et d'Internet, obtenez des Réponses Précises plus Rapidement"
+        "description": "MemFree - Recherche hybride IA à partir de la base de connaissances et d'Internet, obtenez des réponses précises plus rapidement"
     },
     "Pricing": {
-        "title": "Tarification MemFree",
-        "description": "Obtenez un Accès Illimité Maintenant",
-        "Free1": "Jusqu'à 10 recherches IA basiques par jour",
+        "title": "Tarification de MemFree",
+        "description": "Obtenez un accès illimité maintenant",
+        "Free1": "Jusqu'à 10 recherches IA de base par jour",
         "Free2": "Jusqu'à 10 signets et pages web à indexer",
         "Free3": "Jusqu'à 1024 tokens de sortie par réponse",
-        "Free4": "Jusqu'à 4 Mo pour un seul fichier et image à interroger",
-        "Free5": "Sauvegardez jusqu'à 100 historiques de recherche",
-        "Free6": "Prise en charge du modèle IA GPT-4o-mini",
-        "Free7": "Prise en charge du Web et de l'extension Chrome",
-        "Pro1": "Recherches IA basiques illimitées par mois",
+        "Free4": "Jusqu'à 4 Mo pour un fichier unique et une image à demander",
+        "Free5": "Enregistrez jusqu'à 100 historiques de recherche",
+        "Free6": "Support pour le modèle IA GPT-4o-mini",
+        "Free7": "Support pour l'extension Web et Chrome",
+        "Pro1": "Recherches IA de base illimitées par mois",
         "Pro2": "Jusqu'à 1000 recherches IA expertes par mois",
         "Pro3": "Jusqu'à 1000 signets et pages web à indexer",
         "Pro4": "Jusqu'à 4096 tokens de sortie par réponse",
-        "Pro5": "Jusqu'à 20 Mo pour un seul fichier et image à interroger",
+        "Pro5": "Jusqu'à 20 Mo pour un fichier unique et une image à demander",
+        "Pro10": "Téléchargez plusieurs images à la fois",
         "Pro6": "Sauvegarde illimitée de l'historique de recherche",
-        "Pro7": "Prise en charge des modèles IA GPT-4o et Claude-3.5-sonnet",
-        "Pro8": "Prise en charge de la recherche continue basée sur le contexte",
-        "Pro9": "Prise en charge du reclassement pour obtenir de meilleurs résultats de recherche",
-        "Premium1": "Recherches IA basiques illimitées par mois",
+        "Pro7": "Support pour le modèle IA GPT-4o et Claude-3.5-sonnet",
+        "Pro8": "Support pour la recherche continue basée sur le contexte",
+        "Pro9": "Support pour le réajustement afin d'obtenir de meilleurs résultats de recherche",
+        "Premium1": "Recherches IA de base illimitées par mois",
         "Premium2": "Recherches IA expertes illimitées par mois",
         "Premium3": "Signets et pages web illimités à indexer",
         "Premium4": "Sauvegarde illimitée de l'historique de recherche",
-        "Premium5": "Jusqu'à 50 Mo pour un seul fichier et image à interroger",
+        "Premium5": "Jusqu'à 50 Mo pour un fichier unique à demander",
         "Premium6": "Jusqu'à 16384 tokens de sortie par réponse",
         "Premium7": "Support client prioritaire",
         "free-call": "Continuer avec la version gratuite",
         "pre-call": "Mettre à niveau",
         "paid-call": "Gérer l'abonnement",
-        "upgrade-call": "Débloquez les fonctionnalités avancées avec MemFree Pro",
+        "upgrade-call": "Débloquez des fonctionnalités avancées avec MemFree Pro",
         "upgrade-button": "Mettre à niveau maintenant"
     },
     "PricingFAQ": {
-        "title": "Questions fréquemment posées",
+        "title": "Questions Fréquemment Posées",
         "question1": "Qu'est-ce qui rend Memfree unique ?",
-        "answer1": "Memfree est un moteur de recherche IA hybride qui récupère simultanément les informations les plus pertinentes à la fois de votre base de connaissances personnelle et d'Internet, puis laisse le modèle IA fournir la meilleure réponse possible.",
-        "question2": "Que signifie Indexer ?",
-        "answer2": "Memfree collecte et stocke vos signets, pages web et fichiers locaux en utilisant l'indexation IA. Cela vous permet de rechercher et de récupérer rapidement le contenu le plus pertinent et de fournir la meilleure réponse possible. Votre fichier d'index est privé et accessible uniquement par vous.",
+        "answer1": "Memfree est un moteur de recherche hybride IA qui récupère simultanément les informations les plus pertinentes à la fois de votre base de connaissances personnelle et d'Internet, puis permet au modèle IA de fournir la meilleure réponse possible.",
+        "question2": "Que signifie indexer ?",
+        "answer2": "Memfree collecte et stocke vos signets, pages web et fichiers locaux en utilisant l'indexation IA. Cela vous permet de rechercher rapidement et de récupérer le contenu le plus pertinent et de fournir la meilleure réponse possible. Votre fichier d'index est privé et accessible uniquement par vous.",
         "question3": "Pourquoi Memfree facture-t-il des frais mensuels ?",
-        "answer3": "Memfree facture des frais mensuels car les services d'IA, les services de recherche et les services d'indexation vectorielle que nous utilisons nécessitent des paiements mensuels continus",
+        "answer3": "Memfree facture des frais mensuels car les services IA, les services de recherche et les services d'indexation vectorielle que nous utilisons nécessitent des paiements mensuels continus.",
         "question4": "Comment nous contacter ?",
-        "answer4": "Si vous rencontrez des problèmes avec le paiement ou l'abonnement, veuillez nous contacter par e-mail à support@memfree.me ou via feedback.memfree.me"
+        "answer4": "Si vous rencontrez des problèmes de paiement ou d'abonnement, veuillez nous contacter par e-mail à support@memfree.me ou via feedback.memfree.me."
     },
     "DemoQuestions": {
-        "title1": "Comparer, Résumer, Rechercher plusieurs images",
-        "title2": "Rechercher et poser des questions par image",
-        "title3": "Extraire du texte d'une image",
-        "title4": "Résumer et poser des questions sur une page Web et un PDF",
-        "title5": "Qu'est-ce que la recherche MemFree AI",
-        "title6": "Rechercher et poser des questions Twitter",
+        "title1": "Comparer, résumer, rechercher plusieurs images",
+        "title2": "Rechercher et demander par image",
+        "title3": "Extraire du texte de l'image",
+        "title4": "Résumer et poser des questions sur une page web et un PDF",
+        "title5": "Qu'est-ce que la recherche IA de MemFree ?",
+        "title6": "Rechercher et poser des questions sur Twitter",
         "title7": "Expliquer et écrire du code"
     },
     "SearchBar": {
         "index-button": "Indexer",
         "attach-button": "Joindre",
-        "index-tip": "Indexer des pages Web et des fichiers locaux",
-        "attach-tip": "Joindre une image et un fichier pour poser une question",
-        "search-tip": "Appuyez sur Entrée pour envoyer, Shift + Entrée pour un retour à la ligne"
+        "index-tip": "Indexer les pages web et les fichiers locaux",
+        "attach-tip": "Joindre une image et un fichier à demander",
+        "search-tip": "Appuyez sur Entrée pour envoyer, Maj + Entrée pour un retour à la ligne"
     },
     "IndexModal": {
-        "title": "Améliorez vos résultats de recherche avec l'indexation AI",
-        "note": "Il faut environ quelques secondes pour indexer une page Web ou un fichier local.",
+        "title": "Améliorez vos résultats de recherche avec l'indexation IA",
+        "note": "Il faut environ quelques secondes pour indexer une page web ou un fichier local.",
         "web-page": "Page Web",
         "local-file": "Fichier Local"
     },
     "IndexWeb": {
-        "placeholder": "Veuillez entrer l'URL des pages Web publiques que vous appréciez. Memfree vous permettra de rechercher le contenu de ces pages par AI.",
-        "index-button": "Indexer la Page Web",
-        "index-extension": "Indexer la Page Web par l'Extension Chrome ou Edge",
+        "placeholder": "Veuillez entrer l'URL des pages web publiques que vous appréciez. Memfree vous permettra de rechercher le contenu de ces pages par IA.",
+        "index-button": "Indexer la page web",
+        "index-extension": "Indexer la page web par l'extension Chrome ou Edge",
         "extension-note": "Extension de navigateur pour une indexation plus rapide et de meilleure qualité"
     },
     "IndexLocal": {
@@ -86,9 +86,9 @@
     },
     "Attach": {
         "size-limit": "Le fichier que vous avez téléchargé dépasse la limite maximale de 4 Mo. Veuillez mettre à niveau votre plan pour des téléchargements de fichiers plus volumineux.",
-        "number-limit-1": "L'utilisateur gratuit ne peut télécharger qu'un seul fichier à la fois, veuillez mettre à niveau votre plan",
-        "image-limit-5": "Impossible de télécharger plus de 5 fichiers image locaux à la fois. Si vous en avez besoin, veuillez nous faire part de vos commentaires, nous le prendrons en charge plus tard.",
-        "file-limit-1": "Impossible de télécharger plus d'un fichier texte local à la fois. Si vous en avez besoin, veuillez nous faire part de vos commentaires, nous le prendrons en charge plus tard.",
+        "number-limit-1": "L'utilisateur gratuit peut télécharger un fichier à la fois, veuillez mettre à niveau votre plan",
+        "image-limit-5": "Impossible de télécharger plus de 5 fichiers image locaux à la fois. Fournissez des commentaires si un soutien supplémentaire est nécessaire.",
+        "file-limit-1": "Impossible de télécharger plus d'un fichier texte local à la fois. Fournissez des commentaires si un soutien supplémentaire est nécessaire.",
         "loading": "Téléchargement du fichier... Vous pouvez maintenant taper votre question",
         "success": "Fichiers téléchargés avec succès",
         "error": "Échec du téléchargement"
@@ -108,7 +108,7 @@
         "Related": "Lié"
     },
     "ActionButtons": {
-        "Copy": "Copier la Réponse",
+        "Copy": "Copier la réponse",
         "Reload": "Recharger",
         "Feedback": "Retour d'information",
         "Share": "Partager"
@@ -117,5 +117,25 @@
         "title": "Modifier la question",
         "Cancel": "Annuler",
         "Search": "Rechercher"
+    },
+    "Search": {
+        "summarize": "Résumer",
+        "read-only-error": "Vous ne pouvez pas rechercher de questions dans la page de recherche partagée",
+        "msg-length-sign-in": "Connectez-vous pour rechercher plus de questions dans un fil",
+        "msg-length-pro": "Mettez à niveau vers Pro pour rechercher plus de questions dans un fil",
+        "msg-length-all": "Nombre maximum de questions atteint dans un fil. Veuillez commencer un nouveau fil",
+        "free-search-limit": "L'utilisateur gratuit peut rechercher 10 questions par jour. Veuillez mettre à niveau votre plan",
+        "multi-image-free-limit": "Veuillez mettre à niveau vers Pro pour joindre plusieurs images dans un message",
+        "multi-image-pro-limit": "Joindre jusqu'à 5 images par message. Fournissez des commentaires si un soutien supplémentaire est nécessaire",
+        "status-think": "Réflexion...",
+        "search-error": "Une erreur s'est produite lors de la recherche, veuillez actualiser votre page et réessayer"
+    },
+    "Share": {
+        "title": "Partager la recherche via un lien",
+        "description": "Quiconque possède l'URL peut voir la recherche partagée.",
+        "copy-error": "Échec de la copie du lien de partage dans le presse-papiers. Veuillez réessayer.",
+        "copy-success": "Lien de partage copié dans le presse-papiers",
+        "copying": "Copie en cours...",
+        "copy-button": "Copier le lien"
     }
 }

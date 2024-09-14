@@ -1,94 +1,94 @@
 {
     "HomePage": {
-        "hero": "Hybride KI-Suche - Schneller und genauer",
-        "hero2": "Hybride KI-Suche aus Wissensdatenbank und Internet",
-        "index-button": "Indexieren",
-        "attach-button": "Anhängen"
+        "hero": "Entsperren Sie genaue Antworten schneller",
+        "hero-h1": "Hybride KI-Suche - erhalten Sie genauere Antworten schneller",
+        "hero2": "Hybride KI-Suche aus Wissensdatenbank und Internet"
     },
     "MetaDate": {
         "title": "MemFree - Hybride KI-Suche",
         "name": "MemFree",
-        "description": "MemFree - Hybride KI-Suche aus Wissensdatenbank und Internet, erhalten Sie schneller genaue Antworten"
+        "description": "MemFree - Hybride KI-Suche aus Wissensdatenbank und Internet, erhalten Sie genauere Antworten schneller"
     },
     "Pricing": {
         "title": "MemFree Preisgestaltung",
-        "description": "Erhalten Sie jetzt unbegrenzten Zugang",
+        "description": "Erhalten Sie jetzt unbegrenzten Zugriff",
         "Free1": "Bis zu 10 grundlegende KI-Suchen pro Tag",
-        "Free2": "Bis zu 10 Lesezeichen und Webseiten zum Indexieren",
-        "Free3": "Bis zu 1024 Token Ausgabe pro Antwort",
-        "Free4": "Bis zu 4MB für einzelne Datei und Bild zum Fragen",
-        "Free5": "Speichern Sie bis zu 100 Suchverläufe",
-        "Free6": "Unterstützung für GPT-4o-mini KI-Modell",
-        "Free7": "Unterstützung für Web und Chrome-Erweiterung",
+        "Free2": "Bis zu 10 Lesezeichen und Webseiten zum Indizieren",
+        "Free3": "Bis zu 1024 Token-Ausgabe pro Antwort",
+        "Free4": "Bis zu 4MB für eine einzelne Datei und Bild zur Anfrage",
+        "Free5": "Speichern Sie bis zu 100 Suchhistorien",
+        "Free6": "Unterstützt das GPT-4o-mini KI-Modell",
+        "Free7": "Unterstützt Web- und Chrome-Erweiterung",
         "Pro1": "Unbegrenzte grundlegende KI-Suchen pro Monat",
         "Pro2": "Bis zu 1000 Experten-KI-Suchen pro Monat",
-        "Pro3": "Bis zu 1000 Lesezeichen und Webseiten zum Indexieren",
-        "Pro4": "Bis zu 4096 Token Ausgabe pro Antwort",
-        "Pro5": "Bis zu 20MB für einzelne Datei und Bild zum Fragen",
-        "Pro6": "Unbegrenztes Speichern des Suchverlaufs",
-        "Pro7": "Unterstützung für GPT-4o & Claude-3.5-sonnet KI-Modell",
-        "Pro8": "Unterstützung für kontextbasierte kontinuierliche Suche",
-        "Pro9": "Unterstützung für Neuordnung, um bessere Suchergebnisse zu erhalten",
+        "Pro3": "Bis zu 1000 Lesezeichen und Webseiten zum Indizieren",
+        "Pro4": "Bis zu 4096 Token-Ausgabe pro Antwort",
+        "Pro5": "Bis zu 20MB für eine einzelne Datei und Bild zur Anfrage",
+        "Pro10": "Mehrere Bilder auf einmal hochladen",
+        "Pro6": "Unbegrenztes Speichern der Suchhistorie",
+        "Pro7": "Unterstützt GPT-4o & Claude-3.5-sonnet KI-Modell",
+        "Pro8": "Unterstützt kontextbasierte kontinuierliche Suche",
+        "Pro9": "Unterstützt das Neurangieren für bessere Suchergebnisse",
         "Premium1": "Unbegrenzte grundlegende KI-Suchen pro Monat",
         "Premium2": "Unbegrenzte Experten-KI-Suchen pro Monat",
-        "Premium3": "Unbegrenzte Lesezeichen und Webseiten zum Indexieren",
-        "Premium4": "Unbegrenztes Speichern des Suchverlaufs",
-        "Premium5": "Bis zu 50MB für einzelne Datei und Bild zum Fragen",
-        "Premium6": "Bis zu 16384 Token Ausgabe pro Antwort",
+        "Premium3": "Unbegrenzte Lesezeichen und Webseiten zum Indizieren",
+        "Premium4": "Unbegrenztes Speichern der Suchhistorie",
+        "Premium5": "Bis zu 50MB für eine einzelne Datei zur Anfrage",
+        "Premium6": "Bis zu 16384 Token-Ausgabe pro Antwort",
         "Premium7": "Priorisierter Kundensupport",
-        "free-call": "Weiter mit Kostenlos",
+        "free-call": "Weiter mit kostenlos",
         "pre-call": "Upgrade",
         "paid-call": "Abonnement verwalten",
-        "upgrade-call": "Erweiterte Funktionen mit MemFree Pro freischalten",
+        "upgrade-call": "Schalten Sie erweiterte Funktionen mit MemFree Pro frei",
         "upgrade-button": "Jetzt upgraden"
     },
     "PricingFAQ": {
         "title": "Häufig gestellte Fragen",
         "question1": "Was macht Memfree einzigartig?",
         "answer1": "Memfree ist eine hybride KI-Suchmaschine, die gleichzeitig die relevantesten Informationen sowohl aus Ihrer persönlichen Wissensdatenbank als auch aus dem Internet abruft und dann das KI-Modell die bestmögliche Antwort liefern lässt.",
-        "question2": "Was bedeutet Indexieren?",
-        "answer2": "Memfree sammelt und speichert Ihre Lesezeichen, Webseiten und lokalen Dateien mithilfe von KI-Indexierung. Dies ermöglicht es Ihnen, schnell nach den relevantesten Inhalten zu suchen und sie abzurufen sowie die bestmögliche Antwort zu liefern. Ihre Indexdatei ist privat und nur für Sie zugänglich.",
+        "question2": "Was bedeutet Indizieren?",
+        "answer2": "Memfree sammelt und speichert Ihre Lesezeichen, Webseiten und lokalen Dateien mithilfe von KI-Indizierung. Dies ermöglicht es Ihnen, schnell nach den relevantesten Inhalten zu suchen und die bestmögliche Antwort zu liefern. Ihre Indexdatei ist privat und nur für Sie zugänglich.",
         "question3": "Warum erhebt Memfree eine monatliche Gebühr?",
-        "answer3": "Memfree erhebt eine monatliche Gebühr, weil die KI-Dienste, Suchdienste und Vektor-Indexierungsdienste, die wir nutzen, kontinuierliche monatliche Zahlungen erfordern",
-        "question4": "Wie können Sie uns kontaktieren?",
-        "answer4": "Wenn Sie Probleme mit der Zahlung oder dem Abonnement haben, kontaktieren Sie uns bitte per E-Mail an support@memfree.me oder über feedback.memfree.me"
+        "answer3": "Memfree erhebt eine monatliche Gebühr, da die von uns genutzten KI-Dienste, Suchdienste und Vektorisierungsdienste kontinuierliche monatliche Zahlungen erfordern.",
+        "question4": "Wie können wir Sie kontaktieren?",
+        "answer4": "Wenn Sie Probleme mit der Zahlung oder dem Abonnement haben, kontaktieren Sie uns bitte per E-Mail unter support@memfree.me oder über feedback.memfree.me."
     },
     "DemoQuestions": {
-        "title1": "Vergleichen, Zusammenfassen, Mehrere Bilder suchen",
-        "title2": "Suchen und Fragen anhand von Bildern",
-        "title3": "Text aus Bild extrahieren",
-        "title4": "Webseite und PDF zusammenfassen und Fragen stellen",
-        "title5": "Was ist die MemFree AI-Suche",
-        "title6": "Twitter-Fragen suchen und stellen",
-        "title7": "Code erklären und schreiben"
+        "title1": "Vergleichen, Zusammenfassen, mehrere Bilder durchsuchen",
+        "title2": "Durchsuchen und Fragen mit Bildern",
+        "title3": "Text aus Bildern extrahieren",
+        "title4": "Zusammenfassen und Fragen zu Webseiten und PDFs",
+        "title5": "Was ist die MemFree KI-Suche?",
+        "title6": "Durchsuchen und Fragen zu Twitter-Fragen",
+        "title7": "Erklären und Code schreiben"
     },
     "SearchBar": {
-        "index-button": "Indexieren",
+        "index-button": "Indizieren",
         "attach-button": "Anhängen",
-        "index-tip": "Webseiten und lokale Dateien indexieren",
-        "attach-tip": "Bild und Datei zum Fragen anhängen",
-        "search-tip": "Enter zum Senden, Shift + Enter zum Umbruch"
+        "index-tip": "Webseiten und lokale Dateien indizieren",
+        "attach-tip": "Bild und Datei anhängen, um zu fragen",
+        "search-tip": "Enter drücken, um zu senden, Shift + Enter für Umbruch"
     },
     "IndexModal": {
-        "title": "Verbessern Sie Ihre Suchergebnisse mit AI-Indexierung",
-        "note": "Es dauert etwa einige Sekunden, um eine Webseite oder lokale Datei zu indexieren.",
+        "title": "Verbessern Sie Ihre Suchergebnisse mit KI-Indizierung",
+        "note": "Es dauert etwa ein paar Sekunden, um eine Webseite oder lokale Datei zu indizieren.",
         "web-page": "Webseite",
         "local-file": "Lokale Datei"
     },
     "IndexWeb": {
-        "placeholder": "Bitte geben Sie die URL der öffentlichen Webseiten ein, die Ihnen wichtig sind. Memfree ermöglicht es Ihnen, den Inhalt dieser Seiten mit AI zu durchsuchen.",
-        "index-button": "Webseite indexieren",
-        "index-extension": "Webseite mit Chrome- oder Edge-Erweiterung indexieren",
-        "extension-note": "Browsererweiterung für schnellere Indexierung und bessere Qualität"
+        "placeholder": "Bitte geben Sie die URL der öffentlichen Webseiten ein, die Sie schätzen. Memfree ermöglicht es Ihnen, den Inhalt dieser Seiten mit KI zu durchsuchen.",
+        "index-button": "Webseite indizieren",
+        "index-extension": "Webseite mit Chrome- oder Edge-Erweiterung indizieren",
+        "extension-note": "Browsererweiterung für schnellere Indizierung und bessere Qualität"
     },
     "IndexLocal": {
         "note": "Ziehen Sie Dateien hierher oder klicken Sie, um Dateien auszuwählen"
     },
     "Attach": {
-        "size-limit": "Die von Ihnen hochgeladene Datei überschreitet das maximale Limit von 4 MB. Bitte upgraden Sie Ihren Plan für größere Datei-Uploads.",
-        "number-limit-1": "Kostenlose Benutzer können nur eine Datei gleichzeitig hochladen, bitte upgraden Sie Ihren Plan",
-        "image-limit-5": "Es können nicht mehr als 5 lokale Bilddateien gleichzeitig hochgeladen werden. Wenn Sie dies benötigen, geben Sie uns bitte Feedback, wir werden es später unterstützen.",
-        "file-limit-1": "Es kann nicht mehr als 1 lokale Textdatei gleichzeitig hochgeladen werden. Wenn Sie dies benötigen, geben Sie uns bitte Feedback, wir werden es später unterstützen.",
+        "size-limit": "Die von Ihnen hochgeladene Datei überschreitet das maximale Limit von 4MB. Bitte upgraden Sie Ihren Plan für größere Datei-Uploads.",
+        "number-limit-1": "Kostenlose Benutzer können jeweils eine Datei hochladen, bitte upgraden Sie Ihren Plan",
+        "image-limit-5": "Es können nicht mehr als 5 lokale Bilddateien gleichzeitig hochgeladen werden. Geben Sie Feedback, wenn mehr Unterstützung benötigt wird.",
+        "file-limit-1": "Es kann nicht mehr als 1 lokale Textdatei gleichzeitig hochgeladen werden. Geben Sie Feedback, wenn mehr Unterstützung benötigt wird.",
         "loading": "Datei wird hochgeladen... Sie können jetzt Ihre Frage eingeben",
         "success": "Dateien erfolgreich hochgeladen",
         "error": "Hochladen fehlgeschlagen"
@@ -116,6 +116,26 @@
     "Question": {
         "title": "Frage bearbeiten",
         "Cancel": "Abbrechen",
-        "Search": "Suche"
+        "Search": "Suchen"
+    },
+    "Search": {
+        "summarize": "Zusammenfassen",
+        "read-only-error": "Sie können in der gemeinsamen Suchseite keine Fragen suchen",
+        "msg-length-sign-in": "Melden Sie sich an, um mehr Fragen in einem Thread zu suchen",
+        "msg-length-pro": "Upgrade auf Pro, um mehr Fragen in einem Thread zu suchen",
+        "msg-length-all": "Maximale Anzahl von Fragen in einem Thread erreicht. Bitte starten Sie einen neuen Thread",
+        "free-search-limit": "Kostenlose Benutzer können 10 Fragen pro Tag suchen. Bitte upgraden Sie Ihren Plan",
+        "multi-image-free-limit": "Bitte upgraden Sie auf Pro, um mehrere Bilder in einer Nachricht anzuhängen",
+        "multi-image-pro-limit": "Fügen Sie bis zu 5 Bilder pro Nachricht hinzu. Geben Sie Feedback, wenn mehr Unterstützung benötigt wird",
+        "status-think": "Denken...",
+        "search-error": "Beim Suchen ist ein Fehler aufgetreten, bitte aktualisieren Sie Ihre Seite und versuchen Sie es erneut"
+    },
+    "Share": {
+        "title": "Suche über Link teilen",
+        "description": "Jeder mit der URL kann die geteilte Suche anzeigen.",
+        "copy-error": "Fehler beim Kopieren des Freigabelinks in die Zwischenablage. Bitte versuchen Sie es erneut.",
+        "copy-success": "Freigabelink in die Zwischenablage kopiert",
+        "copying": "Kopieren...",
+        "copy-button": "Link kopieren"
     }
 }
