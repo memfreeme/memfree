@@ -13,9 +13,7 @@ export type responseAction = {
 
 const billingUrl = absoluteUrl('/pricing');
 
-export async function generateUserStripe(
-    priceId: string,
-): Promise<responseAction> {
+export async function generateUserStripe(priceId: string): Promise<responseAction> {
     let redirectUrl: string = '';
 
     try {
@@ -41,6 +39,7 @@ export async function generateUserStripe(
                 mode: 'subscription',
                 billing_address_collection: 'auto',
                 customer_email: session.user.email,
+                allow_promotion_codes: true,
                 automatic_tax: {
                     enabled: true,
                 },

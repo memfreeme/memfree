@@ -25,7 +25,7 @@ export const modelMap: Record<string, Model> = {
         value: GPT_4o,
     },
     [O1_MIMI]: {
-        name: 'o1-Mini',
+        name: 'O1-Mini',
         flag: 'Pro',
         value: O1_MIMI,
     },
@@ -40,7 +40,7 @@ export const modelMap: Record<string, Model> = {
         value: Claude_35_Sonnet,
     },
     [O1_PREVIEW]: {
-        name: 'o1-Preview',
+        name: 'O1-Preview',
         flag: 'Premium',
         value: O1_PREVIEW,
     },
