@@ -4,8 +4,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { Claude_35_Sonnet, GEMINI_FLASH, GEMINI_PRO, GPT_4o, GPT_4o_MIMI, LLAMA_31_70B, O1_MIMI } from '@/lib/model';
-import { checkIsPro } from '@/lib/shared-utils';
+import { Claude_35_Sonnet, GEMINI_PRO, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/model';
+import { isProUser, isPremiumUser } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
 type Model = {
@@ -19,24 +19,16 @@ export const modelMap: Record<string, Model> = {
         name: 'GPT-4o mini',
         value: GPT_4o_MIMI,
     },
-    // [GEMINI_FLASH]: {
-    //     name: 'Gemini 1.5 Flash',
-    //     value: GEMINI_FLASH,
-    // },
-    // [LLAMA_31_70B]: {
-    //     name: 'LLAMA 3.1 70B',
-    //     value: LLAMA_31_70B,
-    // },
     [GPT_4o]: {
         name: 'GPT-4o',
         flag: 'Pro',
         value: GPT_4o,
     },
-    // [O1_MIMI]: {
-    //     name: 'O1-Mini',
-    //     flag: 'Pro',
-    //     value: O1_MIMI,
-    // },
+    [O1_MIMI]: {
+        name: 'o1-Mini',
+        flag: 'Pro',
+        value: O1_MIMI,
+    },
     [GEMINI_PRO]: {
         name: 'Gemini 1.5 Pro',
         flag: 'Pro',
@@ -47,13 +39,20 @@ export const modelMap: Record<string, Model> = {
         flag: 'Pro',
         value: Claude_35_Sonnet,
     },
+    [O1_PREVIEW]: {
+        name: 'o1-Preview',
+        flag: 'Premium',
+        value: O1_PREVIEW,
+    },
 };
 
 const ModelItem: React.FC<{ model: Model }> = ({ model }) => (
     <SelectItem key={model.value} value={model.value} className="w-full p-2 block">
         <div className="flex w-full justify-between">
             <span className="text-md">{model.name}</span>
-            <span className={`text-xs flex items-center justify-center ${model.flag === 'Pro' ? ' text-primary bg-purple-300 rounded-xl px-2' : ''}`}>
+            <span
+                className={`text-xs flex items-center justify-center ${model.flag === 'Pro' || model.flag === 'Premium' ? ' text-primary bg-purple-300 rounded-xl px-2' : ''}`}
+            >
                 {model.flag}
             </span>
         </div>
@@ -84,7 +83,13 @@ export function ModelSelection() {
                     if (!user) {
                         signInModal.onOpen();
                     } else if (modelMap[value].flag === 'Pro') {
-                        if (!checkIsPro(user)) {
+                        if (!isProUser(user)) {
+                            upgradeModal.onOpen();
+                        } else if (value !== model) {
+                            setModel(value);
+                        }
+                    } else if (modelMap[value].flag === 'Premium') {
+                        if (!isPremiumUser(user)) {
                             upgradeModal.onOpen();
                         } else if (value !== model) {
                             setModel(value);

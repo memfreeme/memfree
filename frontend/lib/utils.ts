@@ -1,4 +1,4 @@
-import { checkIsPro } from '@/lib/shared-utils';
+import { isProUser } from '@/lib/shared-utils';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -55,7 +55,7 @@ export function formatBytes(
 }
 
 export function getFileSizeLimit(user: any) {
-    if (user && checkIsPro(user)) {
+    if (user && isProUser(user)) {
         return 20 * 1024 * 1024;
     }
     return 4 * 1024 * 1024;

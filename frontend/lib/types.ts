@@ -46,7 +46,7 @@ export enum SearchCategory {
     ALL = 'all',
     SCIENCE = 'science',
     ACADEMIC = 'academic',
-    IT = 'it',
+    O1 = 'o1',
     GENERAL = 'general',
     IMAGES = 'images',
     VIDEOS = 'videos',

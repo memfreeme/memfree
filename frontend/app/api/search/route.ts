@@ -3,15 +3,16 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { Ratelimit } from '@upstash/ratelimit';
 import { RATE_LIMIT_KEY, redisDB } from '@/lib/db';
-import { validModel } from '@/lib/model';
+import { isProModel, O1_MIMI, O1_PREVIEW, validModel } from '@/lib/model';
 import { logError } from '@/lib/log';
-import { checkIsPro } from '@/lib/shared-utils';
+import { isProUser } from '@/lib/shared-utils';
 import { streamController } from '@/lib/llm/utils';
 import { SearchCategory } from '@/lib/types';
 import { indieMakerSearch } from '@/lib/tools/indie';
 import { containsValidUrl } from '@/lib/server-utils';
 import { knowledgeBaseSearch } from '@/lib/tools/knowledge-base';
 import { autoAnswer } from '@/lib/tools/auto';
+import { o1Answer } from '@/lib/tools/o1-answer';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -20,7 +21,10 @@ const ratelimit = new Ratelimit({
     analytics: false,
 });
 
-const updateSource = function (source, messages) {
+const updateSource = function (model, source, messages) {
+    if (model === O1_MIMI || model === O1_PREVIEW) {
+        return SearchCategory.O1;
+    }
     const file = messages[0].attachments?.[0];
     if (file) {
         if (file.startsWith('local-')) {
@@ -41,7 +45,7 @@ export async function POST(req: NextRequest) {
     let isPro = false;
     if (session) {
         userId = session.user.id;
-        isPro = checkIsPro(session.user);
+        isPro = isProUser(session.user);
     } else {
         const ip = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0];
         const { success } = await ratelimit.limit(ip);
@@ -58,6 +62,15 @@ export async function POST(req: NextRequest) {
 
     console.log('model', model, 'source', source, 'messages', messages, 'profile', profile);
 
+    if (isProModel(model) && !isPro) {
+        return NextResponse.json(
+            {
+                error: 'You need to be a pro user to use this model',
+            },
+            { status: 429 },
+        );
+    }
+
     if (!validModel(model)) {
         return NextResponse.json(
             {
@@ -67,12 +80,16 @@ export async function POST(req: NextRequest) {
         );
     }
 
-    source = updateSource(source, messages);
+    source = updateSource(model, source, messages);
 
     try {
         const readableStream = new ReadableStream({
             async start(controller) {
                 switch (source) {
+                    case SearchCategory.O1: {
+                        await o1Answer(messages, isPro, userId, profile, streamController(controller), model);
+                        break;
+                    }
                     case SearchCategory.INDIE_MAKER: {
                         await indieMakerSearch(messages, isPro, userId, streamController(controller), model);
                         break;

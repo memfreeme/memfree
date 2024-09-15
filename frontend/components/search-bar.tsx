@@ -17,7 +17,7 @@ import { useUploadFile } from '@/hooks/use-upload-file';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { getFileSizeLimit, processImageFiles } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
-import { checkIsPro } from '@/lib/shared-utils';
+import { isProUser } from '@/lib/shared-utils';
 
 interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
@@ -83,7 +83,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
             upgradeModal.onOpen();
             return;
         }
-        if (acceptedFiles.length > 1 && !checkIsPro(user)) {
+        if (acceptedFiles.length > 1 && !isProUser(user)) {
             toast.error(attach('number-limit-1'));
             upgradeModal.onOpen();
             return;
@@ -185,7 +185,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                 <TextareaAutosize
                     value={content}
                     placeholder={t('search-tip')}
-                    minRows={1}
+                    minRows={2}
                     maxRows={10}
                     aria-label="Search"
                     className="w-full border-0 bg-transparent p-4 mb-8 text-sm placeholder:text-muted-foreground overflow-y-auto  outline-0 ring-0  focus-visible:outline-none focus-visible:ring-0 resize-none"

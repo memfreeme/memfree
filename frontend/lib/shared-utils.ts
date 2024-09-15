@@ -22,12 +22,23 @@ export function isValidUrl(input: string): boolean {
     }
 }
 
-export function checkIsPro(user: any) {
+export function isProUser(user: any) {
     if (!user) return false;
     const periodEnd = new Date(user.stripeCurrentPeriodEnd || 0);
 
     const isPaid = user.stripePriceId && periodEnd.getTime() + 86_400_000 > Date.now() ? true : false;
     return isPaid;
+}
+
+export function isPremiumUser(user: any) {
+    if (!user) return false;
+    if (!isProUser(user)) {
+        return false;
+    }
+    return (
+        user.stripePriceId === process.env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PLAN_ID ||
+        user.stripePriceId === process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PLAN_ID
+    );
 }
 
 export function extractFirstImageUrl(text: string): string | null {

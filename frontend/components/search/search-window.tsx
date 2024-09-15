@@ -14,7 +14,7 @@ import { generateId } from 'ai';
 import { LoaderCircle } from 'lucide-react';
 import { useScrollAnchor } from '@/hooks/use-scroll-anchor';
 import { toast } from 'sonner';
-import { checkIsPro, extractAllImageUrls } from '@/lib/shared-utils';
+import { isProUser, extractAllImageUrls } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useSearchStore } from '@/lib/store/local-history';
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
@@ -70,7 +70,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                     signInModal.onOpen();
                     return false;
                 }
-                if (user && !checkIsPro(user) && messages.length > 20) {
+                if (user && !isProUser(user) && messages.length > 20) {
                     toast.error(t('msg-length-pro'));
                     upgradeModal.onOpen();
                     return false;
@@ -86,7 +86,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                 return;
             }
 
-            if (user && !checkIsPro(user) && !canSearch()) {
+            if (user && !isProUser(user) && !canSearch()) {
                 toast.error(t('free-search-limit'));
                 upgradeModal.onOpen();
                 return;
@@ -95,7 +95,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
             let messageValue = question ?? input;
             if (messageValue === '') return;
             const imageUrls = extractAllImageUrls(messageValue);
-            if (imageUrls.length > 1 && user && !checkIsPro(user)) {
+            if (imageUrls.length > 1 && user && !isProUser(user)) {
                 toast.error(t('multi-image-free-limit'));
                 upgradeModal.onOpen();
                 return;
@@ -220,7 +220,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                     },
                     onclose() {
                         setIsLoading(false);
-                        if (user && !checkIsPro(user)) {
+                        if (user && !isProUser(user)) {
                             incrementSearchCount();
                         }
                     },

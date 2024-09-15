@@ -9,7 +9,7 @@ export const GEMINI_PRO = 'models/gemini-1.5-pro-latest';
 
 const validModels = [GPT_4o_MIMI, GPT_4o, O1_MIMI, O1_PREVIEW, Claude_35_Sonnet, LLAMA_31_70B, GEMINI_FLASH, GEMINI_PRO];
 
-const proModels = [GPT_4o, Claude_35_Sonnet, GEMINI_PRO];
+const proModels = [GPT_4o, Claude_35_Sonnet, GEMINI_PRO, O1_MIMI, O1_PREVIEW];
 
 export const validModel = (model: string) => validModels.includes(model);
 export const isProModel = (model: string) => proModels.includes(model);
