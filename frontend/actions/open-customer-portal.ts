@@ -11,11 +11,9 @@ export type responseAction = {
     stripeUrl?: string;
 };
 
-const billingUrl = absoluteUrl('/dashboard/billing');
+const billingUrl = absoluteUrl('/');
 
-export async function openCustomerPortal(
-    userStripeId: string,
-): Promise<responseAction> {
+export async function openCustomerPortal(userStripeId: string): Promise<responseAction> {
     let redirectUrl: string = '';
 
     try {
