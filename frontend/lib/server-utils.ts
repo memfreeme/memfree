@@ -35,6 +35,18 @@ export function containsValidUrl(text: string) {
     return urlPattern.test(text);
 }
 
+export function getNextMonth() {
+    const date = new Date();
+    date.setMonth(date.getMonth() + 1);
+    return date;
+}
+
+export function getNextYear() {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() + 1);
+    return date;
+}
+
 export async function saveMessages(
     userId: string,
     messages: StoreMessage[],

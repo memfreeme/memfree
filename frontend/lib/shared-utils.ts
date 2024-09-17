@@ -22,23 +22,27 @@ export function isValidUrl(input: string): boolean {
     }
 }
 
-export function isProUser(user: any) {
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+function isSubscriptionActive(user: any): boolean {
     if (!user) return false;
     const periodEnd = new Date(user.stripeCurrentPeriodEnd || 0);
-
-    const isPaid = user.stripePriceId && periodEnd.getTime() + 86_400_000 > Date.now() ? true : false;
-    return isPaid;
+    return periodEnd.getTime() + ONE_DAY_MS > Date.now();
 }
 
-export function isPremiumUser(user: any) {
-    if (!user) return false;
-    if (!isProUser(user)) {
-        return false;
-    }
-    return (
-        user.stripePriceId === process.env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PLAN_ID ||
-        user.stripePriceId === process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PLAN_ID
-    );
+export function getUserLevel(user: any): number {
+    if (!user) return 0;
+    if (isPremiumUser(user)) return 2;
+    if (isProUser(user)) return 1;
+    return 0;
+}
+
+export function isProUser(user: any): boolean {
+    return user?.level >= 1 && isSubscriptionActive(user);
+}
+
+export function isPremiumUser(user: any): boolean {
+    return user?.level === 2 && isSubscriptionActive(user);
 }
 
 export function extractFirstImageUrl(text: string): string | null {

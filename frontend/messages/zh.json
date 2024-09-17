@@ -38,7 +38,8 @@
         "Premium7": "优先客户支持",
         "Premium8": "支持 O1-preview AI 模型",
         "free-call": "继续使用免费版",
-        "pre-call": "升级",
+        "pre-call": "订阅",
+        "pre-once-call": "一次性支付",
         "paid-call": "管理订阅",
         "upgrade-call": "通过 MemFree Pro 解锁高级功能",
         "upgrade-button": "立即升级"

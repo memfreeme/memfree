@@ -51,8 +51,6 @@ export type MarketingConfig = {
 export type SubscriptionPlan = {
     title: string;
     description: string;
-    benefits: string[];
-    limitations: string[];
     prices: {
         monthly: number;
         yearly: number;
@@ -61,13 +59,14 @@ export type SubscriptionPlan = {
         monthly: string | null;
         yearly: string | null;
     };
+    onceIds?: {
+        monthly: string | null;
+        yearly: string | null;
+    };
 };
 
 export type UserSubscriptionPlan = SubscriptionPlan &
-    Pick<
-        User,
-        'stripeCustomerId' | 'stripeSubscriptionId' | 'stripePriceId'
-    > & {
+    Pick<User, 'stripeCustomerId' | 'stripeSubscriptionId' | 'stripePriceId'> & {
         stripeCurrentPeriodEnd: number;
         isPaid: boolean;
         interval: 'month' | 'year' | null;

@@ -7,6 +7,7 @@ export interface User {
     stripeSubscriptionId?: string;
     stripeCustomerId?: string;
     stripeCurrentPeriodEnd?: Date;
+    level?: number;
 }
 
 export interface CachedResult {

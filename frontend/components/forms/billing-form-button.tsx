@@ -3,7 +3,6 @@
 import { useTransition } from 'react';
 import { generateUserStripe } from '@/actions/generate-user-stripe';
 import { SubscriptionPlan, UserSubscriptionPlan } from '@/types';
-
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/shared/icons';
 import { useTranslations } from 'next-intl';
@@ -14,41 +13,38 @@ interface BillingFormButtonProps {
     year: boolean;
 }
 
-export function BillingFormButton({
-    year,
-    offer,
-    subscriptionPlan,
-}: BillingFormButtonProps) {
-    let [isPending, startTransition] = useTransition();
-    const generateUserStripeSession = generateUserStripe.bind(
-        null,
-        offer.stripeIds[year ? 'yearly' : 'monthly'],
-    );
-
-    const stripeSessionAction = () =>
-        startTransition(async () => await generateUserStripeSession());
-
-    const userOffer =
-        subscriptionPlan.stripePriceId ===
-        offer.stripeIds[year ? 'yearly' : 'monthly'];
-
+export function BillingFormButton({ year, offer, subscriptionPlan }: BillingFormButtonProps) {
+    const [isPending, startTransition] = useTransition();
     const t = useTranslations('Pricing');
 
-    return (
-        <Button
-            rounded="full"
-            className="w-full"
-            disabled={isPending}
-            onClick={stripeSessionAction}
-        >
+    const createStripeSession = (isOnce: boolean) => {
+        const id = isOnce ? offer.onceIds[year ? 'yearly' : 'monthly'] : offer.stripeIds[year ? 'yearly' : 'monthly'];
+        return () =>
+            startTransition(async () => {
+                void (await generateUserStripe(id, isOnce));
+            });
+    };
+
+    const userOffer = subscriptionPlan.stripePriceId === offer.stripeIds[year ? 'yearly' : 'monthly'];
+
+    const renderButton = (isOnce: boolean) => (
+        <Button variant={isOnce ? 'outline' : 'default'} rounded="full" className="w-full" disabled={isPending} onClick={createStripeSession(isOnce)}>
             {isPending ? (
                 <>
-                    <Icons.spinner className="mr-2 size-4 animate-spin" />{' '}
-                    Loading...
+                    <Icons.spinner className="mr-2 size-4 animate-spin" /> Loading...
                 </>
+            ) : userOffer ? (
+                t('paid-call')
             ) : (
-                <>{userOffer ? t('paid-call') : t('pre-call')}</>
+                t(isOnce ? 'pre-once-call' : 'pre-call')
             )}
         </Button>
+    );
+
+    return (
+        <div className="flex flex-col space-y-4">
+            {renderButton(false)}
+            {renderButton(true)}
+        </div>
     );
 }

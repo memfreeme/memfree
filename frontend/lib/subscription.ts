@@ -5,9 +5,7 @@ import { getUserById } from '@/lib/db';
 import { stripe } from '@/lib/stripe';
 import { UserSubscriptionPlan } from 'types';
 
-export async function getUserSubscriptionPlan(
-    userId: string,
-): Promise<UserSubscriptionPlan> {
+export async function getUserSubscriptionPlan(userId: string): Promise<UserSubscriptionPlan> {
     const user = await getUserById(userId);
     if (!user) {
         throw new Error('User not found');
@@ -15,18 +13,9 @@ export async function getUserSubscriptionPlan(
 
     const periodEnd = new Date(user.stripeCurrentPeriodEnd || 0);
 
-    const isPaid =
-        user.stripePriceId && periodEnd.getTime() + 86_400_000 > Date.now()
-            ? true
-            : false;
+    const isPaid = user.level > 0 && periodEnd.getTime() + 86_400_000 > Date.now() ? true : false;
 
-    const userPlan =
-        pricingData.find(
-            (plan) => plan.stripeIds.monthly === user.stripePriceId,
-        ) ||
-        pricingData.find(
-            (plan) => plan.stripeIds.yearly === user.stripePriceId,
-        );
+    const userPlan = pricingData[user.level ?? 0];
 
     const plan = isPaid && userPlan ? userPlan : pricingData[0];
 
@@ -40,9 +29,7 @@ export async function getUserSubscriptionPlan(
 
     let isCanceled = false;
     if (isPaid && user.stripeSubscriptionId) {
-        const stripePlan = await stripe.subscriptions.retrieve(
-            user.stripeSubscriptionId,
-        );
+        const stripePlan = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
         isCanceled = stripePlan.cancel_at_period_end;
     }
 

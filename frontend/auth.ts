@@ -13,7 +13,14 @@ declare module 'next-auth' {
         user: {
             stripePriceId?: string;
             stripeCurrentPeriodEnd?: Date;
+            level?: number;
         } & DefaultSession['user'];
+    }
+
+    interface User {
+        stripePriceId?: string;
+        stripeCurrentPeriodEnd?: Date;
+        level?: number;
     }
 }
 
@@ -77,9 +84,9 @@ export const config = {
 
                 const user = await getUserById(session.user.id);
                 if (user) {
+                    session.user.level = user.level;
                     session.user.stripePriceId = user.stripePriceId;
-                    session.user.stripeCurrentPeriodEnd =
-                        user.stripeCurrentPeriodEnd;
+                    session.user.stripeCurrentPeriodEnd = user.stripeCurrentPeriodEnd;
                 }
             }
 
