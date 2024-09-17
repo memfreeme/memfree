@@ -46,14 +46,14 @@
     },
     "PricingFAQ": {
         "title": "Häufig gestellte Fragen",
-        "question1": "Was macht Memfree einzigartig?",
-        "answer1": "Memfree ist eine hybride KI-Suchmaschine, die gleichzeitig die relevantesten Informationen sowohl aus Ihrer persönlichen Wissensdatenbank als auch aus dem Internet abruft und dann das KI-Modell die bestmögliche Antwort liefern lässt.",
-        "question2": "Was bedeutet Indizieren?",
-        "answer2": "Memfree sammelt und speichert Ihre Lesezeichen, Webseiten und lokalen Dateien mithilfe von KI-Indizierung. Dies ermöglicht es Ihnen, schnell nach den relevantesten Inhalten zu suchen und die bestmögliche Antwort zu liefern. Ihre Indexdatei ist privat und nur für Sie zugänglich.",
-        "question3": "Warum erhebt Memfree eine monatliche Gebühr?",
-        "answer3": "Memfree erhebt eine monatliche Gebühr, da die von uns genutzten KI-Dienste, Suchdienste und Vektorisierungsdienste kontinuierliche monatliche Zahlungen erfordern.",
-        "question4": "Wie können wir Sie kontaktieren?",
-        "answer4": "Wenn Sie Probleme mit der Zahlung oder dem Abonnement haben, kontaktieren Sie uns bitte per E-Mail unter support@memfree.me oder über feedback.memfree.me."
+        "question1": "Warum könnte MemFree Ihr Wissensmanagement optimieren",
+        "answer1": "Es ist nicht nötig, Ihre Wissensdatenbank (Notizen, Lesezeichen und Dokumente) manuell zu organisieren. Wenn Sie Informationen oder Antworten benötigen, suchen Sie einfach mit einem Klick in MemFree, was Ihre Speicherkapazität freisetzt und Ihre Produktivität steigert.",
+        "question2": "Warum kann MemFree Ihnen Zeit sparen und Ihre Effizienz verbessern",
+        "answer2": "Es ist nicht nötig, in den Google-Suchergebnissen eine Webseite nach der anderen anzuklicken. MemFree verwendet KI, um sofort die besten Antworten aus mehreren Webseiten und Ihrer Wissensdatenbank zusammenzufassen, was Ihnen jeden Tag viel Zeit spart.",
+        "question3": "Warum ist MemFree eine kosteneffektive Lösung",
+        "answer3": "Es ist nicht nötig, mehrere KI-Tools wie ChatGPT Plus, Claude Pro und Gemini Advanced zu abonnieren, was Ihre monatlichen Abonnementgebühren erheblich reduziert.",
+        "question4": "Wie können Sie uns kontaktieren?",
+        "answer4": "Wenn Sie Probleme mit der Zahlung oder dem Abonnement haben, kontaktieren Sie uns bitte per E-Mail unter support@memfree.me oder über feedback.memfree.me"
     },
     "DemoQuestions": {
         "title1": "Vergleichen, Zusammenfassen, mehrere Bilder durchsuchen",

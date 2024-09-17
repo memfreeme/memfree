@@ -46,14 +46,14 @@
     },
     "PricingFAQ": {
         "title": "Preguntas Frecuentes",
-        "question1": "¿Qué hace que Memfree sea único?",
-        "answer1": "Memfree es un motor de búsqueda híbrido de IA que recupera simultáneamente la información más relevante tanto de tu base de conocimientos personal como de Internet, y luego permite que el modelo de IA proporcione la mejor respuesta posible.",
-        "question2": "¿Qué significa indexar?",
-        "answer2": "Memfree recopila y almacena tus marcadores, páginas web y archivos locales utilizando indexación de IA. Esto te permite buscar y recuperar rápidamente el contenido más relevante y proporcionar la mejor respuesta posible. Tu archivo de índice es privado y solo accesible para ti.",
-        "question3": "¿Por qué Memfree cobra una tarifa mensual?",
-        "answer3": "Memfree cobra una tarifa mensual porque los servicios de IA, los servicios de búsqueda y los servicios de indexación vectorial que utilizamos requieren pagos mensuales continuos.",
+        "question1": "¿Por qué MemFree podría optimizar la gestión de su conocimiento?",
+        "answer1": "No es necesario organizar manualmente su base de conocimientos (notas, marcadores y documentos). Cuando necesite información o respuestas, simplemente busque en MemFree con un clic, liberando su capacidad de memoria y mejorando su productividad.",
+        "question2": "¿Por qué MemFree puede ahorrarle tiempo y mejorar su eficiencia?",
+        "answer2": "No es necesario hacer clic en múltiples páginas web una por una en los resultados de búsqueda de Google. MemFree utiliza IA para resumir inmediatamente las mejores respuestas de múltiples páginas web y su base de conocimientos, ahorrándole mucho tiempo cada día.",
+        "question3": "¿Por qué MemFree es una solución rentable?",
+        "answer3": "No es necesario suscribirse a múltiples herramientas de IA como ChatGPT Plus, Claude Pro y Gemini Advanced, lo que reducirá significativamente sus tarifas de suscripción mensual.",
         "question4": "¿Cómo contactarnos?",
-        "answer4": "Si experimentas algún problema con el pago o la suscripción, contáctanos por correo electrónico a support@memfree.me o a través de feedback.memfree.me."
+        "answer4": "Si experimenta algún problema con el pago o la suscripción, por favor contáctenos por correo electrónico a support@memfree.me o a través de feedback.memfree.me"
     },
     "DemoQuestions": {
         "title1": "Comparar, resumir, buscar múltiples imágenes",

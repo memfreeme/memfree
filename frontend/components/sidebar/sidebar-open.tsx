@@ -3,21 +3,11 @@
 import * as React from 'react';
 
 import { useSidebar } from '@/hooks/use-sidebar';
-import {
-    ArrowRightToLine,
-    CircleHelp,
-    Home,
-    Plus,
-    Settings,
-} from 'lucide-react';
+import { ArrowRightToLine, CircleHelp, Gem, Plus, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { User } from 'next-auth';
 import { UserAccountNav } from '@/components/layout/user-account-nav';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import LocaleSelect from '@/components/locale-selection';
 import { generateId } from 'ai';
 import { useRouter } from 'next/navigation';
@@ -60,21 +50,6 @@ export function SidebarOpen({ user }: NavBarProps) {
                             <button
                                 onClick={handleHomeClick}
                                 rel="nofollow"
-                                className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 m-2"
-                            >
-                                <Home size={20} strokeWidth={2} />
-                                <span className="sr-only">Home</span>
-                            </button>
-                        </TooltipTrigger>
-                        <TooltipContent className="bg-black text-white">
-                            <p>Home</p>
-                        </TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <button
-                                onClick={handleHomeClick}
-                                rel="nofollow"
                                 className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 rounded-lg  p-2 m-2"
                             >
                                 <Plus size={20} strokeWidth={2} />
@@ -83,6 +58,22 @@ export function SidebarOpen({ user }: NavBarProps) {
                         </TooltipTrigger>
                         <TooltipContent className="bg-black text-white">
                             <p>New Search</p>
+                        </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Link
+                                href="/pricing"
+                                rel="nofollow"
+                                className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 m-2"
+                            >
+                                <Gem size={20} strokeWidth={2} />
+                                <span className="sr-only">Upgrade Plan</span>
+                            </Link>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-black text-white">
+                            <p>Upgrade Plan</p>
                         </TooltipContent>
                     </Tooltip>
 

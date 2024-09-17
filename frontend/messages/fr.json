@@ -46,14 +46,14 @@
     },
     "PricingFAQ": {
         "title": "Questions Fréquemment Posées",
-        "question1": "Qu'est-ce qui rend Memfree unique ?",
-        "answer1": "Memfree est un moteur de recherche hybride IA qui récupère simultanément les informations les plus pertinentes à la fois de votre base de connaissances personnelle et d'Internet, puis permet au modèle IA de fournir la meilleure réponse possible.",
-        "question2": "Que signifie indexer ?",
-        "answer2": "Memfree collecte et stocke vos signets, pages web et fichiers locaux en utilisant l'indexation IA. Cela vous permet de rechercher rapidement et de récupérer le contenu le plus pertinent et de fournir la meilleure réponse possible. Votre fichier d'index est privé et accessible uniquement par vous.",
-        "question3": "Pourquoi Memfree facture-t-il des frais mensuels ?",
-        "answer3": "Memfree facture des frais mensuels car les services IA, les services de recherche et les services d'indexation vectorielle que nous utilisons nécessitent des paiements mensuels continus.",
+        "question1": "Pourquoi MemFree pourrait-il rationaliser votre gestion des connaissances",
+        "answer1": "Pas besoin d'organiser manuellement votre base de connaissances (notes, signets et documents). Lorsque vous avez besoin d'informations ou de réponses, il vous suffit de rechercher dans MemFree en un clic, libérant ainsi votre capacité de mémoire et améliorant votre productivité.",
+        "question2": "Pourquoi MemFree peut-il vous faire gagner du temps et améliorer votre efficacité",
+        "answer2": "Pas besoin de cliquer sur plusieurs pages web une par une dans les résultats de recherche Google. MemFree utilise l'IA pour résumer immédiatement les meilleures réponses de plusieurs pages web et de votre base de connaissances, vous faisant gagner beaucoup de temps chaque jour.",
+        "question3": "Pourquoi MemFree est-il une solution rentable",
+        "answer3": "Pas besoin de s'abonner à plusieurs outils d'IA tels que ChatGPT Plus, Claude Pro et Gemini Advanced, ce qui réduira considérablement vos frais d'abonnement mensuels.",
         "question4": "Comment nous contacter ?",
-        "answer4": "Si vous rencontrez des problèmes de paiement ou d'abonnement, veuillez nous contacter par e-mail à support@memfree.me ou via feedback.memfree.me."
+        "answer4": "Si vous rencontrez des problèmes de paiement ou d'abonnement, veuillez nous contacter par email à support@memfree.me ou via feedback.memfree.me"
     },
     "DemoQuestions": {
         "title1": "Comparer, résumer, rechercher plusieurs images",

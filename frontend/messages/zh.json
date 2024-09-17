@@ -45,15 +45,15 @@
         "upgrade-button": "立即升级"
     },
     "PricingFAQ": {
-        "title": "常见问题",
-        "question1": "Memfree 有什么独特之处？",
-        "answer1": "Memfree 是一个混合AI搜索引擎，可以同时从您的个人知识库和互联网中检索最相关的信息，然后让AI模型提供最佳答案。",
-        "question2": "索引是什么意思？",
-        "answer2": "Memfree 使用AI索引收集和存储您的书签、网页和本地文件。这使您能够快速搜索和检索最相关的内容，并提供最佳答案，您的索引文件是私密的，仅您可访问。",
-        "question3": "为什么 Memfree 收取月费？",
-        "answer3": "Memfree 收取月费是因为我们使用的AI服务、搜索服务和向量索引服务需要持续的月度支付。",
+        "title": "常见问题解答",
+        "question1": "为什么 MemFree 能简化您的知识管理",
+        "answer1": "无需手动组织您的知识库（笔记、书签和文档）。当您需要信息或答案时，只需在 MemFree 中一键搜索，释放您的记忆容量，提高您的生产力。",
+        "question2": "为什么 MemFree 能为您节省时间并提高效率",
+        "answer2": "无需在 Google 搜索结果中逐个点击多个网页。MemFree 使用 AI 即时总结多个网页和您的知识库中的最佳答案，每天为您节省大量时间。",
+        "question3": "为什么 MemFree 是一种具有成本效益的解决方案",
+        "answer3": "无需订阅多个 AI 工具，如 ChatGPT Plus、Claude Pro 和 Gemini Advanced，这将显著降低您的月度订阅费用。",
         "question4": "如何联系我们？",
-        "answer4": "如果您在支付或订阅方面遇到任何问题，请通过电子邮件联系support@memfree.me或通过feedback.memfree.me与我们联系。"
+        "answer4": "如果您在支付或订阅方面遇到任何问题，请通过电子邮件 support@memfree.me 或通过 feedback.memfree.me 联系我们。"
     },
     "DemoQuestions": {
         "title1": "比较、总结、搜索多个图像",
