@@ -18,15 +18,14 @@ export function SignInGroup() {
                     <Icons.brain className="size-10 text-primary" />
                 </a>
                 <h3 className="font-urban text-2xl font-bold">MemFree</h3>
-                <p className="text-md font-medium">
-                    Sign in to unlock more features
-                </p>
+                <p className="text-md font-medium">Sign in to unlock more features</p>
             </div>
 
             <div className="flex flex-col space-y-4 p-4">
                 <Button
                     variant="outline"
                     disabled={signInClicked}
+                    data-umami-event="Sign In Google"
                     onClick={() => {
                         setSignInClicked(true);
                         signIn('google', { callbackUrl: '/' }).then(() => {
@@ -34,17 +33,13 @@ export function SignInGroup() {
                         });
                     }}
                 >
-                    {signInClicked ? (
-                        <Icons.spinner className="mr-2 size-4 animate-spin" />
-                    ) : (
-                        <Icons.google className="mr-2 size-4" />
-                    )}{' '}
-                    Sign In with Google
+                    {signInClicked ? <Icons.spinner className="mr-2 size-4 animate-spin" /> : <Icons.google className="mr-2 size-4" />} Sign In with Google
                 </Button>
 
                 <Button
                     variant="outline"
                     disabled={signInClicked}
+                    data-umami-event="Sign In Github"
                     onClick={() => {
                         setSignInClicked(true);
                         signIn('github', { callbackUrl: '/' }).then(() => {
@@ -52,12 +47,7 @@ export function SignInGroup() {
                         });
                     }}
                 >
-                    {signInClicked ? (
-                        <Icons.spinner className="mr-2 size-4 animate-spin" />
-                    ) : (
-                        <Icons.gitHub className="mr-2 size-4" />
-                    )}{' '}
-                    Sign In with Github
+                    {signInClicked ? <Icons.spinner className="mr-2 size-4 animate-spin" /> : <Icons.gitHub className="mr-2 size-4" />} Sign In with Github
                 </Button>
 
                 <div className="relative">
@@ -65,9 +55,7 @@ export function SignInGroup() {
                         <span className="w-full border-t" />
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-background px-2 text-muted-foreground">
-                            Or
-                        </span>
+                        <span className="bg-background px-2 text-muted-foreground">Or</span>
                     </div>
                 </div>
 
@@ -76,19 +64,11 @@ export function SignInGroup() {
 
             <p className="p-4 text-center text-sm text-muted-foreground">
                 By clicking continue, you agree to our{' '}
-                <Link
-                    href="/terms"
-                    target="_blank"
-                    className="hover:text-brand underline underline-offset-4"
-                >
+                <Link href="/terms" target="_blank" className="hover:text-brand underline underline-offset-4">
                     Terms of Service
                 </Link>{' '}
                 and{' '}
-                <Link
-                    href="/privacy"
-                    target="_blank"
-                    className="hover:text-brand underline underline-offset-4"
-                >
+                <Link href="/privacy" target="_blank" className="hover:text-brand underline underline-offset-4">
                     Privacy Policy
                 </Link>
             </p>

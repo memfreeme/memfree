@@ -41,7 +41,7 @@ export const UpgradeModal = () => {
                     </ul>
                 </div>
 
-                <Button className="rounded-full mt-6 mx-10 sm:mx-4" onClick={handleRouter}>
+                <Button className="rounded-full mt-6 mx-10 sm:mx-4" onClick={handleRouter} data-umami-event="Upgrade Click">
                     {t('upgrade-button')}
                 </Button>
             </div>

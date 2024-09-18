@@ -200,6 +200,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                     type="button"
                                     aria-label={t('index-tip')}
                                     className="text-gray-500 hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 flex items-center space-x-1"
+                                    data-umami-event="Index Button Click"
                                     onClick={() => {
                                         if (!user) {
                                             signInModal.onOpen();
@@ -223,6 +224,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                         type="button"
                                         disabled={isUploading}
                                         aria-label={t('attach-button')}
+                                        data-umami-event="Attach Button Click"
                                         className="text-gray-500 hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 flex items-center"
                                         onClick={() => {
                                             if (!user) {

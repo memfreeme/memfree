@@ -34,22 +34,10 @@ export function EmailForm() {
 
     return (
         <form onSubmit={handleSignIn}>
-            <Input
-                id="email"
-                type="email"
-                placeholder="email@example.com"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
+            <Input id="email" type="email" placeholder="email@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
             {error && <span className="text-red-500 my-1">{error}</span>}
-            <Button type="submit" className="w-full mt-4">
-                {signInClicked ? (
-                    <Icons.spinner className="mr-2 size-4 animate-spin" />
-                ) : (
-                    <Mail className="mr-2 size-4" />
-                )}{' '}
-                Continue with Email
+            <Button type="submit" className="w-full mt-4" data-umami-event="Sign In Email">
+                {signInClicked ? <Icons.spinner className="mr-2 size-4 animate-spin" /> : <Mail className="mr-2 size-4" />} Continue with Email
             </Button>
         </form>
     );

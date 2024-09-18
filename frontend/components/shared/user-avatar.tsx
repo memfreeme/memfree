@@ -37,7 +37,6 @@ export const UserAvatar = memo(({ user, ...props }: UserAvatarProps) => {
 
     const getBadge = () => badgeMap[level] ?? null;
     const badge = useMemo(() => getBadge(), [level]);
-
     return (
         <div className="relative inline-block">
             <Avatar {...props}>

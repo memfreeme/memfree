@@ -28,7 +28,14 @@ export function BillingFormButton({ year, offer, subscriptionPlan }: BillingForm
     const userOffer = subscriptionPlan.stripePriceId === offer.stripeIds[year ? 'yearly' : 'monthly'];
 
     const renderButton = (isOnce: boolean) => (
-        <Button variant={isOnce ? 'outline' : 'default'} rounded="full" className="w-full" disabled={isPending} onClick={createStripeSession(isOnce)}>
+        <Button
+            variant={isOnce ? 'outline' : 'default'}
+            rounded="full"
+            className="w-full"
+            disabled={isPending}
+            onClick={createStripeSession(isOnce)}
+            data-umami-event="Pay Click"
+        >
             {isPending ? (
                 <>
                     <Icons.spinner className="mr-2 size-4 animate-spin" /> Loading...
