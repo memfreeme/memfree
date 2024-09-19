@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { toast } from 'sonner';
 
-import { uploadFiles } from '@/lib/uploadthing';
-
 import { type ClientUploadedFileData } from 'uploadthing/types';
 import { getAuthToken } from '@/actions/token';
 
@@ -42,6 +40,7 @@ export function useUploadFile() {
         setIsUploading(true);
         try {
             if (files[0].type.startsWith('image/')) {
+                const { uploadFiles } = await import('@/lib/uploadthing');
                 const res = await uploadFiles('imageUploader', {
                     files,
                 });
