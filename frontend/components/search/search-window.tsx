@@ -6,7 +6,6 @@ import SearchMessage from '@/components/search/search-message';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useSearchParams } from 'next/navigation';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import SearchBar from '@/components/search/search-bar';
 import { configStore, useProfileStore } from '@/lib/store';
 
 import { ImageSource, Message, TextSource, User, VideoSource } from '@/lib/types';
@@ -21,6 +20,7 @@ import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
 import { DemoQuestions } from '@/components/search/demo-questions';
 import useSearchLimit from '@/lib/store/local-limit';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 
 export interface SearchProps extends React.ComponentProps<'div'> {
     id?: string;
@@ -300,6 +300,9 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
     );
 
     const messages = activeSearch?.messages ?? initialMessages ?? [];
+    const SearchBar = dynamic(() => import('@/components/search/search-bar'), {
+        loading: () => <></>,
+    });
     return (
         <div className="group overflow-auto mx-auto w-full md:w-5/6  px-4 md:px-0 flex flex-col my-2" ref={scrollRef}>
             <div className="flex flex-col w-full">

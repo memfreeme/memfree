@@ -154,7 +154,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     const t = useTranslations('SearchBar');
 
     const IndexModal = dynamic(() => import('@/components/index/index-model').then((mod) => mod.IndexModal), {
-        loading: () => <p>Loading ...</p>,
+        loading: () => <></>,
     });
 
     return (

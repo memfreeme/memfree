@@ -16,7 +16,7 @@ interface NavBarProps {
     user: User;
 }
 
-export function SidebarOpen({ user }: NavBarProps) {
+export default function SidebarOpen({ user }: NavBarProps) {
     const { toggleSidebar, isSidebarOpen } = useSidebar();
     const router = useRouter();
     const handleHomeClick = (e) => {

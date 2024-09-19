@@ -52,14 +52,8 @@ export function SidebarList({ user }: SidebarListProps) {
                             (search, index) =>
                                 search && (
                                     <div key={search?.id}>
-                                        <SidebarItem
-                                            index={index}
-                                            search={search}
-                                        >
-                                            <SidebarActions
-                                                search={search}
-                                                removeSearch={removeSearch}
-                                            />
+                                        <SidebarItem index={index} search={search}>
+                                            <SidebarActions search={search} removeSearch={removeSearch} />
                                         </SidebarItem>
                                     </div>
                                 ),
@@ -67,17 +61,10 @@ export function SidebarList({ user }: SidebarListProps) {
                     </div>
                 ) : (
                     <div className="p-8 text-center">
-                        <p className="text-sm text-muted-foreground">
-                            No Search history
-                        </p>
+                        <p className="text-sm text-muted-foreground">No Search history</p>
                     </div>
                 )}
-                <InfiniteScroll
-                    hasMore={hasMore}
-                    isLoading={loading}
-                    next={next}
-                    threshold={1}
-                >
+                <InfiniteScroll hasMore={hasMore} isLoading={loading} next={next} threshold={1}>
                     {hasMore && (
                         <div className="flex justify-center my-4">
                             <Loader2 className="size-6 text-primary animate-spin mr-2" />
@@ -86,6 +73,7 @@ export function SidebarList({ user }: SidebarListProps) {
                     )}
                 </InfiniteScroll>
             </div>
+
             <div className="flex items-center justify-between p-3 border-t">
                 {user && <UserAccountNav user={user} />}
                 <ModeToggle />
