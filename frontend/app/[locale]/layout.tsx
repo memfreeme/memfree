@@ -96,7 +96,7 @@ export default async function RootLayout({ children, params: { locale } }: { chi
                         </TooltipProvider>
                     </SidebarProvider>
                 </ThemeProvider>
-                <Script defer src="https://accounts.google.com/gsi/client" />
+                <Script defer src="https://accounts.google.com/gsi/client" strategy="lazyOnload" />
                 <Script defer src="https://umami-memfree.fly.dev/script.js" data-website-id="ab239486-e4d4-416b-baa5-9174338a1bf6"></Script>
             </body>
         </html>
