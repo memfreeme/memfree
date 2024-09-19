@@ -108,6 +108,7 @@ export async function autoAnswer(
                     if (delta.toolName === 'getInformation') {
                         texts = texts.concat(delta.result.texts);
                         images = images.concat(delta.result.images);
+                        console.log(`rewrite ${rewriteQuery} to ${delta.args.question}`);
                         rewriteQuery = delta.args.question;
                     } else if (delta.toolName === 'accessWebPage') {
                         texts = texts.concat(delta.result.texts);
@@ -133,16 +134,16 @@ export async function autoAnswer(
             const imageFetchPromise = getSearchEngine({
                 categories: [SearchCategory.IMAGES],
             })
-                .search(query)
+                .search(rewriteQuery)
                 .then((results) => results.images.filter((img) => img.image.startsWith('https')));
 
             const videoFetchPromise = getSearchEngine({
                 categories: [SearchCategory.VIDEOS],
-            }).search(query);
+            }).search(rewriteQuery);
 
             fullAnswer = '';
             await streamResponse({ status: 'Answering ...', clear: true }, onStream);
-            await directlyAnswer(isPro, source, history, profile, getLLM(model), rewriteQuery, texts, (msg) => {
+            await directlyAnswer(isPro, source, history, profile, getLLM(model), query, texts, (msg) => {
                 fullAnswer += msg;
                 onStream?.(JSON.stringify({ answer: msg }));
             });

@@ -1,18 +1,9 @@
-import {
-    getSearchEngine,
-    getVectorSearch,
-    TEXT_LIMIT,
-} from '@/lib/search/search';
+import { getSearchEngine, getVectorSearch, TEXT_LIMIT } from '@/lib/search/search';
 import { ImageSource, SearchCategory, TextSource } from '@/lib/types';
 import { rerank } from '@/lib/rerank';
 import { streamResponse } from '@/lib/llm/utils';
 
-export const searchRelevantContent = async (
-    query: string,
-    userId: string,
-    source: SearchCategory,
-    onStream?: (...args: any[]) => void,
-) => {
+export const searchRelevantContent = async (query: string, userId: string, source: SearchCategory, onStream?: (...args: any[]) => void) => {
     let texts: TextSource[] = [];
     let images: ImageSource[] = [];
     const searchOptions = {
@@ -25,10 +16,7 @@ export const searchRelevantContent = async (
         const vectorSearchPromise = getVectorSearch(userId).search(query);
         const webSearchPromise = getSearchEngine(searchOptions).search(query);
 
-        const [vectorResponse, webResponse] = await Promise.all([
-            vectorSearchPromise,
-            webSearchPromise,
-        ]);
+        const [vectorResponse, webResponse] = await Promise.all([vectorSearchPromise, webSearchPromise]);
 
         ({ texts, images } = vectorResponse);
 
@@ -39,10 +27,7 @@ export const searchRelevantContent = async (
         texts = [...texts, ...webTexts];
         images = [...images, ...webImages];
 
-        await streamResponse(
-            { sources: texts, status: 'Searching ...' },
-            onStream,
-        );
+        await streamResponse({ sources: texts, status: 'Searching ...' }, onStream);
 
         if (texts.length > 10) {
             const documents = texts.map((item) => item.content);
@@ -50,21 +35,14 @@ export const searchRelevantContent = async (
             texts = rerankedTexts.map((rerankedDoc) => {
                 return texts[rerankedDoc.index];
             });
-            await streamResponse(
-                { sources: texts, status: 'Thinking ...' },
-                onStream,
-            );
+            await streamResponse({ sources: texts, status: 'Thinking ...' }, onStream);
         }
     }
 
     if (!texts.length) {
-        ({ texts, images } =
-            await getSearchEngine(searchOptions).search(query));
+        ({ texts, images } = await getSearchEngine(searchOptions).search(query));
 
-        await streamResponse(
-            { sources: texts, status: 'Thinking ...' },
-            onStream,
-        );
+        await streamResponse({ sources: texts, status: 'Thinking ...' }, onStream);
     }
     texts = texts.slice(0, TEXT_LIMIT);
 
