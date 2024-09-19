@@ -2,7 +2,7 @@
 
 import React, { KeyboardEvent, useRef, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { SendHorizontal, FileTextIcon, Database, XIcon } from 'lucide-react';
+import { SendHorizontal, FileTextIcon, Database } from 'lucide-react';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { ModelSelection } from '@/components/search/model-selection';
@@ -12,12 +12,13 @@ import { useUserStore } from '@/lib/store';
 import { toast } from 'sonner';
 import { Icons } from '@/components/shared/icons';
 import Image from 'next/image';
-import { FileRejection, useDropzone } from 'react-dropzone';
+import { type FileRejection, useDropzone } from 'react-dropzone';
 import { useUploadFile } from '@/hooks/use-upload-file';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { getFileSizeLimit, processImageFiles } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { isProUser } from '@/lib/shared-utils';
+import dynamic from 'next/dynamic';
 
 interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
@@ -47,7 +48,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
     };
 
     const handleInputKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-        if (isUploading || !content) {
+        if (isUploading || !content.trim()) {
             return;
         }
         if (e.code === 'Enter' && !e.shiftKey) {
@@ -152,9 +153,9 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
 
     const t = useTranslations('SearchBar');
 
-    const removeFile = (index: number) => {
-        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-    };
+    const IndexModal = dynamic(() => import('@/components/index/index-model').then((mod) => mod.IndexModal), {
+        loading: () => <p>Loading ...</p>,
+    });
 
     return (
         <div className="w-full text-center">
@@ -272,6 +273,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                 <ModelSelection />
                 <SourceSelection />
             </div>
+            {user && <IndexModal />}
         </div>
     );
 };

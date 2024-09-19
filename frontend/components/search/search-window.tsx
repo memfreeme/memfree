@@ -6,7 +6,7 @@ import SearchMessage from '@/components/search/search-message';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useSearchParams } from 'next/navigation';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import SearchBar from '@/components/search-bar';
+import SearchBar from '@/components/search/search-bar';
 import { configStore, useProfileStore } from '@/lib/store';
 
 import { ImageSource, Message, TextSource, User, VideoSource } from '@/lib/types';

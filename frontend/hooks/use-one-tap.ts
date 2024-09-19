@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
-import {
-    type CredentialResponse,
-    type PromptMomentNotification,
-} from 'google-one-tap';
+import { type CredentialResponse } from 'google-one-tap';
 import { User } from 'next-auth';
 
 const useOneTapSignin = (options, user: User) => {
@@ -31,26 +28,7 @@ const useOneTapSignin = (options, user: User) => {
                 },
             });
 
-            google.accounts.id.prompt(
-                (notification: PromptMomentNotification) => {
-                    if (notification.isNotDisplayed()) {
-                        console.log(
-                            'getNotDisplayedReason ::',
-                            notification.getNotDisplayedReason(),
-                        );
-                    } else if (notification.isSkippedMoment()) {
-                        console.log(
-                            'getSkippedReason  ::',
-                            notification.getSkippedReason(),
-                        );
-                    } else if (notification.isDismissedMoment()) {
-                        console.log(
-                            'getDismissedReason ::',
-                            notification.getDismissedReason(),
-                        );
-                    }
-                },
-            );
+            google.accounts.id.prompt();
         }
     };
 
