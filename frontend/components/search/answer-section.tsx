@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { BookKey } from 'lucide-react';
-import MyMarkdown from '@/components/search/my-markdown';
+import dynamic from 'next/dynamic';
+
+const MyMarkdown = dynamic(() => import('@/components/search/my-markdown'), {
+    loading: () => <p>Loading...</p>,
+});
 
 const AnswerSection = ({ title, content, sources }) => {
     return (

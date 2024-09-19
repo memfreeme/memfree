@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import { AvatarProps } from '@radix-ui/react-avatar';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -36,7 +36,6 @@ export const UserAvatar = memo(({ user, ...props }: UserAvatarProps) => {
     const level = getUserLevel(user);
 
     const getBadge = () => badgeMap[level] ?? null;
-    const badge = useMemo(() => getBadge(), [level]);
     return (
         <div className="relative inline-block">
             <Avatar {...props}>
@@ -49,7 +48,7 @@ export const UserAvatar = memo(({ user, ...props }: UserAvatarProps) => {
                     </AvatarFallback>
                 )}
             </Avatar>
-            {badge}
+            {getBadge()}
         </div>
     );
 });
