@@ -2,17 +2,10 @@ import { getCurrentUser } from '@/lib/session';
 import { Suspense } from 'react';
 import SiteHeader from '@/components/layout/site-header';
 import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
-import { mainNavConfig, siteConfig } from '@/config';
+import { mainNavConfig } from '@/config';
 import { unstable_setRequestLocale } from 'next-intl/server';
 
-interface MarketingLayoutProps {
-    children: React.ReactNode;
-}
-
-export default async function MarketingLayout({
-    children,
-    params: { locale },
-}) {
+export default async function MarketingLayout({ children, params: { locale } }) {
     unstable_setRequestLocale(locale);
     const user = await getCurrentUser();
     return (

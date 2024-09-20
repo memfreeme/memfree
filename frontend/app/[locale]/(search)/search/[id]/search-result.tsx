@@ -1,6 +1,6 @@
 'use client';
 
-import { SearchWindow } from '@/components/search/search-window';
+import SearchWindow from '@/components/search/search-window';
 import { useSearchStore } from '@/lib/store/local-history';
 import { getSearch } from '@/lib/store/search';
 import { Search, User } from '@/lib/types';
@@ -27,5 +27,5 @@ export default function SearchResult({ id, user }: SearchPageProps) {
         }
     }, [id, user, search]);
 
-    return <SearchWindow id={id} initialMessages={search?.messages ?? []} user={user}></SearchWindow>;
+    return <SearchWindow id={id} initialMessages={search?.messages ?? []} user={user} demoQuestions={<></>}></SearchWindow>;
 }

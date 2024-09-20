@@ -17,24 +17,14 @@ export function SidebarMobile({ children }: SidebarMobileProps) {
     const { isMobile } = useMediaQuery();
     const { isSidebarOpen, toggleSidebar } = useSidebar();
     return (
-        <Sheet
-            open={isMobile && isSidebarOpen}
-            defaultOpen={false}
-            onOpenChange={toggleSidebar}
-        >
+        <Sheet open={isMobile && isSidebarOpen} defaultOpen={false} onOpenChange={toggleSidebar}>
             <SheetTrigger asChild>
-                <Button
-                    variant="ghost"
-                    className="-ml-2 flex size-9 p-0 lg:hidden"
-                >
+                <Button variant="ghost" className="-ml-2 flex size-9 p-0 lg:hidden">
                     <AlignJustify className="size-6 text-primary" />
                     <span className="sr-only">Toggle Sidebar</span>
                 </Button>
             </SheetTrigger>
-            <SheetContent
-                side="left"
-                className="inset-y-0 flex h-auto w-[300px] flex-col p-0"
-            >
+            <SheetContent side="left" className="inset-y-0 flex h-auto w-[300px] flex-col p-0">
                 <Sidebar className="flex">{children}</Sidebar>
             </SheetContent>
         </Sheet>

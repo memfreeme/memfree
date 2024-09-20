@@ -17,19 +17,19 @@ import { isProUser, extractAllImageUrls } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useSearchStore } from '@/lib/store/local-history';
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
-import { DemoQuestions } from '@/components/search/demo-questions';
 import useSearchLimit from '@/lib/store/local-limit';
 import { useTranslations } from 'next-intl';
-import dynamic from 'next/dynamic';
+import SearchBar from '@/components/search/search-bar';
 
 export interface SearchProps extends React.ComponentProps<'div'> {
     id?: string;
     initialMessages?: Message[];
     user?: User;
     isReadOnly?: boolean;
+    demoQuestions: React.ReactNode;
 }
 
-export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: SearchProps) {
+export default function SearchWindow({ id, initialMessages, user, isReadOnly = false, demoQuestions }: SearchProps) {
     const t = useTranslations('Search');
     const searchParams = useSearchParams();
     const signInModal = useSigninModal();
@@ -300,9 +300,6 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
     );
 
     const messages = activeSearch?.messages ?? initialMessages ?? [];
-    const SearchBar = dynamic(() => import('@/components/search/search-bar'), {
-        loading: () => <></>,
-    });
     return (
         <div className="group overflow-auto mx-auto w-full md:w-5/6  px-4 md:px-0 flex flex-col my-2" ref={scrollRef}>
             <div className="flex flex-col w-full">
@@ -329,7 +326,7 @@ export function SearchWindow({ id, initialMessages, user, isReadOnly = false }: 
                 </div>
             )}
             <div className="w-full h-px" ref={visibilityRef} />
-            {messages.length === 0 && <DemoQuestions />}
+            {messages.length === 0 && demoQuestions}
 
             {!isReadOnly && <SearchBar handleSearch={stableHandleSearch} />}
             <ButtonScrollToBottom isAtBottom={isVisible} scrollToBottom={scrollToBottom} />

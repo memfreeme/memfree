@@ -1,7 +1,9 @@
-import { useTranslations } from 'next-intl';
+'use server';
 
-export function HeroLanding() {
-    const t = useTranslations('HomePage');
+import { getTranslations } from 'next-intl/server';
+
+export async function HeroLanding() {
+    const t = await getTranslations('HomePage');
     return (
         <section className="py-10">
             <div className="flex flex-col items-center text-center space-y-4">

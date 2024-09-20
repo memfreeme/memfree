@@ -1,8 +1,10 @@
-import { useTranslations } from 'next-intl';
+'use server';
+
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 
-export function DemoQuestions() {
-    const t = useTranslations('DemoQuestions');
+export async function DemoQuestions() {
+    const t = await getTranslations('DemoQuestions');
     const demoQuestions = [
         {
             title: t('title5'),
