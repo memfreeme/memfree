@@ -6,7 +6,6 @@ import SearchWindow from '@/components/search/search-window';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { DemoQuestions } from '@/components/search/demo-questions';
 
 interface SharePageProps {
     params: {

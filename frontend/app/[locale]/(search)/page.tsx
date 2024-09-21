@@ -16,9 +16,11 @@ export default async function IndexPage() {
     const user = await getCurrentUser();
 
     return (
-        <div className="group w-full h-lvh mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
-            <HeroLanding />
-            <SearchWindow id={id} user={user} initialMessages={[]} demoQuestions={<DemoQuestions />} />
+        <div className="group w-full flex flex-col flex-1 h-lvh mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
+            <div className="flex-grow">
+                <HeroLanding />
+                <SearchWindow id={id} user={user} initialMessages={[]} demoQuestions={<DemoQuestions />} />
+            </div>
             <SimpleSiteFooter />
         </div>
     );

@@ -6,8 +6,8 @@ import { BookText } from 'lucide-react';
 export function SimpleSiteFooter() {
     return (
         <footer>
-            <div className="mx-auto p-4 pt-10">
-                <ul className="mt-8 flex justify-center gap-6 md:gap-8">
+            <div className="mx-auto py-10">
+                <ul className="flex justify-center gap-6 md:gap-8">
                     <li className="mx-2">
                         <Link
                             href={siteConfig.links.github}
@@ -19,22 +19,12 @@ export function SimpleSiteFooter() {
                             <Icons.gitHub className="size-5 hover:text-primary" />
                         </Link>
                     </li>
-                    {/* <li className="mx-2">
-                        <Link
-                            href={siteConfig.links.twitter}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="MemFree Twitter"
-                        >
-                            <Icons.twitter className="size-5 hover:text-primary" />
-                        </Link>
-                    </li> */}
+
                     <li className="mx-2">
                         <Link
                             data-featurebase-link
                             href="https://feedback.memfree.me"
                             target="_blank"
-                            rel="noopener noreferrer"
                             aria-label="MemFree Feedback"
                             data-umami-event="Feedback Link Click"
                         >
@@ -46,16 +36,6 @@ export function SimpleSiteFooter() {
                             <BookText className="size-5 hover:text-primary" />
                         </Link>
                     </li>
-                    {/* <li className="mx-2">
-                        <a
-                            href={siteConfig.links.discord}
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label="MemFree Discord"
-                        >
-                            <Icons.discord className="size-5 hover:text-primary" />
-                        </a>
-                    </li> */}
                 </ul>
             </div>
         </footer>

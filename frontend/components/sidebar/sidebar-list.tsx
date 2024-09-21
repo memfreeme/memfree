@@ -74,7 +74,7 @@ export function SidebarList({ user }: SidebarListProps) {
                 </InfiniteScroll>
             </div>
 
-            <div className="flex items-center justify-between p-3 border-t">
+            <div className="flex items-center justify-between p-1 border-t">
                 {user && <UserAccountNav user={user} />}
                 <ModeToggle />
                 <LocaleSelect className="hover:bg-accent hover:text-accent-foreground" />
