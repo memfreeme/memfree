@@ -3,10 +3,10 @@
 <a href="https://www.memfree.me">
   <img alt="MemFree – Hybrid AI Search Engine" src=".assets/memfree-ai-search.gif" width="100%">
 </a>
-<a href="https://www.memfree.me">
-  <h1 align="center">MemFree</h1>
-  <p align="center"><b>An Open Source Hybrid AI Search Engine</b></p>
-</a>
+
+<h1 align="center"><a href="https://www.memfree.me">MemFree</a></h1>
+
+<p align="center"><b><a href="https://www.memfree.me">An Open Source Hybrid AI Search Engine</a></b></p>
 
 <h4 align="center">
   <a href="https://twitter.com/ahaapple2023">
@@ -19,7 +19,7 @@
     <img src="https://img.shields.io/github/commit-activity/m/memfreeme/memfree" alt="git commit activity" />
   </a>
     <a href="https://chromewebstore.google.com/detail/memfree/dndjodcanbhkomcgihbhcejogiimdmpk">
-    <img src="https://img.shields.io/chrome-web-store/v/afpgkkipfdpeaflnpoaffkcankadgjfc?style=flat-square&color=blueviolet" alt="Chrome Web Store">
+    <img src="https://img.shields.io/chrome-web-store/v/dndjodcanbhkomcgihbhcejogiimdmpk?style=flat-square&color=blueviolet" alt="Chrome Web Store">
   </a>
   <a href="https://discord.com/invite/7QqyMSTaRq">
     <img src="https://img.shields.io/badge/chat-on%20Discord-blueviolet" alt="Discord Channel" />
