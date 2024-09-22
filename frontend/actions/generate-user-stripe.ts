@@ -68,13 +68,23 @@ export async function generateUserStripe(priceId: string, isonce: boolean): Prom
                 redirectUrl = stripeSession.url as string;
             }
         }
+        log({
+            service: 'stripe',
+            action: 'generate-stripe-checkout',
+            locale: locale,
+            userId: session?.user.id,
+            priceId: priceId,
+            isonce: isonce,
+        });
     } catch (error) {
         console.error('Failed to generate user stripe session', error);
         log({
             service: 'stripe',
-            action: 'generate-user-stripe',
+            action: 'generate-stripe-checkout',
             message: 'Failed to generate user stripe session',
             userId: session?.user.id,
+            priceId: priceId,
+            isonce: isonce,
             error: error instanceof Error ? error.message : String(error),
         });
         throw new Error('Failed to generate user stripe session', error);
