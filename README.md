@@ -6,7 +6,21 @@
 
 <h1 align="center"><a href="https://www.memfree.me">MemFree</a></h1>
 
-<p align="center"><b><a href="https://www.memfree.me">An Open Source Hybrid AI Search Engine</a></b></p>
+<h2 align="center">Vote for MemFree on 2024-09-27 for a 20% discount!</h2>
+
+<h3 align="center">
+<a
+href="https://www.producthunt.com/posts/memfree?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-memfree"
+target="\_blank"
+
+<img
+src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=491138&theme=light"
+alt="MemFree - Hybrid&#0032;AI&#0032;Search | Product Hunt"
+width="250"
+height="54"/>
+
+</a>
+</h3>
 
 <h4 align="center">
   <a href="https://twitter.com/ahaapple2023">
