@@ -55,7 +55,7 @@ With MemFree, you can instantly get Accurate Answers from your knowledge base an
 
 - Multi AI Models: ChatGPT, Claude, Gemini
 
-- Milti Search Engines: Google, Exa, Vector
+- Multi Search Engines: Google, Exa, Vector
 
 - Multi Local file formats: Txt, PDF, Docx, PPTX, Markdown
 
