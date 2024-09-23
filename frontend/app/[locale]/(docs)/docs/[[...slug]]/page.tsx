@@ -14,7 +14,7 @@ import { Metadata } from 'next';
 import { absoluteUrl } from '@/lib/utils';
 import { siteConfig } from '@/config';
 import { GitHubButton } from '@/components/shared/github-button';
-import { Locale, routing } from '@/i18n/routing';
+import { type Locale, routing } from '@/i18n/routing';
 import { unstable_setRequestLocale } from 'next-intl/server';
 
 interface DocPageProps {
@@ -24,24 +24,19 @@ interface DocPageProps {
     };
 }
 
-interface DocPageParams {
-    slug?: string[];
-}
-
-async function getDocFromParams(params: DocPageParams) {
+async function getDocFromParams(params) {
     const slug = params.slug?.join('/') || '';
-    const doc = allDocs.find((doc) => doc.slugAsParams === slug);
+    const locale = params?.locale ?? 'en';
 
+    const doc = allDocs.find((doc) => doc.slugAsParams === slug && doc.locale === locale);
     if (!doc) {
-        null;
+        return allDocs.find((doc) => doc.slugAsParams === slug && doc.locale === 'en');
     }
 
     return doc;
 }
 
-export async function generateMetadata({
-    params,
-}: DocPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: DocPageProps): Promise<Metadata> {
     const doc = await getDocFromParams(params);
 
     if (!doc) {
@@ -77,9 +72,7 @@ export async function generateMetadata({
     };
 }
 
-export async function generateStaticParams(): Promise<
-    DocPageProps['params'][]
-> {
+export async function generateStaticParams(): Promise<DocPageProps['params'][]> {
     const locales = routing.locales;
     return allDocs.flatMap((doc) =>
         locales.map((locale) => ({

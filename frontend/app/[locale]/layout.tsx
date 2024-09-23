@@ -31,7 +31,7 @@ export async function generateMetadata({ params: { locale } }) {
         description: t('description'),
         authors: [
             {
-                name: t('name'),
+                name: 'MemFree',
             },
         ],
         creator: t('name'),

@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { allAuthors, allPosts } from 'contentlayer/generated';
+import { allPosts } from 'contentlayer/generated';
 
 import { Mdx } from '@/components/content/mdx-components';
 
@@ -13,7 +13,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { siteConfig } from '@/config';
 import { GitHubButton } from '@/components/shared/github-button';
 import { unstable_setRequestLocale } from 'next-intl/server';
-import { Locale, routing } from '@/i18n/routing';
+import { type Locale, routing } from '@/i18n/routing';
 
 interface PostPageProps {
     params: {
@@ -24,18 +24,16 @@ interface PostPageProps {
 
 async function getPostFromParams(params) {
     const slug = params?.slug?.join('/');
-    const post = allPosts.find((post) => post.slugAsParams === slug);
-
+    const locale = params?.locale ?? 'en';
+    const post = allPosts.find((post) => post.slugAsParams === slug && post.locale === locale);
     if (!post) {
-        null;
+        return allPosts.find((post) => post.slugAsParams === slug && post.locale === 'en');
     }
 
     return post;
 }
 
-export async function generateMetadata({
-    params,
-}: PostPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
     const post = await getPostFromParams(params);
 
     if (!post) {
@@ -45,9 +43,11 @@ export async function generateMetadata({
     return {
         title: post.title,
         description: post.description,
-        authors: post.authors.map((author) => ({
-            name: author,
-        })),
+        authors: [
+            {
+                name: 'MemFree',
+            },
+        ],
         openGraph: {
             title: post.title,
             description: post.description,
@@ -74,9 +74,7 @@ export async function generateMetadata({
     };
 }
 
-export async function generateStaticParams(): Promise<
-    PostPageProps['params'][]
-> {
+export async function generateStaticParams(): Promise<PostPageProps['params'][]> {
     const locales = routing.locales;
     return allPosts.flatMap((post) =>
         locales.map((locale) => ({
@@ -94,76 +92,25 @@ export default async function PostPage({ params }: PostPageProps) {
         notFound();
     }
 
-    const authors = post.authors.map((author) =>
-        allAuthors.find(({ slug }) => slug === `/authors/${author}`),
-    );
-
     return (
         <article className="container flex flex-col items-center px-30 md:px-60">
             <div>
                 {post.date && (
-                    <time
-                        dateTime={post.date}
-                        className="block text-sm text-muted-foreground"
-                    >
+                    <time dateTime={post.date} className="block text-sm text-muted-foreground">
                         Published on {formatDate(post.date)}
                     </time>
                 )}
-                <h1 className="mt-2 inline-block  font-heading text-2xl leading-tight">
-                    {post.title}
-                </h1>
-                {authors?.length ? (
-                    <div className="mt-4 flex space-x-4">
-                        {authors.map((author) =>
-                            author ? (
-                                <Link
-                                    key={author._id}
-                                    href={`https://twitter.com/${author.twitter}`}
-                                    className="flex items-center space-x-2 text-sm"
-                                >
-                                    <Image
-                                        src={author.avatar}
-                                        alt={author.title}
-                                        width={42}
-                                        height={42}
-                                        className="rounded-full bg-white"
-                                    />
-                                    <div className="flex-1 text-left leading-tight">
-                                        <p className="font-medium">
-                                            {author.title}
-                                        </p>
-                                        <p className="text-[12px] text-muted-foreground">
-                                            @{author.twitter}
-                                        </p>
-                                    </div>
-                                </Link>
-                            ) : null,
-                        )}
-                    </div>
-                ) : null}
+                <h1 className="mt-2 inline-block  font-heading text-2xl leading-tight">{post.title}</h1>
             </div>
             {post.image && (
-                <Image
-                    src={post.image}
-                    alt={post.title}
-                    width={720}
-                    height={405}
-                    className="my-8 rounded-md border bg-muted transition-colors"
-                    priority
-                />
+                <Image src={post.image} alt={post.title} width={720} height={405} className="my-8 rounded-md border bg-muted transition-colors" priority />
             )}
             <Mdx code={post.body.code} />
 
             <GitHubButton />
 
             <div className="flex justify-center py-6">
-                <Link
-                    href="/blog"
-                    className={cn(
-                        buttonVariants({ size: 'lg', rounded: 'full' }),
-                        'gap-2',
-                    )}
-                >
+                <Link href="/blog" className={cn(buttonVariants({ size: 'lg', rounded: 'full' }), 'gap-2')}>
                     See all posts
                 </Link>
             </div>
