@@ -1,0 +1,57 @@
+---
+title: 一键部署您自己的混合AI搜索引擎
+description: 如何一键部署MemFree
+---
+
+## 您可以使用开源MemFree做什么
+
+-   您可以基于您的书签、笔记和文档部署 **您自己的混合AI搜索引擎**
+-   您可以先对某一主题的最佳资源进行索引，然后构建一个 **领域特定的AI搜索引擎**
+-   您可以先对一个网站的所有文档进行索引，然后为该网站构建一个 **智能问答助手**
+
+## 如何一键部署
+
+<Steps>
+
+### 使用Zeabur部署后端
+
+<a href="https://zeabur.com/templates/CE71SC?referralCode=memfree">
+    <img src="https://zeabur.com/button.svg" alt="在Zeabur上部署" />
+</a>
+
+-   您可以从 [Upstash Redis](https://upstash.com/docs/redis/overall/getstarted) 获取 `UPSTASH_REDIS_REST_URL` 和 `UPSTASH_REDIS_REST_TOKEN`
+-   您可以使用 `openssl rand -base64 32` 生成一个随机字符串作为API Token
+
+### 使用Vercel部署前端
+
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree&env=UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,OPENAI_API_KEY,SERPER_API_KEY,AUTH_SECRET&envDescription=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree%2Fblob%2Fmain%2Ffrontend%2Fenv-example&project-name=memfree&repository-name=memfree&demo-title=MemFree&demo-description=MemFree – 混合AI搜索引擎&demo-url=https%3A%2F%2Fwww.memfree.me%2F&demo-image=https%3A%2F%2Fwww.memfree.me%2Fog.png&root-directory=frontend">
+    <img src="https://vercel.com/button" alt="使用Vercel部署" />
+</a>
+
+-   您可以从 [OpenAI](https://platform.openai.com) 获取 `OPENAI_API_KEY`
+-   MEMFREE_HOST 是 `https://${PUBLIC_DOMAIN}.zeabur.app`
+-   AUTH_SECRET 是一个随机字符串，您可以使用 `openssl rand -base64 32` 生成它
+-   API_TOKEN 应与您在后端使用的相同
+
+### 一些可选变量
+
+-   为了启用更快的搜索，您可以在Vercel中设置 `SERPER_API_KEY`，您可以从 [Serper Dev](https://serper.dev) 获取 `SERPER_API_KEY`
+-   为了启用AXIOM日志，您可以在Vercel和Zeabur中设置 `AXIOM_TOKEN`，您可以从 [Axiom](https://axiom.co) 获取 `AXIOM_TOKEN`
+-   为了启用更快速的网页解析器，您可以在Zeabur中设置 `JINA_KEY`，您可以从 [Jina Reader](https://jina.ai/reader) 获取 `JINA_KEY`
+
+#### 3.1 AWS S3 Express Bucket
+
+为了方便开发者快速一键部署，memfree的向量数据库将数据存储在临时本地目录中。 **如果您想在生产环境中部署，请使用AWS S3 Express Bucket**
+
+1. 您可以参考 [如何创建S3 Express Bucket](https://www.memfree.me/search?q=How%20To%20Create%20S3%20Express%20One%20zone%20Bucket%20and%20get%20ACCESS_KEY,%20SECRET%20KEY%20and%20BUCKET%20name) 获取AWS变量
+2. 您需要在Zeabur Vector Service中设置以下变量
+    - `AWS_ACCESS_KEY_ID`
+    - `AWS_SECRET_ACCESS_KEY`
+    - `AWS_REGION`
+    - `AWS_BUCKET`
+
+### 反馈和帮助
+
+-   如果您有任何问题，请随时在 [Discord](https://discord.com/invite/7QqyMSTaRq) 中询问或在 [GitHub](https://github.com/memfreeme/memfree/issues) 提交问题
+
+</Steps>

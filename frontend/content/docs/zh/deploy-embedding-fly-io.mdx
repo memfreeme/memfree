@@ -1,0 +1,50 @@
+---
+title: One Command Deploy Embedding Service on Fly.io
+description: How to deploy Embedding Service on Fly.io
+---
+
+## 如何在 Zeabur 上部署嵌入服务
+
+您可以参考[一键部署您自己的混合 AI 搜索引擎](/docs/one-click-deploy-ai-search)
+
+## 如何在 Fly.io 上的 Zeabur 部署嵌入服务
+
+<Steps>
+
+### 获取 Fly.io 账户（可选）
+
+-   前往 [Fly.io](https://fly.io) 并创建一个账户。
+
+### 安装 Flyctl（可选）
+
+-   按照 [这里](https://fly.io/docs/flyctl/install/) 的说明安装 `flyctl`。
+
+### 从 GitHub 克隆嵌入代码
+
+```js
+git clone https://github.com/memfreeme/fast-embedding.git
+```
+
+### 部署嵌入服务
+
+```js
+fly deploy
+
+fly secrets set API_TOKEN={your token}
+```
+
+</Steps>
+
+## 在 Fly.io 上部署的优势
+
+您可以参考[一条命令在 Fly.io 上部署 Searxng](/docs/deploy-searxng-fly-io)
+
+## 为什么您需要部署自己的嵌入服务？
+
+您可以参考[混合 AI 搜索 1 -- 如何构建快速嵌入服务](/blog/fast-local-embedding-service)
+
+部署您自己的嵌入服务的主要原因是性能。通过本地嵌入服务，您可以在 **毫秒** 内获得结果。
+
+对于多语言文本嵌入，我测试发现 `paraphrase-MiniLM-L6-v2` 模型的结果优于 openai 的 `text-embedding-3-large` 模型。
+
+最后一点是，您的数据隐私更易于控制。

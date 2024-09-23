@@ -1,0 +1,42 @@
+---
+title: One Command Deploy Searxng on Fly.io
+description: How to deploy Searxng on Fly.io
+---
+
+## 如何在 Zeabur 上部署 Searxng
+
+您可以参考 [一键部署您自己的混合 AI 搜索引擎](/docs/one-click-deploy-ai-search)
+
+## 如何在 Fly.io 上部署 Searxng
+
+<Steps>
+
+### 获取 Fly.io 账户（可选）
+
+-   前往 [Fly.io](https://fly.io) 创建一个账户。
+
+### 安装 Flyctl（可选）
+
+-   按照 [这里](https://fly.io/docs/flyctl/install/) 的说明安装 `flyctl`。
+
+### 从 GitHub 克隆 Searxng 配置
+
+```js
+git clone https://github.com/memfreeme/searxng.git
+```
+
+### 部署 Searxng
+
+```js
+fly deploy
+```
+
+</Steps>
+
+## 在 Fly.io 上部署 Searxng 的优势
+
+1. **简单部署**：在 Fly.io 上部署 Searxng 只需运行一个命令。
+2. **全球边缘计算**：凭借 Fly.io 的广泛全球数据中心网络，您可以在世界各地的多个区域部署 Searxng。这确保您的实例始终靠近用户，无论用户位于何处，都能提供更快的响应时间。
+3. **自动扩展**：Fly.io 可以根据流量自动扩展您的 Searxng 实例。这意味着当流量较低时，您无需支付。当流量较高时，Fly.io 可以在 1 秒内启动多个节点以应对高并发。
+4. **高可用性**：当当前节点出现故障时，Fly.io 可以自动将您的 Searxng 实例迁移到另一个节点，确保您的 Searxng 实例始终可用。
+5. **日志和指标**：Fly.io 为您的 Searxng 实例提供详细的日志和指标，这可以帮助您实时监控 Searxng 实例的状态。

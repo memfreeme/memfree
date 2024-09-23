@@ -1,0 +1,45 @@
+---
+title: 一键部署 MemFree 在 Fly.io
+description: 如何在 Fly.io 上部署 MemFree
+---
+
+## 如何在 Zeabur 上部署 MemFree 向量服务
+
+您可以参考 [一键部署您自己的混合 AI 搜索引擎](/docs/one-click-deploy-ai-search)
+
+## 如何在 Fly.io 上部署 MemFree 向量服务
+
+<Steps>
+
+### 获取 Fly.io 账户（可选）
+
+-   前往 [Fly.io](https://fly.io) 并创建一个账户。
+
+### 安装 Flyctl（可选）
+
+-   按照 [这里](https://fly.io/docs/flyctl/install/) 的说明安装 `flyctl`。
+
+### 从 GitHub 克隆 MemFree 代码
+
+```js
+git clone https://github.com/memfreeme/memfree.git
+```
+
+### 部署 MemFree 向量服务
+
+```js
+cd vector
+
+cp fly.example.toml fly.toml
+
+将 fly.toml 中的 APP_NAME 更改为您的应用名称
+
+fly deploy
+
+```
+
+</Steps>
+
+## 在 Fly.io 上部署的优势
+
+您可以参考 [一键部署 Searxng 在 Fly.io](/docs/deploy-searxng-fly-io)
