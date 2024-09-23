@@ -3,8 +3,6 @@ title: MemFree Build Story 4 -- Bun stream response for gpt-4o image input
 description: Bun stream response for gpt-4o image input
 image: /images/blog/blog-post-3.jpg
 date: '2024-06-15'
-authors:
-    - MemFree
 ---
 
 MemFree's backend interface is built on Bun. It is very simple to use Bun to build a web API. This article introduces how to use Bun to build a gpt-4o web API that accepts images as input and returns results in a stream format.
@@ -26,8 +24,7 @@ export async function OpenAIStream(userInput: string) {
     const messages: Message[] = [
         {
             role: 'system',
-            content:
-                'You are a helpful assistant and you always address users as friend and you havily use emojies.',
+            content: 'You are a helpful assistant and you always address users as friend and you havily use emojies.',
         },
     ];
     messages.push({
@@ -81,16 +78,9 @@ async function readImageFile(filePath: string) {
 export async function chatImage() {
     const inputsDir = join(dirname(fileURLToPath(import.meta.url)), '/input');
 
-    const filePaths = await readdir(inputsDir).then((fileNames) =>
-        fileNames.map(
-            (fileName) =>
-                `/${relative(dirname(inputsDir), join(inputsDir, fileName))}`,
-        ),
-    );
+    const filePaths = await readdir(inputsDir).then((fileNames) => fileNames.map((fileName) => `/${relative(dirname(inputsDir), join(inputsDir, fileName))}`));
 
-    const base64Image = await readImageFile(filePaths[0]).then((file) =>
-        file.toString('base64'),
-    );
+    const base64Image = await readImageFile(filePaths[0]).then((file) => file.toString('base64'));
 
     const res = await openai.chat.completions.create({
         model: 'gpt-4o',
@@ -201,10 +191,7 @@ which is very easy:
 ```ts
 const response = new Response(stream);
 response.headers.set('Access-Control-Allow-Origin', '*');
-response.headers.set(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PUT, DELETE, OPTIONS',
-);
+response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 return response;
 ```
 
@@ -213,11 +200,7 @@ return response;
 If you don't want to introduce the `openai` dependence, you could directly request gpt-4o by HTTP. You just need to do some extra encoding and decoding, you need to a new dependence: `eventsource-parser`
 
 ```ts
-import {
-    createParser,
-    type ParsedEvent,
-    type ReconnectInterval,
-} from 'eventsource-parser';
+import { createParser, type ParsedEvent, type ReconnectInterval } from 'eventsource-parser';
 
 const apiKey = process.env.OPENAI_API_KEY;
 const host = process.env.OPEN_AI_URL || 'api.openai.com';
@@ -306,10 +289,7 @@ export default async function chatHttpImageIdea(req: Request) {
 
     const response = new Response(stream);
     response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set(
-        'Access-Control-Allow-Methods',
-        'GET, POST, PUT, DELETE, OPTIONS',
-    );
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     return response;
 }
 ```

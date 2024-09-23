@@ -3,8 +3,6 @@ title: The latest guide to integrating next‑intl with nextjs
 description: The key points of nextjs integration next‑intl
 image: /images/blog/blog-post-3.jpg
 date: '2024-09-04'
-authors:
-    - MemFree
 ---
 
 Recently, I enabled multilingual support for MemFree using next-intl. During the process, I encountered some issues.
@@ -50,9 +48,7 @@ In solving the previous issue, one problem encountered was how to combine `unsta
 I found the answer through MemFree search, and the core solution involves a for loop.
 
 ```ts
-export async function generateStaticParams(): Promise<
-    DocPageProps['params'][]
-> {
+export async function generateStaticParams(): Promise<DocPageProps['params'][]> {
     const locales = routing.locales;
     return allDocs.flatMap((doc) =>
         locales.map((locale) => ({
