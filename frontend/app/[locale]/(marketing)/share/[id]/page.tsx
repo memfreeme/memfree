@@ -1,3 +1,4 @@
+import { type Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { getSharedSearch } from '@/lib/store/search';
@@ -10,6 +11,15 @@ import { cn } from '@/lib/utils';
 interface SharePageProps {
     params: {
         id: string;
+    };
+}
+
+export async function generateMetadata({ params }: SharePageProps): Promise<Metadata> {
+    const search = await getSharedSearch(params.id);
+
+    return {
+        title: search?.title ?? 'MemFree - Hybrid AI Search',
+        description: search?.title ?? 'MemFree - Hybrid AI Search',
     };
 }
 
