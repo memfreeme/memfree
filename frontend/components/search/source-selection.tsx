@@ -37,13 +37,17 @@ export function SourceSelection() {
             name: t('Knowledge'),
             value: SearchCategory.KNOWLEDGE_BASE,
         },
+        [SearchCategory.PRODUCT_HUNT]: {
+            name: 'Product Hunt',
+            value: SearchCategory.PRODUCT_HUNT,
+        },
         [SearchCategory.ACADEMIC]: {
             name: t('Academic'),
             flag: 'Pro',
             value: SearchCategory.ACADEMIC,
         },
         [SearchCategory.TWEET]: {
-            name: t('Twitter'),
+            name: 'Twitter',
             flag: 'Pro',
             value: SearchCategory.TWEET,
         },

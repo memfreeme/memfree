@@ -1,6 +1,5 @@
 'use server';
 
-import { getCache, setCache } from '@/lib/cache';
 import { incSearchCount } from '@/lib/db';
 import { getLLM, Message } from '@/lib/llm/llm';
 import { getHistory, streamResponse } from '@/lib/llm/utils';
@@ -10,65 +9,61 @@ import { getSearchEngine, TEXT_LIMIT } from '@/lib/search/search';
 import { saveMessages } from '@/lib/server-utils';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { getRelatedQuestions } from '@/lib/tools/related';
-import { Message as StoreMessage, SearchCategory, TextSource } from '@/lib/types';
+import { Message as StoreMessage, SearchCategory } from '@/lib/types';
 
-export async function indieMakerSearch(messages: StoreMessage[], isPro: boolean, userId: string, onStream?: (...args: any[]) => void, model = GPT_4o_MIMI) {
+export async function productSearch(
+    messages: StoreMessage[],
+    isPro: boolean,
+    userId: string,
+    profile: string,
+    onStream?: (...args: any[]) => void,
+    model = GPT_4o_MIMI,
+) {
     try {
         const newMessages = messages.slice(-1) as Message[];
         const query = newMessages[0].content;
 
+        const domains = ['producthunt.com'];
         const imageFetchPromise = getSearchEngine({
             categories: [SearchCategory.IMAGES],
+            domains: domains,
         })
             .search(query)
             .then((results) => results.images.filter((img) => img.image.startsWith('https')));
 
-        const domains = ['indiehackers.com', 'producthunt.com', 'news.ycombinator.com'];
-        const randomIndex = Math.floor(Math.random() * domains.length);
-        const domain = domains[randomIndex];
-        const source = SearchCategory.INDIE_MAKER;
-        const searchOptions = {
-            domains: [domain],
-            categories: [source],
-        };
+        const videoFetchPromise = getSearchEngine({
+            categories: [SearchCategory.VIDEOS],
+        }).search(query);
 
-        let texts: TextSource[] = [];
-        const cacheResult = await getCache(query + domain);
-        if (cacheResult) {
-            texts = cacheResult.texts;
-        } else {
-            const searchResult = await getSearchEngine(searchOptions).search(query);
-            texts = searchResult.texts.slice(0, TEXT_LIMIT);
-            setCache(query + domain, { texts });
-        }
+        const source = SearchCategory.PRODUCT_HUNT;
+        const searchResult = await getSearchEngine({
+            categories: [source],
+            domains: domains,
+        }).search(query);
+
+        const texts = searchResult.texts.slice(0, TEXT_LIMIT);
 
         await streamResponse({ sources: texts, status: 'Answering ...' }, onStream);
 
         let history = getHistory(isPro, messages);
         let fullAnswer = '';
-        let rewriteQuery = query;
 
-        await directlyAnswer(
-            isPro,
-            source,
-            history,
-            '', // profile
-            getLLM(model),
-            rewriteQuery,
-            texts,
-            (msg) => {
-                fullAnswer += msg;
-                onStream?.(
-                    JSON.stringify({
-                        answer: msg,
-                    }),
-                );
-            },
-        );
+        await directlyAnswer(isPro, source, history, profile, getLLM(model), query, texts, (msg) => {
+            fullAnswer += msg;
+            onStream?.(
+                JSON.stringify({
+                    answer: msg,
+                }),
+            );
+        });
 
         const fetchedImages = await imageFetchPromise;
-        const images = [...fetchedImages];
+        const images = fetchedImages;
         await streamResponse({ images: images }, onStream);
+
+        const fetchedVideos = await videoFetchPromise;
+        const videos = fetchedVideos.videos.slice(0, 8);
+        await streamResponse({ videos: videos }, onStream);
 
         let fullRelated = '';
         onStream?.(
@@ -76,7 +71,7 @@ export async function indieMakerSearch(messages: StoreMessage[], isPro: boolean,
                 status: 'Generating related questions ...',
             }),
         );
-        await getRelatedQuestions(rewriteQuery, texts, (msg) => {
+        await getRelatedQuestions(query, texts, (msg) => {
             fullRelated += msg;
             onStream?.(
                 JSON.stringify({
@@ -89,10 +84,10 @@ export async function indieMakerSearch(messages: StoreMessage[], isPro: boolean,
             console.error(`Failed to increment search count for user ${userId}:`, error);
         });
 
-        await saveMessages(userId, messages, fullAnswer, texts, images, [], fullRelated);
+        await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated);
         onStream?.(null, true);
     } catch (error) {
-        logError(error, 'indie-search');
+        logError(error, 'producthunt-search');
         onStream?.(null, true);
     }
 }

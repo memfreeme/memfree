@@ -56,6 +56,7 @@ export enum SearchCategory {
     TWEET = 'tweet',
     INDIE_MAKER = 'indie-maker',
     HACKER_NEWS = 'hacker-news',
+    PRODUCT_HUNT = 'product-hunt',
     WEB_PAGE = 'web-page',
     KNOWLEDGE_BASE = 'knowledge-base',
 }

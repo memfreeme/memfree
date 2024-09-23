@@ -8,11 +8,11 @@ import { logError } from '@/lib/log';
 import { isProUser } from '@/lib/shared-utils';
 import { streamController } from '@/lib/llm/utils';
 import { SearchCategory } from '@/lib/types';
-import { indieMakerSearch } from '@/lib/tools/indie';
 import { containsValidUrl } from '@/lib/server-utils';
 import { knowledgeBaseSearch } from '@/lib/tools/knowledge-base';
 import { autoAnswer } from '@/lib/tools/auto';
 import { o1Answer } from '@/lib/tools/o1-answer';
+import { productSearch } from '@/lib/tools/product';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -90,8 +90,8 @@ export async function POST(req: NextRequest) {
                         await o1Answer(messages, isPro, userId, profile, streamController(controller), model);
                         break;
                     }
-                    case SearchCategory.INDIE_MAKER: {
-                        await indieMakerSearch(messages, isPro, userId, streamController(controller), model);
+                    case SearchCategory.PRODUCT_HUNT: {
+                        await productSearch(messages, isPro, userId, profile, streamController(controller), model);
                         break;
                     }
                     case SearchCategory.KNOWLEDGE_BASE: {

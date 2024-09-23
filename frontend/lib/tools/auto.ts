@@ -159,7 +159,7 @@ export async function autoAnswer(
             await streamResponse({ images: images, status: 'Fetch related videos ...' }, onStream);
 
             const fetchedVideos = await videoFetchPromise;
-            videos = fetchedVideos.videos;
+            videos = fetchedVideos.videos.slice(0, 8);
             await streamResponse({ videos: videos }, onStream);
         } else {
             await streamResponse({ status: 'Generating related questions ...' }, onStream);

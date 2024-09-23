@@ -9,7 +9,7 @@ export interface SearchOptions {
     categories?: string[];
     engines?: string[];
     language?: string;
-    domain?: string;
+    domains?: string[];
 }
 
 export interface AnySource {
@@ -41,10 +41,8 @@ export function getSearchEngine(options: SearchOptions): SearchSource {
     switch (categories[0]) {
         case SearchCategory.ALL:
             return new SerperSearch();
-        case SearchCategory.IMAGES:
-            return new SerperSearch(options);
         case SearchCategory.TWEET:
-            return new SerperSearch({ domain: 'x.com' });
+            return new SerperSearch({ domains: ['x.com'] });
         case SearchCategory.ACADEMIC:
             return new EXASearch({ categories: ['research paper'] });
         default:

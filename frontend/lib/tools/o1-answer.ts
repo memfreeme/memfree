@@ -77,7 +77,7 @@ export async function o1Answer(
         await streamResponse({ images: images }, onStream);
 
         const fetchedVideos = await videoFetchPromise;
-        videos = fetchedVideos.videos;
+        videos = fetchedVideos.videos.slice(0, 8);
         await streamResponse({ videos: videos }, onStream);
 
         incSearchCount(userId).catch((error) => {
