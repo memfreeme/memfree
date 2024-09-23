@@ -19,13 +19,15 @@ interface BlogPageProps {
     };
 }
 
+const getFilteredPosts = (locale) =>
+    allPosts.filter((post) => post.published && post.locale === locale).sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+
 export default async function BlogPage({ params }: BlogPageProps) {
     unstable_setRequestLocale(params.locale);
-    const posts = allPosts
-        .filter((post) => post.published && post.locale === 'en')
-        .sort((a, b) => {
-            return compareDesc(new Date(a.date), new Date(b.date));
-        });
+    let posts = getFilteredPosts(params.locale);
+    if (posts.length === 0) {
+        posts = getFilteredPosts('en');
+    }
 
     return (
         <main>

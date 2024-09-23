@@ -1,0 +1,119 @@
+---
+title: 混合 AI 搜索 3 - 完整技术栈
+description: 混合 AI 搜索的完整技术栈
+image: /images/blog/blog-post-2.jpg
+date: '2024-08-29'
+---
+
+## 编程语言：TypeScript
+
+毫无疑问，TypeScript（TS）已成为前端开发的首选语言。关键在于如何选择后端开发语言。借助 AI，学习和使用一种语言并不困难，重要的是如何高效开发。要实现高效开发，您需要熟悉相应编程语言的常用框架、编译工具、测试工具、部署工具和部署平台。尽管许多问题并不复杂，但它们都会占用我们宝贵的时间。**我们宝贵的时间应该花在最重要的事情上。**
+
+作为一名拥有 10 年编程经验的后端开发者，深度使用过 C++、Java、Python 和 Node，并且用 Python 开发 AI 后端 API 一年，**我决定使用 TS 进行后端开发，以保持前端和后端语言的一致性。**
+
+因此，您会发现 [MemFree](https://github.com/memfreeme/memfree) 项目的主要语言是 TS。
+
+## AI 模型：OpenAI + Anthropic + Google Gemini
+
+OpenAI 的 GPT-4o、Anthropic 的 Claude 3.5 Sonnet 和 Google 的 Gemini 1.5 Pro 目前是最先进的 AI 模型，我们需要允许用户根据自己的场景进行选择。
+
+## AI 模型的统一 API：Vercel AI SDK
+
+[Vercel AI SDK](https://github.com/vercel/ai)
+
+使用 Vercel AI SDK，您只需几行代码即可集成 AI 模型，轻松实现工具调用，并简便地支持图像输入。
+
+## TP 数据库：Upstash Redis
+
+我尝试过许多数据库，最终选择 [Upstash Redis](https://upstash.com/docs/redis/overall/getstarted) 的原因是：
+
+-   快
+-   ServerLess
+-   易用
+-   成本效益高
+
+## 向量数据库：LanceDB
+
+我尝试过许多数据库，还基于 Faiss 索引构建了一个向量搜索服务，最终选择 [LanceDB](https://lancedb.github.io/lancedb/) 的原因是：
+
+-   高性能列存储
+-   原生向量支持
+-   原生湖泊支持
+-   原生 Serverless
+-   使用简单，易于维护
+-   用 Rust 编写，高性能
+
+## 前端栈
+
+-   [Next.js](https://github.com/vercel/next.js)：最受欢迎的开源 React 框架
+-   [React](https://github.com/facebook/react)：构建用户界面最流行的开源 JavaScript 库
+-   [Shadcn-UI](https://github.com/shadcn-ui/ui)：基于 Radix UI 和 Tailwind CSS 的最流行的可重用开源组件库
+-   [Tailwindcss](https://github.com/tailwindlabs/tailwindcss)：最受欢迎的开源实用优先 CSS 框架
+-   [Prettier](https://github.com/prettier/prettier)：代码格式化工具
+-   [Stripe](https://github.com/stripe/stripe-node)：最流行且强大的支付方式
+-   [Contentlayer](https://github.com/contentlayerdev/contentlayer)：基于 md 或 mdx 文件为您网站构建博客和文档的最简单方式
+-   [Next‑intl](https://github.com/amannn/next-intl)：为 Next.js 应用程序提供的开源国际化（i18n）库，深度集成 Next.js，易于使用且性能高
+
+为什么？
+
+因为它们是最流行和强大的前端框架，当您遇到问题时，大多数问题都可以快速找到解决方案。**当您选择一个框架时，生态系统是您首先应该考虑的因素**，尽管 AI 现在可以帮助我们解决大多数问题。
+
+## TS 运行时：Bun
+
+[Bun](https://github.com/oven-sh/bun)
+
+我不会详细解释，只想说如果您还没有使用 bun，我强烈推荐您花几分钟时间使用，它超级快且易于使用。
+
+## 身份验证：Auth.js
+
+[Auth.js](https://github.com/nextauthjs/next-auth)
+
+-   功能强大的生态系统，集成 Google、GitHub、X、电子邮件等只需几分钟
+-   您应该拥有用户的身份验证数据，而不应该将其放在其他人的手中
+
+## 对象存储：Cloudflare R2 + AWS S3 Express
+
+[Cloudflare R2](https://www.cloudflare.com/developer-platform/r2/) 便宜但快速，[AWS S3 Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/) 快速但昂贵。
+
+因此，如果您想存储一些图像和文件，可以使用 Cloudflare R2；
+如果想存储数据库文件，则应使用 AWS S3 Express。
+
+最近，我正在尝试 [uploadthing](https://uploadthing.com/) 存储 MemFree 搜索中的临时文件和图像。如果我发现它稳定足够，会在一个月内更新。
+
+## 搜索 API：SearXNG + Serper + Exa
+
+[SearXNG](https://github.com/searxng/searxng) 便宜但慢，需要自我托管，[Serper](https://serper.dev/) 快速但昂贵。
+
+[Exa](https://exa.ai/) 是最昂贵的。目前，MemFree 主要使用 Exa 来支持 Twitter 内容搜索。
+
+您可以参考 [MemFree](https://github.com/memfreeme/memfree) 的混合使用。
+
+## 部署平台：Vercel + Fly.io
+
+-   [Vercel](https://vercel.com/home) 用于 Next.js 项目的部署
+-   [Fly.io](https://fly.io/) 用于后端状态项目的部署
+
+为什么？
+
+-   Vercel 为 Next.js 提供了无疑是最好的支持
+-   关于选择 fly.io 的原因，您可以参考 [在 Fly.io 上部署 Searxng 的优势](https://www.memfree.me/docs/deploy-searxng-fly-io#the-advantages-of-deploying-searxng-on-flyio)
+
+## 邮件：Resend + React Email
+
+-   [Resend](https://resend.com/)：开发者友好，RESTful API，批量发送邮件
+-   [React Email](https://github.com/resend/react-email)：当您使用 Resend 发送电子邮件时，React Email 是编写邮件的好帮手。
+
+## 日志系统：Axiom
+
+-   [Axiom](https://axiom.co/)：高性能且具成本效益
+
+## 网站分析：Cloudflare 网站分析
+
+-   [Cloudflare 网站分析](https://www.cloudflare.com/web-analytics/)：免费且易于使用
+
+## 混合 AI 搜索系列
+
+-   [混合 AI 搜索 1 - 如何构建快速嵌入服务](https://www.memfree.me/blog/fast-local-embedding-service)
+-   [混合 AI 搜索 2 - 如何使用 LanceDB 构建无服务器向量搜索](https://www.memfree.me/blog/serverless-vector-search-lancedb)
+-   [混合 AI 搜索 3 - 完整技术栈](https://www.memfree.me/blog/hybrid-ai-search-tech-stack)
+-   [混合 AI 搜索 4 - 快速免费获取推文内容](https://www.memfree.me/blog/tweet-content-fast-free)

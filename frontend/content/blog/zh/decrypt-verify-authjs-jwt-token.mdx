@@ -1,0 +1,83 @@
+---
+title: 如何解密和验证 auth.js 的 JWT 令牌
+description: 如何解密和验证 auth.js 的 JWT 令牌
+image: /images/blog/blog-post-3.jpg
+date: '2024-09-04'
+---
+
+[MemFree](https://www.memfree.me/) 需要支持为本地文件构建向量化索引。
+最初，我将文件直接上传到部署在 Vercel 上的 NextJS 服务。
+在解析文件并将其处理成统一格式后，我将文本发送到后端向量索引服务。
+
+## 1 Vercel 413 FUNCTION_PAYLOAD_TOO_LARGE 错误
+
+我最初顺利地运行了整个过程，并且测试成功。
+然而，当我上传大文件时，遇到了 Vercel 413 `FUNCTION_PAYLOAD_TOO_LARGE` 错误。
+经过搜索 [MemFree](https://www.memfree.me/)，我了解到这是 Vercel 本身的限制：
+
+[如何绕过 Vercel Serverless Functions 的 4.5MB 主体大小限制](https://vercel.com/guides/how-to-bypass-vercel-body-size-limit-serverless-functions)
+
+因此，我决定直接从浏览器将文件发送到后端向量索引服务。这里一个重要的问题是如何在不暴露密钥的情况下对向量化索引服务进行身份验证。
+
+在询问 [MemFree](https://www.memfree.me/) 后，我被建议让后端向量服务和 NextJS 的 auth.js 共享一个密钥，然后直接在向量服务中解析和验证令牌。
+
+## 2 如何在 auth.js 中获取身份验证令牌
+
+我在 auth.js 中启用了 JWT 身份验证，因此可以在服务器端获取身份验证令牌。
+
+```ts
+'use server';
+
+import { cookies } from 'next/headers';
+
+export const getAuthToken = async () => {
+    const token = cookies().get('__Secure-authjs.session-token')?.value ?? cookies().get('authjs.session-token')?.value;
+    return {
+        data: token,
+    };
+};
+```
+
+一旦我们从 NextJS 服务器获取到令牌，就可以在向后端向量服务发送请求时将令牌包含在请求头中。接下来一个关键问题是后端向量服务如何验证由 Next auth.js 生成的令牌。
+
+## 3 jsonwebtoken 无法工作
+
+[MemFree](https://www.memfree.me/) 建议使用 jsonwebtoken 库进行验证，但这并没有成功。
+然而，[MemFree](https://www.memfree.me/) 提醒我，**令牌验证配置和算法必须与 auth.js 中的配置一致**。
+因此，我检查了 auth.js 的源代码，发现它使用 jose 库和 HKDF 算法来生成加密密钥。
+
+## 4 如何验证 auth.js 令牌
+
+### 4.1 生成相同的加密密钥
+
+```ts
+async function getDerivedEncryptionKey(enc: string, keyMaterial: Parameters<typeof hkdf>[1], salt: Parameters<typeof hkdf>[2]) {
+    const length = enc === 'A256CBC-HS512' ? 64 : 32;
+    return await hkdf('sha256', keyMaterial, salt, `Auth.js 生成的加密密钥 (${salt})`, length);
+}
+```
+
+需要注意的是，hkdf 方法的参数必须与 [auth.js 中生成加密的方式完全相同](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/jwt.ts#L187)：
+
+-   第一个参数 `enc` 是加密算法。
+-   第二个参数是 NextJS 项目 env 文件中配置的 `AUTH_SECRET` 密钥。
+-   第三个参数是加密盐。如果是使用 HTTPS 加密的生产环境，值为 `__Secure-authjs.session-token`。如果是本地开发环境，值为 `authjs.session-token`。
+
+### 4.2 解密或验证令牌
+
+```ts
+async function decryptToken(token: string, isDev: boolean) {
+    const salt = isDev ? 'authjs.session-token' : `__Secure-authjs.session-token`;
+    const encryptionKey = await getDerivedEncryptionKey(enc, JWT_SECRET, salt);
+    const { payload } = await jwtDecrypt(token, encryptionKey, {
+        clockTolerance: 15,
+        keyManagementAlgorithms: [alg],
+        contentEncryptionAlgorithms: [enc, 'A256GCM'],
+    });
+    return payload;
+}
+```
+
+核心是调用 jose 的 `jwtDecrypt` 方法。jwtDecrypt 的第三个参数需要与 [auth.js](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/jwt.ts#L75) 中的配置完全相同。
+
+这是 MemFree 后端向量服务的完整代码：[向量身份验证代码](https://github.com/memfreeme/memfree/blob/main/vector/auth.ts)

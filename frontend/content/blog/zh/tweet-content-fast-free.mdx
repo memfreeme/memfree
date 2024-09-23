@@ -1,0 +1,95 @@
+---
+title: Hybrid AI Search 4 - 快速且免费的推文内容获取
+description: 如何快速且免费的获取推文内容
+image: /images/blog/blog-post-3.jpg
+date: '2024-07-31'
+---
+
+一开始，我使用 https://jina.ai/reader/ 将任何网页转换为 markdown 格式，进行拆分并存储在向量数据库中。
+
+## Jina Reader 的问题
+
+我发现索引 Twitter 内容存在两个问题：
+
+1. Jina Reader 返回了很多无用的信息，您可以参考 https://r.jina.ai/https://x.com/ahaapple2023/status/1816118637696279006
+2. Jina Reader 延迟高，**偶尔达到 1 分钟**，大多数情况下需要 1 或 2 秒。
+
+## 如何快速且免费的获取推文内容
+
+### 1 使用 Twitter API
+
+这个太贵了。
+
+### 2 使用 Exa API
+
+```ts
+import Exa from 'exa-js';
+
+const exa = new Exa('API_TOKEN');
+
+const result = await exa.getContents(['https://x.com/ahaapple2023/status/1816118637696279006'], {
+    text: true,
+});
+```
+
+这种方式更快，但每 1000 次请求要收费 1 美元，并且仅显示纯文本内容。我还需要返回与每条推文关联的图片。
+
+### 3. 使用 cdn.syndication.twimg.com API
+
+https://cdn.syndication.twimg.com/tweet-result?id=1818291443049615786&lang=en&features=tfw_timeline_list%3A%3Btfw_follower_count_sunset%3Atrue%3Btfw_tweet_edit_backend%3Aon%3Btfw_refsrc_session%3Aon%3Btfw_fosnr_soft_interventions_enabled%3Aon%3Btfw_show_birdwatch_pivots_enabled%3Aon%3Btfw_show_business_verified_badge%3Aon%3Btfw_duplicate_scribes_to_settings%3Aon%3Btfw_use_profile_image_shape_enabled%3Aon%3Btfw_show_blue_verified_badge%3Aon%3Btfw_legacy_timeline_sunset%3Atrue%3Btfw_show_gov_verified_badge%3Aon%3Btfw_show_business_affiliate_badge%3Aon%3Btfw_tweet_edit_frontend%3Aon&token=6c2mmul6mnh
+
+您可以将 id 更改为您想要获取的推文 id。
+
+**该接口快速且免费。react-tweet 库使用了此接口。**
+
+以下是我提取推文文本和图片的实现。欢迎给我一个星星！
+
+https://github.com/memfreeme/memfree/blob/main/vector/tweet.ts
+
+### 4. 在 Chrome 扩展中使用 document.title
+
+最后，我发现**最快、最简单、免费的无限方法是 document.title**。
+
+在 Chrome 扩展中，您可以直接获取 document.title。其内容与您通过 `cdn.syndication.twimg.com` 获取的文本内容相同。
+
+您可以参考 https://github.com/memfreeme/memfree/blob/main/extention/public/inject.js#L68
+
+### 5. 使用 puppeteer 和 puppeteer-extra-plugin-stealth
+
+当我们发现 document.title 可以获取 Twitter 的文本内容时，一个自然的想法是抓取此网页并获取标题。
+
+需要注意的是，直接在无头模式下使用 puppeteer 不会成功。我们需要使用 `puppeteer-extra` 和 `puppeteer-extra-plugin-stealth` 来模拟真实用户的请求。
+
+示例代码如下：
+
+```ts
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+
+puppeteer.use(StealthPlugin());
+
+(async () => {
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+    await page.setViewport({ width: 1280, height: 800 });
+
+    await page.goto('https://x.com/ahaapple2023/status/1818291443049615786', {
+        waitUntil: 'networkidle2',
+        timeout: 60000,
+    });
+
+    await page.waitForSelector('title');
+    const title = await page.title();
+    console.log(title);
+    await browser.close();
+})();
+```
+
+## 混合 AI 搜索系列
+
+-   [混合 AI 搜索 1 - 如何构建快速的嵌入服务](https://www.memfree.me/blog/fast-local-embedding-service)
+-   [混合 AI 搜索 2 - 如何使用 LanceDB 构建无服务器向量搜索](https://www.memfree.me/blog/serverless-vector-search-lancedb)
+-   [混合 AI 搜索 3 - 完整的技术栈](https://www.memfree.me/blog/hybrid-ai-search-tech-stack)
+-   [混合 AI 搜索 4 - 快速且免费的推文内容获取](https://www.memfree.me/blog/tweet-content-fast-free)

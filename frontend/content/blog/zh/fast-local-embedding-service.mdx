@@ -1,0 +1,100 @@
+---
+title: 混合AI搜索1 - 如何构建快速嵌入服务
+description: 混合AI搜索1 - 如何构建快速嵌入服务，为什么不使用OpenAI嵌入API
+image: /images/blog/blog-post-3.jpg
+date: '2024-06-30'
+---
+
+## 为什么不使用OpenAI嵌入API
+
+Memfree最初使用了OpenAI嵌入API，这个API非常易于使用，最新的text-embedding-3-large模型也支持自定义维度。唯一的问题是延迟。即使对于非常短的输入，OpenAI API的延迟也需要100到200毫秒。
+
+当你只需要构建向量索引和搜索服务时，超过100毫秒的延迟是可以接受的。然而，当你需要重排序服务时，几百毫秒的延迟是不可接受的，因为互联网搜索引擎在重排序之前的延迟为500到1000毫秒。
+
+混合AI搜索的过程如下：
+
+1. **搜索**：从互联网搜索引擎和向量化数据库并行获取用户问题的答案
+2. **重排序**：根据用户相似性对所有相关上下文进行排序，并向LLM提供最相似的前几个上下文
+3. **回答**：LLM根据搜索的上下文给出尽可能准确的答案
+
+我们希望重排序的延迟在几十毫秒之内，因此单个嵌入的延迟需要在几毫秒左右，因为重排序的输入超过10个向量。
+
+## 如何构建快速本地嵌入服务
+
+### 1. 首先尝试fastembed-js
+
+我之前测试过fastembed库的Rust版本，我知道可以实现几毫秒的延迟。但我整个项目目前是基于TS构建的。因此，我首先尝试了fastembed的JS版本。
+
+结果符合我的理论预期。fastembed-js每次嵌入需要超过40毫秒。
+
+### 2. 尝试fastembed-rs WASM
+
+所以我只能选择Rust版本的fastembed。将Rust版本的代码与我的TS项目集成有两种方法：WASM和本地HTTP服务。
+
+但是当我将fastembed-rs编译成WASM版本时，遇到了许多编译错误，因此我暂时放弃了WASM方法。
+
+### 3. fastembed-rs本地HTTP服务
+
+最后，我基于fastembed-rs和axum构建了一个简单的嵌入服务。**核心代码只有几十行，单个嵌入只需几毫秒。**
+
+```rust
+async fn embed_handler(
+    Extension(model): Extension<Arc<TextEmbedding>>,
+    Json(payload): Json<EmbedRequest>
+) -> Result<Json<EmbedResponse>, String> {
+    match model.embed(payload.documents, None) {
+        Ok(embeddings) => {
+            Ok(Json(EmbedResponse {
+                embeddings,
+            }))
+        },
+        Err(err) => Err(format!("生成嵌入失败: {}", err)),
+    }
+}
+
+async fn main() -> Result<()> {
+    let model = TextEmbedding::try_new(InitOptions {
+        model_name: EmbeddingModel::AllMiniLML6V2,
+        show_download_progress: true,
+        ..Default::default()
+    })?;
+
+    let model = Arc::new(model);
+
+    let app = Router::new()
+        .route("/embed", post(embed_handler))
+        .route("/rerank", post(rerank_handler))
+        .layer(middleware::from_fn(require_auth))
+        .layer(axum::extract::Extension(model));
+
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3003));
+    println!("监听地址: http://{}", addr);
+
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
+        .await?;
+
+    Ok(())
+}
+```
+
+**完整代码现已开源**：请访问GitHub。
+
+### 4. 如何选择嵌入模型
+
+选择嵌入模型的关键点：准确性、模型内存使用、计算速度、维度大小和多语言支持。
+
+经过测试和权衡这些点后，我最终选择了fastembed支持的sentence-transformers/all-MiniLM-L6-v2模型。
+
+**欢迎点赞，整个项目的所有代码已开源**：
+
+请访问GitHub。
+
+如有任何问题或反馈，请随时联系我！
+
+## 混合AI搜索系列
+
+-   [混合AI搜索1 - 如何构建快速嵌入服务](https://www.memfree.me/blog/fast-local-embedding-service)
+-   [混合AI搜索2 - 如何构建无服务器向量搜索与LanceDB](https://www.memfree.me/blog/serverless-vector-search-lancedb)
+-   [混合AI搜索3 - 完整技术栈](https://www.memfree.me/blog/hybrid-ai-search-tech-stack)
+-   [混合AI搜索4 - 快速免费获取推文内容](https://www.memfree.me/blog/tweet-content-fast-free)

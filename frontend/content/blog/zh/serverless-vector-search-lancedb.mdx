@@ -1,0 +1,47 @@
+---
+title: 混合 AI 搜索 2 - 如何使用 LanceDB 构建无服务器向量搜索
+description: 为什么每个用户一个 LanceDB；为什么选择 LanceDB；如何使用 LanceDB 构建无服务器向量搜索
+image: /images/blog/blog-post-3.jpg
+date: '2024-07-02'
+---
+
+## 1 每个用户一个 LanceDB
+
+我想构建一个混合 AI 搜索，每个用户需要构建一个独立的向量索引，一个用户一个数据库非常适合这种场景。
+
+每个用户一个数据库具有良好的用户隔离，这有利于单个用户的数据同步和迁移（从云到本地，以及不同的 S3 存储之间），而且易于管理：根据 userId 创建不同的数据库，每个数据库下的表结构相同，S3 下的文件结构也相同。
+
+Sqlite、Duckdb、[LanceDB](https://lancedb.github.io/lancedb/) 都适合于每个用户一个数据库的架构。
+
+## 2 为什么选择 LanceDB
+
+1. **高性能列存储**：向量搜索自然需要列存储
+2. **原生向量支持**：LanceDB 专门为 AI 场景设计，将向量视为一等公民，并进行了专门优化。
+3. **原生湖支持**：LanceDB 无缝读取和写入 S3 存储，方便实现无服务器向量搜索服务。
+4. **易于使用和维护**：无需复杂的安装或部署程序。您可以快速使用本地文件开始开发和测试。
+5. **用 Rust 编写**：由于 Rust 的性能，向量搜索能力极其快速。
+
+## 3 如何使用 LanceDB 构建无服务器向量搜索
+
+1. **S3 Express 单区**：本地存储具有最快的向量搜索性能，但难以实现无服务器。为了降低维护成本，无服务器非常重要，这也是我设计的首要目标。然而，使用普通的 S3 存储会导致高延迟。因此，为了实现无服务器并保持高性能，我使用了 S3 Express 单区。
+2. **减少网络延迟**：我在 fly.io 和 zeabur 上测试了 S3 Express 单区的向量搜索性能，发现最快的时间超过 **100 毫秒**。最终，当我从与 S3 Express 单区位于同一区域的 EC2 机器访问时，得到了 **40 毫秒** 的延迟。我推测延迟无法达到 10 毫秒的原因是 LanceDB 向 S3 Express 发起了多个 IO 请求。
+3. **快速本地嵌入**：嵌入是向量搜索的前一步。为了获得整体低延迟的向量搜索，嵌入的延迟也必须非常低。在我之前的博客中，我介绍了如何构建一个 **几毫秒** 的嵌入服务。[混合 AI 搜索 1 - 如何构建快速嵌入服务](https://www.memfree.me/blog/fast-local-embedding-service)
+4. **及时压缩**：在 LanceDB 中，每次导入都会生成一个新版本。与所有基于列的数据库类似，为了实现最佳查询性能，我们需要及时压缩小文件。这里的问题是 Lancedb 并没有正式提供一个 API 来查询版本数量。为了解决这个问题，我引入了 **upstash redis**。它还可以统计每个用户的查询和索引构建的数量。使用 redis 的计数器，我可以知道何时触发 Lancedb 的压缩。
+5. **快速 HTTP 服务**：为了将 lancedb 封装成一个服务，我们需要一个 HTTP 服务。因为我整个项目的主要语言是 TS，所以我自然选择了 Bun。到目前为止，Bun 和 lancedb 一样，给了我很好的体验。
+6. **将 Url 转换为 markdown**：我使用 [Jina-Ai Reader](https://www.memfree.me/blog/fast-local-embedding-service) 将 url 转换为 markdown。这非常容易使用，但成本可能不低，性能也不是很好。以后我可能考虑自己实现。
+7. **将 markdown 拆分为块**：我使用 `langchain/textsplitters` 将 markdown 拆分为块。这一步对最终向量化搜索的质量也有相对较大的影响，我将继续优化它。
+
+## 4 代码是开源的
+
+代码仓库是 https://github.com/memfreeme/memfree
+
+向量服务的代码在 vector 目录下。
+
+欢迎给个 ⭐️，谢谢。
+
+## 混合 AI 搜索系列
+
+-   [混合 AI 搜索 1 - 如何构建快速嵌入服务](https://www.memfree.me/blog/fast-local-embedding-service)
+-   [混合 AI 搜索 2 - 如何使用 LanceDB 构建无服务器向量搜索](https://www.memfree.me/blog/serverless-vector-search-lancedb)
+-   [混合 AI 搜索 3 - 完整技术栈](https://www.memfree.me/blog/hybrid-ai-search-tech-stack)
+-   [混合 AI 搜索 4 - 快速获取推文内容](https://www.memfree.me/blog/tweet-content-fast-free)

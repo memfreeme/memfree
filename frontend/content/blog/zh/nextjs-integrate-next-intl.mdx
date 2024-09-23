@@ -1,0 +1,73 @@
+---
+title: 将 next‑intl 与 nextjs 集成的最新指南
+description: nextjs 集成 next‑intl 的关键点
+image: /images/blog/blog-post-3.jpg
+date: '2024-09-04'
+---
+
+最近，我在 MemFree 中启用了多语言支持，使用了 next-intl。在这个过程中，我遇到了一些问题。在这篇博客中，我将分享一些有关将 next-intl 与 Next.js 14 集成的关键点。
+
+## 1 快速完成基本配置
+
+在学习和使用任何系统时，官方文档通常是最好的参考。您可以参考此官方文档以完成基本设置：
+[Next.js i18n 路由与 next-intl](https://next-intl-docs.vercel.app/docs/getting-started/app-router/with-i18n-routing)
+
+需要注意的几点：
+
+- Middleware 的配置需要正确设置，以使 next-intl 可以处理所有需要多语言支持的页面。您可以参考这个 MemFree 示例：[中间件配置](https://github.com/memfreeme/memfree/blob/main/frontend/middleware.ts)。
+- 您可能需要为不同的语言设置不同的字体。
+- 若要从 URL 中删除默认语言前缀，请将 localePrefix 设置为 'as-needed'。您可以参考此 MemFree 示例：[路由配置](https://github.com/memfreeme/memfree/blob/main/frontend/i18n/routing.ts)
+
+## 2 实现 LocaleSwitcher
+
+您需要实现一个名为 LocaleSwitcher 的小组件，允许用户手动切换语言。您可以参考 MemFree 的实现：[语言选择组件](https://github.com/memfreeme/memfree/blob/main/frontend/components/locale-selection.tsx)。
+
+## 3 为网页元数据启用多语言支持
+
+核心是使用 Next.js 的 generateMetadata 方法。您可以参考这个示例：[元数据配置](https://github.com/memfreeme/memfree/blob/main/frontend/app/%5Blocale%5D/layout.tsx#L24)。
+
+## 4 处理多语言支持的数组
+
+看起来 next-intl 提供的支持并不是特别优雅。您需要单独处理 JSON 文件中每种语言的数组中的每个元素，然后将它们连接成一个数组。
+
+通常，我们需要处理定价页面中支付点的描述数组。您可以在这里参考 MemFree 的实现：[定价卡片组件](https://github.com/memfreeme/memfree/blob/main/frontend/components/pricing-cards.tsx)。
+
+## 5 当前在服务组件中使用 next-intl API 选择动态渲染
+
+我遇到的最大问题是，所有在本地开发环境中测试都没有问题，但在 Vercel 的生产环境中报告了上述错误。
+并不是所有页面都报告了此错误，但使用 MDX 生成的静态页面却报告了这个错误。
+解决方案是使用 unstable_setRequestLocale API，并且需要在根布局文件中以及与错误相关的每个布局和页面文件中设置。
+**最关键的部分是，我们需要在调用 next-intl 的每个钩子之前调用 `unstable_setRequestLocale`**。
+
+您可以参考 MemFree 这个提交以获取 [解决 i18n 服务组件当前选择动态渲染问题的修复](https://github.com/memfreeme/memfree/commit/1e75a74eabee7a5085cc30bd27e4e6c3c6b90bbc)。
+
+## 6 结合 unstable_setRequestLocale 和 generateStaticParams
+
+在解决上一个问题时，遇到的一个问题是如何将 `unstable_setRequestLocale` 与 `generateStaticParams` 结合起来。
+我通过 MemFree 的搜索找到了答案，核心解决方案涉及一个 for 循环。
+
+```ts
+export async function generateStaticParams(): Promise<DocPageProps['params'][]> {
+    const locales = routing.locales;
+    return allDocs.flatMap((doc) =>
+        locales.map((locale) => ({
+            slug: doc.slugAsParams.split('/'),
+            locale: locale,
+        })),
+    );
+}
+```
+
+## 回顾
+
+在创建产品或使用新系统时，重要的是要有 MVP（最小可行产品）的概念，这意味着快速完成整个核心过程。
+最初，我们不需要支持多种语言或所有页面。我们可以先支持两种语言和主页，以完成整个过程并上线，
+一旦确认没有问题，我们可以继续支持更多语言，并完成更多网页的多语言支持。
+以下是支持 next-intl 的整个代码提交过程，您可以参考：
+
+-   [支持多语言与 next i18n](https://github.com/memfreeme/memfree/commit/18b18b02c08fa7c3e78a665d7512a4554d00109c)
+-   [支持在 UI 中设置语言](https://github.com/memfreeme/memfree/commit/72b12949d64a00be11d9ca8165e2f10a98cc96a4)
+-   [页面元数据支持多语言](https://github.com/memfreeme/memfree/commit/e33c291478a25d42686e479adcdcdf2d4b3eba6d)
+-   [定价页面支持多语言 1](https://github.com/memfreeme/memfree/commit/56bde020f8da62996a0c522a257a2bf32d5fafdd)
+-   [修复 i18n 服务组件当前选择动态渲染问题](https://github.com/memfreeme/memfree/commit/1e75a74eabee7a5085cc30bd27e4e6c3c6b90bbc)
+-   [定价页面支持多语言完成](https://github.com/memfreeme/memfree/commit/bb289cb7d28cd0e7e6e5bb2157392be708a6d64e)
