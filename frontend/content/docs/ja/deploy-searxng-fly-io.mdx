@@ -1,0 +1,42 @@
+---
+title: One Command Deploy Searxng on Fly.io
+description: How to deploy Searxng on Fly.io
+---
+
+## Zeabur に Searxng をデプロイする方法
+
+[ワンクリックであなた自身のハイブリット AI 検索エンジンをデプロイする](/docs/one-click-deploy-ai-search)を参照してください。
+
+## Fly.io に Searxng をデプロイする方法
+
+<Steps>
+
+### Fly.io アカウントを取得する（任意）
+
+-   [Fly.io](https://fly.io) に行き、アカウントを作成します。
+
+### Flyctl をインストールする（任意）
+
+-   [こちら](https://fly.io/docs/flyctl/install/)の指示に従って `flyctl` をインストールします。
+
+### GitHub から Searxng の設定をクローンする
+
+```js
+git clone https://github.com/memfreeme/searxng.git
+```
+
+### Searxng をデプロイする
+
+```js
+fly deploy
+```
+
+</Steps>
+
+## Fly.io に Searxng をデプロイする利点
+
+1. **デプロイの簡単さ**：Fly.io に Searxng をデプロイするのは、単一のコマンドを実行するだけで済みます。
+2. **グローバルエッジコンピューティング**：Fly.io の広範なデータセンターのグローバルネットワークを使用することで、世界中の複数の地域に Searxng をデプロイできます。これにより、インスタンスが常にユーザーに近く、どの場所にいても応答時間が速くなります。
+3. **自動スケーリング**：Fly.io はトラフィックに基づいて Searxng インスタンスを自動的にスケールできます。つまり、トラフィックが低いときは支払う必要はなく、トラフィックが高いときは、Fly.io が 1 秒以内に複数のノードを立ち上げて高い同時接続に対応します。
+4. **高可用性**：Fly.io は、現在のノードがダウンした際に Searxng インスタンスを別のノードに自動的に移行させることができ、常に Searxng インスタンスが利用可能です。
+5. **ログとメトリクス**：Fly.io は Searxng インスタンスの詳細なログとメトリクスを提供し、リアルタイムで Searxng インスタンスの状態を監視するのに役立ちます。

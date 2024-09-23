@@ -1,0 +1,50 @@
+---
+title: Déploiement d'un service d'intégration en une commande sur Fly.io
+description: Comment déployer le service d'intégration sur Fly.io
+---
+
+## Comment déployer le service d'intégration sur Zeabur
+
+Vous pouvez consulter [Déploiement en un clic de votre propre moteur de recherche AI hybride](/docs/one-click-deploy-ai-search)
+
+## Comment déployer le service d'intégration sur Zeabur sur Fly.io
+
+<Steps>
+
+### Obtenir un compte Fly.io (Optionnel)
+
+-   Allez sur [Fly.io](https://fly.io) et créez un compte.
+
+### Installer Flyctl (Optionnel)
+
+-   Installez `flyctl` en suivant les instructions [ici](https://fly.io/docs/flyctl/install/).
+
+### Cloner le code d'intégration depuis GitHub
+
+```js
+git clone https://github.com/memfreeme/fast-embedding.git
+```
+
+### Déployer le service d'intégration
+
+```js
+fly deploy
+
+fly secrets set API_TOKEN={votre token}
+```
+
+</Steps>
+
+## Les avantages du déploiement sur Fly.io
+
+Vous pouvez consulter [Déploiement en une commande de Searxng sur Fly.io](/docs/deploy-searxng-fly-io)
+
+## Pourquoi avez-vous besoin de déployer votre propre service d'intégration ?
+
+Vous pouvez consulter [Recherche AI hybride 1 -- comment construire un service d'intégration rapide](/blog/fast-local-embedding-service)
+
+La raison principale de déployer votre propre service d'intégration est la performance. Avec un service d'intégration local, vous pouvez obtenir des résultats en **millisecondes**.
+
+Pour l'intégration de texte multilingue, j'ai testé et trouvé que les résultats du modèle `paraphrase-MiniLM-L6-v2` sont meilleurs que ceux du modèle `text-embedding-3-large` d'OpenAI.
+
+Le dernier point est que la confidentialité de vos données est plus contrôlable.

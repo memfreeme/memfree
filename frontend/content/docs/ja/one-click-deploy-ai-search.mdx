@@ -1,0 +1,57 @@
+---
+title: あなた自身のハイブリッドAI検索エンジンをワンクリックでデプロイ
+description: MemFreeをワンクリックでデプロイする方法
+---
+
+## オープンソースMemFreeでできること
+
+-   ブックマーク、ノート、およびドキュメントに基づいて **あなた自身のハイブリッドAI検索エンジン** をデプロイできます。
+-   トピックに関する最良のリソースをインデックス化してから、**ドメイン特化型AI検索エンジン** を構築できます。
+-   まずウェブサイトのすべてのドキュメントをインデックス化し、次にウェブサイト用の **インテリジェントアンサーアシスタント** を構築できます。
+
+## ワンクリックでデプロイする方法
+
+<Steps>
+
+### Zeaburを使ってバックエンドをデプロイ
+
+<a href="https://zeabur.com/templates/CE71SC?referralCode=memfree">
+    <img src="https://zeabur.com/button.svg" alt="Zeaburでデプロイ" />
+</a>
+
+-   `UPSTASH_REDIS_REST_URL` と `UPSTASH_REDIS_REST_TOKEN` は [Upstash Redis](https://upstash.com/docs/redis/overall/getstarted) から取得できます。
+-   `openssl rand -base64 32` を使用してAPIトークン用のランダムな文字列を生成できます。
+
+### Vercelを使ってフロントエンドをデプロイ
+
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree&env=UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,OPENAI_API_KEY,SERPER_API_KEY,AUTH_SECRET&envDescription=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree%2Fblob%2Fmain%2Ffrontend%2Fenv-example&project-name=memfree&repository-name=memfree&demo-title=MemFree&demo-description=MemFree – ハイブリッドAI検索エンジン&demo-url=https%3A%2F%2Fwww.memfree.me%2F&demo-image=https%3A%2F%2Fwww.memfree.me%2Fog.png&root-directory=frontend">
+    <img src="https://vercel.com/button" alt="Vercelでデプロイ" />
+</a>
+
+-   `OPENAI_API_KEY` は [OpenAI](https://platform.openai.com) から取得できます。
+-   MEMFREE_HOST は `https://${PUBLIC_DOMAIN}.zeabur.app` です。
+-   AUTH_SECRET はランダムな文字列で、`openssl rand -base64 32` を使用して生成できます。
+-   API_TOKEN はバックエンドで使用したものと同じである必要があります。
+
+### 一部のオプション変数
+
+-   より高速な検索を有効にするには、Vercelで `SERPER_API_KEY` を設定できます。`SERPER_API_KEY` は [Serper Dev](https://serper.dev) から取得できます。
+-   AXIOMログを有効にするには、VercelとZeaburで `AXIOM_TOKEN` を設定できます。`AXIOM_TOKEN` は [Axiom](https://axiom.co) から取得できます。
+-   より高速なウェブページパーサーを有効にするには、Zeaburで `JINA_KEY` を設定できます。`JINA_KEY` は [Jina Reader](https://jina.ai/reader) から取得できます。
+
+#### 3.1 AWS S3エクスプレスバケット
+
+開発者がワンクリックで迅速にデプロイできるようにするために、memfreeのベクターデータベースは一時的なローカルディレクトリにデータを保存します。 **本番環境でデプロイする場合は、AWS S3エクスプレスバケットを使用してください。**
+
+1. AWSの変数を取得するには、[S3エクスプレスバケットの作成方法](https://www.memfree.me/search?q=How%20To%20Create%20S3%20Express%20One%20zone%20Bucket%20and%20get%20ACCESS_KEY,%20SECRET%20KEY%20and%20BUCKET%20name)を参照してください。
+2. Zeaburベクターサービスに以下の変数を設定する必要があります。
+    - `AWS_ACCESS_KEY_ID`
+    - `AWS_SECRET_ACCESS_KEY`
+    - `AWS_REGION`
+    - `AWS_BUCKET`
+
+### フィードバックとサポート
+
+-   ご質問がある場合は、[Discord](https://discord.com/invite/7QqyMSTaRq)でお気軽にお問い合わせいただくか、[GitHub](https://github.com/memfreeme/memfree/issues)で問題を提出してください。
+
+</Steps>

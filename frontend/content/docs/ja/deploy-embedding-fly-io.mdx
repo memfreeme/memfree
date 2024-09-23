@@ -1,0 +1,50 @@
+---
+title: One Command Deploy Embedding Service on Fly.io
+description: How to deploy Embedding Service on Fly.io
+---
+
+## ZeaburでのEmbeddingサービスのデプロイ方法
+
+[One Click Deploy You Own Hybrid AI Search Engine](/docs/one-click-deploy-ai-search)を参照してください。
+
+## Fly.ioでのZeabur上のEmbeddingサービスのデプロイ方法
+
+<Steps>
+
+### Fly.ioアカウントを取得する（オプション）
+
+-   [Fly.io](https://fly.io)にアクセスしてアカウントを作成します。
+
+### Flyctlをインストールする（オプション）
+
+-   [こちら](https://fly.io/docs/flyctl/install/)の手順に従って`flyctl`をインストールします。
+
+### GitHubからEmbeddingコードをクローンする
+
+```js
+git clone https://github.com/memfreeme/fast-embedding.git
+```
+
+### Embeddingサービスをデプロイする
+
+```js
+fly deploy
+
+fly secrets set API_TOKEN={your token}
+```
+
+</Steps>
+
+## Fly.ioでデプロイする利点
+
+[One Command Deploy Searxng on Fly.io](/docs/deploy-searxng-fly-io)を参照してください。
+
+## なぜ自分のEmbeddingサービスをデプロイする必要があるのか？
+
+[Hybrid AI Search 1 -- how to build fast embedding service](/blog/fast-local-embedding-service)を参照してください。
+
+自分のEmbeddingサービスをデプロイする主な理由はパフォーマンスです。ローカルのEmbeddingサービスを使用することで、**ミリ秒**単位で結果を達成できます。
+
+多言語テキスト埋め込みについて、私はテストを行い、`paraphrase-MiniLM-L6-v2`モデルの結果がopenaiの`text-embedding-3-large`モデルよりも優れていることがわかりました。
+
+最後のポイントは、データのプライバシーをよりコントロール可能であることです。

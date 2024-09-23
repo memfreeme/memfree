@@ -1,0 +1,50 @@
+---
+title: نشر خدمة التضمين بأمر واحد على Fly.io
+description: كيف تنشر خدمة التضمين على Fly.io
+---
+
+## كيفية نشر خدمة التضمين على Zeabur
+
+يمكنك الرجوع إلى [نشر محرك بحث AI الهجين بنقرة واحدة](/docs/one-click-deploy-ai-search)
+
+## كيفية نشر خدمة التضمين على Zeabur على Fly.io
+
+<Steps>
+
+### الحصول على حساب Fly.io (اختياري)
+
+-   انتقل إلى [Fly.io](https://fly.io) وأنشئ حسابًا.
+
+### تثبيت Flyctl (اختياري)
+
+-   قم بتثبيت `flyctl` من خلال اتباع التعليمات [هنا](https://fly.io/docs/flyctl/install/).
+
+### استنساخ كود التضمين من GitHub
+
+```js
+git clone https://github.com/memfreeme/fast-embedding.git
+```
+
+### نشر خدمة التضمين
+
+```js
+fly deploy
+
+fly secrets set API_TOKEN={your token}
+```
+
+</Steps>
+
+## مزايا النشر على Fly.io
+
+يمكنك الرجوع إلى [نشر Searxng بأمر واحد على Fly.io](/docs/deploy-searxng-fly-io)
+
+## لماذا تحتاج إلى نشر خدمة التضمين الخاصة بك؟
+
+يمكنك الرجوع إلى [بحث AI الهجين 1 -- كيفية بناء خدمة تضمين سريعة](/blog/fast-local-embedding-service)
+
+السبب الرئيسي لنشر خدمة التضمين الخاصة بك هو الأداء. مع خدمة التضمين المحلية، يمكنك الحصول على النتائج في **ملليثانية**.
+
+بالنسبة لتضمين النصوص المتعددة اللغة، قمت باختبار ووجدت أن نتائج نموذج `paraphrase-MiniLM-L6-v2` أفضل من نموذج OpenAI `text-embedding-3-large`.
+
+النقطة الأخيرة هي أن خصوصية بياناتك أكثر قابلية للتحكم.

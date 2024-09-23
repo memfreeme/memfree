@@ -1,0 +1,42 @@
+---
+title: One Command Deploy Searxng on Fly.io
+description: How to deploy Searxng on Fly.io
+---
+
+## So setzen Sie Searxng auf Zeabur ein
+
+Sie können sich auf [One Click Deploy You Own Hybrid AI Search Engine](/docs/one-click-deploy-ai-search) beziehen.
+
+## So setzen Sie Searxng auf Fly.io ein
+
+<Steps>
+
+### Fly.io-Konto erstellen (optional)
+
+-   Gehen Sie zu [Fly.io](https://fly.io) und erstellen Sie ein Konto.
+
+### Flyctl installieren (optional)
+
+-   Installieren Sie `flyctl`, indem Sie die Anweisungen [hier](https://fly.io/docs/flyctl/install/) folgen.
+
+### Searxng-Konfiguration von GitHub klonen
+
+```js
+git clone https://github.com/memfreeme/searxng.git
+```
+
+### Searxng bereitstellen
+
+```js
+fly deploy
+```
+
+</Steps>
+
+## Die Vorteile der Bereitstellung von Searxng auf Fly.io
+
+1. **Einfache Bereitstellung**: Die Bereitstellung von Searxng auf Fly.io ist so einfach wie das Ausführen eines einzelnen Befehls.
+2. **Globale Edge-Computing**: Mit dem umfangreichen globalen Netzwerk von Rechenzentren von Fly.io können Sie Searxng in mehreren Regionen weltweit bereitstellen. Dies stellt sicher, dass Ihre Instanz immer nahe bei Ihren Benutzern ist, was schnellere Reaktionszeiten unabhängig von ihrem Standort bietet.
+3. **Automatische Skalierung**: Fly.io kann Ihre Searxng-Instanz automatisch basierend auf dem Verkehr skalieren. Das bedeutet, dass Sie bei geringem Verkehr nicht zahlen müssen. Wenn der Verkehr hoch ist, kann Fly.io innerhalb von 1 Sekunde mehrere Knoten starten, um mit hoher Konkurrenz umzugehen.
+4. **Hohe Verfügbarkeit**: Fly.io kann Ihre Searxng-Instanz automatisch auf einen anderen Knoten migrieren, wenn der aktuelle Knoten ausgefallen ist, sodass Ihre Searxng-Instanz immer verfügbar ist.
+5. **Protokolle und Metriken**: Fly.io bietet detaillierte Protokolle und Metriken für Ihre Searxng-Instanz, die Ihnen helfen können, den Status Ihrer Searxng-Instanz in Echtzeit zu überwachen.

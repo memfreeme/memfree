@@ -1,0 +1,42 @@
+---
+title: Despliegue de Searxng con un solo comando en Fly.io
+description: Cómo desplegar Searxng en Fly.io
+---
+
+## Cómo desplegar Searxng en Zeabur
+
+Puedes referirte a [Despliega tu propio motor de búsqueda híbrido de IA con un clic](/docs/one-click-deploy-ai-search)
+
+## Cómo desplegar Searxng en Fly.io
+
+<Steps>
+
+### Obtener una cuenta de Fly.io (Opcional)
+
+-   Ve a [Fly.io](https://fly.io) y crea una cuenta.
+
+### Instalar Flyctl (Opcional)
+
+-   Instala `flyctl` siguiendo las instrucciones [aquí](https://fly.io/docs/flyctl/install/).
+
+### Clonar la configuración de Searxng desde GitHub
+
+```js
+git clone https://github.com/memfreeme/searxng.git
+```
+
+### Desplegar Searxng
+
+```js
+fly deploy
+```
+
+</Steps>
+
+## Las ventajas de desplegar Searxng en Fly.io
+
+1. **Facilidad de despliegue**: Desplegar Searxng en Fly.io es tan simple como ejecutar un solo comando.
+2. **Computación en la nube global**: Con la extensa red global de centros de datos de Fly.io, puedes desplegar Searxng en múltiples regiones alrededor del mundo. Esto asegura que tu instancia esté siempre cerca de tus usuarios, proporcionando tiempos de respuesta más rápidos independientemente de su ubicación.
+3. **Escalado automático**: Fly.io puede escalar automáticamente tu instancia de Searxng según el tráfico. Esto significa que cuando el tráfico es bajo, no tienes que pagar. Cuando el tráfico es alto, Fly.io puede iniciar múltiples nodos en 1 segundo para hacer frente a la alta concurrencia.
+4. **Alta disponibilidad**: Fly.io puede migrar automáticamente tu instancia de Searxng a otro nodo cuando el nodo actual está fuera de servicio, asegurando que tu instancia de Searxng esté siempre disponible.
+5. **Registros y métricas**: Fly.io proporciona registros y métricas detalladas para tu instancia de Searxng, lo que puede ayudarte a monitorear el estado de tu instancia de Searxng en tiempo real.

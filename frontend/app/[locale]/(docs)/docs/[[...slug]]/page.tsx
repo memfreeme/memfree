@@ -103,7 +103,7 @@ export default async function DocPage({ params }: DocPageProps) {
                 <DocsPager doc={doc} />
             </div>
             <div className="hidden text-sm xl:block">
-                <div className="sticky top-16 -mt-10 max-h-[calc(var(--vh)-4rem)] overflow-y-auto pt-8">
+                <div className="sticky top-16 -mt-10 max-h-[calc(var(--vh)-4rem)] overflow-y-auto pt-8" dir="auto">
                     <DashboardTableOfContents toc={toc} />
                 </div>
             </div>

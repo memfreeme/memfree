@@ -1,0 +1,44 @@
+---
+title: One Command Deploy MemFree on Fly.io
+description: How to deploy MemFree on Fly.io
+---
+
+## ZeaburでMemFreeベクトルサービスをデプロイする方法
+
+[ワンクリックでハイブリッドAI検索エンジンをデプロイする方法](/docs/one-click-deploy-ai-search)を参照できます。
+
+## Fly.ioでMemFreeベクトルサービスをデプロイする方法
+
+<Steps>
+
+### Fly.ioアカウントの取得（オプション）
+
+-   [Fly.io](https://fly.io)にアクセスしてアカウントを作成します。
+
+### Flyctlのインストール（オプション）
+
+-   [こちら](https://fly.io/docs/flyctl/install/)の手順に従って`flyctl`をインストールします。
+
+### GitHubからMemFreeのコードをクローンする
+
+```js
+git clone https://github.com/memfreeme/memfree.git
+```
+
+### MemFreeベクトルサービスをデプロイする
+
+```js
+cd vector
+
+cp fly.example.toml fly.toml
+
+fly.tomlのAPP_NAMEをあなたのアプリ名に変更します。
+
+fly deploy
+```
+
+</Steps>
+
+## Fly.ioでデプロイすることの利点
+
+[One Command Deploy Searxng on Fly.io](/docs/deploy-searxng-fly-io)を参照できます。

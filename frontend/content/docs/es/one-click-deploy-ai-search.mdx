@@ -1,0 +1,57 @@
+---
+title: Implementación de un Motor de Búsqueda Híbrido AI con Un Solo Clic
+description: Cómo implementar MemFree con un solo clic
+---
+
+## ¿Qué puedes hacer con MemFree de Código Abierto?
+
+-   Podrías implementar **tu propio Motor de Búsqueda Híbrido AI** basado en tus marcadores, notas y documentos
+-   Puedes comenzar indexando los mejores recursos sobre un tema y luego construir un **motor de búsqueda AI específico de dominio**
+-   Puedes primero indexar todos los documentos de un sitio web y luego construir un **asistente de respuesta inteligente para un sitio web**
+
+## Cómo Implementar con Un Solo Clic
+
+<Steps>
+
+### Implementar Backend con Zeabur
+
+<a href="https://zeabur.com/templates/CE71SC?referralCode=memfree">
+    <img src="https://zeabur.com/button.svg" alt="Implementar en Zeabur" />
+</a>
+
+-   Podrías obtener `UPSTASH_REDIS_REST_URL` y `UPSTASH_REDIS_REST_TOKEN` de [Upstash Redis](https://upstash.com/docs/redis/overall/getstarted)
+-   Podrías usar `openssl rand -base64 32` para generar una cadena aleatoria para el Token de API
+
+### Implementar Frontend con Vercel
+
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree&env=UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,OPENAI_API_KEY,SERPER_API_KEY,AUTH_SECRET&envDescription=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree%2Fblob%2Fmain%2Ffrontend%2Fenv-example&project-name=memfree&repository-name=memfree&demo-title=MemFree&demo-description=MemFree – Motor de Búsqueda Híbrido AI&demo-url=https%3A%2F%2Fwww.memfree.me%2F&demo-image=https%3A%2F%2Fwww.memfree.me%2Fog.png&root-directory=frontend">
+    <img src="https://vercel.com/button" alt="Implementar con Vercel" />
+</a>
+
+-   Podrías obtener `OPENAI_API_KEY` de [OpenAI](https://platform.openai.com)
+-   El MEMFREE_HOST es `https://${PUBLIC_DOMAIN}.zeabur.app`
+-   El AUTH_SECRET es una cadena aleatoria, podrías usar `openssl rand -base64 32` para generarlo
+-   El API_TOKEN debería ser el mismo que usaste en el backend
+
+### Algunas Variables Opcionales
+
+-   Para habilitar una búsqueda más rápida, podrías establecer `SERPER_API_KEY` en Vercel, podrías obtener `SERPER_API_KEY` de [Serper Dev](https://serper.dev)
+-   Para habilitar el registro AXIOM, podrías establecer `AXIOM_TOKEN` en Vercel y Zeabur, podrías obtener `AXIOM_TOKEN` de [Axiom](https://axiom.co)
+-   Para habilitar un parser de páginas web más rápido, podrías establecer `JINA_KEY` en Zeabur, podrías obtener `JINA_KEY` de [Jina Reader](https://jina.ai/reader)
+
+#### 3.1 Cubo S3 Express de AWS
+
+Para facilitar a los desarrolladores la implementación rápida con un solo clic, la base de datos vectorial de MemFree almacenará datos en un directorio local temporal. **Si deseas implementar en un entorno de producción, por favor usa el Cubo S3 Express de AWS**
+
+1. Podrías obtener variables de AWS Consultando [Cómo Crear un Cubo S3 Express](https://www.memfree.me/search?q=How%20To%20Create%20S3%20Express%20One%20zone%20Bucket%20and%20get%20ACCESS_KEY,%20SECRET%20KEY%20and%20BUCKET%20name)
+2. Necesitas establecer las siguientes variables en el Servicio Vectorial de Zeabur
+    - `AWS_ACCESS_KEY_ID`
+    - `AWS_SECRET_ACCESS_KEY`
+    - `AWS_REGION`
+    - `AWS_BUCKET`
+
+### Comentarios y Ayuda
+
+-   Si tienes alguna pregunta, no dudes en preguntar en [Discord](https://discord.com/invite/7QqyMSTaRq) o enviar un problema en [GitHub](https://github.com/memfreeme/memfree/issues)
+
+</Steps>
