@@ -35,8 +35,9 @@ export class SerperSearch implements SearchSource {
     async search(query: string): Promise<SearchResult> {
         // console.log('searchSerper: options', this.options);
         const url = formatUrl(this.options);
-        if (this.options.domains) {
-            query = `site:${this.options.domains[0]} ${query}`;
+        if (this.options.domains && this.options.domains.length > 0) {
+            const siteQuery = this.options.domains.map((domain) => `site:${domain}`).join(' OR ');
+            query = `${siteQuery} ${query}`;
         }
         // console.log('searchSerper:', url, query);
 

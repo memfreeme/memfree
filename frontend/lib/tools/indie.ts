@@ -1,6 +1,5 @@
 'use server';
 
-import { getCache, setCache } from '@/lib/cache';
 import { incSearchCount } from '@/lib/db';
 import { getLLM, Message } from '@/lib/llm/llm';
 import { getHistory, streamResponse } from '@/lib/llm/utils';
@@ -10,37 +9,46 @@ import { getSearchEngine, TEXT_LIMIT } from '@/lib/search/search';
 import { saveMessages } from '@/lib/server-utils';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { getRelatedQuestions } from '@/lib/tools/related';
-import { Message as StoreMessage, SearchCategory, TextSource } from '@/lib/types';
+import { Message as StoreMessage, SearchCategory } from '@/lib/types';
 
-export async function indieMakerSearch(messages: StoreMessage[], isPro: boolean, userId: string, onStream?: (...args: any[]) => void, model = GPT_4o_MIMI) {
+function getRandomDomains(arr, count) {
+    const shuffled = [...arr].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+}
+const domains = ['indiehackers.com', 'producthunt.com', 'news.ycombinator.com', 'starterstory.com'];
+
+export async function indieMakerSearch(
+    messages: StoreMessage[],
+    isPro: boolean,
+    userId: string,
+    profile: string,
+    onStream?: (...args: any[]) => void,
+    model = GPT_4o_MIMI,
+) {
     try {
         const newMessages = messages.slice(-1) as Message[];
         const query = newMessages[0].content;
 
+        const selectedDomains = getRandomDomains(domains, 2);
         const imageFetchPromise = getSearchEngine({
+            domains: selectedDomains,
             categories: [SearchCategory.IMAGES],
         })
             .search(query)
             .then((results) => results.images.filter((img) => img.image.startsWith('https')));
 
-        const domains = ['indiehackers.com', 'producthunt.com', 'news.ycombinator.com'];
-        const randomIndex = Math.floor(Math.random() * domains.length);
-        const domain = domains[randomIndex];
+        const videoFetchPromise = getSearchEngine({
+            categories: [SearchCategory.VIDEOS],
+        }).search(query);
+
         const source = SearchCategory.INDIE_MAKER;
         const searchOptions = {
-            domains: [domain],
+            domains: selectedDomains,
             categories: [source],
         };
 
-        let texts: TextSource[] = [];
-        const cacheResult = await getCache(query + domain);
-        if (cacheResult) {
-            texts = cacheResult.texts;
-        } else {
-            const searchResult = await getSearchEngine(searchOptions).search(query);
-            texts = searchResult.texts.slice(0, TEXT_LIMIT);
-            setCache(query + domain, { texts });
-        }
+        const searchResult = await getSearchEngine(searchOptions).search(query);
+        const texts = searchResult.texts.slice(0, TEXT_LIMIT);
 
         await streamResponse({ sources: texts, status: 'Answering ...' }, onStream);
 
@@ -48,27 +56,22 @@ export async function indieMakerSearch(messages: StoreMessage[], isPro: boolean,
         let fullAnswer = '';
         let rewriteQuery = query;
 
-        await directlyAnswer(
-            isPro,
-            source,
-            history,
-            '', // profile
-            getLLM(model),
-            rewriteQuery,
-            texts,
-            (msg) => {
-                fullAnswer += msg;
-                onStream?.(
-                    JSON.stringify({
-                        answer: msg,
-                    }),
-                );
-            },
-        );
+        await directlyAnswer(isPro, source, history, profile, getLLM(model), rewriteQuery, texts, (msg) => {
+            fullAnswer += msg;
+            onStream?.(
+                JSON.stringify({
+                    answer: msg,
+                }),
+            );
+        });
 
         const fetchedImages = await imageFetchPromise;
         const images = [...fetchedImages];
         await streamResponse({ images: images }, onStream);
+
+        const fetchedVideos = await videoFetchPromise;
+        const videos = fetchedVideos.videos.slice(0, 8);
+        await streamResponse({ videos: videos }, onStream);
 
         let fullRelated = '';
         onStream?.(

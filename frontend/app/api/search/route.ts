@@ -13,6 +13,7 @@ import { knowledgeBaseSearch } from '@/lib/tools/knowledge-base';
 import { autoAnswer } from '@/lib/tools/auto';
 import { o1Answer } from '@/lib/tools/o1-answer';
 import { productSearch } from '@/lib/tools/product';
+import { indieMakerSearch } from '@/lib/tools/indie';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -92,6 +93,10 @@ export async function POST(req: NextRequest) {
                     }
                     case SearchCategory.PRODUCT_HUNT: {
                         await productSearch(messages, isPro, userId, profile, streamController(controller), model);
+                        break;
+                    }
+                    case SearchCategory.INDIE_MAKER: {
+                        await indieMakerSearch(messages, isPro, userId, profile, streamController(controller), model);
                         break;
                     }
                     case SearchCategory.KNOWLEDGE_BASE: {

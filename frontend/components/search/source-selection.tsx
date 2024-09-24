@@ -41,6 +41,10 @@ export function SourceSelection() {
             name: 'Product Hunt',
             value: SearchCategory.PRODUCT_HUNT,
         },
+        [SearchCategory.INDIE_MAKER]: {
+            name: 'Indie Maker',
+            value: SearchCategory.INDIE_MAKER,
+        },
         [SearchCategory.ACADEMIC]: {
             name: t('Academic'),
             flag: 'Pro',

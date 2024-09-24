@@ -1,11 +1,5 @@
 import { StreamHandler } from '@/lib/llm/llm';
-import {
-    AcademicPrompt,
-    DirectAnswerPrompt,
-    HackerNewsPrompt,
-    NewsPrompt,
-    SummaryPrompt,
-} from '@/lib/llm/prompt';
+import { AcademicPrompt, DirectAnswerPrompt, ProductHuntPrompt, SummaryPrompt, IndieMakerPrompt } from '@/lib/llm/prompt';
 import { getMaxOutputToken } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { SearchCategory, TextSource } from '@/lib/types';
@@ -23,13 +17,8 @@ export async function directlyAnswer(
     onStream: StreamHandler,
 ) {
     try {
-        const system = promptFormatterAnswer(
-            source,
-            profile,
-            searchContexts,
-            history,
-        );
-        // console.log('directlyAnswer:', system);
+        const system = promptFormatterAnswer(source, profile, searchContexts, history);
+        // console.log('system prompt: ', system);
         const maxTokens = getMaxOutputToken(isPro);
         try {
             const result = await streamText({
@@ -52,35 +41,18 @@ export async function directlyAnswer(
     }
 }
 
-function promptFormatterAnswer(
-    source: SearchCategory,
-    profile: string,
-    searchContexts: any[],
-    history: string,
-) {
-    const context = searchContexts
-        .map((item, index) => `[citation:${index + 1}] ${item.content}`)
-        .join('\n\n');
+function promptFormatterAnswer(source: SearchCategory, profile: string, searchContexts: any[], history: string) {
+    const context = searchContexts.map((item, index) => `[citation:${index + 1}] ${item.content}`).join('\n\n');
 
     switch (source) {
-        case SearchCategory.HACKER_NEWS:
-            return util.format(
-                HackerNewsPrompt,
-                JSON.stringify(searchContexts, null, 2),
-            );
-
+        case SearchCategory.PRODUCT_HUNT:
+            return util.format(ProductHuntPrompt, context);
+        case SearchCategory.INDIE_MAKER:
+            return util.format(IndieMakerPrompt, context);
         case SearchCategory.WEB_PAGE:
-            return util.format(
-                SummaryPrompt,
-                JSON.stringify(searchContexts, null, 2),
-            );
-
+            return util.format(SummaryPrompt, JSON.stringify(searchContexts, null, 2));
         case SearchCategory.ACADEMIC:
             return util.format(AcademicPrompt, context);
-
-        case SearchCategory.NEWS:
-            return util.format(NewsPrompt, context);
-
         default:
             return util.format(DirectAnswerPrompt, profile, context, history);
     }
