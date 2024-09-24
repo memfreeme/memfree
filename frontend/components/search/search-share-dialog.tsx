@@ -46,7 +46,7 @@ export function SearchShareDialog({ search, onCopy, ...props }: SearchShareDialo
             onCopy();
             toast.success(t('copy-success'));
         },
-        [onCopy],
+        [onCopy, t],
     );
 
     return (

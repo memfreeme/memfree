@@ -80,7 +80,7 @@ const ActionButtons = ({ content, searchId, msgId, reload }) => {
                 />
             </div>
         ),
-        [content, hasCopied, shareDialogOpen, handleReloadClick, searchId],
+        [content, hasCopied, shareDialogOpen, handleReloadClick, searchId, copyToClipboard, t],
     );
 
     return buttons;

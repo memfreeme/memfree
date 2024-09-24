@@ -9,8 +9,8 @@ import { User } from 'next-auth';
 import { UserAccountNav } from '@/components/layout/user-account-nav';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import LocaleSelect from '@/components/locale-selection';
-import { generateId } from 'ai';
 import { useRouter } from 'next/navigation';
+import { generateId } from '@/lib/shared-utils';
 
 interface NavBarProps {
     user: User;

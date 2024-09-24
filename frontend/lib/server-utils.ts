@@ -1,8 +1,8 @@
 import 'server-only';
 
-import { generateId } from 'ai';
 import { ImageSource, Message as StoreMessage, TextSource, VideoSource } from '@/lib/types';
 import { saveSearch } from '@/lib/store/search';
+import { generateId } from '@/lib/shared-utils';
 
 interface FetchWithTimeoutOptions extends RequestInit {
     timeout?: number;

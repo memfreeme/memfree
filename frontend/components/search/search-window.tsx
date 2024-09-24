@@ -9,11 +9,10 @@ import { useSigninModal } from '@/hooks/use-signin-modal';
 import { configStore, useProfileStore } from '@/lib/store';
 
 import { ImageSource, Message, TextSource, User, VideoSource } from '@/lib/types';
-import { generateId } from 'ai';
 import { LoaderCircle } from 'lucide-react';
 import { useScrollAnchor } from '@/hooks/use-scroll-anchor';
 import { toast } from 'sonner';
-import { isProUser, extractAllImageUrls } from '@/lib/shared-utils';
+import { isProUser, extractAllImageUrls, generateId } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useSearchStore } from '@/lib/store/local-history';
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
@@ -248,7 +247,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                 toast.error(t('search-error'));
             }
         },
-        [input, isReadOnly, isLoading, signInModal, addSearch, updateActiveSearch, upgradeModal, user],
+        [input, isReadOnly, isLoading, signInModal, addSearch, updateActiveSearch, upgradeModal, user, canSearch, incrementSearchCount, t],
     );
 
     const sendSelectedQuestion = useCallback(

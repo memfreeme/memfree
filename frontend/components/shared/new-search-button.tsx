@@ -1,8 +1,8 @@
 'use client';
 
 import { buttonVariants } from '@/components/ui/button';
+import { generateId } from '@/lib/shared-utils';
 import { cn } from '@/lib/utils';
-import { generateId } from 'ai';
 import { useRouter } from 'next/navigation';
 
 export function NewSearchButton() {
