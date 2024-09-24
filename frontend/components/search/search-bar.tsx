@@ -22,13 +22,15 @@ import dynamic from 'next/dynamic';
 
 interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
+    showSourceSelection?: boolean;
+    showIndexButton?: boolean;
 }
 
 interface FileWithPreview extends File {
     preview?: string;
 }
 
-const SearchBar: React.FC<Props> = ({ handleSearch }) => {
+const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, showIndexButton = true }) => {
     const [content, setContent] = useState<string>('');
     const signInModal = useSigninModal();
     const indexModal = useIndexModal();
@@ -195,7 +197,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                 ></TextareaAutosize>
                 <div className="flex relative">
                     <div className="absolute left-0 bottom-0 mb-1 ml-2 mt-6 flex items-center space-x-4">
-                        <Tooltip>
+                        { showIndexButton && <Tooltip>
                             <TooltipTrigger asChild>
                                 <button
                                     type="button"
@@ -215,7 +217,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
                                 </button>
                             </TooltipTrigger>
                             <TooltipContent>{t('index-tip')}</TooltipContent>
-                        </Tooltip>
+                        </Tooltip>}
 
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -271,7 +273,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch }) => {
 
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2">
                 <ModelSelection />
-                <SourceSelection />
+                {showSourceSelection && <SourceSelection />}
             </div>
             {user && <IndexModal />}
         </div>

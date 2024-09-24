@@ -26,9 +26,10 @@ export interface SearchProps extends React.ComponentProps<'div'> {
     user?: User;
     isReadOnly?: boolean;
     demoQuestions: React.ReactNode;
+    searchBar?: (props: { handleSearch: (key: string, attachments?: string[]) => void }) => React.ReactNode;
 }
 
-export default function SearchWindow({ id, initialMessages, user, isReadOnly = false, demoQuestions }: SearchProps) {
+export default function SearchWindow({ id, initialMessages, user, isReadOnly = false, demoQuestions, searchBar }: SearchProps) {
     const t = useTranslations('Search');
     const searchParams = useSearchParams();
     const signInModal = useSigninModal();
@@ -327,7 +328,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
             <div className="w-full h-px" ref={visibilityRef} />
             {messages.length === 0 && demoQuestions}
 
-            {!isReadOnly && <SearchBar handleSearch={stableHandleSearch} />}
+            {!isReadOnly && searchBar ?  searchBar({ handleSearch: stableHandleSearch }) : <SearchBar handleSearch={stableHandleSearch} />}
             <ButtonScrollToBottom isAtBottom={isVisible} scrollToBottom={scrollToBottom} />
         </div>
     );
