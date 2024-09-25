@@ -56,14 +56,33 @@ export async function indieMakerSearch(
         let fullAnswer = '';
         let rewriteQuery = query;
 
-        await directlyAnswer(isPro, source, history, profile, getLLM(model), rewriteQuery, texts, (msg) => {
-            fullAnswer += msg;
-            onStream?.(
-                JSON.stringify({
-                    answer: msg,
-                }),
-            );
-        });
+        let hasError = false;
+        await directlyAnswer(
+            isPro,
+            source,
+            history,
+            profile,
+            getLLM(model),
+            rewriteQuery,
+            texts,
+            (msg) => {
+                fullAnswer += msg;
+                onStream?.(
+                    JSON.stringify({
+                        answer: msg,
+                    }),
+                );
+            },
+            (errorMsg) => {
+                hasError = true;
+                onStream?.(JSON.stringify({ error: errorMsg }));
+                onStream?.(null, true);
+            },
+        );
+
+        if (hasError) {
+            return;
+        }
 
         const fetchedImages = await imageFetchPromise;
         const images = [...fetchedImages];
@@ -74,11 +93,6 @@ export async function indieMakerSearch(
         await streamResponse({ videos: videos }, onStream);
 
         let fullRelated = '';
-        onStream?.(
-            JSON.stringify({
-                status: 'Generating related questions ...',
-            }),
-        );
         await getRelatedQuestions(rewriteQuery, texts, (msg) => {
             fullRelated += msg;
             onStream?.(
@@ -92,7 +106,7 @@ export async function indieMakerSearch(
             console.error(`Failed to increment search count for user ${userId}:`, error);
         });
 
-        await saveMessages(userId, messages, fullAnswer, texts, images, [], fullRelated);
+        await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated);
         onStream?.(null, true);
     } catch (error) {
         logError(error, 'indie-search');

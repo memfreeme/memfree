@@ -225,10 +225,19 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                         }
                     },
                     onmessage(msg) {
-                        const { clear, answer, status, sources, images, related, videos } = JSON.parse(msg.data);
+                        const { clear, answer, status, sources, images, related, videos, error } = JSON.parse(msg.data);
                         if (clear) {
                             accumulatedMessage = '';
                             updateMessages(accumulatedMessage);
+                        }
+                        if (error) {
+                            console.error(error);
+                            setIsLoading(false);
+                            setInput(messageValue);
+                            const errMsg = 'The AI ​​model service is abnormal. Please try again or switch the AI ​​model.';
+                            toast.error(errMsg);
+                            setStatus(errMsg);
+                            return;
                         }
                         if (status) {
                             setStatus(status);
@@ -328,7 +337,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
             <div className="w-full h-px" ref={visibilityRef} />
             {messages.length === 0 && demoQuestions}
 
-            {!isReadOnly && searchBar ?  searchBar({ handleSearch: stableHandleSearch }) : <SearchBar handleSearch={stableHandleSearch} />}
+            {!isReadOnly && searchBar ? searchBar({ handleSearch: stableHandleSearch }) : <SearchBar handleSearch={stableHandleSearch} />}
             <ButtonScrollToBottom isAtBottom={isVisible} scrollToBottom={scrollToBottom} />
         </div>
     );

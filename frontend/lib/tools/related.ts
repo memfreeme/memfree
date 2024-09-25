@@ -27,7 +27,7 @@ export async function getRelatedQuestions(
             onStream?.(text, false);
         }
     } catch (error) {
-        logError(error, `llm-${model.modelId}`);
+        logError(error, `llm-related-${model.modelId}`);
     }
 }
 

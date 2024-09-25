@@ -48,14 +48,33 @@ export async function productSearch(
         let history = getHistory(isPro, messages);
         let fullAnswer = '';
 
-        await directlyAnswer(isPro, source, history, profile, getLLM(model), query, texts, (msg) => {
-            fullAnswer += msg;
-            onStream?.(
-                JSON.stringify({
-                    answer: msg,
-                }),
-            );
-        });
+        let hasError = false;
+        await directlyAnswer(
+            isPro,
+            source,
+            history,
+            profile,
+            getLLM(model),
+            query,
+            texts,
+            (msg) => {
+                fullAnswer += msg;
+                onStream?.(
+                    JSON.stringify({
+                        answer: msg,
+                    }),
+                );
+            },
+            (errorMsg) => {
+                hasError = true;
+                onStream?.(JSON.stringify({ error: errorMsg }));
+                onStream?.(null, true);
+            },
+        );
+
+        if (hasError) {
+            return;
+        }
 
         const fetchedImages = await imageFetchPromise;
         const images = fetchedImages;

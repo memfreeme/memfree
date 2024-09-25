@@ -38,15 +38,33 @@ export async function knowledgeBaseSearch(messages: StoreMessage[], isPro: boole
         let rewriteQuery = query;
 
         const source = SearchCategory.ALL;
-        await streamResponse({ status: 'Answering ...' }, onStream);
-        await directlyAnswer(isPro, source, history, '', getLLM(model), rewriteQuery, texts, (msg) => {
-            fullAnswer += msg;
-            onStream?.(
-                JSON.stringify({
-                    answer: msg,
-                }),
-            );
-        });
+        let hasError = false;
+        await directlyAnswer(
+            isPro,
+            source,
+            history,
+            '',
+            getLLM(model),
+            rewriteQuery,
+            texts,
+            (msg) => {
+                fullAnswer += msg;
+                onStream?.(
+                    JSON.stringify({
+                        answer: msg,
+                    }),
+                );
+            },
+            (errorMsg) => {
+                hasError = true;
+                onStream?.(JSON.stringify({ error: errorMsg }));
+                onStream?.(null, true);
+            },
+        );
+
+        if (hasError) {
+            return;
+        }
 
         incSearchCount(userId).catch((error) => {
             console.error(`Failed to increment search count for user ${userId}:`, error);

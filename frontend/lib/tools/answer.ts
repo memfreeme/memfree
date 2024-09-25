@@ -15,29 +15,35 @@ export async function directlyAnswer(
     query: string,
     searchContexts: TextSource[],
     onStream: StreamHandler,
+    onError: (error: string) => void,
 ) {
     try {
         const system = promptFormatterAnswer(source, profile, searchContexts, history);
         // console.log('system prompt: ', system);
         const maxTokens = getMaxOutputToken(isPro);
-        try {
-            const result = await streamText({
-                model: model,
-                system: system,
-                prompt: query,
-                maxTokens: maxTokens,
-                temperature: 0.1,
-            });
 
-            for await (const text of result.textStream) {
-                onStream?.(text, false);
-            }
-        } catch (error) {
-            logError(error, `llm-${model.modelId}`);
+        const result = await streamText({
+            model: model,
+            system: system,
+            prompt: query,
+            maxTokens: maxTokens,
+            temperature: 0.1,
+        });
+
+        for await (const text of result.textStream) {
+            onStream?.(text, false);
         }
-    } catch (err: any) {
-        logError(err, 'llm');
-        onStream?.(`Some errors seem to have occurred, plase retry`, true);
+    } catch (error) {
+        let errorMessage: string;
+
+        if (error instanceof Error) {
+            errorMessage = `Error occurred: ${error.message}`;
+            logError(error, `llm-${model.modelId}`);
+        } else {
+            errorMessage = `An unexpected error occurred: ${String(error)}`;
+            logError(new Error(String(error)), `llm-${model.modelId}`);
+        }
+        onError(errorMessage);
     }
 }
 

@@ -11,7 +11,6 @@ import { saveMessages } from '@/lib/server-utils';
 import { extractAllImageUrls, replaceImageUrl } from '@/lib/shared-utils';
 import { accessWebPage } from '@/lib/tools/access';
 import { directlyAnswer } from '@/lib/tools/answer';
-import { getTopStories } from '@/lib/tools/hacker-news';
 import { getRelatedQuestions } from '@/lib/tools/related';
 import { searchRelevantContent } from '@/lib/tools/search';
 import { ImageSource, Message as StoreMessage, SearchCategory, TextSource, VideoSource } from '@/lib/types';
@@ -68,17 +67,14 @@ export async function autoAnswer(
                         return await accessWebPage(url, onStream);
                     },
                 }),
-                // getTopStories: getTopStories(onStream),
             },
-            // onFinish: async (event) => {
-            //     console.log('finishReason', event.finishReason, event.usage);
-            // },
         });
 
         let hasAnswer = false;
         let fullAnswer = '';
         let rewriteQuery = query;
         let toolCallCount = 0;
+        let hasError = false;
         for await (const delta of result.fullStream) {
             switch (delta.type) {
                 case 'text-delta': {
@@ -114,13 +110,14 @@ export async function autoAnswer(
                         texts = texts.concat(delta.result.texts);
                         source = SearchCategory.WEB_PAGE;
                     }
-                    // } else if (delta.toolName === 'getTopStories') {
-                    //     texts = texts.concat(delta.result.texts);
-                    //     source = SearchCategory.HACKER_NEWS;
-                    // }
                     break;
-                case 'error':
-                    console.log('Error: ' + delta.error);
+                case 'error': {
+                    hasError = true;
+                    onStream?.(JSON.stringify({ error: delta.error }));
+                    onStream?.(null, true);
+                    logError(new Error(String(delta.error)), 'llm-auto-openai');
+                    break;
+                }
             }
         }
 
@@ -143,10 +140,29 @@ export async function autoAnswer(
 
             fullAnswer = '';
             await streamResponse({ status: 'Answering ...', clear: true }, onStream);
-            await directlyAnswer(isPro, source, history, profile, getLLM(model), query, texts, (msg) => {
-                fullAnswer += msg;
-                onStream?.(JSON.stringify({ answer: msg }));
-            });
+            await directlyAnswer(
+                isPro,
+                source,
+                history,
+                profile,
+                getLLM(model),
+                query,
+                texts,
+                (msg) => {
+                    fullAnswer += msg;
+                    onStream?.(JSON.stringify({ answer: msg }));
+                },
+                (errorMsg) => {
+                    console.error('Error:', errorMsg);
+                    hasError = true;
+                    onStream?.(JSON.stringify({ error: errorMsg }));
+                    onStream?.(null, true);
+                },
+            );
+
+            if (hasError) {
+                return;
+            }
 
             await streamResponse({ status: 'Generating related questions ...' }, onStream);
             await getRelatedQuestions(query, texts, (msg) => {
@@ -156,7 +172,7 @@ export async function autoAnswer(
 
             const fetchedImages = await imageFetchPromise;
             images = [...images, ...fetchedImages];
-            await streamResponse({ images: images, status: 'Fetch related videos ...' }, onStream);
+            await streamResponse({ images: images }, onStream);
 
             const fetchedVideos = await videoFetchPromise;
             videos = fetchedVideos.videos.slice(0, 8);
@@ -176,7 +192,7 @@ export async function autoAnswer(
         await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated);
         onStream?.(null, true);
     } catch (error) {
-        logError(error, 'llm-openai');
+        logError(error, 'llm-auto-openai');
         onStream?.(null, true);
     }
 }

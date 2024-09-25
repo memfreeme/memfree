@@ -14,10 +14,10 @@ export const log = async (message: any) => {
 };
 
 export const logError = (error: Error, action: string) => {
-    console.error(`error-${action}`, error);
+    console.error(`error-${action}`, JSON.stringify(error, Object.getOwnPropertyNames(error)));
     log({
         service: 'search',
         action: `error-${action}`,
-        error: `${error}`,
+        error: JSON.stringify(error, Object.getOwnPropertyNames(error)),
     });
 };
