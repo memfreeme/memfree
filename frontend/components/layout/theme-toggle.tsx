@@ -6,7 +6,11 @@ import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/shared/icons';
 
-export function ModeToggle() {
+interface ThemeToggleProps {
+    showCurrentTheme?: boolean;
+}
+
+export function ThemeToggle({ showCurrentTheme = false }: ThemeToggleProps) {
     const { theme, setTheme } = useTheme();
     const [_, startTransition] = React.useTransition();
 
@@ -20,10 +24,11 @@ export function ModeToggle() {
                 });
             }}
         >
-            {!theme ? null : theme === 'dark' ? (
-                <Icons.moon className="size-4  transition-all" />
-            ) : (
-                <Icons.sun className="size-4 transition-all" />
+            {!theme ? null : (
+                <div className="flex items-center">
+                    {theme === 'dark' ? <Icons.moon className="size-4 transition-all" /> : <Icons.sun className="size-4 transition-all" />}
+                    {showCurrentTheme && <span className="ml-2 text-sm capitalize">{theme}</span>}
+                </div>
             )}
             <span className="sr-only">Toggle theme</span>
         </Button>

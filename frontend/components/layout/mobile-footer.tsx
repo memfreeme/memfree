@@ -5,7 +5,7 @@ import { NewSearchButton } from '@/components/shared/new-search-button';
 
 export function MobileFooter() {
     return (
-        <footer className="md:hidden fixed bottom-0 left-0 right-0 bg-background py-2">
+        <footer className="md:hidden fixed bottom-0 inset-x-0 bg-background py-2">
             <div className="container mx-auto">
                 <div className="flex justify-between items-center">
                     <Button variant="ghost" size="icon" aria-label="Settings">

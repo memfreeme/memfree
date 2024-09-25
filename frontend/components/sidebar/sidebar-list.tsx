@@ -1,7 +1,6 @@
 'use client';
 
 import { getSearches, removeSearch } from '@/lib/store/search';
-import { ModeToggle } from '@/components/layout/mode-toggle';
 import Link from 'next/link';
 import { Loader2, Settings } from 'lucide-react';
 import { User } from '@/lib/types';
@@ -19,6 +18,7 @@ import { useSearchStore } from '@/lib/store/local-history';
 import { SidebarItem } from '@/components/sidebar/sidebar-item';
 import { SidebarActions } from '@/components/sidebar/sidebar-actions';
 import LocaleSelect from '@/components/locale-selection';
+import { ThemeToggle } from '@/components/layout/theme-toggle';
 
 const limit = 20;
 
@@ -76,7 +76,7 @@ export function SidebarList({ user }: SidebarListProps) {
 
             <div className="flex items-center justify-between p-1 border-t">
                 {user && <UserAccountNav user={user} />}
-                <ModeToggle />
+                <ThemeToggle />
                 <LocaleSelect className="hover:bg-accent hover:text-accent-foreground" />
                 <Link href="/settings">
                     <Button variant="ghost" className="leading-none p-2 h-auto">

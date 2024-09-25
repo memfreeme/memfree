@@ -9,9 +9,23 @@ import { cn } from '@/lib/utils';
 
 interface LocaleSelectProps {
     className?: string;
+    showCurrentLocale?: boolean;
 }
 
-export default function LocaleSelect({ className }: LocaleSelectProps) {
+function getLocaleName(locale: string): string {
+    const localeMap: { [key: string]: string } = {
+        en: 'English',
+        zh: '中文',
+        de: 'Deutsch',
+        fr: 'Français',
+        es: 'Español',
+        ja: '日本語',
+        ar: 'العربية',
+    };
+    return localeMap[locale] || locale;
+}
+
+export default function LocaleSelect({ className, showCurrentLocale = false }: LocaleSelectProps) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const pathname = usePathname();
@@ -30,7 +44,10 @@ export default function LocaleSelect({ className }: LocaleSelectProps) {
                 className={cn('inline-flex items-center justify-center rounded-md text-sm leading-none size-auto p-2', className)}
             >
                 <SelectValue>
-                    <Languages size={20}></Languages>
+                    <div className="flex items-center">
+                        <Languages size={20} />
+                        {showCurrentLocale && <span className="ml-2">{getLocaleName(locale)}</span>}
+                    </div>
                 </SelectValue>
             </RowSelectTrigger>
             <SelectContent>
