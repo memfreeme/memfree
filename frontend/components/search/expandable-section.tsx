@@ -6,16 +6,6 @@ import React, { useEffect, useState } from 'react';
 const ExpandableSection = ({ title, icon: Icon, children, open = true }) => {
     const [isOpen, setIsOpen] = useState(open);
 
-    useEffect(() => {
-        if (!open) {
-            return;
-        }
-        const checkScreenSize = () => setIsOpen(window.innerWidth >= 768);
-        checkScreenSize();
-        window.addEventListener('resize', checkScreenSize);
-        return () => window.removeEventListener('resize', checkScreenSize);
-    }, [open]);
-
     return (
         <div className="w-full">
             <details open={isOpen} className="w-full">
