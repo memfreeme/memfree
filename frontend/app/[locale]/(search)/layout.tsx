@@ -1,11 +1,12 @@
 import { getCurrentUser } from '@/lib/session';
 import MobileHeader from '@/components/layout/mobile-header';
+import dynamic from 'next/dynamic';
+import { MobileFooter } from '@/components/layout/mobile-footer';
 
 interface MarketingLayoutProps {
     children: React.ReactNode;
 }
 
-import dynamic from 'next/dynamic';
 const Featurebase = dynamic(() => import('@/components/featurebase'), {
     loading: () => <></>,
 });
@@ -33,6 +34,7 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
                 <SidebarDesktop />
                 <SidebarOpen user={user} />
                 {children}
+                <MobileFooter />
             </main>
         </div>
     );

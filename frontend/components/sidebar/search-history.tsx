@@ -4,12 +4,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { SidebarList } from './sidebar-list';
-import { Icons } from '@/components/shared/icons';
 import { siteConfig } from '@/config';
 import { SidebarClose } from '@/components/sidebar/sidebar-close';
 import { SignInButton } from '@/components/layout/sign-in-button';
 import { User } from '@/lib/types';
 import { NewSearchButton } from '@/components/shared/new-search-button';
+import { buttonVariants } from '@/components/ui/button';
 
 interface SearchHistoryProps {
     user: User;
@@ -29,7 +29,9 @@ export async function SearchHistory({ user }: SearchHistoryProps) {
             </div>
             {!user && <SignInButton />}
 
-            <NewSearchButton />
+            <div className="my-2 px-4">
+                <NewSearchButton umamiEvent="New Search Click" className={buttonVariants({ variant: 'outline' })} />
+            </div>
             <SidebarList user={user} />
         </div>
     );
