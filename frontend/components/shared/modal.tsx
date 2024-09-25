@@ -7,17 +7,10 @@ interface ModalProps {
     setShowModal: () => void;
 }
 
-export function Modal({
-    children,
-    className,
-    showModal,
-    setShowModal,
-}: ModalProps) {
+export function Modal({ children, className, showModal, setShowModal }: ModalProps) {
     return (
         <Dialog open={showModal} onOpenChange={setShowModal}>
-            <DialogContent className="w-5/6 overflow-hidden p-0 md:max-w-md rounded-2xl border">
-                {children}
-            </DialogContent>
+            <DialogContent className="w-full overflow-hidden p-0 md:max-w-md rounded-2xl border">{children}</DialogContent>
         </Dialog>
     );
 }

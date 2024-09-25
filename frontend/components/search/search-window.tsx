@@ -231,7 +231,6 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                             updateMessages(accumulatedMessage);
                         }
                         if (error) {
-                            console.error(error);
                             setIsLoading(false);
                             setInput(messageValue);
                             const errMsg = 'The AI ​​model service is abnormal. Please try again or switch the AI ​​model.';

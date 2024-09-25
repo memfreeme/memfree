@@ -16,13 +16,13 @@ export const IndexModal = () => {
 
     return (
         <Modal showModal={indexModal.isOpen} setShowModal={indexModal.onClose}>
-            <div className="grid w-full p-10">
+            <div className="w-full p-6 overflow-hidden">
                 <div className="mb-6">
                     <h3 className="font-semibold text-center">{t('title')}</h3>
                     <p className="text-center text-xs pt-2 text-gray-500">{t('note')}</p>
                 </div>
 
-                <Tabs defaultValue="web">
+                <Tabs defaultValue="web" className="w-full">
                     <TabsList className="grid w-full mx-auto grid-cols-2">
                         <TabsTrigger value="web">
                             <div className="flex items-center">

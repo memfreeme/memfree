@@ -112,7 +112,7 @@ export function IndexWebPage() {
                     'w-full',
                 )}
             >
-                <span> {t('index-extension')}</span>
+                <span className="text-xs md:text-sm">{t('index-extension')}</span>
             </Link>
             <p className="text-center text-sm">{t('extension-note')}</p>
         </div>
