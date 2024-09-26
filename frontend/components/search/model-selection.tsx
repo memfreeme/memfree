@@ -29,11 +29,11 @@ export const modelMap: Record<string, Model> = {
         flag: 'Pro',
         value: O1_MIMI,
     },
-    [GEMINI_PRO]: {
-        name: 'Gemini 1.5 Pro',
-        flag: 'Pro',
-        value: GEMINI_PRO,
-    },
+    // [GEMINI_PRO]: {
+    //     name: 'Gemini 1.5 Pro',
+    //     flag: 'Pro',
+    //     value: GEMINI_PRO,
+    // },
     [Claude_35_Sonnet]: {
         name: 'Claude 3.5 Sonnet',
         flag: 'Pro',
