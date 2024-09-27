@@ -6,7 +6,7 @@
 
 <h1 align="center"><a href="https://www.memfree.me">MemFree</a></h1>
 
-<h2 align="center">Vote for MemFree on 2024-09-27 for a 20% discount!</h2>
+<h2 align="center">Vote for MemFree for 20% discount!</h2>
 
 <h3 align="center">
 <a
