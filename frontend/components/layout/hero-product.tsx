@@ -14,7 +14,7 @@ export async function HeroProduct() {
                     target="_blank"
                 >
                     <img
-                        src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=491138&theme=light"
+                        src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=491138"
                         alt="MemFree - Hybrid&#0032;AI&#0032;Search | Product Hunt"
                         width="250"
                         height="54"
