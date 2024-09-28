@@ -6,22 +6,6 @@
 
 <h1 align="center"><a href="https://www.memfree.me">MemFree</a></h1>
 
-<h2 align="center">Vote for MemFree for 20% discount!</h2>
-
-<h3 align="center">
-<a
-href="https://www.producthunt.com/posts/memfree?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-memfree"
-target="\_blank"
-
-<img
-src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=491138"
-alt="MemFree - Hybrid&#0032;AI&#0032;Search | Product Hunt"
-width="250"
-height="54"/>
-
-</a>
-</h3>
-
 <h4 align="center">
   <a href="https://twitter.com/ahaapple2023">
     <img src="https://img.shields.io/twitter/follow/llmreport?style=flat&label=%40ahaapple&logo=twitter&color=0bf&logoColor=fff" alt="Twitter" />
