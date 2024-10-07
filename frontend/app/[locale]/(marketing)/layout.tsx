@@ -15,8 +15,8 @@ export default async function MarketingLayout({ children, params: { locale } }) 
                 <SiteHeader user={user} items={mainNavConfig.mainNav} />
             </Suspense>
             <main className="flex-1">{children}</main>
-            <SimpleSiteFooter />
-            <MobileFooter />
+            {/* <SimpleSiteFooter />
+            <MobileFooter /> */}
         </div>
     );
 }

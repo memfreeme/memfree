@@ -266,14 +266,6 @@ Before writing or suggesting code, perform a comprehensive code review of the ex
 
 You should always provide complete, directly executable code, and do not omit part of the code.
 
-# Contexts
-
-Here are the full contexts of the QUESTION:
-
-\`\`\`
-%s
-\`\`\`
-
 Your answer MUST be written in the same language as the user QUESTION, For example, if the user QUESTION is written in chinese, your answer should be written in chinese too, if user's QUESTION is written in english, your answer should be written in english too.
 Today's date is ${new Date().toISOString()}
 `;

@@ -1,10 +1,9 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { generateId } from '@/lib/shared-utils';
+import { useNewSearch } from '@/hooks/use-new-search';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 
 interface NewSearchButtonProps {
     variant?: 'icon' | 'text';
@@ -13,18 +12,12 @@ interface NewSearchButtonProps {
 }
 
 export function NewSearchButton({ variant = 'text', className, umamiEvent, ...props }: NewSearchButtonProps) {
-    const router = useRouter();
-
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        const id = generateId();
-        router.push(`/?id=${id}`);
-    };
+    const handleNewSearch = useNewSearch();
 
     return (
         <Button
             variant={variant === 'icon' ? 'ghost' : 'outline'}
-            onClick={handleClick}
+            onClick={handleNewSearch}
             data-umami-event={umamiEvent}
             className={cn(
                 variant === 'text' &&

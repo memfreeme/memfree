@@ -37,10 +37,14 @@ export function SourceSelection() {
             name: t('Knowledge'),
             value: SearchCategory.KNOWLEDGE_BASE,
         },
-        [SearchCategory.PRODUCT_HUNT]: {
-            name: 'Product Hunt',
-            value: SearchCategory.PRODUCT_HUNT,
+        [SearchCategory.UI]: {
+            name: 'Generate UI',
+            value: SearchCategory.UI,
         },
+        // [SearchCategory.PRODUCT_HUNT]: {
+        //     name: 'Product Hunt',
+        //     value: SearchCategory.PRODUCT_HUNT,
+        // },
         [SearchCategory.INDIE_MAKER]: {
             name: 'Indie Maker',
             value: SearchCategory.INDIE_MAKER,

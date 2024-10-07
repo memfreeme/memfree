@@ -1,7 +1,7 @@
 'use server';
 
 import { incSearchCount } from '@/lib/db';
-import { getLLM, Message } from '@/lib/llm/llm';
+import { getLLM } from '@/lib/llm/llm';
 import { DirectAnswerPrompt } from '@/lib/llm/prompt';
 import { getHistory, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
@@ -24,7 +24,7 @@ export async function o1Answer(
     source = SearchCategory.ALL,
 ) {
     try {
-        const newMessages = messages.slice(-1) as Message[];
+        const newMessages = messages.slice(-1);
         const query = newMessages[0].content;
 
         let texts: TextSource[] = [];
@@ -65,7 +65,6 @@ export async function o1Answer(
 
         await streamResponse({ status: 'Answering ...', answer: fullAnswer }, onStream);
 
-        await streamResponse({ status: 'Generating related questions ...' }, onStream);
         let fullRelated = '';
         await getRelatedQuestions(query, texts, (msg) => {
             fullRelated += msg;

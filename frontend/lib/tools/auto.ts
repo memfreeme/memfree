@@ -1,20 +1,19 @@
 'use server';
 
 import { incSearchCount } from '@/lib/db';
-import { getLLM, Message } from '@/lib/llm/llm';
+import { convertToCoreMessages, getLLM, getMaxOutputToken } from '@/lib/llm/llm';
 import { AutoAnswerPrompt } from '@/lib/llm/prompt';
-import { getHistory, getMaxOutputToken, streamResponse } from '@/lib/llm/utils';
+import { getHistory, getHistoryMessages, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine } from '@/lib/search/search';
 import { saveMessages } from '@/lib/server-utils';
-import { extractAllImageUrls, replaceImageUrl } from '@/lib/shared-utils';
 import { accessWebPage } from '@/lib/tools/access';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { getRelatedQuestions } from '@/lib/tools/related';
 import { searchRelevantContent } from '@/lib/tools/search';
 import { ImageSource, Message as StoreMessage, SearchCategory, TextSource, VideoSource } from '@/lib/types';
-import { CoreUserMessage, ImagePart, streamText, TextPart, tool } from 'ai';
+import { streamText, tool } from 'ai';
 import util from 'util';
 import { z } from 'zod';
 
@@ -28,26 +27,20 @@ export async function autoAnswer(
     source = SearchCategory.ALL,
 ) {
     try {
-        const attachments = messages[messages.length - 1].attachments ?? [];
-        const newMessages = messages.slice(-1) as Message[];
-        const query = newMessages[0].content;
+        const newMessages = getHistoryMessages(isPro, messages);
+        const query = newMessages[newMessages.length - 1].content;
 
         let texts: TextSource[] = [];
         let images: ImageSource[] = [];
         let videos: VideoSource[] = [];
 
-        let history = getHistory(isPro, messages);
-        const system = util.format(AutoAnswerPrompt, profile, history);
-        // console.log('Auto Answering:', system);
+        const system = util.format(AutoAnswerPrompt, profile);
 
-        let userMessages = createUserMessages(query, attachments);
-        console.log('userMessages', JSON.stringify(userMessages, null, 2));
-
-        const maxTokens = getMaxOutputToken(isPro);
+        const maxTokens = getMaxOutputToken(isPro, model);
         const result = await streamText({
             model: getLLM(model),
             system: system,
-            messages: userMessages as CoreUserMessage[],
+            messages: convertToCoreMessages(newMessages),
             maxTokens: maxTokens,
             temperature: 0.1,
             tools: {
@@ -140,6 +133,7 @@ export async function autoAnswer(
 
             fullAnswer = '';
             await streamResponse({ status: 'Answering ...', clear: true }, onStream);
+            const history = getHistory(isPro, messages);
             await directlyAnswer(
                 isPro,
                 source,
@@ -195,30 +189,4 @@ export async function autoAnswer(
         logError(error, 'llm-auto-openai');
         onStream?.(null, true);
     }
-}
-
-function createUserMessages(query: string, attachments: string[] = []) {
-    let text = query;
-    if (attachments.length === 0) {
-        attachments = extractAllImageUrls(query);
-        if (attachments.length > 0) {
-            text = replaceImageUrl(query, attachments);
-        }
-    }
-    return [
-        {
-            role: 'user',
-            content: [{ type: 'text', text: text }, ...attachmentsToParts(attachments)],
-        },
-    ];
-}
-
-type ContentPart = TextPart | ImagePart;
-
-function attachmentsToParts(attachments: string[]): ContentPart[] {
-    const parts: ContentPart[] = [];
-    for (const attachment of attachments) {
-        parts.push({ type: 'image', image: attachment });
-    }
-    return parts;
 }

@@ -55,6 +55,7 @@ export async function saveMessages(
     images?: ImageSource[],
     videos?: VideoSource[],
     related?: string,
+    type?: string,
 ) {
     if (!userId) {
         return;
@@ -68,7 +69,10 @@ export async function saveMessages(
         images: images,
         videos: videos,
         related: related,
+        type: type ?? 'all',
     });
+
+    // console.log('saving search', messages);
 
     await saveSearch(
         {

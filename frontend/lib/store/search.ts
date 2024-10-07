@@ -157,6 +157,13 @@ export async function shareSearch(id: string) {
 
         return payload;
     } catch (error) {
+        log({
+            service: 'search',
+            action: 'share-search',
+            error: `${error}`,
+            userId: session.user.id,
+            context: `search id: ${id}`,
+        });
         console.error('Failed to share search:', error, id);
         return {
             error: 'Failed to share search',

@@ -1,7 +1,7 @@
 'use server';
 
 import { incSearchCount } from '@/lib/db';
-import { getLLM, Message } from '@/lib/llm/llm';
+import { getLLM } from '@/lib/llm/llm';
 import { getHistory, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
@@ -13,7 +13,7 @@ import { Message as StoreMessage, SearchCategory } from '@/lib/types';
 export async function knowledgeBaseSearch(messages: StoreMessage[], isPro: boolean, userId: string, onStream?: (...args: any[]) => void, model = GPT_4o_MIMI) {
     try {
         const url = messages[messages.length - 1].attachments?.[0];
-        const newMessages = messages.slice(-1) as Message[];
+        const newMessages = messages.slice(-1);
         const query = newMessages[0].content;
 
         await streamResponse({ status: 'Searching ...' }, onStream);

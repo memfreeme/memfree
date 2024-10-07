@@ -24,13 +24,14 @@ interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
     showSourceSelection?: boolean;
     showIndexButton?: boolean;
+    showModelSelection?: boolean;
 }
 
 interface FileWithPreview extends File {
     preview?: string;
 }
 
-const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, showIndexButton = true }) => {
+const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, showIndexButton = true, showModelSelection = true }) => {
     const [content, setContent] = useState<string>('');
     const signInModal = useSigninModal();
     const indexModal = useIndexModal();
@@ -197,27 +198,29 @@ const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, 
                 ></TextareaAutosize>
                 <div className="flex relative">
                     <div className="absolute left-0 bottom-0 mb-1 ml-2 mt-6 flex items-center space-x-4">
-                        { showIndexButton && <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button
-                                    type="button"
-                                    aria-label={t('index-tip')}
-                                    className="text-gray-500 hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 flex items-center space-x-1"
-                                    data-umami-event="Index Button Click"
-                                    onClick={() => {
-                                        if (!user) {
-                                            signInModal.onOpen();
-                                        } else {
-                                            indexModal.onOpen();
-                                        }
-                                    }}
-                                >
-                                    <Database size={20} strokeWidth={2} />
-                                    <span className="font-serif text-sm">{t('index-button')}</span>
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent>{t('index-tip')}</TooltipContent>
-                        </Tooltip>}
+                        {showIndexButton && (
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button
+                                        type="button"
+                                        aria-label={t('index-tip')}
+                                        className="text-gray-500 hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 flex items-center space-x-1"
+                                        data-umami-event="Index Button Click"
+                                        onClick={() => {
+                                            if (!user) {
+                                                signInModal.onOpen();
+                                            } else {
+                                                indexModal.onOpen();
+                                            }
+                                        }}
+                                    >
+                                        <Database size={20} strokeWidth={2} />
+                                        <span className="font-serif text-sm">{t('index-button')}</span>
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent>{t('index-tip')}</TooltipContent>
+                            </Tooltip>
+                        )}
 
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -272,7 +275,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, 
             </div>
 
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2">
-                <ModelSelection />
+                {showModelSelection && <ModelSelection />}
                 {showSourceSelection && <SourceSelection />}
             </div>
             {user && <IndexModal />}

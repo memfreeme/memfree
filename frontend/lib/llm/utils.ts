@@ -1,7 +1,8 @@
 import 'server-only';
 
-export function getMaxOutputToken(isPro: boolean) {
-    return isPro ? 8192 : 2048;
+export function getHistoryMessages(isPro: boolean, messages: any[]) {
+    const sliceNum = isPro ? -7 : -3;
+    return messages?.slice(sliceNum);
 }
 
 export function getHistory(isPro: boolean, messages: any[]) {
@@ -21,21 +22,17 @@ export function getHistory(isPro: boolean, messages: any[]) {
         .join('\n');
 }
 
-export async function streamResponse(
-    data: Record<string, any>,
-    onStream?: (...args: any[]) => void,
-) {
+export async function streamResponse(data: Record<string, any>, onStream?: (...args: any[]) => void) {
     for (const [key, value] of Object.entries(data)) {
         onStream?.(JSON.stringify({ [key]: value }));
     }
 }
 
-export const streamController =
-    (controller) => (message: string | null, done: boolean) => {
-        if (done) {
-            controller.close();
-        } else {
-            const payload = `data: ${message} \n\n`;
-            controller.enqueue(payload);
-        }
-    };
+export const streamController = (controller) => (message: string | null, done: boolean) => {
+    if (done) {
+        controller.close();
+    } else {
+        const payload = `data: ${message} \n\n`;
+        controller.enqueue(payload);
+    }
+};

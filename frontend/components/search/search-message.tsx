@@ -1,7 +1,7 @@
 import SourceBubble from '@/components/search/source-bubble';
 import { FileTextIcon, Film, Images, ListPlusIcon, PlusIcon, TextSearchIcon, Map } from 'lucide-react';
 import ImageGallery from '@/components/search/image-gallery';
-import { Message } from '@/lib/types';
+import { Message, SearchCategory } from '@/lib/types';
 
 import React, { memo, useMemo } from 'react';
 import AnswerSection from '@/components/search/answer-section';
@@ -12,6 +12,7 @@ import VideoGallery from '@/components/search/video-gallery';
 import ExpandableSection from '@/components/search/expandable-section';
 import MindMap from '@/components/search/mindmap';
 import { useTranslations } from 'next-intl';
+import UISection from '@/components/code/ui-section';
 
 const SearchMessage = memo(
     (props: {
@@ -23,7 +24,7 @@ const SearchMessage = memo(
         isReadOnly: boolean;
     }) => {
         const {
-            message: { id, role, content, related, sources = [], images = [], videos = [] },
+            message: { id, role, content, related, type, sources = [], images = [], videos = [] },
             onSelect,
             reload,
             isLoading,
@@ -50,9 +51,18 @@ const SearchMessage = memo(
 
         return (
             <div className="flex flex-col w-full items-start space-y-6 pb-10">
-                {!isUser && content && <AnswerSection title={t('Answer')} content={content} sources={sources} />}
-                {(images.length > 0 || !isLoading) && !isUser && <ActionButtons content={content} searchId={searchId} msgId={id} reload={reload} />}
-                {!isUser && content && !isLoading && (
+                {!isUser &&
+                    content &&
+                    (type !== SearchCategory.UI ? (
+                        <AnswerSection title={t('Answer')} content={content} sources={sources} />
+                    ) : (
+                        <UISection content={content} isLoading={isLoading} searchId={searchId} isReadOnly={isReadOnly} />
+                    ))}
+
+                {(images.length > 0 || !isLoading) && !isUser && type != SearchCategory.UI && (
+                    <ActionButtons content={content} searchId={searchId} msgId={id} reload={reload} />
+                )}
+                {!isUser && content && !isLoading && type != SearchCategory.UI && (
                     <ExpandableSection title={t('MindMap')} icon={Map} open={isReadOnly}>
                         <MindMap value={content} />
                     </ExpandableSection>

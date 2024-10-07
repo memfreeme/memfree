@@ -56,6 +56,8 @@ export enum SearchCategory {
     TWEET = 'tweet',
     INDIE_MAKER = 'indie-maker',
     HACKER_NEWS = 'hacker-news',
+    Coding = 'coding',
+    UI = 'ui',
     PRODUCT_HUNT = 'product-hunt',
     WEB_PAGE = 'web-page',
     KNOWLEDGE_BASE = 'knowledge-base',
@@ -70,6 +72,7 @@ export type Message = {
     id: string;
     role: 'system' | 'user' | 'assistant' | 'tool';
     content: string;
+    type?: string;
     imageFile?: string;
     attachments?: string[];
     sources?: TextSource[];

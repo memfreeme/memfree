@@ -1,7 +1,7 @@
 'use server';
 
 import { incSearchCount } from '@/lib/db';
-import { getLLM, Message } from '@/lib/llm/llm';
+import { getLLM } from '@/lib/llm/llm';
 import { getHistory, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
@@ -26,7 +26,7 @@ export async function indieMakerSearch(
     model = GPT_4o_MIMI,
 ) {
     try {
-        const newMessages = messages.slice(-1) as Message[];
+        const newMessages = messages.slice(-1);
         const query = newMessages[0].content;
 
         const selectedDomains = getRandomDomains(domains, 2);

@@ -1,6 +1,5 @@
-import { StreamHandler } from '@/lib/llm/llm';
+import { getMaxOutputToken, StreamHandler } from '@/lib/llm/llm';
 import { AcademicPrompt, DirectAnswerPrompt, ProductHuntPrompt, SummaryPrompt, IndieMakerPrompt } from '@/lib/llm/prompt';
-import { getMaxOutputToken } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { SearchCategory, TextSource } from '@/lib/types';
 import { LanguageModel, streamText } from 'ai';
@@ -20,7 +19,7 @@ export async function directlyAnswer(
     try {
         const system = promptFormatterAnswer(source, profile, searchContexts, history);
         // console.log('system prompt: ', system);
-        const maxTokens = getMaxOutputToken(isPro);
+        const maxTokens = getMaxOutputToken(isPro, model.modelId);
 
         const result = await streamText({
             model: model,

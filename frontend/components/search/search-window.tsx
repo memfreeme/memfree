@@ -134,6 +134,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                                 related: newRelated || '',
                                 videos: newVideos || [],
                                 role: 'assistant',
+                                type: configStore.getState().source,
                             },
                         ],
                     });
@@ -173,6 +174,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                                 content: messageValue,
                                 role: 'user',
                                 attachments: attachments ?? [],
+                                type: configStore.getState().source,
                             },
                         ],
                     });
@@ -185,6 +187,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                                 content: messageValue,
                                 role: 'user',
                                 attachments: attachments ?? [],
+                                type: configStore.getState().source,
                             },
                         ],
                     });
@@ -315,7 +318,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                     [...messages].map((m) => (
                         <SearchMessage
                             key={m.id}
-                            searchId={id}
+                            searchId={activeId}
                             message={{ ...m }}
                             onSelect={sendSelectedQuestion}
                             reload={reload}

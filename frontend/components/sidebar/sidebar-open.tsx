@@ -9,8 +9,7 @@ import { User } from 'next-auth';
 import { UserAccountNav } from '@/components/layout/user-account-nav';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import LocaleSelect from '@/components/locale-selection';
-import { useRouter } from 'next/navigation';
-import { generateId } from '@/lib/shared-utils';
+import { useNewSearch } from '@/hooks/use-new-search';
 
 interface NavBarProps {
     user: User;
@@ -18,12 +17,7 @@ interface NavBarProps {
 
 export default function SidebarOpen({ user }: NavBarProps) {
     const { toggleSidebar, isSidebarOpen } = useSidebar();
-    const router = useRouter();
-    const handleHomeClick = (e) => {
-        e.preventDefault();
-        const id = generateId();
-        router.push(`/?id=${id}`);
-    };
+    const handleNewSearch = useNewSearch();
 
     return (
         <div className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2  flex-col space-y-2 rounded-lg bg-gray-50 dark:bg-gray-400 py-3">
@@ -48,8 +42,7 @@ export default function SidebarOpen({ user }: NavBarProps) {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <button
-                                onClick={handleHomeClick}
-                                rel="nofollow"
+                                onClick={handleNewSearch}
                                 className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 rounded-lg  p-2 m-2"
                             >
                                 <Plus size={20} strokeWidth={2} />
