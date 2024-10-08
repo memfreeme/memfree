@@ -1,6 +1,7 @@
 import { getMaxOutputToken, StreamHandler } from '@/lib/llm/llm';
 import { AcademicPrompt, DirectAnswerPrompt, ProductHuntPrompt, SummaryPrompt, IndieMakerPrompt } from '@/lib/llm/prompt';
 import { logError } from '@/lib/log';
+import { extractErrorMessage } from '@/lib/server-utils';
 import { SearchCategory, TextSource } from '@/lib/types';
 import { LanguageModel, streamText } from 'ai';
 import util from 'util';
@@ -33,15 +34,8 @@ export async function directlyAnswer(
             onStream?.(text, false);
         }
     } catch (error) {
-        let errorMessage: string;
-
-        if (error instanceof Error) {
-            errorMessage = `Error occurred: ${error.message}`;
-            logError(error, `llm-${model.modelId}`);
-        } else {
-            errorMessage = `An unexpected error occurred: ${String(error)}`;
-            logError(new Error(String(error)), `llm-${model.modelId}`);
-        }
+        const errorMessage = extractErrorMessage(error);
+        logError(new Error(errorMessage), `llm-direct-${model}`);
         onError(errorMessage);
     }
 }

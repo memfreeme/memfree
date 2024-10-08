@@ -4,7 +4,7 @@ import { streamText } from 'ai';
 import { SearchCategory, Message as StoreMessage } from '@/lib/types';
 import { Claude_35_Sonnet, GPT_4o_MIMI } from '@/lib/model';
 import { incSearchCount } from '@/lib/db';
-import { saveMessages } from '@/lib/server-utils';
+import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 
 export async function generateUI(
     messages: StoreMessage[],
@@ -82,17 +82,7 @@ padding, margin, border, etc. Match the colors and sizes exactly.
 
         await saveMessages(userId, messages, fullAnswer, [], [], [], '', SearchCategory.UI);
     } catch (error) {
-        let errorMessage: string;
-
-        if (error instanceof Error) {
-            errorMessage = error.message;
-        } else if (typeof error === 'object' && error !== null) {
-            errorMessage = JSON.stringify(error);
-        } else {
-            errorMessage = String(error);
-        }
-
-        console.error('Error:', error);
+        const errorMessage = extractErrorMessage(error);
         logError(new Error(errorMessage), `llm-${model}`);
         onStream?.(JSON.stringify({ error: errorMessage }));
     } finally {

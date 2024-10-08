@@ -9,7 +9,7 @@ import { User } from 'next-auth';
 import { UserAccountNav } from '@/components/layout/user-account-nav';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import LocaleSelect from '@/components/locale-selection';
-import { useNewSearch } from '@/hooks/use-new-search';
+import { useNewGenerateUI, useNewSearch } from '@/hooks/use-new-search';
 
 interface NavBarProps {
     user: User;
@@ -18,6 +18,7 @@ interface NavBarProps {
 export default function SidebarOpen({ user }: NavBarProps) {
     const { toggleSidebar, isSidebarOpen } = useSidebar();
     const handleNewSearch = useNewSearch();
+    const handleNewGenerateUI = useNewGenerateUI();
 
     return (
         <div className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2  flex-col space-y-2 rounded-lg bg-gray-50 dark:bg-gray-400 py-3">
@@ -51,6 +52,20 @@ export default function SidebarOpen({ user }: NavBarProps) {
                         </TooltipTrigger>
                         <TooltipContent className="bg-black text-white">
                             <p>New Search</p>
+                        </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <button
+                                onClick={handleNewGenerateUI}
+                                className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 rounded-lg  p-2 m-2"
+                            >
+                                UI
+                                <span className="sr-only">New Generate UI</span>
+                            </button>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-black text-white">
+                            <p>New Generate UI</p>
                         </TooltipContent>
                     </Tooltip>
 

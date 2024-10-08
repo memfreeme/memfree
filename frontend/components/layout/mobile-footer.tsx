@@ -8,11 +8,11 @@ export function MobileFooter() {
         <footer className="md:hidden fixed bottom-0 inset-x-0 bg-background py-2">
             <div className="container mx-auto">
                 <div className="flex justify-between items-center">
-                    <Button variant="ghost" size="icon" aria-label="Settings">
+                    {/* <Button variant="ghost" size="icon" aria-label="Settings">
                         <Link href="/settings" aria-label="Settings" data-umami-event="Mobile Settings Click">
                             <Settings className="size-5" />
                         </Link>
-                    </Button>
+                    </Button> */}
                     <Button variant="ghost" size="icon" asChild>
                         <Link
                             data-featurebase-link
@@ -24,6 +24,7 @@ export function MobileFooter() {
                             <Heart className="size-5 hover:text-primary" />
                         </Link>
                     </Button>
+                    <NewSearchButton variant="icon" umamiEvent="Mobile New Generate UI" type="UI" />
 
                     <NewSearchButton variant="icon" umamiEvent="Mobile New Search Click" />
                     <Button variant="ghost" size="icon" className="text-primary" asChild>

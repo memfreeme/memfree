@@ -7,7 +7,7 @@ import { getHistory, getHistoryMessages, streamResponse } from '@/lib/llm/utils'
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine } from '@/lib/search/search';
-import { saveMessages } from '@/lib/server-utils';
+import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { accessWebPage } from '@/lib/tools/access';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { getRelatedQuestions } from '@/lib/tools/related';
@@ -186,7 +186,9 @@ export async function autoAnswer(
         await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated);
         onStream?.(null, true);
     } catch (error) {
-        logError(error, 'llm-auto-openai');
+        const errorMessage = extractErrorMessage(error);
+        logError(new Error(errorMessage), `llm-auto-${model}`);
+        onStream?.(JSON.stringify({ error: errorMessage }));
         onStream?.(null, true);
     }
 }

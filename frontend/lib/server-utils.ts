@@ -85,3 +85,13 @@ export async function saveMessages(
         userId,
     );
 }
+
+export function extractErrorMessage(error: unknown): string {
+    if (error instanceof Error) {
+        return error.message;
+    } else if (typeof error === 'object' && error !== null) {
+        return JSON.stringify(error);
+    } else {
+        return String(error);
+    }
+}
