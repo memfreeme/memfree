@@ -2,6 +2,7 @@
 
 import SearchBar from '@/components/search/search-bar';
 import SearchWindow from '@/components/search/search-window';
+import { UIDemos } from '@/components/search/ui-demo-questions';
 import { useSourceStore } from '@/lib/store';
 import { SearchCategory, User } from '@/lib/types';
 import React from 'react';
@@ -23,7 +24,7 @@ export default function UIWindowWapper({ id, user }: SearchPageProps) {
             id={id}
             user={user}
             initialMessages={[]}
-            demoQuestions={<></>}
+            demoQuestions={<UIDemos />}
             searchBar={({ handleSearch }) => (
                 <SearchBar handleSearch={handleSearch} showIndexButton={false} showSourceSelection={false} showModelSelection={false} />
             )}

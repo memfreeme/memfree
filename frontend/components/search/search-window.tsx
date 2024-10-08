@@ -315,14 +315,14 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
         <div className="group overflow-auto mx-auto w-full md:w-5/6  px-4 md:px-0 flex flex-col my-2" ref={scrollRef}>
             <div className="flex flex-col w-full">
                 {messages.length > 0 ? (
-                    [...messages].map((m) => (
+                    [...messages].map((m, index) => (
                         <SearchMessage
                             key={m.id}
                             searchId={activeId}
                             message={{ ...m }}
                             onSelect={sendSelectedQuestion}
                             reload={reload}
-                            isLoading={isLoading}
+                            isLoading={index === messages.length - 1 && isLoading}
                             isReadOnly={isReadOnly}
                         ></SearchMessage>
                     ))

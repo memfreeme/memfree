@@ -1,5 +1,5 @@
 import { convertToCoreMessages, getLLM } from '@/lib/llm/llm';
-import { logError } from '@/lib/log';
+import { log, logError } from '@/lib/log';
 import { streamText } from 'ai';
 import { SearchCategory, Message as StoreMessage } from '@/lib/types';
 import { Claude_35_Sonnet, GPT_4o_MIMI } from '@/lib/model';
@@ -97,5 +97,10 @@ padding, margin, border, etc. Match the colors and sizes exactly.
         onStream?.(JSON.stringify({ error: errorMessage }));
     } finally {
         onStream?.(null, true);
+        log({
+            service: 'generate-ui',
+            userId: userId,
+            message: messages,
+        });
     }
 }
