@@ -8,7 +8,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { ModelSelection } from '@/components/search/model-selection';
 import { SourceSelection } from '@/components/search/source-selection';
 import TextareaAutosize from 'react-textarea-autosize';
-import { useUserStore } from '@/lib/store';
+import { useUIStore, useUserStore } from '@/lib/store';
 import { toast } from 'sonner';
 import { Icons } from '@/components/shared/icons';
 import Image from 'next/image';
@@ -19,19 +19,22 @@ import { getFileSizeLimit, processImageFiles } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { isProUser } from '@/lib/shared-utils';
 import dynamic from 'next/dynamic';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
     showSourceSelection?: boolean;
     showIndexButton?: boolean;
     showModelSelection?: boolean;
+    showWebSearch?: boolean;
 }
 
 interface FileWithPreview extends File {
     preview?: string;
 }
 
-const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, showIndexButton = true, showModelSelection = true }) => {
+const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, showIndexButton = true, showModelSelection = true, showWebSearch = false }) => {
     const [content, setContent] = useState<string>('');
     const signInModal = useSigninModal();
     const indexModal = useIndexModal();
@@ -160,6 +163,8 @@ const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, 
         loading: () => <></>,
     });
 
+    const { isSearch, setIsSearch } = useUIStore();
+
     return (
         <div className="w-full text-center">
             <div className="flex flex-col relative mx-auto w-full border-2 rounded-lg focus-within:border-primary">
@@ -254,7 +259,14 @@ const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, 
                             <TooltipContent>{t('attach-tip')}</TooltipContent>
                         </Tooltip>
                     </div>
-                    <div className="absolute right-0 bottom-0 mb-1 mr-2 mt-6">
+                    <div className="absolute right-0 bottom-0 mb-1 mr-2 mt-6 flex items-center space-x-4">
+                        {showWebSearch && (
+                            <div className="flex items-center space-x-2 mb-1">
+                                <Switch id="search" checked={isSearch} onCheckedChange={(checked) => setIsSearch(checked)} />
+                                <Label htmlFor="search">Web Search</Label>
+                            </div>
+                        )}
+
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <button

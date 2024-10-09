@@ -14,7 +14,6 @@ import { autoAnswer } from '@/lib/tools/auto';
 import { o1Answer } from '@/lib/tools/o1-answer';
 import { productSearch } from '@/lib/tools/product';
 import { indieMakerSearch } from '@/lib/tools/indie';
-import { generateUI } from '@/lib/tools/generate-ui';
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
@@ -26,9 +25,6 @@ const ratelimit = new Ratelimit({
 const updateSource = function (model, source, messages) {
     if (model === O1_MIMI || model === O1_PREVIEW) {
         return SearchCategory.O1;
-    }
-    if (source === SearchCategory.UI) {
-        return source;
     }
     const file = messages[0].attachments?.[0];
     if (file) {
@@ -105,10 +101,6 @@ export async function POST(req: NextRequest) {
                     }
                     case SearchCategory.KNOWLEDGE_BASE: {
                         await knowledgeBaseSearch(messages, isPro, userId, streamController(controller), model);
-                        break;
-                    }
-                    case SearchCategory.UI: {
-                        await generateUI(messages, isPro, userId, streamController(controller));
                         break;
                     }
                     default: {

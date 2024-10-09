@@ -20,6 +20,23 @@ export const useProfileStore = create<ProfileState>()(
     ),
 );
 
+type UIState = {
+    isSearch: boolean;
+    setIsSearch: (isSearch: boolean) => void;
+};
+
+export const useUIStore = create<UIState>()(
+    persist(
+        (set) => ({
+            isSearch: false,
+            setIsSearch: (search: boolean) => set({ isSearch: search }),
+        }),
+        {
+            name: 'UI-storage',
+        },
+    ),
+);
+
 type UserState = {
     user: User | null;
     setUser: (user: User) => void;
@@ -47,11 +64,7 @@ export const useModeStore = create<ModeState>((set) => ({
     },
     initMode: (): 'search' | 'ask' | 'chat' => {
         const savedMode = localStorage.getItem('mode');
-        return savedMode === 'search' ||
-            savedMode === 'ask' ||
-            savedMode === 'chat'
-            ? savedMode
-            : 'ask';
+        return savedMode === 'search' || savedMode === 'ask' || savedMode === 'chat' ? savedMode : 'ask';
     },
 }));
 

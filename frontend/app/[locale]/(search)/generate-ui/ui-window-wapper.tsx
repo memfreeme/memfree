@@ -20,7 +20,7 @@ export default function UIWindowWapper({ id, user }: SearchPageProps) {
             searchType="ui"
             demoQuestions={<UIDemos />}
             searchBar={({ handleSearch }) => (
-                <SearchBar handleSearch={handleSearch} showIndexButton={false} showSourceSelection={false} showModelSelection={false} />
+                <SearchBar handleSearch={handleSearch} showIndexButton={false} showSourceSelection={false} showModelSelection={false} showWebSearch={true} />
             )}
         />
     );
