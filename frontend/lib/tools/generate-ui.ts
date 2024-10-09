@@ -6,14 +6,7 @@ import { Claude_35_Sonnet, GPT_4o_MIMI } from '@/lib/model';
 import { incSearchCount } from '@/lib/db';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 
-export async function generateUI(
-    messages: StoreMessage[],
-    isPro: boolean,
-    userId: string,
-    profile: string,
-    onStream?: (...args: any[]) => void,
-    model = GPT_4o_MIMI,
-) {
+export async function generateUI(messages: StoreMessage[], isPro: boolean, userId: string, onStream?: (...args: any[]) => void) {
     const systemPrompt = `
     You are an expert frontend React engineer who is also a great UI/UX designer. Follow the instructions carefully, I will tip you $1 million if you do a good job:
 
@@ -60,7 +53,7 @@ padding, margin, border, etc. Match the colors and sizes exactly.
         const newMessages = messages.slice(-7);
 
         const historyMessages = convertToCoreMessages(newMessages);
-        console.log('historyMessages', JSON.stringify(historyMessages, null, 2));
+        // console.log('historyMessages', JSON.stringify(historyMessages, null, 2));
 
         const result = await streamText({
             model: getLLM(Claude_35_Sonnet),
@@ -83,7 +76,7 @@ padding, margin, border, etc. Match the colors and sizes exactly.
         await saveMessages(userId, messages, fullAnswer, [], [], [], '', SearchCategory.UI);
     } catch (error) {
         const errorMessage = extractErrorMessage(error);
-        logError(new Error(errorMessage), `llm-${model}`);
+        logError(new Error(errorMessage), `llm-generate-ui`);
         onStream?.(JSON.stringify({ error: errorMessage }));
     } finally {
         onStream?.(null, true);

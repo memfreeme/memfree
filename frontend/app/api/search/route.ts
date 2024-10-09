@@ -108,7 +108,7 @@ export async function POST(req: NextRequest) {
                         break;
                     }
                     case SearchCategory.UI: {
-                        await generateUI(messages, isPro, userId, profile, streamController(controller), model);
+                        await generateUI(messages, isPro, userId, streamController(controller));
                         break;
                     }
                     default: {

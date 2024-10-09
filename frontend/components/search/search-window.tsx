@@ -27,9 +27,10 @@ export interface SearchProps extends React.ComponentProps<'div'> {
     isReadOnly?: boolean;
     demoQuestions: React.ReactNode;
     searchBar?: (props: { handleSearch: (key: string, attachments?: string[]) => void }) => React.ReactNode;
+    searchType?: 'search' | 'ui';
 }
 
-export default function SearchWindow({ id, initialMessages, user, isReadOnly = false, demoQuestions, searchBar }: SearchProps) {
+export default function SearchWindow({ id, initialMessages, user, isReadOnly = false, demoQuestions, searchBar, searchType = 'search' }: SearchProps) {
     const t = useTranslations('Search');
     const searchParams = useSearchParams();
     const signInModal = useSigninModal();
@@ -134,7 +135,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                                 related: newRelated || '',
                                 videos: newVideos || [],
                                 role: 'assistant',
-                                type: configStore.getState().source,
+                                type: activeSearch.messages[0]?.type,
                             },
                         ],
                     });
@@ -174,7 +175,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                                 content: messageValue,
                                 role: 'user',
                                 attachments: attachments ?? [],
-                                type: configStore.getState().source,
+                                type: searchType,
                             },
                         ],
                     });
@@ -187,7 +188,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                                 content: messageValue,
                                 role: 'user',
                                 attachments: attachments ?? [],
-                                type: configStore.getState().source,
+                                type: activeSearch.messages[0]?.type,
                             },
                         ],
                     });
@@ -195,7 +196,8 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
             }
 
             try {
-                const url = `/api/search`;
+                const url = searchType === 'ui' || useSearchStore.getState().activeSearch?.messages[0]?.type === 'ui' ? '/api/generate-ui' : '/api/search';
+
                 await fetchEventSource(url, {
                     method: 'post',
                     headers: {

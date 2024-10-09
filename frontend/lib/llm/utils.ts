@@ -28,11 +28,12 @@ export async function streamResponse(data: Record<string, any>, onStream?: (...a
     }
 }
 
+const encoder = new TextEncoder();
 export const streamController = (controller) => (message: string | null, done: boolean) => {
     if (done) {
         controller.close();
     } else {
         const payload = `data: ${message} \n\n`;
-        controller.enqueue(payload);
+        controller.enqueue(encoder.encode(payload));
     }
 };
