@@ -11,8 +11,8 @@ export function UIDemos() {
             link: '/share/QdbXqSg23h',
         },
         {
-            title: 'A Interactive SAAS Pricing Calculator',
-            link: '/share/iUVbhSTwK9',
+            title: 'Generate UI from Image',
+            link: '/share/q7VmaOpsnV',
         },
         {
             title: 'A Wall Of Love ',
