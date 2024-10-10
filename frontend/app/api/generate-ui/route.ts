@@ -8,27 +8,28 @@ import { isProUser } from '@/lib/shared-utils';
 import { streamController } from '@/lib/llm/utils';
 import { generateUI } from '@/lib/tools/generate-ui';
 
-export const runtime = 'edge';
+// TODO Fix edge error later
+// export const runtime = 'edge';
 
-export const preferredRegion = [
-    'arn1',
-    'bom1',
-    'cdg1',
-    'cle1',
-    'cpt1',
-    'dub1',
-    'fra1',
-    'gru1',
-    'hnd1',
-    'iad1',
-    'icn1',
-    'kix1',
-    'lhr1',
-    'pdx1',
-    'sfo1',
-    'sin1',
-    'syd1',
-];
+// export const preferredRegion = [
+//     'arn1',
+//     'bom1',
+//     'cdg1',
+//     'cle1',
+//     'cpt1',
+//     'dub1',
+//     'fra1',
+//     'gru1',
+//     'hnd1',
+//     'iad1',
+//     'icn1',
+//     'kix1',
+//     'lhr1',
+//     'pdx1',
+//     'sfo1',
+//     'sin1',
+//     'syd1',
+// ];
 
 const ratelimit = new Ratelimit({
     redis: redisDB,
