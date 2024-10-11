@@ -23,3 +23,4 @@ if (process.env.VECTOR_HOST) {
 
 export const SERPER_API_KEY = process.env.SERPER_API_KEY;
 export const API_TOKEN = process.env.API_TOKEN!;
+export const OPENAI_BASE_URL = process.env.OPENAI_BASE_URL ?? 'https://api.openai.com/v1';

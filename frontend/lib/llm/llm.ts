@@ -1,12 +1,13 @@
 import 'server-only';
 
 import { CoreMessage, CoreUserMessage, ImagePart, LanguageModel, TextPart } from 'ai';
-import { openai } from '@ai-sdk/openai';
+import { createOpenAI } from '@ai-sdk/openai';
 import { anthropic } from '@ai-sdk/anthropic';
 import { Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/model';
 import { google } from '@ai-sdk/google';
 import { extractAllImageUrls, replaceImageUrl } from '@/lib/shared-utils';
 import { Message } from '@/lib/types';
+import { OPENAI_BASE_URL } from '@/lib/env';
 
 export type RoleType = 'user' | 'assistant' | 'system';
 
@@ -32,15 +33,16 @@ export function getMaxOutputToken(isPro: boolean, model: string) {
     }
 }
 
+const openai = createOpenAI({
+    baseURL: OPENAI_BASE_URL,
+});
+
 export function getLLM(model: string): LanguageModel {
     if (model.startsWith('claude')) {
         return anthropic(model);
     } else if (model.startsWith('models/gemini')) {
         return google(model);
     } else {
-        if (model === GPT_4o) {
-            model = 'gpt-4o-2024-08-06';
-        }
         return openai(model);
     }
 }
