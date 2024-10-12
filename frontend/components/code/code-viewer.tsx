@@ -1,42 +1,21 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import * as shadcnComponents from '@/lib/shadcn';
-import { SandpackPreview, SandpackProvider } from '@codesandbox/sandpack-react/unstyled';
-import { monokaiPro as draculaTheme } from '@codesandbox/sandpack-themes';
-import './code-viewer.css';
 import MyMarkdown from '@/components/search/my-markdown';
 import { Button } from '@/components/ui/button';
 import { ShareButton } from '@/components/shared/share-button';
 import useCopyToClipboard from '@/hooks/use-copy-clipboard';
+import { Preview } from '@/components/code/preview';
 
 export default function CodeViewer({ code, searchId, isReadOnly }) {
     const [showCode, setShowCode] = useState(false);
-    const sandpackFiles = useMemo(
-        () => ({
-            'App.tsx': code,
-            ...sharedFiles,
-        }),
-        [code],
-    );
-
-    const sandpackOptions = useMemo(
-        () => ({
-            editorHeight: '80vh',
-            activeFile: 'App.tsx',
-            showNavigator: false,
-            showTabs: false,
-            externalResources: ['https://unpkg.com/@tailwindcss/ui/dist/tailwind-ui.min.css'],
-        }),
-        [],
-    );
 
     const formattedContent = `\`\`\`jsx\n${code}\n\`\`\``;
 
     const { hasCopied, copyToClipboard } = useCopyToClipboard();
 
     return (
-        <div className="flex flex-col h-full w-full grow justify-center relative">
+        <div className="flex flex-col size-full grow justify-center relative">
             <div className="p-1 flex justify-between items-center mb-6">
                 <div className="flex items-center space-x-2">
                     <Button size="sm" variant="outline" onClick={() => setShowCode(!showCode)}>
@@ -58,23 +37,18 @@ export default function CodeViewer({ code, searchId, isReadOnly }) {
                     />
                 )}
             </div>
-            {!showCode && (
-                <SandpackProvider files={sandpackFiles} options={sandpackOptions} {...sharedProps}>
-                    <SandpackPreview showOpenInCodeSandbox={false} showRefreshButton={false} />
-                </SandpackProvider>
-            )}
             {showCode && (
                 <div className="prose dark:prose-dark w-full max-w-full">
                     <MyMarkdown content={formattedContent} sources={[]} />
                 </div>
             )}
+            {!showCode && <Preview componentCode={code} />}
         </div>
     );
 }
 
 let sharedProps = {
     template: 'react-ts',
-    theme: draculaTheme,
     customSetup: {
         dependencies: {
             'lucide-react': 'latest',

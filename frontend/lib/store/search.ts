@@ -103,18 +103,19 @@ export async function removeSearch({ id, path }: { id: string; path: string }) {
     }
 
     try {
-        const uid = String(await redis.hget(SEARCH_KEY + id, 'userId'));
-        if (uid === null) {
+        const search = await redis.hgetall<Search>(SEARCH_KEY + id);
+        if (!search || !search.userId) {
             console.warn('removeSearch, uid is null', id);
             return;
         }
-        if (uid !== session?.user?.id) {
+        if (search.userId !== session?.user?.id) {
+            console.warn('removeSearch, Unauthorized', id, search.userId, session?.user?.id);
             return {
                 error: 'Unauthorized, you cannot remove this search',
             };
         }
         await redis.del(SEARCH_KEY + id);
-        await redis.zrem(USER_SEARCH_KEY + uid, SEARCH_KEY + id);
+        await redis.zrem(USER_SEARCH_KEY + search.userId, SEARCH_KEY + id);
     } catch (error) {
         console.error('Failed to remove search:', error, id, path);
         return {
