@@ -262,7 +262,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                 toast.error(t('search-error'));
             }
         },
-        [input, isReadOnly, isLoading, signInModal, addSearch, updateActiveSearch, upgradeModal, user, canSearch, incrementSearchCount, t],
+        [input, searchType, isReadOnly, isLoading, signInModal, addSearch, updateActiveSearch, upgradeModal, user, canSearch, incrementSearchCount, t],
     );
 
     const sendSelectedQuestion = useCallback(
