@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
-import CodeViewer from '@/components/code/code-viewer';
 
 const MyMarkdown = dynamic(() => import('@/components/search/my-markdown'), {
     loading: () => <p>Loading...</p>,
 });
 
-// const CodeViewer = dynamic(() => import('@/components/code/code-viewer'), {
-//     loading: () => <p>Loading...</p>,
-// });
+const CodeViewer = dynamic(() => import('@/components/code/code-viewer'), {
+    loading: () => <p>Loading...</p>,
+});
 
 const UISection = ({ content, searchId, isLoading, isReadOnly }) => {
     const formattedContent = `\`\`\`jsx\n${content}\n\`\`\``;

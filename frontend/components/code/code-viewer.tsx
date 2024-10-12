@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import MyMarkdown from '@/components/search/my-markdown';
 import { Button } from '@/components/ui/button';
 import { ShareButton } from '@/components/shared/share-button';
