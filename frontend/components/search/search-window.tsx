@@ -319,7 +319,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
         <div className="group overflow-auto mx-auto w-full md:w-5/6  px-4 md:px-0 flex flex-col my-2" ref={scrollRef}>
             <div className="flex flex-col w-full">
                 {messages.length > 0 ? (
-                    [...messages].map((m, index) => (
+                    (isReadOnly && searchType == 'ui' ? [...messages].reverse() : [...messages]).map((m, index) => (
                         <SearchMessage
                             key={m.id}
                             searchId={activeId}

@@ -28,13 +28,22 @@ export default async function SharePage({ params }: SharePageProps) {
     if (!search || !search?.sharePath) {
         notFound();
     }
-    const content = search?.messages[0]?.type === 'ui' ? 'AI Generate UI Now' : 'AI Search Now';
-    const link = search?.messages[0]?.type === 'ui' ? '/generate-ui' : '/';
+    const isUI = search?.messages[0]?.type === 'ui';
+    const content = isUI ? 'AI Generate UI Now' : 'AI Search Now';
+    const link = isUI ? '/generate-ui' : '/';
+    const searchType = isUI ? 'ui' : 'search';
 
     return (
         <div className="flex-1 space-y-6">
             <HeroLanding />
-            <SearchWindow id={search.id} initialMessages={search?.messages ?? []} user={{}} isReadOnly={true} demoQuestions={<></>}></SearchWindow>
+            <SearchWindow
+                id={search.id}
+                initialMessages={search?.messages ?? []}
+                user={{}}
+                isReadOnly={true}
+                searchType={searchType}
+                demoQuestions={<></>}
+            ></SearchWindow>
             <div className="flex justify-center py-6 mb-10">
                 <Link href={link} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }), 'gap-2')}>
                     {content}
