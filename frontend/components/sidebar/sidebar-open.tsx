@@ -27,13 +27,13 @@ export default function SidebarOpen({ user }: NavBarProps) {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <button
+                                aria-label="Toggle Sidebar"
                                 className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 m-2"
                                 onClick={() => {
                                     toggleSidebar();
                                 }}
                             >
                                 <ArrowRightToLine size={20} strokeWidth={2} />
-                                <span className="sr-only">Toggle Sidebar</span>
                             </button>
                         </TooltipTrigger>
                         <TooltipContent className="bg-black text-white">
@@ -44,10 +44,10 @@ export default function SidebarOpen({ user }: NavBarProps) {
                         <TooltipTrigger asChild>
                             <button
                                 onClick={handleNewSearch}
+                                aria-label="New Search"
                                 className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 rounded-lg  p-2 m-2"
                             >
                                 <Plus size={20} strokeWidth={2} />
-                                <span className="sr-only">New Search</span>
                             </button>
                         </TooltipTrigger>
                         <TooltipContent className="bg-black text-white">
@@ -58,10 +58,10 @@ export default function SidebarOpen({ user }: NavBarProps) {
                         <TooltipTrigger asChild>
                             <button
                                 onClick={handleNewGenerateUI}
+                                aria-label="New Generate UI"
                                 className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 rounded-lg  p-2 m-2"
                             >
                                 UI
-                                <span className="sr-only">New Generate UI</span>
                             </button>
                         </TooltipTrigger>
                         <TooltipContent className="bg-black text-white">
@@ -74,10 +74,10 @@ export default function SidebarOpen({ user }: NavBarProps) {
                             <Link
                                 href="/pricing"
                                 rel="nofollow"
+                                aria-label="Upgrade Plan"
                                 className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 m-2"
                             >
                                 <Gem size={20} strokeWidth={2} />
-                                <span className="sr-only">Upgrade Plan</span>
                             </Link>
                         </TooltipTrigger>
                         <TooltipContent className="bg-black text-white">
@@ -89,10 +89,10 @@ export default function SidebarOpen({ user }: NavBarProps) {
                         <TooltipTrigger asChild>
                             <Link
                                 href="/settings"
+                                aria-label="MemFree Settings"
                                 className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 rounded-lg  p-2 m-2"
                             >
                                 <Settings size={20} strokeWidth={2} />
-                                <span className="sr-only">Settings</span>
                             </Link>
                         </TooltipTrigger>
                         <TooltipContent className="bg-black text-white">
@@ -104,10 +104,10 @@ export default function SidebarOpen({ user }: NavBarProps) {
                         <TooltipTrigger asChild>
                             <Link
                                 href="/docs/memfree-user-guide"
+                                aria-label="Doc & Help"
                                 className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200  dark:hover:bg-gray-700 rounded-lg  p-2 m-2"
                             >
                                 <CircleHelp size={20} strokeWidth={2} />
-                                <span className="sr-only">Doc & Help</span>
                             </Link>
                         </TooltipTrigger>
                         <TooltipContent className="bg-black text-white">

@@ -20,6 +20,7 @@ export type SiteConfig = {
         twitter: string;
         github: string;
         discord: string;
+        feedback?: string;
     };
 };
 

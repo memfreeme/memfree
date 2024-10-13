@@ -23,7 +23,14 @@ export function NewSearchButton({ variant = 'text', className, umamiEvent, type,
         variant === 'text' ? 'h-10 w-full bg-zinc-50 px-4 shadow-none transition-colors hover:bg-zinc-200/40 dark:bg-zinc-900 dark:hover:bg-zinc-300/10' : '';
 
     return (
-        <Button variant={buttonVariant} onClick={handleClick} data-umami-event={umamiEvent} className={cn(additionalClasses, className)} {...props}>
+        <Button
+            variant={buttonVariant}
+            aria-label="New"
+            onClick={handleClick}
+            data-umami-event={umamiEvent}
+            className={cn(additionalClasses, className)}
+            {...props}
+        >
             {variant === 'icon' && type != 'UI' ? <Plus className="size-5" /> : buttonText}
         </Button>
     );

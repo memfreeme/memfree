@@ -14,6 +14,7 @@ export const siteConfig: SiteConfig = {
         twitter: 'https://twitter.com/intent/user?&region=follow&screen_name=ahaapple2023',
         github: 'https://github.com/memfreeme/memfree',
         discord: 'https://discord.gg/7QqyMSTaRq',
+        feedback: 'https://feedback.memfree.me',
     },
     mailSupport: 'support@memfree.me',
 };
