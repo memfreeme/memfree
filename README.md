@@ -104,7 +104,7 @@ With MemFree, you can instantly get Accurate Answers from your knowledge base an
 
 ### Prerequisites
 
-#### Intsall Bun
+#### Install Bun
 
 ```
 curl -fsSL https://bun.sh/install | bash
