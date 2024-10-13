@@ -3,63 +3,7 @@ import { createRoot, Root } from 'react-dom/client';
 
 const TAILWIND_JS_URL = 'https://cdn.tailwindcss.com';
 const ROOT_ELEMENT_ID = 'root';
-
-export class IframeRenderer {
-    private iframeRef: React.RefObject<HTMLIFrameElement>;
-    private rootRef: Root | null = null;
-    private observerRef: MutationObserver | null = null;
-
-    constructor(iframeRef: React.RefObject<HTMLIFrameElement>) {
-        this.iframeRef = iframeRef;
-    }
-
-    public render(Component: React.ComponentType<any>) {
-        this.setupIframeContent(() => {
-            const root = this.iframeRef.current?.contentDocument?.getElementById(ROOT_ELEMENT_ID);
-            if (root) {
-                this.rootRef = createRoot(root);
-                this.rootRef.render(React.createElement(Component));
-                setTimeout(() => {
-                    this.adjustIframeHeight();
-                    this.setupResizeListener();
-                    this.setupMutationObserver();
-                }, 100);
-            }
-        });
-    }
-
-    private setupIframeContent(onLoad: () => void) {
-        if (this.iframeRef.current) {
-            const iframeDoc = this.iframeRef.current.contentDocument;
-            if (iframeDoc) {
-                iframeDoc.open();
-                iframeDoc.write('<html><head></head><body><div id="root"></div></body></html>');
-                iframeDoc.close();
-
-                this.addStyles(iframeDoc);
-                this.addTailwindScript(iframeDoc, onLoad);
-            }
-        }
-    }
-
-    private addStyles(iframeDoc: Document) {
-        const style = iframeDoc.createElement('style');
-        style.textContent = `
-      html, body { margin: 0; padding: 0; }
-      body { display: flex; justify-content: center; align-items: flex-start; }
-      #root { min-height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; width: 100%; }
-    `;
-        iframeDoc.head.appendChild(style);
-    }
-
-    private addTailwindScript(iframeDoc: Document, onLoad: () => void) {
-        const tailwindScript = iframeDoc.createElement('script');
-        tailwindScript.src = TAILWIND_JS_URL;
-        iframeDoc.head.appendChild(tailwindScript);
-
-        tailwindScript.onload = () => {
-            const tailwindConfig = iframeDoc.createElement('script');
-            tailwindConfig.textContent = `
+const TAILWIND_CONFIG = `
                     tailwind.config = {
                         darkMode: ["class"],
                         content: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
@@ -180,6 +124,62 @@ export class IframeRenderer {
                         ],
                     };
                     `;
+
+export class IframeRenderer {
+    private iframeRef: React.RefObject<HTMLIFrameElement>;
+    private rootRef: Root | null = null;
+    private observerRef: MutationObserver | null = null;
+
+    constructor(iframeRef: React.RefObject<HTMLIFrameElement>) {
+        this.iframeRef = iframeRef;
+    }
+
+    public render(Component: React.ComponentType<any>) {
+        this.setupIframeContent(() => {
+            const root = this.iframeRef.current?.contentDocument?.getElementById(ROOT_ELEMENT_ID);
+            if (root) {
+                this.rootRef = createRoot(root);
+                this.rootRef.render(React.createElement(Component));
+                setTimeout(() => {
+                    this.adjustIframeHeight();
+                    this.setupResizeListener();
+                    this.setupMutationObserver();
+                }, 100);
+            }
+        });
+    }
+
+    private setupIframeContent(onLoad: () => void) {
+        if (this.iframeRef.current) {
+            const iframeDoc = this.iframeRef.current.contentDocument;
+            if (iframeDoc) {
+                iframeDoc.open();
+                iframeDoc.write('<html><head></head><body><div id="root"></div></body></html>');
+                iframeDoc.close();
+
+                this.addStyles(iframeDoc);
+                this.addTailwindScript(iframeDoc, onLoad);
+            }
+        }
+    }
+
+    private addStyles(iframeDoc: Document) {
+        const style = iframeDoc.createElement('style');
+        style.textContent = `
+      html, body { margin: 0; padding: 0; }
+      body { display: flex; justify-content: center; align-items: flex-start; }
+      #root { min-height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; width: 100%; }
+    `;
+        iframeDoc.head.appendChild(style);
+    }
+
+    private addTailwindScript(iframeDoc: Document, onLoad: () => void) {
+        const tailwindScript = iframeDoc.createElement('script');
+        tailwindScript.src = TAILWIND_JS_URL;
+        iframeDoc.head.appendChild(tailwindScript);
+        tailwindScript.onload = () => {
+            const tailwindConfig = iframeDoc.createElement('script');
+            tailwindConfig.textContent = TAILWIND_CONFIG;
             iframeDoc.head.appendChild(tailwindConfig);
             onLoad();
         };
@@ -222,9 +222,6 @@ export class IframeRenderer {
     public cleanup() {
         if (this.observerRef) {
             this.observerRef.disconnect();
-        }
-        if (this.rootRef) {
-            this.rootRef.unmount();
         }
     }
 }
