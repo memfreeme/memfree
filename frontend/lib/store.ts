@@ -22,14 +22,18 @@ export const useProfileStore = create<ProfileState>()(
 
 type UIState = {
     isSearch: boolean;
+    isShadcnUI: boolean;
     setIsSearch: (isSearch: boolean) => void;
+    setIsShadcnUI: (isShadcnUI: boolean) => void;
 };
 
 export const useUIStore = create<UIState>()(
     persist(
         (set) => ({
             isSearch: false,
+            isShadcnUI: false,
             setIsSearch: (search: boolean) => set({ isSearch: search }),
+            setIsShadcnUI: (shadcnUI: boolean) => set({ isShadcnUI: shadcnUI }),
         }),
         {
             name: 'UI-storage',

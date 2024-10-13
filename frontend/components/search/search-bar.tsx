@@ -163,7 +163,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, 
         loading: () => <></>,
     });
 
-    const { isSearch, setIsSearch } = useUIStore();
+    const { isSearch, isShadcnUI, setIsSearch, setIsShadcnUI } = useUIStore();
 
     return (
         <div className="w-full text-center">
@@ -260,13 +260,6 @@ const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, 
                         </Tooltip>
                     </div>
                     <div className="absolute right-0 bottom-0 mb-1 mr-2 mt-6 flex items-center space-x-4">
-                        {showWebSearch && (
-                            <div className="flex items-center space-x-2 mb-1">
-                                <Switch id="search" checked={isSearch} onCheckedChange={(checked) => setIsSearch(checked)} />
-                                <Label htmlFor="search">Web Search</Label>
-                            </div>
-                        )}
-
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <button
@@ -287,6 +280,18 @@ const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, 
             </div>
 
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2">
+                {showWebSearch && (
+                    <div className="flex items-center space-x-2 mb-1">
+                        <Switch id="shadcn" checked={isShadcnUI} onCheckedChange={(checked) => setIsShadcnUI(checked)} />
+                        <Label htmlFor="shadcn">Shadcn UI</Label>
+                    </div>
+                )}
+                {showWebSearch && (
+                    <div className="flex items-center space-x-2 mb-1">
+                        <Switch id="search" checked={isSearch} onCheckedChange={(checked) => setIsSearch(checked)} />
+                        <Label htmlFor="search">Web Search</Label>
+                    </div>
+                )}
                 {showModelSelection && <ModelSelection />}
                 {showSourceSelection && <SourceSelection />}
             </div>

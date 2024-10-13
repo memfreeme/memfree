@@ -209,6 +209,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                         source: configStore.getState().source,
                         profile: useProfileStore.getState().profile,
                         isSearch: useUIStore.getState().isSearch,
+                        isShadcnUI: useUIStore.getState().isShadcnUI,
                         messages: useSearchStore.getState().activeSearch.messages,
                     }),
                     openWhenHidden: true,

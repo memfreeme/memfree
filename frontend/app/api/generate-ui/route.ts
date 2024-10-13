@@ -57,14 +57,14 @@ export async function POST(req: NextRequest) {
             );
         }
     }
-    let { messages, isSearch } = await req.json();
+    let { messages, isSearch, isShadcnUI } = await req.json();
 
-    console.log('generate UI messages', messages, 'isSearch', isSearch);
+    console.log('generate UI messages', messages, 'isSearch', isSearch, 'isShadcnUI', isShadcnUI);
 
     try {
         const readableStream = new ReadableStream({
             async start(controller) {
-                await generateUI(messages, isPro, userId, isSearch, streamController(controller));
+                await generateUI(messages, isPro, userId, isShadcnUI, isSearch, streamController(controller));
             },
             cancel() {
                 console.log('Stream canceled by client');
