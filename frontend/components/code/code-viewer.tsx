@@ -1,53 +1,27 @@
-'use client';
-
-import React, { useState } from 'react';
+import React from 'react';
 import MyMarkdown from '@/components/search/my-markdown';
-import { Button } from '@/components/ui/button';
-import { ShareButton } from '@/components/shared/share-button';
-import useCopyToClipboard from '@/hooks/use-copy-clipboard';
 import { Preview } from '@/components/code/preview';
 import ErrorBoundary from '@/components/code/error-boundary';
+import { Tabs, TabsContent } from '@radix-ui/react-tabs';
+import { CodeToolbar } from '@/components/code/toolbar';
 
 export default function CodeViewer({ code, searchId, isReadOnly }) {
-    const [showCode, setShowCode] = useState(false);
-
     const formattedContent = `\`\`\`jsx\n${code}\n\`\`\``;
-
-    const { hasCopied, copyToClipboard } = useCopyToClipboard();
-
     return (
-        <div className="flex flex-col size-full grow justify-center relative">
-            <div className="p-1 flex justify-between items-center mb-6">
-                <div className="flex items-center space-x-2">
-                    <Button size="sm" variant="outline" onClick={() => setShowCode(!showCode)}>
-                        {showCode ? 'Preview' : 'View Code'}
-                    </Button>
-                    <Button size="sm" variant="outline" onClick={() => copyToClipboard(code)}>
-                        {hasCopied ? 'Copied' : 'Copy Code'}
-                    </Button>
-                </div>
-
-                {!isReadOnly && (
-                    <ShareButton
-                        search={{
-                            id: searchId,
-                        }}
-                        onCopy={() => {}}
-                        buttonText="Publish"
-                        loadingText="Publishing"
-                    />
-                )}
-            </div>
-            {showCode && (
-                <div className="prose dark:prose-dark w-full max-w-full">
-                    <MyMarkdown content={formattedContent} sources={[]} />
-                </div>
-            )}
-            {!showCode && (
-                <ErrorBoundary>
-                    <Preview componentCode={code} />{' '}
-                </ErrorBoundary>
-            )}
+        <div className="flex flex-col size-full grow justify-center relative p-1">
+            <Tabs className="relative w-full" defaultValue="preview">
+                <CodeToolbar isReadOnly={isReadOnly} searchId={searchId} code={code} />
+                <TabsContent value="preview">
+                    <ErrorBoundary>
+                        <Preview componentCode={code} />
+                    </ErrorBoundary>
+                </TabsContent>
+                <TabsContent value="code">
+                    <div className="prose dark:prose-dark w-full max-w-full">
+                        <MyMarkdown content={formattedContent} sources={[]} />
+                    </div>
+                </TabsContent>
+            </Tabs>
         </div>
     );
 }

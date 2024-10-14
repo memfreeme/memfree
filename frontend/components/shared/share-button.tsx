@@ -61,7 +61,7 @@ export function ShareButton({ search, onCopy, buttonText, loadingText }: ShareBu
     };
 
     return (
-        <Button size="sm" disabled={isSharePending} onClick={handleShare}>
+        <Button size="sm" className="z-50 h-[calc(theme(spacing.7)_-_1px)] gap-1 rounded-[6px] px-3 text-xs" disabled={isSharePending} onClick={handleShare}>
             {isSharePending ? (
                 <>
                     <LoaderCircle className="mr-2 animate-spin" />
