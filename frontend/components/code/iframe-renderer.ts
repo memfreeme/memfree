@@ -125,6 +125,43 @@ const TAILWIND_CONFIG = `
                     };
                     `;
 
+const CSP_POLICY = `
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com;
+    style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com;
+    img-src 'self' data: https: http:;
+    font-src 'self';
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    block-all-mixed-content;
+`;
+
+const FEATURE_POLICY = `
+    camera 'none';
+    microphone 'none';
+    geolocation 'none';
+    accelerometer 'none';
+    autoplay 'none';
+    document-domain 'none';
+    encrypted-media 'none';
+    fullscreen 'self';
+    gyroscope 'none';
+    magnetometer 'none';
+    midi 'none';
+    payment 'none';
+    picture-in-picture 'none';
+    usb 'none';
+    vr 'none';
+    xr-spatial-tracking 'none';
+`;
+
+const BASIC_STYLE = `
+      html, body { margin: 0; padding: 0; }
+      body { display: flex; justify-content: center; align-items: flex-start; }
+      #root { min-height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; width: 100%; }
+`;
+
 export class IframeRenderer {
     private iframeRef: React.RefObject<HTMLIFrameElement>;
     private rootRef: Root | null = null;
@@ -154,23 +191,22 @@ export class IframeRenderer {
             const iframeDoc = this.iframeRef.current.contentDocument;
             if (iframeDoc) {
                 iframeDoc.open();
-                iframeDoc.write('<html><head></head><body><div id="root"></div></body></html>');
+                iframeDoc.write(`
+                <html>
+                <head>
+                    <meta http-equiv="Content-Security-Policy" content="${CSP_POLICY.replace(/\s+/g, ' ')}">
+                    <meta http-equiv="Feature-Policy" content="${FEATURE_POLICY.replace(/\s+/g, ' ')}">
+                    <style>${BASIC_STYLE}</style>
+                </head>
+                <body>
+                    <div id="root"></div>
+                </body>
+                </html>
+            `);
                 iframeDoc.close();
-
-                this.addStyles(iframeDoc);
                 this.addTailwindScript(iframeDoc, onLoad);
             }
         }
-    }
-
-    private addStyles(iframeDoc: Document) {
-        const style = iframeDoc.createElement('style');
-        style.textContent = `
-      html, body { margin: 0; padding: 0; }
-      body { display: flex; justify-content: center; align-items: flex-start; }
-      #root { min-height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; width: 100%; }
-    `;
-        iframeDoc.head.appendChild(style);
     }
 
     private addTailwindScript(iframeDoc: Document, onLoad: () => void) {
@@ -212,7 +248,7 @@ export class IframeRenderer {
             const root = iframeDoc.getElementById(ROOT_ELEMENT_ID);
             if (root) {
                 this.observerRef = new MutationObserver(() => {
-                    setTimeout(() => this.adjustIframeHeight(), 0);
+                    requestAnimationFrame(() => this.adjustIframeHeight());
                 });
                 this.observerRef.observe(root, { childList: true, subtree: true });
             }

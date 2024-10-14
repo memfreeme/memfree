@@ -72,7 +72,7 @@ export const Preview: React.FC<{ componentCode: string }> = React.memo(({ compon
             {error ? (
                 <div className="text-red-500 p-4">Error: {error}</div>
             ) : (
-                <iframe className="w-full border-none" ref={iframeRef} title="Dynamic Component" />
+                <iframe className="w-full border-none" ref={iframeRef} title="Dynamic Component" sandbox="allow-scripts allow-same-origin" />
             )}
         </div>
     );
