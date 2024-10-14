@@ -4,7 +4,7 @@ import { useTransformer } from '@/components/code/useTransformer';
 import { logClientError } from '@/lib/utils';
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 
-export const Preview: React.FC<{ componentCode: string }> = React.memo(({ componentCode }) => {
+export const Preview: React.FC<{ componentCode: string }> = ({ componentCode }) => {
     const [error, setError] = useState<string | null>(null);
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const rendererRef = useRef<IframeRenderer | null>(null);
@@ -76,6 +76,6 @@ export const Preview: React.FC<{ componentCode: string }> = React.memo(({ compon
             )}
         </div>
     );
-});
+};
 
 Preview.displayName = 'Preview';

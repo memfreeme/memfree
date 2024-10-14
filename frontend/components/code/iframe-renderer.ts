@@ -165,27 +165,12 @@ const BASIC_STYLE = `
 export class IframeRenderer {
     private iframeRef: React.RefObject<HTMLIFrameElement>;
     private rootRef: Root | null = null;
-    private observerRef: MutationObserver | null = null;
+    private debouncedHandleResize: () => void;
 
     constructor(iframeRef: React.RefObject<HTMLIFrameElement>) {
         this.iframeRef = iframeRef;
+        this.debouncedHandleResize = this.debounce(this.adjustIframeHeight, 100);
     }
-
-    public render(Component: React.ComponentType<any>) {
-        this.setupIframeContent(() => {
-            const root = this.iframeRef.current?.contentDocument?.getElementById(ROOT_ELEMENT_ID);
-            if (root) {
-                this.rootRef = createRoot(root);
-                this.rootRef.render(React.createElement(Component));
-                setTimeout(() => {
-                    this.adjustIframeHeight();
-                    this.setupResizeListener();
-                    this.setupMutationObserver();
-                }, 100);
-            }
-        });
-    }
-
     private setupIframeContent(onLoad: () => void) {
         if (this.iframeRef.current) {
             const iframeDoc = this.iframeRef.current.contentDocument;
@@ -221,43 +206,53 @@ export class IframeRenderer {
         };
     }
 
+    public render(Component: React.ComponentType<any>) {
+        this.setupIframeContent(() => {
+            const root = this.iframeRef.current?.contentDocument?.getElementById(ROOT_ELEMENT_ID);
+            if (root) {
+                this.rootRef = createRoot(root);
+                this.rootRef.render(React.createElement(Component));
+                setTimeout(() => {
+                    this.adjustIframeHeight();
+                    this.setupResizeListener();
+                }, 100);
+            }
+        });
+    }
+
     private adjustIframeHeight() {
         requestAnimationFrame(() => {
             if (this.iframeRef.current && this.iframeRef.current.contentDocument) {
                 const iframeDoc = this.iframeRef.current.contentDocument;
                 const body = iframeDoc.body;
-                const html = iframeDoc.documentElement;
                 const root = iframeDoc.getElementById(ROOT_ELEMENT_ID);
-                if (body && html && root) {
-                    const height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight, root.offsetHeight);
-                    this.iframeRef.current.style.height = `${height}px`;
+                if (body && root) {
+                    const currentHeight = this.iframeRef.current.offsetHeight;
+                    this.iframeRef.current.style.height = 'auto';
+
+                    const newHeight = Math.max(body.scrollHeight, body.offsetHeight, root.offsetHeight);
+
+                    if (newHeight !== currentHeight) {
+                        this.iframeRef.current.style.height = `${newHeight}px`;
+                    }
                 }
             }
         });
     }
 
-    private setupResizeListener() {
-        if (this.iframeRef.current && this.iframeRef.current.contentWindow) {
-            this.iframeRef.current.contentWindow.addEventListener('resize', () => this.adjustIframeHeight());
-        }
+    private debounce(func: (...args: any[]) => void, wait: number) {
+        let timeout: NodeJS.Timeout;
+        return (...args: any[]) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
     }
 
-    private setupMutationObserver() {
-        if (this.iframeRef.current && this.iframeRef.current.contentDocument) {
-            const iframeDoc = this.iframeRef.current.contentDocument;
-            const root = iframeDoc.getElementById(ROOT_ELEMENT_ID);
-            if (root) {
-                this.observerRef = new MutationObserver(() => {
-                    requestAnimationFrame(() => this.adjustIframeHeight());
-                });
-                this.observerRef.observe(root, { childList: true, subtree: true });
-            }
-        }
+    private setupResizeListener() {
+        window.addEventListener('resize', this.debouncedHandleResize);
     }
 
     public cleanup() {
-        if (this.observerRef) {
-            this.observerRef.disconnect();
-        }
+        window.removeEventListener('resize', this.debouncedHandleResize);
     }
 }
