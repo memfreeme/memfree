@@ -51,6 +51,8 @@ images:
 \`\`\`
 %s
 \`\`\`
+
+Today's date is ${new Date().toISOString()}.
 `;
 
 export async function generateUI(

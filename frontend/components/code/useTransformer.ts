@@ -1,3 +1,4 @@
+import { logClientError } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 
 export const useTransformer = () => {
@@ -10,6 +11,7 @@ export const useTransformer = () => {
                     const { transform } = await import('@babel/standalone');
                     setTransformer(() => transform);
                 } catch (error) {
+                    logClientError(error.message, 'loadTransformer');
                     console.error('Error loading transformer:', error);
                 }
             }

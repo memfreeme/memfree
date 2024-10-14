@@ -109,3 +109,13 @@ export async function processImageFiles(imageFiles: File[]): Promise<File[]> {
     }
     return processedFiles;
 }
+
+export async function logClientError(error: string, action: string) {
+    fetch('/api/log', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: error, action: action }),
+    });
+}

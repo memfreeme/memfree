@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ShareButton } from '@/components/shared/share-button';
 import useCopyToClipboard from '@/hooks/use-copy-clipboard';
 import { Preview } from '@/components/code/preview';
+import ErrorBoundary from '@/components/code/error-boundary';
 
 export default function CodeViewer({ code, searchId, isReadOnly }) {
     const [showCode, setShowCode] = useState(false);
@@ -42,7 +43,11 @@ export default function CodeViewer({ code, searchId, isReadOnly }) {
                     <MyMarkdown content={formattedContent} sources={[]} />
                 </div>
             )}
-            {!showCode && <Preview componentCode={code} />}
+            {!showCode && (
+                <ErrorBoundary>
+                    <Preview componentCode={code} />{' '}
+                </ErrorBoundary>
+            )}
         </div>
     );
 }

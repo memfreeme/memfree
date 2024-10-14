@@ -1,6 +1,7 @@
 import { evaluateComponentCode } from '@/components/code/evaluate-component';
 import { IframeRenderer } from '@/components/code/iframe-renderer';
 import { useTransformer } from '@/components/code/useTransformer';
+import { logClientError } from '@/lib/utils';
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 
 export const Preview: React.FC<{ componentCode: string }> = React.memo(({ componentCode }) => {
@@ -21,6 +22,7 @@ export const Preview: React.FC<{ componentCode: string }> = React.memo(({ compon
             });
             return code;
         } catch (error) {
+            logClientError(error.message, 'transformedCode');
             setError(`Transformation error: ${error.message}`);
             return null;
         }
@@ -49,6 +51,7 @@ export const Preview: React.FC<{ componentCode: string }> = React.memo(({ compon
                 throw new Error('No valid React component found in the module');
             }
         } catch (error) {
+            logClientError(error.message, 'loadComponent');
             console.error('Error loading component:', error);
             setError(error instanceof Error ? error.message : 'An unknown error occurred');
         }
