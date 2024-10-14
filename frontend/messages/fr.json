@@ -43,7 +43,8 @@
         "pre-once-call": "Payer une fois",
         "paid-call": "Gérer l'abonnement",
         "upgrade-call": "Débloquez des fonctionnalités avancées avec MemFree Pro",
-        "upgrade-button": "Mettre à niveau maintenant"
+        "upgrade-button": "Mettre à niveau maintenant",
+        "Reminder": "Si vous ne trouvez pas de méthode de paiement préférée dans les options d'abonnement, envisagez d'utiliser l'option de paiement unique, qui offre plus de méthodes de paiement."
     },
     "PricingFAQ": {
         "title": "Questions Fréquemment Posées",

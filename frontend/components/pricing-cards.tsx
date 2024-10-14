@@ -172,6 +172,8 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
                     <PricingCard offer={offer} key={offer.title} />
                 ))}
             </div>
+
+            <p className="mt-3 text-balance text-center text-base text-muted-foreground">{t('Reminder')}</p>
         </section>
     );
 }

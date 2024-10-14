@@ -43,7 +43,8 @@
         "pre-once-call": "Pay Once",
         "paid-call": "Manage Subscription",
         "upgrade-call": "Unlock Advanced Features With MemFree Pro",
-        "upgrade-button": "Upgrade Now"
+        "upgrade-button": "Upgrade Now",
+        "Reminder": "If you can't find a preferred payment method in the subscription options, consider using the one-time payment option, which offers more payment methods."
     },
     "PricingFAQ": {
         "title": "Frequently Asked Questions",

@@ -43,7 +43,8 @@
         "pre-once-call": "一回払い",
         "paid-call": "サブスクリプションを管理",
         "upgrade-call": "MemFree Proで高度な機能を解除",
-        "upgrade-button": "今すぐアップグレード"
+        "upgrade-button": "今すぐアップグレード",
+        "Reminder": "サブスクリプションオプションで希望の支払い方法が見つからない場合は、より多くの支払い方法を提供する一括払いオプションを検討してください。"
     },
     "PricingFAQ": {
         "title": "よくある質問",

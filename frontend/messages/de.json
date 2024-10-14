@@ -43,7 +43,8 @@
         "pre-once-call": "Einmalig zahlen",
         "paid-call": "Abonnement verwalten",
         "upgrade-call": "Schalten Sie erweiterte Funktionen mit MemFree Pro frei",
-        "upgrade-button": "Jetzt upgraden"
+        "upgrade-button": "Jetzt upgraden",
+        "Reminder": "Wenn Sie in den Abonnementoptionen keine bevorzugte Zahlungsmethode finden, ziehen Sie die Einmalzahlung in Betracht, die mehr Zahlungsmethoden bietet."
     },
     "PricingFAQ": {
         "title": "Häufig gestellte Fragen",

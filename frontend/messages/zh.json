@@ -43,7 +43,8 @@
         "pre-once-call": "一次性支付",
         "paid-call": "管理订阅",
         "upgrade-call": "通过 MemFree Pro 解锁高级功能",
-        "upgrade-button": "立即升级"
+        "upgrade-button": "立即升级",
+        "Reminder": "如果您在订阅选项中找不到首选的支付方式，请考虑使用一次性支付选项，它提供更多的支付方式。"
     },
     "PricingFAQ": {
         "title": "常见问题解答",
