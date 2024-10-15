@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import MyMarkdown from '@/components/search/my-markdown';
-import { Preview } from '@/components/code/preview';
+import { Preview, PreviewRef } from '@/components/code/preview';
 import ErrorBoundary from '@/components/code/error-boundary';
 import { CodeToolbar } from '@/components/code/toolbar';
 import { ImperativePanelHandle } from 'react-resizable-panels';
@@ -11,15 +11,16 @@ import { Tabs, TabsContent } from '@/components/ui/tabs';
 export default function CodeViewer({ code, searchId, isReadOnly }) {
     const formattedContent = `\`\`\`jsx\n${code}\n\`\`\``;
     const ref = React.useRef<ImperativePanelHandle>(null);
+    const previewRef = useRef<PreviewRef>(null);
     return (
         <div className="flex flex-col size-full grow justify-center relative p-1">
             <Tabs className="relative w-full" defaultValue="preview">
-                <CodeToolbar isReadOnly={isReadOnly} searchId={searchId} code={code} resizablePanelRef={ref} />
+                <CodeToolbar isReadOnly={isReadOnly} searchId={searchId} code={code} resizablePanelRef={ref} previewRef={previewRef} />
                 <TabsContent value="preview">
                     <ErrorBoundary>
                         <ResizablePanelGroup direction="horizontal" className="relative z-10">
-                            <ResizablePanel ref={ref} className={cn('relative rounded-lg border bg-background')} defaultSize={100} minSize={30}>
-                                <Preview componentCode={code} />
+                            <ResizablePanel ref={ref} className="relative rounded-lg border bg-background" defaultSize={100} minSize={30}>
+                                <Preview ref={previewRef} componentCode={code} />
                             </ResizablePanel>
                             <ResizableHandle
                                 className={cn(

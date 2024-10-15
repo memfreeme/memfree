@@ -2,17 +2,16 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { Maximize2, Minimize2, Camera } from 'lucide-react';
+import { useScreenshotCapture } from '@/hooks/use-screenshot-capture';
 
 let transformer: any = null;
 let Markmap: any = null;
-let html2canvas: any = null;
 
 export default function MindMap({ value }) {
     const refSvg = useRef<SVGSVGElement>();
     const refMm = useRef<any>();
     const containerRef = useRef<HTMLDivElement>(null);
     const [isMarkmapLoading, setMarkmapIsLoading] = useState(false);
-    const [isGeneratingScreenshot, setIsGeneratingScreenshot] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
 
     useEffect(() => {
@@ -84,47 +83,13 @@ export default function MindMap({ value }) {
         }
     };
 
-    const captureScreenshot = async () => {
-        if (containerRef.current) {
-            setIsGeneratingScreenshot(true);
-            const clonedDiv = containerRef.current.cloneNode(true) as HTMLElement;
-
-            const buttons = clonedDiv.querySelectorAll('button');
-            buttons.forEach((button) => button.remove());
-
-            const computedStyle = window.getComputedStyle(containerRef.current);
-            const originalHeight = computedStyle.height;
-
-            clonedDiv.style.position = 'absolute';
-            clonedDiv.style.left = '-9999px';
-            clonedDiv.style.top = '-9999px';
-            clonedDiv.style.height = `calc(${originalHeight} + 2rem)`;
-
-            document.body.appendChild(clonedDiv);
-
-            if (!html2canvas) {
-                html2canvas = (await import('html2canvas')).default;
-            }
-            html2canvas(clonedDiv, {
-                scale: 2,
-            }).then((canvas) => {
-                canvas.toBlob((blob) => {
-                    if (blob) {
-                        const downloadLink = document.createElement('a');
-                        downloadLink.href = URL.createObjectURL(blob);
-                        downloadLink.download = 'memfree-mindmap.png';
-                        document.body.appendChild(downloadLink);
-                        downloadLink.click();
-                        document.body.removeChild(downloadLink);
-                        URL.revokeObjectURL(downloadLink.href);
-                    }
-                }, 'image/png');
-
-                document.body.removeChild(clonedDiv);
-                setIsGeneratingScreenshot(false);
-            });
-        }
-    };
+    const { isGeneratingScreenshot, captureScreenshot } = useScreenshotCapture({
+        containerRef,
+        filename: 'memfree-mindmap.png',
+        scale: 2,
+        removeButtons: true,
+        additionalPadding: '2rem',
+    });
 
     return (
         <div

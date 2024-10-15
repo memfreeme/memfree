@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button';
 import { TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import useCopyToClipboard from '@/hooks/use-copy-clipboard';
-import { Check, ClipboardIcon, Monitor, Smartphone, Tablet } from 'lucide-react';
+import { Camera, Check, ClipboardIcon, Monitor, Smartphone, Tablet } from 'lucide-react';
 
-export function CodeToolbar({ code, searchId, isReadOnly, resizablePanelRef }) {
+export function CodeToolbar({ code, searchId, isReadOnly, resizablePanelRef, previewRef }) {
     const { hasCopied, copyToClipboard } = useCopyToClipboard();
     return (
         <div className="flex justify-between items-center my-6">
@@ -42,17 +42,24 @@ export function CodeToolbar({ code, searchId, isReadOnly, resizablePanelRef }) {
                         </ToggleGroupItem>
                     </ToggleGroup>
                 </div>
-                {!isReadOnly && <Separator orientation="vertical" className="mx-2 hidden h-4 md:flex" />}
-                {!isReadOnly && (
-                    <div className="flex items-center space-x-2">
-                        <Button
-                            size="icon"
-                            variant="outline"
-                            className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5"
-                            onClick={() => copyToClipboard(code)}
-                        >
-                            {hasCopied ? <Check /> : <ClipboardIcon />}
-                        </Button>
+                <Separator orientation="vertical" className="mx-2 hidden h-4 md:flex" />
+                <div className="flex items-center space-x-2">
+                    <Button
+                        size="icon"
+                        variant="outline"
+                        className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5"
+                        onClick={() => {
+                            if (previewRef.current) {
+                                previewRef.current.captureIframe();
+                            }
+                        }}
+                    >
+                        <Camera />
+                    </Button>
+                    <Button size="icon" variant="outline" className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5" onClick={() => copyToClipboard(code)}>
+                        {hasCopied ? <Check /> : <ClipboardIcon />}
+                    </Button>
+                    {!isReadOnly && (
                         <ShareButton
                             search={{
                                 id: searchId,
@@ -61,8 +68,8 @@ export function CodeToolbar({ code, searchId, isReadOnly, resizablePanelRef }) {
                             buttonText="Publish"
                             loadingText="Publishing"
                         />
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
         </div>
     );
