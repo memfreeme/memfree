@@ -1,18 +1,20 @@
 import { evaluateComponentCode } from '@/components/code/evaluate-component';
 import { IframeRenderer } from '@/components/code/iframe-renderer';
 import { useTransformer } from '@/components/code/useTransformer';
+import { Button } from '@/components/ui/button';
 import { logClientError } from '@/lib/utils';
 import React, { useState, useEffect, useRef, useCallback, useMemo, forwardRef, useImperativeHandle } from 'react';
 
 interface PreviewProps {
     componentCode: string;
+    onSelect?: (code: string) => void;
 }
 
 export interface PreviewRef {
     captureIframe: () => Promise<void>;
 }
 
-export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode }, ref) => {
+export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode, onSelect }, ref) => {
     const [error, setError] = useState<string | null>(null);
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const rendererRef = useRef<IframeRenderer | null>(null);
@@ -133,7 +135,18 @@ export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode }, 
     return (
         <div className="flex flex-col size-full grow justify-center">
             {error ? (
-                <div className="text-red-500 p-4">Error: {error}</div>
+                <div className="text-red-500 p-4 relative min-h-20">
+                    Error: {error}
+                    <Button
+                        size="sm"
+                        className="absolute bottom-2 right-2"
+                        onClick={() => {
+                            onSelect(`Plase fix this error: \n${error}. \nGenerate the whole correct code again`);
+                        }}
+                    >
+                        Auto Fix Error
+                    </Button>
+                </div>
             ) : (
                 <iframe className="w-full border-none" ref={iframeRef} title="Dynamic Component" sandbox="allow-scripts allow-same-origin" />
             )}

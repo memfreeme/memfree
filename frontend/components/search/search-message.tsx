@@ -56,7 +56,7 @@ const SearchMessage = memo(
                     (type !== SearchCategory.UI ? (
                         <AnswerSection title={t('Answer')} content={content} sources={sources} />
                     ) : (
-                        <UISection content={content} isLoading={isLoading} searchId={searchId} isReadOnly={isReadOnly} />
+                        <UISection content={content} isLoading={isLoading} searchId={searchId} isReadOnly={isReadOnly} onSelect={onSelect} />
                     ))}
 
                 {(images.length > 0 || !isLoading) && !isUser && type != SearchCategory.UI && (

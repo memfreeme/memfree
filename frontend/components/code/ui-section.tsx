@@ -10,13 +10,13 @@ const CodeViewer = dynamic(() => import('@/components/code/code-viewer'), {
     loading: () => <p>Loading...</p>,
 });
 
-const UISection = ({ content, searchId, isLoading, isReadOnly }) => {
+const UISection = ({ content, searchId, isLoading, isReadOnly, onSelect }) => {
     const formattedContent = `\`\`\`jsx\n${content}\n\`\`\``;
     return (
         <div className="flex w-full flex-col items-start space-y-2.5">
             <div className="prose dark:prose-dark w-full max-w-full">{isLoading && <MyMarkdown content={formattedContent} sources={[]} />}</div>
 
-            {!isLoading && <CodeViewer code={content} searchId={searchId} isReadOnly={isReadOnly} />}
+            {!isLoading && <CodeViewer code={content} searchId={searchId} isReadOnly={isReadOnly} onSelect={onSelect} />}
         </div>
     );
 };

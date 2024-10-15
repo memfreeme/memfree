@@ -14,7 +14,7 @@ export const metadata = {
     },
 };
 
-export default async function ProductHunt() {
+export default async function GenerateUI() {
     const id = generateId();
     const user = await getCurrentUser();
 

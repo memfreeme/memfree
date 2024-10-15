@@ -8,7 +8,7 @@ import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/componen
 import { cn } from '@/lib/utils';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 
-export default function CodeViewer({ code, searchId, isReadOnly }) {
+export default function CodeViewer({ code, searchId, isReadOnly, onSelect }) {
     const formattedContent = `\`\`\`jsx\n${code}\n\`\`\``;
     const ref = React.useRef<ImperativePanelHandle>(null);
     const previewRef = useRef<PreviewRef>(null);
@@ -20,7 +20,7 @@ export default function CodeViewer({ code, searchId, isReadOnly }) {
                     <ErrorBoundary>
                         <ResizablePanelGroup direction="horizontal" className="relative z-10">
                             <ResizablePanel ref={ref} className="relative rounded-lg border bg-background" defaultSize={100} minSize={30}>
-                                <Preview ref={previewRef} componentCode={code} />
+                                <Preview ref={previewRef} componentCode={code} onSelect={onSelect} />
                             </ResizablePanel>
                             <ResizableHandle
                                 className={cn(
