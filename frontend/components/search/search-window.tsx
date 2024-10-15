@@ -344,7 +344,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
             {messages.length === 0 && demoQuestions}
 
             {!isReadOnly && (searchBar ? searchBar({ handleSearch: stableHandleSearch }) : <SearchBar handleSearch={stableHandleSearch} />)}
-            <ButtonScrollToBottom isAtBottom={isVisible} scrollToBottom={scrollToBottom} />
+            {messages.length > 0 && <ButtonScrollToBottom isAtBottom={isVisible} scrollToBottom={scrollToBottom} />}
         </div>
     );
 }

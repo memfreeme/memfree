@@ -289,7 +289,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, 
                 {showWebSearch && (
                     <div className="flex items-center space-x-2 mb-1">
                         <Switch id="search" checked={isSearch} onCheckedChange={(checked) => setIsSearch(checked)} />
-                        <Label htmlFor="search">Web Search</Label>
+                        <Label htmlFor="search">AI Search</Label>
                     </div>
                 )}
                 {showModelSelection && <ModelSelection />}
