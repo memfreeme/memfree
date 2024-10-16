@@ -53,7 +53,7 @@ export default function SiteHeader({ user, items }: NavBarProps) {
                     return (
                         <Button key={title} variant="link" className={isActive ? 'font-semibold' : undefined} asChild>
                             <Link href={href} {...externalProps}>
-                                <span className="text-black">{title}</span>
+                                <span className="text-black dark:text-white">{title}</span>
                             </Link>
                         </Button>
                     );
@@ -66,7 +66,7 @@ export default function SiteHeader({ user, items }: NavBarProps) {
                         rel="noopener noreferrer"
                         aria-label="MemFree Changelog"
                     >
-                        <span className="text-black">Changelog</span>
+                        <span className="text-black dark:text-white">Changelog</span>
                     </Link>
                 </Button>
             </div>
