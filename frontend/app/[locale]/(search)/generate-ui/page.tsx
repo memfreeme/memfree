@@ -14,16 +14,17 @@ export const metadata = {
     },
 };
 
-export default async function GenerateUI() {
+export default async function GenerateUI({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
     const id = generateId();
     const user = await getCurrentUser();
+    const showFeatureSections = !searchParams.id;
 
     return (
         <div className="group w-full flex flex-col flex-1 h-lvh mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
             <div className="grow">
                 <GenerateUIHeroLanding />
                 <UIWindowWapper id={id} user={user} />
-                <FeatureSections />
+                {showFeatureSections && <FeatureSections />}
             </div>
             <SimpleSiteFooter />
         </div>

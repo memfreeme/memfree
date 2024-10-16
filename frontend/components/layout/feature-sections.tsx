@@ -52,6 +52,13 @@ const features = [
         video: 'https://image.memfree.me/memfree-generate-ui-capture-image.mp4',
         reverse: false,
     },
+    {
+        header: 'Auto',
+        name: 'Smart Error Correction',
+        description: `While MemFree's advanced AI model and sophisticated code rules strive for perfection, occasional errors may occur. Our Smart Error Correction feature allows you to instantly fix any issues with just one click.`,
+        video: 'https://image.memfree.me/memfree-generate-ui-auto-fix-error.mp4',
+        reverse: true,
+    },
 ];
 
 const FeatureSections = () => {
