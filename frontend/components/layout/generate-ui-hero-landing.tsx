@@ -1,8 +1,11 @@
 export function GenerateUIHeroLanding() {
     return (
-        <section className="py-20">
-            <div id="hero" className="flex flex-col items-center text-center">
-                <h1 className="text-balance text-4xl font-semibold text-gradient_indigo-purple">AI Generate UI With React, Tailwind, Shadcn UI</h1>
+        <section className="py-10">
+            <div id="hero" className="flex flex-col items-center text-center space-y-4">
+                <h1 className="text-balance text-5xl font-semibold text-gradient_indigo-purple">AI UI Generator</h1>
+                <p className="max-w-2xl text-balance leading-normal font-semibold text-muted-foreground sm:text-xl sm:leading-8">
+                    From Concept to UI Page in Seconds
+                </p>
             </div>
         </section>
     );

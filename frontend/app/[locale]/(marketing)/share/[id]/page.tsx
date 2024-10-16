@@ -7,6 +7,7 @@ import SearchWindow from '@/components/search/search-window';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { GenerateUIHeroLanding } from '@/components/layout/generate-ui-hero-landing';
 
 interface SharePageProps {
     params: {
@@ -35,7 +36,7 @@ export default async function SharePage({ params }: SharePageProps) {
 
     return (
         <div className="flex-1 space-y-6">
-            <HeroLanding />
+            {!isUI && <HeroLanding />}
             <SearchWindow
                 id={search.id}
                 initialMessages={search?.messages ?? []}
