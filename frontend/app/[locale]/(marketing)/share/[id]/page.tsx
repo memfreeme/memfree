@@ -7,7 +7,6 @@ import SearchWindow from '@/components/search/search-window';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { GenerateUIHeroLanding } from '@/components/layout/generate-ui-hero-landing';
 
 interface SharePageProps {
     params: {

@@ -94,7 +94,10 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
             }
 
             let messageValue = question ?? input;
-            if (messageValue === '') return;
+            if (messageValue === '' && !attachments) {
+                return;
+            }
+
             const imageUrls = extractAllImageUrls(messageValue);
             if (imageUrls.length > 1 && user && !isProUser(user)) {
                 toast.error(t('multi-image-free-limit'));

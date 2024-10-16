@@ -54,7 +54,10 @@ const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, 
     };
 
     const handleInputKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-        if (isUploading || !content.trim()) {
+        if (isUploading) {
+            return;
+        }
+        if (content.trim() === '' && files.length === 0) {
             return;
         }
         if (e.code === 'Enter' && !e.shiftKey) {
@@ -265,7 +268,7 @@ const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, 
                                 <button
                                     type="button"
                                     aria-label={t('search-tip')}
-                                    disabled={content.trim() === '' || isUploading}
+                                    disabled={(content.trim() === '' && files.length === 0) || isUploading}
                                     className="text-gray-500 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                                     onClick={handleClick}
                                 >
