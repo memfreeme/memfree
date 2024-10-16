@@ -171,12 +171,6 @@ export async function autoAnswer(
             const fetchedVideos = await videoFetchPromise;
             videos = fetchedVideos.videos.slice(0, 8);
             await streamResponse({ videos: videos }, onStream);
-        } else {
-            await streamResponse({ status: 'Generating related questions ...' }, onStream);
-            await getRelatedQuestions(query, texts, (msg) => {
-                fullRelated += msg;
-                onStream?.(JSON.stringify({ related: msg }));
-            });
         }
 
         incSearchCount(userId).catch((error) => {
