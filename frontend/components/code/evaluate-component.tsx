@@ -46,3 +46,21 @@ export const evaluateComponentCode = (code: string): ExecuteCodeResult => {
 
     return exports as ExecuteCodeResult;
 };
+
+export function checkLucideImports(codeString) {
+    const importRegex = /import\s*{([^}]+)}\s*from\s*['"]lucide-react['"]/;
+    const match = codeString.match(importRegex);
+
+    if (!match) {
+        return { isValid: true, message: '' };
+    }
+
+    const allImports = match[1].split(',').map((icon) => icon.trim());
+    const importedIcons = allImports.filter((item) => !item.includes('Props'));
+
+    const invalidIcons = importedIcons.filter((icon) => !(icon in LucideIcons));
+
+    const isValid = invalidIcons.length === 0;
+    const message = isValid ? ' ' : `The following lucide-react icons are not valid: ${invalidIcons.join(', ')}`;
+    return { isValid, message };
+}
