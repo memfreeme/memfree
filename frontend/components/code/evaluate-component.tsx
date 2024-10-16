@@ -47,44 +47,45 @@ export const evaluateComponentCode = (code: string): ExecuteCodeResult => {
     return exports as ExecuteCodeResult;
 };
 
-export function checkLucideImports(codeString) {
-    const importRegex = /import\s*{([^}]+)}\s*from\s*['"]lucide-react['"]/;
-    const match = codeString.match(importRegex);
+type ImportCheckResult = { isValid: boolean; message: string };
 
-    if (!match) {
-        return { isValid: true, message: '' };
-    }
+const IMPORT_CONFIGS = [
+    { regex: /import\s*{([^}]+)}\s*from\s*['"]recharts['"]/, lib: Recharts, name: 'Recharts' },
+    { regex: /import\s*{([^}]+)}\s*from\s*['"]lucide-react['"]/, lib: LucideIcons, name: 'lucide-react', filter: (item: string) => !item.includes('Props') },
+    {
+        regex: /import\s*{([^}]+)}\s*from\s*['"]@\/components\/ui(?:\/[^'"]+)?['"]/g,
+        lib: ShadcnUI,
+        name: 'ShadcnUI',
+        filter: (item: string) => item !== '',
+        multipleMatches: true,
+    },
+];
 
-    const allImports = match[1].split(',').map((icon) => icon.trim());
-    const importedIcons = allImports.filter((item) => !item.includes('Props'));
+export function checkImports(codeString: string): ImportCheckResult {
+    for (const config of IMPORT_CONFIGS) {
+        const { regex, lib, name, filter, multipleMatches } = config;
+        const matches = multipleMatches ? Array.from(codeString.matchAll(regex)) : [codeString.match(regex)];
 
-    const invalidIcons = importedIcons.filter((icon) => !(icon in LucideIcons));
-
-    const isValid = invalidIcons.length === 0;
-    const message = isValid ? ' ' : `The following lucide-react icons are not valid: ${invalidIcons.join(', ')}`;
-    return { isValid, message };
-}
-
-export function checkShadcnUIImports(codeString: string) {
-    const importRegex = /import\s*{([^}]+)}\s*from\s*['"]@\/components\/ui(?:\/[^'"]+)?['"]/g;
-    const allImports = new Set<string>();
-    let match: RegExpExecArray | null;
-
-    while ((match = importRegex.exec(codeString)) !== null) {
-        match[1].split(',').forEach((component) => {
-            const trimmed = component.trim();
-            if (trimmed) allImports.add(trimmed);
+        const allImports = new Set<string>();
+        matches.forEach((match) => {
+            if (match) {
+                match[1]
+                    .split(',')
+                    .map((item) => item.trim())
+                    .filter((item) => !filter || filter(item))
+                    .forEach((item) => allImports.add(item));
+            }
         });
+
+        if (allImports.size > 0) {
+            const invalidImports = Array.from(allImports).filter((item) => !(item in lib));
+            if (invalidImports.length > 0) {
+                return {
+                    isValid: false,
+                    message: `The following ${name} components/icons are not valid: ${invalidImports.join(', ')}`,
+                };
+            }
+        }
     }
-    if (allImports.size === 0) {
-        console.log('No ShadcnUI imports found');
-        return { isValid: true, message: '' };
-    }
-
-    const invalidComponents = Array.from(allImports).filter((component) => !(component in ShadcnUI));
-
-    const isValid = invalidComponents.length === 0;
-    const message = isValid ? '' : `The following ShadcnUI components are not valid: ${invalidComponents.join(', ')}`;
-
-    return { isValid, message };
+    return { isValid: true, message: '' };
 }
