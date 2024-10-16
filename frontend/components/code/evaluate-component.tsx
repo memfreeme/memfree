@@ -64,3 +64,27 @@ export function checkLucideImports(codeString) {
     const message = isValid ? ' ' : `The following lucide-react icons are not valid: ${invalidIcons.join(', ')}`;
     return { isValid, message };
 }
+
+export function checkShadcnUIImports(codeString: string) {
+    const importRegex = /import\s*{([^}]+)}\s*from\s*['"]@\/components\/ui(?:\/[^'"]+)?['"]/g;
+    const allImports = new Set<string>();
+    let match: RegExpExecArray | null;
+
+    while ((match = importRegex.exec(codeString)) !== null) {
+        match[1].split(',').forEach((component) => {
+            const trimmed = component.trim();
+            if (trimmed) allImports.add(trimmed);
+        });
+    }
+    if (allImports.size === 0) {
+        console.log('No ShadcnUI imports found');
+        return { isValid: true, message: '' };
+    }
+
+    const invalidComponents = Array.from(allImports).filter((component) => !(component in ShadcnUI));
+
+    const isValid = invalidComponents.length === 0;
+    const message = isValid ? '' : `The following ShadcnUI components are not valid: ${invalidComponents.join(', ')}`;
+
+    return { isValid, message };
+}

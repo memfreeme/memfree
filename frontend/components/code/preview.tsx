@@ -1,4 +1,4 @@
-import { checkLucideImports, evaluateComponentCode } from '@/components/code/evaluate-component';
+import { checkLucideImports, checkShadcnUIImports, evaluateComponentCode } from '@/components/code/evaluate-component';
 import { IframeRenderer } from '@/components/code/iframe-renderer';
 import { useTransformer } from '@/components/code/useTransformer';
 import { Button } from '@/components/ui/button';
@@ -26,9 +26,15 @@ export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode, on
         if (!componentCode || !transformer) return null;
 
         try {
-            const result = checkLucideImports(componentCode);
+            let result = checkLucideImports(componentCode);
             if (!result.isValid) {
                 logClientError(result.message, 'checkLucideImports');
+                setError(result.message);
+                return null;
+            }
+            result = checkShadcnUIImports(componentCode);
+            if (!result.isValid) {
+                logClientError(result.message, 'checkShadcnUIImports');
                 setError(result.message);
                 return null;
             }
