@@ -249,10 +249,18 @@ export class IframeRenderer {
     }
 
     private setupResizeListener() {
-        window.addEventListener('resize', this.debouncedHandleResize);
+        if ('ontouchstart' in window) {
+            window.addEventListener('orientationchange', this.debouncedHandleResize);
+        } else {
+            window.addEventListener('resize', this.debouncedHandleResize);
+        }
     }
 
     public cleanup() {
-        window.removeEventListener('resize', this.debouncedHandleResize);
+        if ('ontouchstart' in window) {
+            window.removeEventListener('orientationchange', this.debouncedHandleResize);
+        } else {
+            window.removeEventListener('resize', this.debouncedHandleResize);
+        }
     }
 }
