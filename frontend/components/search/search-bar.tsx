@@ -21,6 +21,7 @@ import { isProUser } from '@/lib/shared-utils';
 import dynamic from 'next/dynamic';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { SearchType } from '@/lib/types';
 
 interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
@@ -28,20 +29,48 @@ interface Props {
     showIndexButton?: boolean;
     showModelSelection?: boolean;
     showWebSearch?: boolean;
+    searchType?: SearchType;
 }
 
 interface FileWithPreview extends File {
     preview?: string;
 }
 
-const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, showIndexButton = true, showModelSelection = true, showWebSearch = false }) => {
+const SearchBar: React.FC<Props> = ({
+    handleSearch,
+    showSourceSelection = true,
+    showIndexButton = true,
+    showModelSelection = true,
+    showWebSearch = false,
+    searchType = SearchType.SEARCH,
+}) => {
     const [content, setContent] = useState<string>('');
     const signInModal = useSigninModal();
     const indexModal = useIndexModal();
     const upgradeModal = useUpgradeModal();
     const user = useUserStore((state) => state.user);
 
+    const checkEmptyInput = () => {
+        if (isUploading) {
+            return true;
+        }
+        const isContentEmpty = content.trim() === '';
+        const isFilesEmpty = files.length === 0;
+        if (isContentEmpty && isFilesEmpty) {
+            toast.error('Please provide text input or upload files');
+            return true;
+        }
+        if (searchType === SearchType.SEARCH && isContentEmpty) {
+            toast.error('Please provide text input for search');
+            return true;
+        }
+        return false;
+    };
+
     const handleClick = () => {
+        if (checkEmptyInput()) {
+            return;
+        }
         if (uploadedFiles && uploadedFiles.length > 0) {
             const fileUrls = uploadedFiles.map((file) => file.url);
             handleSearch(content, fileUrls);
@@ -54,12 +83,6 @@ const SearchBar: React.FC<Props> = ({ handleSearch, showSourceSelection = true, 
     };
 
     const handleInputKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-        if (isUploading) {
-            return;
-        }
-        if (content.trim() === '' && files.length === 0) {
-            return;
-        }
         if (e.code === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleClick();

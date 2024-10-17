@@ -7,6 +7,7 @@ import SearchWindow from '@/components/search/search-window';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { SearchType } from '@/lib/types';
 
 interface SharePageProps {
     params: {
@@ -31,7 +32,7 @@ export default async function SharePage({ params }: SharePageProps) {
     const isUI = search?.messages[0]?.type === 'ui';
     const content = isUI ? 'AI Generate UI Now' : 'AI Search Now';
     const link = isUI ? '/generate-ui' : '/';
-    const searchType = isUI ? 'ui' : 'search';
+    const searchType = isUI ? SearchType.UI : SearchType.SEARCH;
 
     return (
         <div className="flex-1 space-y-6">

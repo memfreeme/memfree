@@ -63,6 +63,11 @@ export enum SearchCategory {
     KNOWLEDGE_BASE = 'knowledge-base',
 }
 
+export enum SearchType {
+    SEARCH = 'search',
+    UI = 'ui',
+}
+
 export interface ScoredURL {
     value: string;
     score: number;

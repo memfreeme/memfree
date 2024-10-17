@@ -8,7 +8,7 @@ import { useSearchParams } from 'next/navigation';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { configStore, useProfileStore, useUIStore } from '@/lib/store';
 
-import { ImageSource, Message, TextSource, User, VideoSource } from '@/lib/types';
+import { ImageSource, Message, SearchType, TextSource, User, VideoSource } from '@/lib/types';
 import { LoaderCircle } from 'lucide-react';
 import { useScrollAnchor } from '@/hooks/use-scroll-anchor';
 import { toast } from 'sonner';
@@ -27,10 +27,10 @@ export interface SearchProps extends React.ComponentProps<'div'> {
     isReadOnly?: boolean;
     demoQuestions: React.ReactNode;
     searchBar?: (props: { handleSearch: (key: string, attachments?: string[]) => void }) => React.ReactNode;
-    searchType?: 'search' | 'ui';
+    searchType?: SearchType;
 }
 
-export default function SearchWindow({ id, initialMessages, user, isReadOnly = false, demoQuestions, searchBar, searchType = 'search' }: SearchProps) {
+export default function SearchWindow({ id, initialMessages, user, isReadOnly = false, demoQuestions, searchBar, searchType = SearchType.SEARCH }: SearchProps) {
     const t = useTranslations('Search');
     const searchParams = useSearchParams();
     const signInModal = useSigninModal();
@@ -96,6 +96,14 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
             let messageValue = question ?? input;
             if (messageValue === '' && !attachments) {
                 return;
+            }
+            if (!messageValue && searchType === 'search') {
+                toast.error('Please give some text input');
+                return;
+            }
+
+            if (!messageValue && attachments && searchType === 'ui') {
+                messageValue = 'Please generate the same UI as the image';
             }
 
             const imageUrls = extractAllImageUrls(messageValue);
