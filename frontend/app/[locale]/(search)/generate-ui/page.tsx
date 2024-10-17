@@ -2,6 +2,7 @@ import UIWindowWapper from '@/app/[locale]/(search)/generate-ui/ui-window-wapper
 import FeatureSections from '@/components/layout/feature-sections';
 import { GenerateUIHeroLanding } from '@/components/layout/generate-ui-hero-landing';
 import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
+import DemoGallery from '@/components/search/ui-demo-gallaty';
 import { siteConfig } from '@/config';
 import { getCurrentUser } from '@/lib/session';
 import { generateId } from '@/lib/shared-utils';
@@ -24,6 +25,7 @@ export default async function GenerateUI({ searchParams }: { searchParams: { [ke
             <div className="grow">
                 <GenerateUIHeroLanding />
                 <UIWindowWapper id={id} user={user} />
+                {showFeatureSections && <DemoGallery />}
                 {showFeatureSections && <FeatureSections />}
             </div>
             <SimpleSiteFooter />

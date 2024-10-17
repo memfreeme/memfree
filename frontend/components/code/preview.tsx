@@ -104,7 +104,7 @@ export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode, on
                     allowTaint: true,
                     foreignObjectRendering: true,
                     logging: false,
-                    scale: 1,
+                    scale: 2,
                 });
 
                 const timestamp = new Date().getTime();
