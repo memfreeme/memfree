@@ -33,44 +33,40 @@ MemFree is a <b>Hybrid AI Search Engine</b>.
 
 With MemFree, you can instantly get Accurate Answers from your knowledge base and the whole internet.
 
-## What can you do with MemFree
+## Key Capabilities
+With MemFree, you can:
 
-- Search and ask questions with **text, images, files, and web pages**.
-- Get search results for **text, mind maps, images, and videos** with one click
-- Compare, summarize and search **multiple images**.
-- Summarize web pages and PDFs, and ask questions about their content
-- Ask Twitter and Academic Questions
-- Explain and generate code efficiently
-- Perform most tasks available in ChatGPT Plus, Claude Pro, and Gemini Advanced.
+- **Search and ask questions** using text, images, files, and web pages.
+- **Access results** in multiple formats, including text, mind maps, images, and videos, with just one click.
+- **Compare, summarize, and analyze** multiple images effortlessly.
+- **Summarize web pages and PDFs** and ask questions about their content.
+- **Generate and explain code** with efficiency.
+- **Ask academic and Twitter-based questions** using specialized AI models.
+- **Perform tasks found in other AI tools** like ChatGPT Plus, Claude Pro, and Gemini Advanced.
 
-## What value does MemFree bring to you
+## What Makes MemFree Valuable?
 
-- **Streamlined Knowledge Management**: No need to manually organize your knowledge base (notes, bookmarks and documents). When you need information or answers, just search in memfree with one click, freeing up your memory capacity and improving your productivity.
-- **Time-Saving Efficiency**: No need to click on multiple web pages one by one in the Google search results. Memfree uses AI to immediately summarize the best answers from multiple web pages and your knowledge base, saving you a lot of time every day.
-- **Cost-Effective Solution**: No need to subscribe to multiple AI tools such as ChatGPT Plus, Claude Pro, and Gemini Advanced, which will significantly reduce your monthly subscription fees
+- **Efficient Knowledge Management**: MemFree eliminates the need for manual organization of notes, bookmarks, and documents. When you need information, simply search within MemFree to quickly find relevant answers, freeing up your memory and boosting productivity.
+- **Time-Saving AI Summaries**: Instead of clicking through multiple Google search results, MemFree uses AI to instantly summarize the best content from web pages and your knowledge base, saving valuable time.
+- **Cost-Effective Solution**: Avoid multiple subscriptions to services like ChatGPT Plus, Claude Pro, and Gemini Advanced. MemFree integrates their functionalities, significantly reducing monthly costs.
 
-## MemFree Feature List
+## MemFree Features
 
-- Multi AI Models: ChatGPT, Claude, Gemini
+MemFree is equipped with powerful features that cater to various search and productivity needs:
 
-- Multi Search Engines: Google, Exa, Vector
+- **Multiple AI Models**: Integrates ChatGPT, Claude, and Gemini for diverse AI capabilities.
+- **Search Engines Supported**: Works with Google, Exa, and Vector.
+- **Local File Format Compatibility**: Supports text, PDF, Docx, PPTX, and Markdown files.
+- **Cross-Device Syncing**: Save and sync search history across multiple devices.
+- **Multi-Language Support**: Available in English, Chinese, German, French, Spanish, Japanese, and Arabic.
+- **Chrome Bookmark Sync**: One-click synchronization and indexing.
+- **Result Sharing**: Easily share your search findings.
+- **Contextual Continuous Search**: Search seamlessly based on context.
+- **Automatic Web Search Decisions**: Automatically determines when to perform internet searches.
+- **Serverless Vector Database**: Super-fast self-hosted database for advanced search capabilities.
+- **Open Source Code**: Full transparency with open-source availability.
+- **One-Click Deployment**: Deploy MemFree effortlessly with just a click.
 
-- Multi Local file formats: Txt, PDF, Docx, PPTX, Markdown
-
-- Save search history and search results and multi devices sync
-
-- Multi languages support: English, Chinese, German, French, Spanish, Japanese and Arabic
-
-- One-Click Chrome Bookmarks Sync and Indexing
-
-- Share your search results
-
-- Context-based continuous search
-
-- Automatically decide whether to search the Internet
-- Self-Hosted, Super-Fast Serverless Vector Database
-- Full Code Open Source
-- One-Click Deployment
 
 ## MemFree Hybrid AI Search Workflow
 
