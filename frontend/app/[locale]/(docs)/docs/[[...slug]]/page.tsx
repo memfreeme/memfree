@@ -11,11 +11,12 @@ import '@/styles/mdx.css';
 
 import { Metadata } from 'next';
 
-import { absoluteUrl } from '@/lib/utils';
+import { absoluteUrl, cn } from '@/lib/utils';
 import { siteConfig } from '@/config';
-import { GitHubButton } from '@/components/shared/github-button';
 import { type Locale, routing } from '@/i18n/routing';
 import { unstable_setRequestLocale } from 'next-intl/server';
+import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/button';
 
 interface DocPageProps {
     params: {
@@ -107,7 +108,14 @@ export default async function DocPage({ params }: DocPageProps) {
                     <DashboardTableOfContents toc={toc} />
                 </div>
             </div>
-            <GitHubButton />
+            <div className="flex flex-col justify-center mx-auto space-y-10">
+                <Link href="/" className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
+                    Hybrid AI Search Now
+                </Link>
+                <Link href="/" className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
+                    AI Generate UI Now
+                </Link>
+            </div>
         </main>
     );
 }

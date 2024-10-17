@@ -1,7 +1,6 @@
 'use client';
 
-import { LoadingButton } from '@/components/ui/loading-button';
-import { buttonVariants } from '@/components//ui/button';
+import { Button, buttonVariants } from '@/components//ui/button';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { isValidUrl } from '@/lib/shared-utils';
@@ -11,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { Loader2 } from 'lucide-react';
 
 export function IndexWebPage() {
     const [isLoading, setLoading] = useState(false);
@@ -99,9 +99,9 @@ export function IndexWebPage() {
     return (
         <div className="flex flex-col w-full space-y-6 mt-4">
             <Textarea placeholder={t('placeholder')} rows={3} value={url} onChange={(e) => setUrl(e.target.value)} />
-            <LoadingButton className="rounded-full" loading={isLoading} variant={'outline'} onClick={handleIndex}>
-                {t('index-button')}
-            </LoadingButton>
+            <Button className="rounded-full" variant={'outline'} onClick={handleIndex}>
+                {isLoading ? <Loader2 className="size-6 text-primary animate-spin mr-2" /> : t('index-button')}
+            </Button>
             <Link
                 href="/docs/extension-user-guide"
                 target="_blank"

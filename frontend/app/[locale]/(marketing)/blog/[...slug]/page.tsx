@@ -11,7 +11,6 @@ import Link from 'next/link';
 import { absoluteUrl, cn, formatDate } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { siteConfig } from '@/config';
-import { GitHubButton } from '@/components/shared/github-button';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import { type Locale, routing } from '@/i18n/routing';
 
@@ -107,9 +106,16 @@ export default async function PostPage({ params }: PostPageProps) {
             )}
             <Mdx code={post.body.code} />
 
-            <GitHubButton />
+            <div className="flex flex-col justify-center mx-auto space-y-10 py-6">
+                <Link href="/" className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
+                    Hybrid AI Search Now
+                </Link>
+                <Link href="/" className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
+                    AI Generate UI Now
+                </Link>
+            </div>
 
-            <div className="flex justify-center py-6">
+            <div className="flex justify-center py-10">
                 <Link href="/blog" className={cn(buttonVariants({ size: 'lg', rounded: 'full' }), 'gap-2')}>
                     See all posts
                 </Link>
