@@ -3,7 +3,7 @@ import { IframeRenderer } from '@/components/code/iframe-renderer';
 import { useTransformer } from '@/components/code/useTransformer';
 import { Button } from '@/components/ui/button';
 import { logClientError } from '@/lib/utils';
-import React, { useState, useEffect, useRef, useCallback, useMemo, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo, forwardRef, useImperativeHandle, createElement } from 'react';
 
 interface PreviewProps {
     componentCode: string;
@@ -101,12 +101,14 @@ export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode, on
 
                 const html2canvas = (await import('html2canvas')).default;
 
+                const scale = window.devicePixelRatio || 1;
+
                 const canvas = await html2canvas(iframeRef.current.contentDocument.body, {
                     useCORS: true,
                     allowTaint: true,
                     foreignObjectRendering: true,
                     logging: false,
-                    scale: 2,
+                    scale: scale,
                 });
 
                 const timestamp = new Date().getTime();

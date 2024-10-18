@@ -222,7 +222,8 @@ export class IframeRenderer {
     }
 
     private adjustIframeHeight() {
-        requestAnimationFrame(() => {
+        // Note: shouldn't use requestAnimationFrame here because it doesn't work well with iframe resizing
+        setTimeout(() => {
             if (this.iframeRef.current && this.iframeRef.current.contentDocument) {
                 const iframeDoc = this.iframeRef.current.contentDocument;
                 const body = iframeDoc.body;
@@ -238,7 +239,7 @@ export class IframeRenderer {
                     }
                 }
             }
-        });
+        }, 50);
     }
 
     private debounce(func: (...args: any[]) => void, wait: number) {

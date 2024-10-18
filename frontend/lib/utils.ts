@@ -111,11 +111,18 @@ export async function processImageFiles(imageFiles: File[]): Promise<File[]> {
 }
 
 export async function logClientError(error: string, action: string) {
-    fetch('/api/log', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: error, action: action }),
-    });
+    if (process.env.NODE_ENV !== 'production') {
+        return;
+    }
+    try {
+        fetch('/api/log', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: error, action: action }),
+        });
+    } catch (error) {
+        console.error('Failed to log client error:', error);
+    }
 }

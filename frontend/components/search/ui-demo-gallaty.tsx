@@ -12,7 +12,7 @@ const DemoGallery = () => {
                 name: 'Jane Doe',
             },
             description: 'A Pricing Page for AI Search',
-            link: '/share/QdbXqSg23h',
+            link: '/share/nhC7sRElQh',
             width: 400,
             height: 300,
             lazy: false,

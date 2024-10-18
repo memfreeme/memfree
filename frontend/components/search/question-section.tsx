@@ -11,10 +11,11 @@ import { useSearchStore } from '@/lib/store/local-history';
 interface QuestionSectionProps {
     mesageId: string;
     content: string;
+    isShared?: boolean;
     onContentChange: (newContent: string) => void;
 }
 
-const QuestionSection: React.FC<QuestionSectionProps> = React.memo(({ mesageId, content, onContentChange }) => {
+const QuestionSection: React.FC<QuestionSectionProps> = React.memo(({ mesageId, content, onContentChange, isShared }) => {
     const getTextSizeClass = (text: string) => {
         const length = text.length;
         if (length < 20) return 'text-lg font-medium';
@@ -44,21 +45,24 @@ const QuestionSection: React.FC<QuestionSectionProps> = React.memo(({ mesageId, 
     return (
         <>
             <div className="group/question relative flex flex-col w-full">
-                <div className="flex space-x-4 opacity-0 items-end justify-end group-hover/question:opacity-100">
-                    <button onClick={() => deleteMessage(mesageId)} aria-label="Delete">
-                        <Trash2 className="size-4 text-primary dark:text-white" />
-                    </button>
-                    <button onClick={handleEditClick} aria-label="Edit">
-                        <Pencil className="size-4 text-primary dark:text-white" />
-                    </button>
-                    <button onClick={() => copyToClipboard(content)} aria-label="Copy">
-                        {hasCopied ? (
-                            <Icons.check className="size-4 text-primary dark:text-white" />
-                        ) : (
-                            <Icons.copy className="size-4 text-primary dark:text-white" />
-                        )}
-                    </button>
-                </div>
+                {!isShared && (
+                    <div className="flex space-x-4 opacity-0 items-end justify-end group-hover/question:opacity-100">
+                        <button onClick={() => deleteMessage(mesageId)} aria-label="Delete">
+                            <Trash2 className="size-4 text-primary dark:text-white" />
+                        </button>
+                        <button onClick={handleEditClick} aria-label="Edit">
+                            <Pencil className="size-4 text-primary dark:text-white" />
+                        </button>
+                        <button onClick={() => copyToClipboard(content)} aria-label="Copy">
+                            {hasCopied ? (
+                                <Icons.check className="size-4 text-primary dark:text-white" />
+                            ) : (
+                                <Icons.copy className="size-4 text-primary dark:text-white" />
+                            )}
+                        </button>
+                    </div>
+                )}
+
                 <div className="relative flex w-full items-start p-4 my-4 rounded-xl bg-violet-50 dark:bg-violet-800 hover:bg-violet-100 dark:hover:bg-violet-900 transition-colors">
                     <h2 className={`text-gray-800 dark:text-gray-50 whitespace-pre-wrap ${textSizeClass}`} dir="auto">
                         {content}
