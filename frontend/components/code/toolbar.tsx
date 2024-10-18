@@ -5,9 +5,18 @@ import { TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import useCopyToClipboard from '@/hooks/use-copy-clipboard';
 import { Camera, Check, ClipboardIcon, Monitor, Smartphone, Tablet } from 'lucide-react';
+import { Icons } from '@/components/shared/icons';
+import { useCallback, useState } from 'react';
 
 export function CodeToolbar({ code, searchId, isReadOnly, resizablePanelRef, previewRef }) {
     const { hasCopied, copyToClipboard } = useCopyToClipboard();
+    const [isDark, setIsDark] = useState(false);
+    const toggleDarkMode = useCallback(() => {
+        if (previewRef.current) {
+            previewRef.current.toggleDarkMode();
+            setIsDark(previewRef.current.isDaskMode());
+        }
+    }, [previewRef]);
     return (
         <div className="flex justify-between items-center my-6">
             <div className="flex items-center gap-2">
@@ -44,6 +53,9 @@ export function CodeToolbar({ code, searchId, isReadOnly, resizablePanelRef, pre
                 </div>
                 <Separator orientation="vertical" className="mx-2 hidden h-4 md:flex" />
                 <div className="flex items-center space-x-2">
+                    <Button size="icon" variant="outline" className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5" onClick={toggleDarkMode}>
+                        {isDark ? <Icons.moon className="size-4 transition-all" /> : <Icons.sun className="size-4 transition-all" />}
+                    </Button>
                     <Button
                         size="icon"
                         variant="outline"

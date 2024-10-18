@@ -31,7 +31,7 @@ export const useUIStore = create<UIState>()(
     persist(
         (set) => ({
             isSearch: false,
-            isShadcnUI: false,
+            isShadcnUI: true,
             setIsSearch: (search: boolean) => set({ isSearch: search }),
             setIsShadcnUI: (shadcnUI: boolean) => set({ isShadcnUI: shadcnUI }),
         }),

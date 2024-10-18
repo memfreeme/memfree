@@ -12,6 +12,8 @@ interface PreviewProps {
 
 export interface PreviewRef {
     captureIframe: () => Promise<void>;
+    toggleDarkMode: () => void;
+    isDaskMode: () => boolean;
 }
 
 export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode, onSelect }, ref) => {
@@ -136,7 +138,22 @@ export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode, on
 
     useImperativeHandle(ref, () => ({
         captureIframe,
+        toggleDarkMode,
+        isDaskMode,
     }));
+
+    const toggleDarkMode = useCallback(() => {
+        if (rendererRef.current) {
+            rendererRef.current.toggleDarkMode();
+        }
+    }, []);
+
+    const isDaskMode = useCallback(() => {
+        if (rendererRef.current) {
+            return rendererRef.current.isDark();
+        }
+        return false;
+    }, []);
 
     return (
         <div className="flex flex-col size-full grow justify-center">

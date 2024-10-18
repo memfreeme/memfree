@@ -166,6 +166,7 @@ export class IframeRenderer {
     private iframeRef: React.RefObject<HTMLIFrameElement>;
     private rootRef: Root | null = null;
     private debouncedHandleResize: () => void;
+    private isDarkMode: boolean = false;
 
     constructor(iframeRef: React.RefObject<HTMLIFrameElement>) {
         this.iframeRef = iframeRef;
@@ -177,7 +178,7 @@ export class IframeRenderer {
             if (iframeDoc) {
                 iframeDoc.open();
                 iframeDoc.write(`
-                <html>
+                <html class="${this.isDarkMode ? 'dark' : ''}">
                 <head>
                     <meta http-equiv="Content-Security-Policy" content="${CSP_POLICY.replace(/\s+/g, ' ')}">
                     <meta http-equiv="Feature-Policy" content="${FEATURE_POLICY.replace(/\s+/g, ' ')}">
@@ -261,6 +262,23 @@ export class IframeRenderer {
             window.removeEventListener('orientationchange', this.debouncedHandleResize);
         } else {
             window.removeEventListener('resize', this.debouncedHandleResize);
+        }
+    }
+
+    public isDark() {
+        return this.isDarkMode;
+    }
+
+    public toggleDarkMode() {
+        this.isDarkMode = !this.isDarkMode;
+        if (this.iframeRef.current && this.iframeRef.current.contentDocument) {
+            const iframeDoc = this.iframeRef.current.contentDocument;
+            const html = iframeDoc.documentElement;
+            if (this.isDarkMode) {
+                html.classList.add('dark');
+            } else {
+                html.classList.remove('dark');
+            }
         }
     }
 }
