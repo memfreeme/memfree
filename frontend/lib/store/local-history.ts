@@ -13,6 +13,7 @@ interface SearchStore {
     clearSearches: () => void;
     setActiveSearch: (id: string) => void;
     updateActiveSearch: (updatedSearch: Partial<Search>) => void;
+    deleteMessage: (messageId: string) => void;
 }
 
 export const useSearchStore = create<SearchStore>()(
@@ -23,9 +24,7 @@ export const useSearchStore = create<SearchStore>()(
             activeSearch: undefined,
             addSearch: (search) => {
                 set((state) => {
-                    const existingSearchIndex = state.searches.findIndex(
-                        (s) => s.id === search.id,
-                    );
+                    const existingSearchIndex = state.searches.findIndex((s) => s.id === search.id);
                     if (existingSearchIndex !== -1) {
                         const updatedSearches = [...state.searches];
                         updatedSearches[existingSearchIndex] = search;
@@ -47,10 +46,7 @@ export const useSearchStore = create<SearchStore>()(
                         return { searches: newSearches };
                     }
 
-                    const combinedSearches = [
-                        ...state.searches,
-                        ...newSearches,
-                    ];
+                    const combinedSearches = [...state.searches, ...newSearches];
 
                     const uniqueIds = new Set();
                     const uniqueSearches = [];
@@ -64,10 +60,7 @@ export const useSearchStore = create<SearchStore>()(
                     }
 
                     const updatedSearches = uniqueSearches.sort((a, b) => {
-                        return (
-                            new Date(b.createdAt).getTime() -
-                            new Date(a.createdAt).getTime()
-                        );
+                        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
                     });
 
                     return { searches: updatedSearches };
@@ -76,9 +69,7 @@ export const useSearchStore = create<SearchStore>()(
             setSearches: (searches) => set({ searches }),
             removeSearch: (id) => {
                 set((state) => ({
-                    searches: state.searches.filter(
-                        (search) => search.id !== id,
-                    ),
+                    searches: state.searches.filter((search) => search.id !== id),
                 }));
             },
             clearSearches: () => {
@@ -99,9 +90,21 @@ export const useSearchStore = create<SearchStore>()(
                     };
                     return {
                         activeSearch: newSearch,
-                        searches: state.searches.map((s) =>
-                            s.id === newSearch.id ? newSearch : s,
-                        ),
+                        searches: state.searches.map((s) => (s.id === newSearch.id ? newSearch : s)),
+                    };
+                });
+            },
+            deleteMessage: (messageId) => {
+                set((state) => {
+                    if (!state.activeSearch) return state;
+                    const newMessages = state.activeSearch.messages.filter((m) => m.id !== messageId);
+                    const newSearch = {
+                        ...state.activeSearch,
+                        messages: newMessages,
+                    };
+                    return {
+                        activeSearch: newSearch,
+                        searches: state.searches.map((s) => (s.id === newSearch.id ? newSearch : s)),
                     };
                 });
             },

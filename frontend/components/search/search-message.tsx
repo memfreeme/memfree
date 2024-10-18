@@ -59,8 +59,8 @@ const SearchMessage = memo(
                         <UISection content={content} isLoading={isLoading} searchId={searchId} isReadOnly={isReadOnly} onSelect={onSelect} />
                     ))}
 
-                {(images.length > 0 || !isLoading) && !isUser && type != SearchCategory.UI && (
-                    <ActionButtons content={content} searchId={searchId} msgId={id} reload={reload} />
+                {(images.length > 0 || !isLoading) && !isUser && (
+                    <ActionButtons content={content} searchId={searchId} msgId={id} reload={reload} searchType={type} />
                 )}
                 {!isUser && content && !isLoading && type != SearchCategory.UI && (
                     <ExpandableSection title={t('MindMap')} icon={Map} open={isReadOnly}>
@@ -113,7 +113,7 @@ const SearchMessage = memo(
                     </div>
                 )}
 
-                {isUser && <QuestionSection content={content} onContentChange={onSelect}></QuestionSection>}
+                {isUser && <QuestionSection mesageId={id} content={content} onContentChange={onSelect}></QuestionSection>}
                 {isUser && attachments && attachments.length > 0 && (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4">
                         {attachments.map((attachment, index) => (

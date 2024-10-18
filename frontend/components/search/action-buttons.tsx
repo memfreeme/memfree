@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { RefreshCcw, Share2, ThumbsDown } from 'lucide-react';
+import { RefreshCcw, Share2, ThumbsDown, Trash2 } from 'lucide-react';
 import { Icons } from '@/components/shared/icons';
 import { Button, buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
@@ -8,8 +8,9 @@ import { cn } from '@/lib/utils';
 import { SearchShareDialog } from '@/components/search/search-share-dialog';
 import { useTranslations } from 'next-intl';
 import useCopyToClipboard from '@/hooks/use-copy-clipboard';
+import { useSearchStore } from '@/lib/store/local-history';
 
-const ActionButtons = ({ content, searchId, msgId, reload }) => {
+const ActionButtons = ({ content, searchId, msgId, reload, searchType }) => {
     const [shareDialogOpen, setShareDialogOpen] = React.useState(false);
 
     const { hasCopied, copyToClipboard } = useCopyToClipboard();
@@ -19,6 +20,9 @@ const ActionButtons = ({ content, searchId, msgId, reload }) => {
     }, [msgId, reload]);
 
     const t = useTranslations('ActionButtons');
+
+    const { deleteMessage } = useSearchStore();
+    const isSearch = searchType === 'search';
 
     const buttons = useMemo(
         () => (
@@ -64,23 +68,38 @@ const ActionButtons = ({ content, searchId, msgId, reload }) => {
                 </Tooltip>
                 <Tooltip>
                     <TooltipTrigger asChild>
-                        <button onClick={() => setShareDialogOpen(true)} className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300">
-                            <Share2 size={24} />
+                        <button onClick={() => deleteMessage(msgId)} className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300">
+                            <Trash2 size={24} />
                         </button>
                     </TooltipTrigger>
-                    <TooltipContent className="font-bold">{t('Share')}</TooltipContent>
+                    <TooltipContent className="font-bold">Delete This Message</TooltipContent>
                 </Tooltip>
-                <SearchShareDialog
-                    open={shareDialogOpen}
-                    onOpenChange={setShareDialogOpen}
-                    onCopy={() => setShareDialogOpen(false)}
-                    search={{
-                        id: searchId,
-                    }}
-                />
+                {isSearch && (
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <button
+                                onClick={() => setShareDialogOpen(true)}
+                                className="p-2 border-2 border-dashed rounded-full text-primary hover:bg-purple-300"
+                            >
+                                <Share2 size={24} />
+                            </button>
+                        </TooltipTrigger>
+                        <TooltipContent className="font-bold">{t('Share')}</TooltipContent>
+                    </Tooltip>
+                )}
+                {isSearch && (
+                    <SearchShareDialog
+                        open={shareDialogOpen}
+                        onOpenChange={setShareDialogOpen}
+                        onCopy={() => setShareDialogOpen(false)}
+                        search={{
+                            id: searchId,
+                        }}
+                    />
+                )}
             </div>
         ),
-        [content, hasCopied, shareDialogOpen, handleReloadClick, searchId, copyToClipboard, t],
+        [content, hasCopied, shareDialogOpen, handleReloadClick, searchId, copyToClipboard, t, searchType],
     );
 
     return buttons;
