@@ -27,4 +27,3 @@ jobs:
               issue_number: issueNumber,
               body: greetingMessage
             });
-            

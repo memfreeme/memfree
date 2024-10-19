@@ -29,7 +29,7 @@ body:
   - type: textarea
     id: screenshots
     attributes:
-      label: Add Screenshots 
+      label: Add Screenshots
       description: Add sufficient Screenshots to explain your issue.
   - type: dropdown
     id: devices

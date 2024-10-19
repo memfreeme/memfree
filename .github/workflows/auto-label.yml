@@ -18,7 +18,7 @@ jobs:
             const issue = context.payload.issue;
             const issueBody = issue.body ? issue.body.toLowerCase() : '';
             const issueTitle = issue.title.toLowerCase();
-            
+
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
