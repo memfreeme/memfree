@@ -16,7 +16,7 @@ body:
     attributes:
       label: Feature Description
       description: Please provide a detailed description of the feature you are requesting.
-      placeholder: Describe the new feature or enhancement you'd like to see.
+      placeholder: Describe the new feature you'd like to see.
     validations:
       required: true
   - type: textarea
