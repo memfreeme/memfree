@@ -9,18 +9,19 @@ import { cn } from '@/lib/utils';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 
 export default function CodeViewer({ code, searchId, isReadOnly, onSelect }) {
-    const formattedContent = `\`\`\`jsx\n${code}\n\`\`\``;
+    const cleanCode = code.substring(code.indexOf('import'));
+    const formattedContent = `\`\`\`jsx\n${cleanCode}\n\`\`\``;
     const ref = React.useRef<ImperativePanelHandle>(null);
     const previewRef = useRef<PreviewRef>(null);
     return (
         <div className="flex flex-col size-full grow justify-center relative p-1">
             <Tabs className="relative w-full" defaultValue="preview">
-                <CodeToolbar isReadOnly={isReadOnly} searchId={searchId} code={code} resizablePanelRef={ref} previewRef={previewRef} />
+                <CodeToolbar isReadOnly={isReadOnly} searchId={searchId} code={cleanCode} resizablePanelRef={ref} previewRef={previewRef} />
                 <TabsContent value="preview">
                     <ErrorBoundary>
                         <ResizablePanelGroup direction="horizontal" className="relative z-10">
                             <ResizablePanel ref={ref} className="relative rounded-lg border bg-background" defaultSize={100} minSize={30}>
-                                <Preview ref={previewRef} componentCode={code} onSelect={onSelect} />
+                                <Preview ref={previewRef} componentCode={cleanCode} onSelect={onSelect} />
                             </ResizablePanel>
                             <ResizableHandle
                                 className={cn(

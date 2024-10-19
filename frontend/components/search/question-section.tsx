@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
 import { useSearchStore } from '@/lib/store/local-history';
+import IconButton from '@/components/layout/icon-button';
 
 interface QuestionSectionProps {
     mesageId: string;
@@ -45,29 +46,24 @@ const QuestionSection: React.FC<QuestionSectionProps> = React.memo(({ mesageId, 
     return (
         <>
             <div className="group/question relative flex flex-col w-full">
-                {!isShared && (
-                    <div className="flex space-x-4 opacity-0 items-end justify-end group-hover/question:opacity-100">
-                        <button onClick={() => deleteMessage(mesageId)} aria-label="Delete">
-                            <Trash2 className="size-4 text-primary dark:text-white" />
-                        </button>
-                        <button onClick={handleEditClick} aria-label="Edit">
-                            <Pencil className="size-4 text-primary dark:text-white" />
-                        </button>
-                        <button onClick={() => copyToClipboard(content)} aria-label="Copy">
-                            {hasCopied ? (
-                                <Icons.check className="size-4 text-primary dark:text-white" />
-                            ) : (
-                                <Icons.copy className="size-4 text-primary dark:text-white" />
-                            )}
-                        </button>
-                    </div>
-                )}
-
                 <div className="relative flex w-full items-start p-4 my-4 rounded-xl bg-violet-50 dark:bg-violet-800 hover:bg-violet-100 dark:hover:bg-violet-900 transition-colors">
                     <h2 className={`text-gray-800 dark:text-gray-50 whitespace-pre-wrap ${textSizeClass}`} dir="auto">
                         {content}
                     </h2>
                 </div>
+                {!isShared && (
+                    <div className="flex space-x-4 opacity-0 group-hover/question:opacity-100">
+                        <IconButton onClick={() => copyToClipboard(content)} tooltipText="Copy">
+                            {hasCopied ? <Icons.check className="text-primary" /> : <Icons.copy className="text-primary" />}
+                        </IconButton>
+                        <IconButton onClick={handleEditClick} tooltipText="Edit">
+                            <Pencil className="text-primary " />
+                        </IconButton>
+                        <IconButton onClick={() => deleteMessage(mesageId)} tooltipText="Delete">
+                            <Trash2 className="text-primary " />
+                        </IconButton>
+                    </div>
+                )}
             </div>
 
             <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>

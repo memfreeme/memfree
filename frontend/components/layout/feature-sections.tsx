@@ -39,25 +39,32 @@ const features = [
         reverse: false,
     },
     {
-        header: 'Resize',
-        name: 'Responsive UI Adjustment',
+        header: 'Responsive',
+        name: 'Responsive Code and Preview',
         description: 'Preview your UI across various devices in real-time, ensuring perfect adaptation to all screen sizes',
         video: 'https://image.memfree.me/memfree-generate-ui-resize.mp4',
         reverse: true,
+    },
+    {
+        header: 'Dark',
+        name: 'Dark Mode Code and Preview',
+        description: ' Effortlessly generate AI-powered UI code with built-in dark mode support, allowing you to preview both light and dark modes instantly',
+        video: 'https://image.memfree.me/memfree-generate-ui-dark-mode.mp4',
+        reverse: false,
     },
     {
         header: 'Capture',
         name: 'UI Screenshot Export',
         description: 'Easily export and share your UI designs as high-quality screenshots for seamless collaboration',
         video: 'https://image.memfree.me/memfree-generate-ui-capture-image.mp4',
-        reverse: false,
+        reverse: true,
     },
     {
         header: 'Auto',
         name: 'Smart Error Correction',
-        description: `While MemFree's advanced AI model and sophisticated code rules strive for perfection, occasional errors may occur. Our Smart Error Correction feature allows you to instantly fix any issues with just one click.`,
+        description: `While MemFree's advanced AI model and sophisticated code rules strive for perfection, occasional errors may occur. Our Smart Error Correction feature allows you to instantly fix any issues with just one click`,
         video: 'https://image.memfree.me/memfree-generate-ui-auto-fix-error.mp4',
-        reverse: true,
+        reverse: false,
     },
 ];
 

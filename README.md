@@ -34,6 +34,7 @@ MemFree is a <b>Hybrid AI Search Engine</b>.
 With MemFree, you can instantly get Accurate Answers from your knowledge base and the whole internet.
 
 ## Key Capabilities
+
 With MemFree, you can:
 
 - **Search and ask questions** using text, images, files, and web pages.
@@ -66,7 +67,6 @@ MemFree is equipped with powerful features that cater to various search and prod
 - **Serverless Vector Database**: Super-fast self-hosted database for advanced search capabilities.
 - **Open Source Code**: Full transparency with open-source availability.
 - **One-Click Deployment**: Deploy MemFree effortlessly with just a click.
-
 
 ## MemFree Hybrid AI Search Workflow
 
@@ -126,6 +126,8 @@ cd frontend
 bun i
 
 cp env.example .env
+
+# Add your OpenAI API Key, Upstash Redis URL, and Serper API Key to .env
 
 bun run dev
 ```
