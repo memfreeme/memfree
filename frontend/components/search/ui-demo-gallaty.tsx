@@ -6,12 +6,12 @@ import Image from 'next/image';
 const DemoGallery = () => {
     const images = [
         {
-            src: 'https://image.memfree.me/memfree-generate-ui-case-pricing-page.png',
+            src: 'https://image.memfree.me/memfree-generate-ui-ai-pricing-page.png',
             user: 'https://randomuser.me/api/portraits/women/2.jpg',
             description: 'A Pricing Page',
             link: '/share/nhC7sRElQh',
-            width: 400,
-            height: 300,
+            width: 1884,
+            height: 1508,
             lazy: false,
         },
         {
@@ -72,9 +72,18 @@ const DemoGallery = () => {
             src: 'https://image.memfree.me/memfree-generate-ui-profile-image.png',
             user: 'https://randomuser.me/api/portraits/women/1.jpg',
             description: `Profile Card With AI search`,
-            link: '/share/FI3zIsKdKk',
-            width: 2344,
-            height: 940,
+            link: '/share/eyi7CLcprZ',
+            width: 400,
+            height: 400,
+            lazy: true,
+        },
+        {
+            src: 'https://image.memfree.me/memfree-generate-ui-ppt-search.png',
+            user: 'https://randomuser.me/api/portraits/women/1.jpg',
+            description: `Generate PPT With AI search`,
+            link: '/share/iN0fOIYs9J',
+            width: 400,
+            height: 400,
             lazy: true,
         },
     ];
@@ -98,12 +107,12 @@ const DemoGallery = () => {
                                     className="w-full object-cover"
                                 />
                             </div>
-                            <div className="p-4 flex items-center bg-white">
+                            <div className="p-4 flex items-center bg-white dark:bg-black">
                                 <Avatar className="size-6 mr-2 flex-shrink-0">
                                     <AvatarImage src={image.user} />
                                     <AvatarFallback>M</AvatarFallback>
                                 </Avatar>
-                                <p className="text-sm text-gray-600 line-clamp-2">{image.description}</p>
+                                <p className="text-sm font-semibold text-gray-700 dark:text-gray-200 line-clamp-2">{image.description}</p>
                             </div>
                         </div>
                     </Link>
