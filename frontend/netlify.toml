@@ -1,0 +1,13 @@
+[template.environment]
+  # Upstash Redis (Required)
+  # https://upstash.com/docs/redis/overall/getstarted
+  UPSTASH_REDIS_REST_URL = ""
+  UPSTASH_REDIS_REST_TOKEN = ""
+  # https://serper.dev/ (Required)
+  # You could get the free SERPER_API_KEY in https://serper.dev/api-key
+  SERPER_API_KEY=
+  # Auth (Required)
+  # The AUTH_SECRET is a random string, you could use `openssl rand -base64 32` to generate it
+  AUTH_SECRET=
+  # OpenAi (Required) https://platform.openai.com
+  OPENAI_API_KEY=
