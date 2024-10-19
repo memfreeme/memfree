@@ -94,7 +94,8 @@ MemFree is equipped with powerful features that cater to various search and prod
 
 ### 3 Deploy Frontend with Netlify
 
-<a href="https://app.netlify.com/start/deploy?repository=https://github.com/memfreeme/memfree&create_from_path=frontend/"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
+<a href="https://app.netlify.com/start/deploy?repository=https://github.com/memfreeme/memfree&create_from_path=frontend/#UPSTASH_REDIS_REST_TOKEN
+=your_api_token&UPSTASH_REDIS_REST_URL=your_rest_url"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
 
 ### 4 One Command Deploy Backend with Fly.io
 
