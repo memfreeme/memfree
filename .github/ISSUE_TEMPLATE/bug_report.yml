@@ -1,0 +1,53 @@
+name: Bug report 🐞
+description: File a bug report
+title: "[Bug] "
+labels: bug
+body:
+  - type: checkboxes
+    id: existing-issue
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the bug you encountered.
+      options:
+        - label: I have searched the existing issues
+          required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Describe the bug
+      description: A concise description of what you are experiencing.
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Add Screenshots 
+      description: Add sufficient Screenshots to explain your issue.
+  - type: dropdown
+    id: devices
+    attributes:
+      label: On which device are you experiencing this bug?
+      multiple: true
+      options:
+        - Android
+        - iPhone
+        - Linux
+        - Chrome
+        - Windows
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Record
+      options:
+        - label: "I have read the Contributing Guidelines"
+          required: true
+        - label: "I have starred the repository"
+          required: true
