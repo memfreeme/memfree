@@ -1,0 +1,39 @@
+name: Auto Comment on Issue
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Add Comment to Issue
+        run: |
+          COMMENT=$(cat <<EOF
+          {
+
+            "body": "Thank you for creating this issue! 🎉 We'll look into it as soon as possible. In the meantime, please make sure to provide all the necessary details and context. If you have any questions or additional information, feel free to add them here. Your contributions are highly appreciated! 😊\n\nYou can also check our [CONTRIBUTING.md](https://github.com/dmotts/yt-to-gdrive-uploader/blob/main/CONTRIBUTING.md) for guidelines on contributing to this project."
+
+          }
+          EOF
+          )
+          RESPONSE=$(curl -s -o response.json -w "%{http_code}" \
+            -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
+            -d "$COMMENT")
+          cat response.json
+          if [ "$RESPONSE" -ne 201 ]; then
+            echo "Failed to add comment"
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
