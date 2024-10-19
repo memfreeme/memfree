@@ -188,3 +188,7 @@ MemFree is backed by [MemFree](https://www.memfree.me/) and licensed under [MIT]
 - [next-saas-stripe-starter](https://github.com/mickasmt/next-saas-stripe-starter) – Open-source SaaS Starter with User Roles & Admin Panel.
 - [next-chrome-starter](https://github.com/ibnzUK/next-chrome-starter) – Next.js Chrome Extension Starter
 - [ai-chatbot](https://github.com/vercel/ai-chatbot) – A full-featured, hackable Next.js AI chatbot built by Vercel
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=memfreeme/memfree&type=Date)](https://star-history.com/#memfreeme/memfree&Date)
