@@ -157,6 +157,14 @@ Here's how you can contribute:
 - [Open an issue](https://github.com/memfreeme/memfree/issues) if you believe you've encountered a bug.
 - Make a [pull request](https://github.com/memfreeme/memfree/pulls) to add new features/make quality-of-life improvements/fix bugs.
 
+## Thanks to all Contributors
+
+<p align="left">
+ <a href="https://github.com/memfreeme/memfree/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=memfreeme/memfree" />
+ </a>
+</p>
+
 ## Help and Support
 
 - [MemFree Feedback](https://feedback.memfree.me/)
