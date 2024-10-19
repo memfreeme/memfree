@@ -14,27 +14,26 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-    - name: Add Comment to Pull Request
-      run: |
-        COMMENT=$(cat <<EOF
-        {
+      - name: Add Comment to Pull Request
+        run: |
+          COMMENT=$(cat <<EOF
+          {
 
-          "body": "Thank you for submitting your pull request! 🙌 We'll review it as soon as possible. In the meantime, please ensure that your changes align with our [CONTRIBUTING.md](https://github.com/dmotts/yt-to-gdrive-uploader/blob/main/CONTRIBUTING.md). If there are any specific instructions or feedback regarding your PR, we'll provide them here. Thanks again for your contribution! 😊"
+            "body": "Thank you for submitting your pull request! 🙌 We'll review it as soon as possible. In the meantime, please ensure that your changes align with our [CONTRIBUTING.md](https://github.com/memfreeme/memfree/blob/main/Contribution.md). If there are any specific instructions or feedback regarding your PR, we'll provide them here. Thanks again for your contribution! 😊"
 
-        }
-        EOF
-        )
-        RESPONSE=$(curl -s -o response.json -w "%{http_code}" \
-          -X POST \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          -H "Accept: application/vnd.github.v3+json" \
-          https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments \
-          -d "$COMMENT")
-        cat response.json
-        if [ "$RESPONSE" -ne 201 ]; then
-          echo "Failed to add comment"
-          exit 1
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+          }
+          EOF
+          )
+          RESPONSE=$(curl -s -o response.json -w "%{http_code}" \
+            -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments \
+            -d "$COMMENT")
+          cat response.json
+          if [ "$RESPONSE" -ne 201 ]; then
+            echo "Failed to add comment"
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
