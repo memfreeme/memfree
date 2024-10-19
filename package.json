@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "husky": "^9.1.6"
+  },
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "git-format-staged": "^3.1.1"
+  }
+}
