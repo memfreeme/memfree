@@ -15,6 +15,13 @@ repos:
     hooks:
       - id: prettier-staged
         name: Prettier Staged
-        entry: git-format-staged -f 'prettier --ignore-unknown --stdin --stdin-filepath "$FILENAME"'
+        entry: |
+          bash -c '
+          if ! command -v git-format-staged &> /dev/null
+          then
+              npm install -g git-format-staged prettier
+          fi
+          git-format-staged -f "prettier --ignore-unknown --stdin --stdin-filepath \"$FILENAME\""
+          '
         language: system
         files: \.(js|jsx|ts|tsx|json|md|mdx|css|scss|html|yaml|yml)$
