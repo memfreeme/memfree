@@ -92,7 +92,11 @@ MemFree is equipped with powerful features that cater to various search and prod
 
 <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree&env=UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,OPENAI_API_KEY,MEMFREE_HOST,AUTH_SECRET,API_TOKEN&envDescription=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree%2Fblob%2Fmain%2Ffrontend%2Fenv-example&project-name=memfree&repository-name=memfree&demo-title=MemFree&demo-description=MemFree – Hybrid AI Search Engine&demo-url=https%3A%2F%2Fwww.memfree.me%2F&demo-image=https%3A%2F%2Fwww.memfree.me%2Fog.png&root-directory=frontend"><img src="https://vercel.com/button" alt="Deploy with Vercel"/></a>
 
-### 3 One Command Deploy Backend with Fly.io
+### 3 Deploy Frontend with Netlify
+
+<a href="https://app.netlify.com/start/deploy?repository=https://github.com/memfreeme/memfree&create_from_path=frontend/"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
+
+### 4 One Command Deploy Backend with Fly.io
 
 - [One Command Deploy MemFree Vector on Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
 
