@@ -14,12 +14,12 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-    - name: Add Comment to Pull Request
-      run: |
-        COMMENT=$(cat <<EOF
-        {
+      - name: Add Comment to Pull Request
+        run: |
+          COMMENT=$(cat <<EOF
+          {
 
-          "body": "Thank you for submitting your pull request! 🙌 We'll review it as soon as possible. In the meantime, please ensure that your changes align with our [CONTRIBUTING.md](https://github.com/dmotts/yt-to-gdrive-uploader/blob/main/CONTRIBUTING.md). If there are any specific instructions or feedback regarding your PR, we'll provide them here. Thanks again for your contribution! 😊"
+            "body": "Thank you for submitting your pull request! 🙌 We'll review it as soon as possible. In the meantime, please ensure that your changes align with our [CONTRIBUTING.md](https://github.com/memfreeme/memfree/blob/main/Contribution.md). If there are any specific instructions or feedback regarding your PR, we'll provide them here. Thanks again for your contribution! 😊"
 
         }
         EOF

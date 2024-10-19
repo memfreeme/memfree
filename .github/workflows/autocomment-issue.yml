@@ -18,7 +18,7 @@ jobs:
           COMMENT=$(cat <<EOF
           {
 
-            "body": "Thank you for creating this issue! 🎉 We'll look into it as soon as possible. In the meantime, please make sure to provide all the necessary details and context. If you have any questions or additional information, feel free to add them here. Your contributions are highly appreciated! 😊\n\nYou can also check our [CONTRIBUTING.md](https://github.com/dmotts/yt-to-gdrive-uploader/blob/main/CONTRIBUTING.md) for guidelines on contributing to this project."
+            "body": "Thank you for creating this issue! 🎉 We'll look into it as soon as possible. In the meantime, please make sure to provide all the necessary details and context. If you have any questions or additional information, feel free to add them here. Your contributions are highly appreciated! 😊\n\nYou can also check our [CONTRIBUTING.md](https://github.com/memfreeme/memfree/blob/main/Contribution.md) for guidelines on contributing to this project."
 
           }
           EOF
