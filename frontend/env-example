@@ -9,7 +9,15 @@
 UPSTASH_REDIS_REST_URL=
 UPSTASH_REDIS_REST_TOKEN=
 
+# https://serper.dev/ (Required)
+
+# You could get the free SERPER_API_KEY in https://serper.dev/api-key
+
+SERPER_API_KEY=
+
 # Auth (Required)
+
+# The AUTH_SECRET is a random string, you could use `openssl rand -base64 32` to generate it
 
 AUTH_SECRET=
 
@@ -17,17 +25,23 @@ AUTH_SECRET=
 
 OPENAI_API_KEY=
 
-# MEMFREE_HOST (Required)
+# The following environment variables are optional
 
-# You could one click deploy the service in
+# Claude API Key (Optional) https://console.anthropic.com/settings/keys
 
-# https://zeabur.com/templates/CE71SC?referralCode=memfree
+ANTHROPIC_API_KEY=
 
-MEMFREE_HOST=
+# VECTOR_HOST (Optional)
 
-# API_TOKEN (Required)
+# The host the of local or remote vector service
 
-# should same with the API_TOKEN in the backend
+# You could start the local vector service in the vector directory
+
+VECTOR_HOST = "http://localhost:3001"
+
+# API_TOKEN (Optional)
+
+# should same with the API_TOKEN env in the vector service
 
 API_TOKEN=
 
@@ -43,13 +57,12 @@ AUTH_GOOGLE_SECRET=
 
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
-# https://serper.dev/ (Optional)
+# Local image upload (Optional)
 
-SERPER_API_KEY=
+# You could get the free api key in https://uploadthing.com/dashboard
 
-# subscription (optional)
-
-BUTTONDOWN_API_KEY =
+UPLOADTHING_SECRET=
+UPLOADTHING_APP_ID=
 
 # Axiom log (optional)
 
