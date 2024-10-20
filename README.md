@@ -70,15 +70,15 @@ MemFree is equipped with powerful features that cater to various search and prod
 
 ## MemFree AI UI Generator Features
 
-- **Real-Time UI Preview** : Instantly render and preview generated UI
-- **AI-Powered Content Search** : Enrich your UI with relevant content using our advanced AI search functionality
-- **Image-Driven UI Generation** : Create UI components and pages that closely match your reference images
-- **React + TailWind + Shadcn UI Integration** : Leverage AI-generated code using the most popular front-end stack: React, TailWind, and Shadcn UI
-- **One-Click UI Publishing** : Publish and share your UI to the web instantly with a single click
-- **Responsive Code and Preview** : Preview your UI across various devices in real-time, ensuring perfect adaptation to all screen sizes
-- **Dark Mode Code and Preview** : Effortlessly generate AI-powered UI code with built-in dark mode support, allowing you to preview both light and dark modes instantly
-- **UI Screenshot Export** : Easily export and share your UI designs as high-quality screenshots for seamless collaboration
-- **Smart Error Correction** : While MemFree's advanced AI model and sophisticated code rules strive for perfection, occasional errors may occur. Our Smart Error Correction feature allows you to instantly fix any issues with just one click
+- **🖥️ Real-Time UI Preview** : Instantly render and preview generated UI
+- **🔍 AI-Powered Content Search** : Enrich your UI with relevant content using our advanced AI search functionality
+- **🖼 Image-Driven UI Generation** : Create UI components and pages that closely match your reference images
+- **⚛️ React + TailWind + Shadcn UI Integration** : Leverage AI-generated code using the most popular front-end stack: React, TailWind, and Shadcn UI
+- **🚀 One-Click UI Publishing** : Publish and share your UI to the web instantly with a single click
+- **📱 Responsive Code and Preview** : Preview your UI across various devices in real-time, ensuring perfect adaptation to all screen sizes
+- **🌓 Dark Mode Code and Preview** : Effortlessly generate AI-powered UI code with built-in dark mode support, allowing you to preview both light and dark modes instantly
+- **📸 UI Screenshot Export** : Easily export and share your UI designs as high-quality screenshots for seamless collaboration
+- **🛠️ Smart Error Correction** : While MemFree's advanced AI model and sophisticated code rules strive for perfection, occasional errors may occur. Our Smart Error Correction feature allows you to instantly fix any issues with just one click
 
 ## MemFree Hybrid AI Search Workflow
 
