@@ -43,6 +43,8 @@ MemFree is an <b>AI UI Generator</b>.
 
 Memfree uses the most powerful AI model - Claude 3.5 Sonnet and the most popular front-end framework - React + Tailwind + Shadcn UI to generate production-ready UI pages for you in seconds.
 
+[The showcase of MemFree AI UI Generator](https://www.memfree.me/generate-ui).
+
 ## What Makes MemFree Valuable?
 
 - **Efficient Knowledge Management**: MemFree eliminates the need for manual organization of notes, bookmarks, and documents. When you need information, simply search within MemFree to quickly find relevant answers, freeing up your memory and boosting productivity.
