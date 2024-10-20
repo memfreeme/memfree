@@ -183,6 +183,6 @@ bun run build
 
 MemFree 由 [MemFree](https://www.memfree.me/) 支持，并根据 [MIT](https://github.com/memfreeme/memfree/blob/main/LICENSE) 许可证授权。
 
-## 致谢
+## Star 历史
 
-- [bun](https://github.com/oven-sh/bun) – 超快的 JavaScript 运行时、打包工具、测试运行器和包管理
+[![Star History Chart](https://api.star-history.com/svg?repos=memfreeme/memfree&type=Date)](https://star-history.com/#memfreeme/memfree&Date)

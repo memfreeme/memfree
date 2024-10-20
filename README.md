@@ -6,6 +6,12 @@
 
 <h1 align="center"><a href="https://www.memfree.me">MemFree</a></h1>
 
+<div align="center">
+
+**English** | [中文](./README_ZH.md)
+
+</div>
+
 <h4 align="center">
   <a href="https://twitter.com/ahaapple2023">
     <img src="https://img.shields.io/twitter/follow/llmreport?style=flat&label=%40ahaapple&logo=twitter&color=0bf&logoColor=fff" alt="Twitter" />
@@ -184,15 +190,6 @@ Here's how you can contribute:
 ## License
 
 MemFree is backed by [MemFree](https://www.memfree.me/) and licensed under [MIT](https://github.com/memfreeme/memfree/blob/main/LICENSE).
-
-## Credits
-
-- [bun](https://github.com/oven-sh/bun) – Incredibly fast JavaScript runtime, bundler, test runner, and package manager – all in one
-- [lancedb](https://github.com/lancedb/lancedb) – Developer-friendly, serverless vector database for AI applications
-- [fastembed-rs](https://github.com/Anush008/fastembed-rs) – Library for generating vector embeddings, reranking in Rust
-- [next-saas-stripe-starter](https://github.com/mickasmt/next-saas-stripe-starter) – Open-source SaaS Starter with User Roles & Admin Panel.
-- [next-chrome-starter](https://github.com/ibnzUK/next-chrome-starter) – Next.js Chrome Extension Starter
-- [ai-chatbot](https://github.com/vercel/ai-chatbot) – A full-featured, hackable Next.js AI chatbot built by Vercel
 
 ## Star History
 
