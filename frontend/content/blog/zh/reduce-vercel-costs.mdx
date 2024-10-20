@@ -1,0 +1,114 @@
+---
+title: 一行代码降低 Vercel 40 倍成本
+description: MemFree 真实优化案例，如何通过一行代码降低 Vercel 成本 40 倍
+image: /images/blog/blog-post-3.jpg
+date: '2024-10-20'
+---
+
+## 起源
+
+2天前 收到 Vercel 的警告
+
+```shell
+Your team ahaapple has used 75% of your monthly included Edge Middleware invocations usage. Once you hit the 1M Invocations included with the plan, additional usage is billed based on region.
+```
+
+1 天前 收到 Vercel 的警告
+
+```shell
+Your team ahaapple has used $0.65 (101%) of Edge Middleware invocations usage after passing the 1M Invocations included with the plan. Additional usage is billed based on region.
+```
+
+今天又收到 Vercel 的警告
+
+```shell
+Your team ahaapple has used $0.60 (101%) of Function Invocation usage after passing the 1M Invocations included with the plan. Additional usage is $0.60 per 1M Invocations.
+```
+
+```shell
+Your team ahaapple has used 50% of your monthly included Edge Requests usage. Once you hit the 10M Requests included with the plan, additional usage is billed based on region.
+```
+
+## 分析
+
+首先查看 Vercel的 `Edge Middleware invocations`, `Function Invocation`, `Edge Requests` usage 的数据
+
+![Vercel Edge Request](https://utfs.io/f/vbtdRXZo1BHw1u78rQZywGtriuBSm5T9xUf4Oq08YVRXlcQe)
+
+![Vercel Function Invocation](https://utfs.io/f/vbtdRXZo1BHwp5NbXBKnhCPiefYnbogNz87vQWA96qLBl3Vt)
+
+![Vercel Edge Middleware](https://utfs.io/f/vbtdRXZo1BHwusa3u9R8Pa2gmZHpslWzObuD1KkS9iYh7I4G)
+
+大家可以发现，从10月13号开始，各项指标每天几乎有10到50倍的激增，但是实际上我从 umami 获取到的 UV和PV 数据 只是显示 10月14号数据有异常，也就是说最近4天 edge 请求和function请求的异常和真实的流量数据不符。
+
+点击 Vercel 邮件里面[如何优化 Edge Requests 的链接后](https://vercel.com/docs/pricing/networking#optimizing-edge-requests)，Vercel 给出了3个优化点：
+
+1. 识别频繁的重新挂载
+2. 过度轮询或数据获取
+3. **减少预取量**：**虽然预取可以提高感知的页面导航性能，但它也会增加对您网站的请求数量。考虑减少预取的数量，例如，在像 Next.js 这样的框架中，在 Link 组件上使用 prefetch="false"**。
+
+当看到第3点后，结合我最近的代码改动，以及最近看到的 NextJS 降低成本的手段，我立即反应过来，大概率是 next/link 组件 prefetch 导致的问题。
+
+因为我最近几天在 [MemFree AI UI Generator] (https://www.memfree.me/generate-ui) 页面增加了 showcase 和feature section 部分，showcase 包含9个 Link, feature section 也包含 9个 Link。
+
+于是我立即提交代码改动，禁止了所有 next link 组件的 Prefetch， 这是代码Commit：
+[Disable next link prefetchs Beta](https://github.com/memfreeme/memfree/commit/a2ec1a7261d541f5b462e8876efc83209d22a8e4)， 同时也禁止了之前对 Pricing Page 的手动 Prefetch， 这是代码 Commit：
+[Remove pricing page prefetch](https://github.com/memfreeme/memfree/commit/3f3aa71751135026434f62cd92b01a71e646cb14)
+
+## 优化效果：请求次数降低40倍
+
+上线后效果十分显著：
+
+![Vercel Function Invocation Optimization](https://utfs.io/f/vbtdRXZo1BHwsBEsWkXRna6lLJgB9bjzc20V3r8DXdmvkTwy)
+
+上图的时间段是北京时间下午3点到8点多。
+
+同时真实的UV和PV 数据如下：
+
+![MemFree UV PV](https://utfs.io/f/vbtdRXZo1BHw4cylWUAzBxdLbRwCfYlDGH2q8TPEhXjgWepm)
+
+**图中可以看出3点的PV 数据是8点的1/4，Function Invocation的次数是8点的10倍，也就是仅仅一个 next link 的禁止 prefetch 的优化，降低了40倍的Function Invocation 次数**。
+
+有人会问禁用 Link 的 prefetch 后对性能大吗，从 MemFree 的实际线上效果来看，性能几乎没有影响。
+
+所以当你之后遇到 Vercel 的Function Invocation 和 Edge Requests 超出免费次数限制后，可以尝试进行 next link 的 prefetch="false" 的优化。
+
+今天说到 Vercel 的成本优化，再提两个自己最近感触比较深的优化点：
+
+## cloudflareLoader + Cloudflare CDN 优化 Next Image 带宽成本
+
+我在 [MemFree AI UI Generator] (https://www.memfree.me/generate-ui) 中将介绍功能的9个视频存储在 Cloudflare R2 上，后来实现 showcase 的图片时，也顺手存储在 Cloudflare R2，Cloudflare 对 R2的图像和视频默认会启动CDN加速，所以访问很快。
+
+我为了优化移动端的 Largest Contentful Paint, 需要对 show case 的第一张图片进行优化加载，就使用了 next 的Image 组件。 核心代码如下：
+
+```ts
+<Image
+src={image.src}
+alt={image.description}
+width={image.width}
+height={image.height}
+{...(index === 0 ? { priority: true } : {})}
+{...(image.lazy === true ? { loading: 'lazy' } : {})}
+sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+className="w-full object-cover"
+/>
+```
+
+结果发现 next 的Image 组件对CDN的图片也会自己再进行Cache，而这实际上是没有必要的，并且 Cloudflare 对流量不收费，Vercel 对流量收费。 要解决这个问题，我们就用使用 Cloudflare 的 transform-images 服务，并在 NextJs 里面定义一个 cloudflareLoader.
+
+大家可以参考：
+
+[Cloudflare transform-images Integrate with frameworks](https://github.com/memfreeme/memfree/commit/3f3aa71751135026434f62cd92b01a71e646cb14)
+
+我之前一直是以为 next/image的Image 组件对网络图片没用，所以在 MemFree的AI Search的网络Image 中没有使用 next image， 如果用了的话，我的成本就会上升很多。
+
+## Server Actions 和 Server Components 成本和性能的权衡
+
+React 的 Server Actions 和 Server Components 有很多好处，Vercel 现在很多模板和示例中也大量使用 Server Actions 和 Server Components。 Server Actions + Server Componet + Vercel的Cache 的确可以获得很好的性能，但是大家也不能忽视成本这个因素。
+
+这里有两个点：
+
+1. **大家要尽可能利用浏览器的 Local Storage 减少对 Server 端的请求**，这一点无论任何技术再怎么发展也不会变，因为 Local Storage 性能最好，也是免费的。Server 的请求在Vercel 这种 Serverless 平台都是付费的。 举个例子，对于 AI Search 的历史消息，或者 AI Chat 的历史消息，Vercel 的很多示例都是完全 Server 端操作，这样数据库的成本就会很高，这种典型 Case 我们完成可以将数据缓存在浏览器 Local Storage。MemFree 对历史消息的缓存代码在 [MemFree Search local-history](https://github.com/memfreeme/memfree/blob/main/frontend/lib/store/local-history.ts)
+2. **大家要尽可能利用电脑和手机的算力**，因为电脑和手机的算力会越来越强大，也是免费的。Server 端的计算和渲染即使有各种好处，我们也是得额外付费的。举个例子，MemFree 最近在实现 AI UI Generator 这个功能中，我花时间最久解决的一个问题是 **如何实现React + TailWind + Shadcn UI 组件的高效渲染**，我调研思考了7，8种方案，2类大的思路是服务端渲染和客户端渲染，但是我考虑到服务端渲染的成本问题，就排除了，在客户端渲染中，其他开源项目大多采用的是 codesandbox, 但是 codesandbox 性能很差，渲染很慢，我最后决定**从头利用 MemFree 实现一个高效的 React + TailWind + Shadcn UI 组件渲染**。 这个具体的思路和方案我之后会再分享，核心代码在这 [MemFree React Preview Code](https://github.com/memfreeme/memfree/tree/main/frontend/components/code)
+
+希望本文的分享对大家有帮助，MemFree 会继续使用 Vercel， 之后如果有更多降低 Vercel 成本的经验，也会继续分享，欢迎大家关注 MemFree 的 Twitter。
