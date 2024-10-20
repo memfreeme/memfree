@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
     }
     let { model, source, messages, profile } = await req.json();
 
-    console.log('model', model, 'source', source, 'messages', messages, 'profile', profile);
+    // console.log('model', model, 'source', source, 'messages', messages, 'profile', profile);
 
     if (isProModel(model) && !isPro) {
         return NextResponse.json(

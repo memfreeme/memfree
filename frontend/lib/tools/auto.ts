@@ -97,7 +97,7 @@ export async function autoAnswer(
                     if (delta.toolName === 'getInformation') {
                         texts = texts.concat(delta.result.texts);
                         images = images.concat(delta.result.images);
-                        console.log(`rewrite ${rewriteQuery} to ${delta.args.question}`);
+                        // console.log(`rewrite ${rewriteQuery} to ${delta.args.question}`);
                         rewriteQuery = delta.args.question;
                     } else if (delta.toolName === 'accessWebPage') {
                         texts = texts.concat(delta.result.texts);
