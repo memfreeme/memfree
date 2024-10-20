@@ -14,10 +14,6 @@ export const UpgradeModal = () => {
     const upgradeModal = useUpgradeModal();
     const router = useRouter();
 
-    useEffect(() => {
-        router.prefetch('/pricing');
-    }, [router]);
-
     const handleRouter = async () => {
         router.push('/pricing');
         upgradeModal.onClose();
