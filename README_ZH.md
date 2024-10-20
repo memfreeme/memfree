@@ -1,7 +1,7 @@
 # MemFree
 
 <a href="https://www.memfree.me">
-  <img alt="MemFree – 混合 AI 搜索引擎" src="../.assets/memfree-ai-search.gif" width="100%">
+  <img alt="MemFree – 混合 AI 搜索引擎" src=".assets/memfree-ai-search.gif" width="100%">
 </a>
 
 <h1 align="center"><a href="https://www.memfree.me">MemFree</a></h1>
@@ -69,7 +69,7 @@ MemFree 配备强大的功能，以满足各种搜索和生产力需求：
 
 ## MemFree 混合 AI 搜索工作流程
 
-<img alt="MemFree 混合 AI 搜索工作流程" src="../frontend/public/memfree-hybrid-ai-search.webp" width="100%">
+<img alt="MemFree 混合 AI 搜索工作流程" src="frontend/public/memfree-hybrid-ai-search.webp" width="100%">
 
 ## 更新日志
 
