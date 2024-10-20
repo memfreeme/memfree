@@ -142,17 +142,11 @@ cd vector
 
 bun i
 
+cp env.example .env
+
+# 将您的 OpenAI API 密钥、Upstash Redis URL 添加到 .env
+
 bun run index.ts
-```
-
-### 扩展
-
-```
-cd extension
-
-bun i
-
-bun run build
 ```
 
 ## 贡献

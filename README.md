@@ -150,17 +150,11 @@ cd vector
 
 bun i
 
+cp env.example .env
+
+# Add your OpenAI API Key, Upstash Redis URL to .env
+
 bun run index.ts
-```
-
-### Extension
-
-```
-cd extension
-
-bun i
-
-bun run build
 ```
 
 ## Contributing

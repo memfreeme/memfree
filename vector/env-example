@@ -1,0 +1,33 @@
+# The details of the environment variables you could refer to
+
+# https://www.memfree.me/docs/one-click-deploy-ai-search
+
+# Upstash Redis (Required)
+
+# https://upstash.com/docs/redis/overall/getstarted
+
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+
+# OpenAi (Required) https://platform.openai.com
+
+OPENAI_API_KEY=
+
+# API_TOKEN (Required)
+
+# The API_TOKEN is a random string, you could use `openssl rand -base64 32` to generate it
+
+API_TOKEN=
+
+# The following environment variables are optional
+
+# Axiom log (optional)
+
+AXIOM_TOKEN=
+
+# AWS S3 (Optional)
+
+#AWS_ACCESS_KEY_ID=
+#AWS_SECRET_ACCESS_KEY=
+#AWS_REGION=
+#AWS_BUCKET=
