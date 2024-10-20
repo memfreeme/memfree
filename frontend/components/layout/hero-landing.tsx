@@ -12,7 +12,7 @@ export async function HeroLanding() {
                 <h2 className="text-balance leading-normal text-muted-foreground font-semibold sm:text-xl sm:leading-8">
                     New Feature:{' '}
                     <Link href="/generate-ui" className="text-purple-500 hover:text-purple-600 underline">
-                        AI Generate UI
+                        AI UI Generator
                     </Link>
                 </h2>
             </div>

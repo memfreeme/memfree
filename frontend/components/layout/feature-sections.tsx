@@ -20,7 +20,7 @@ const features = [
     {
         header: 'Image',
         name: 'Image-Driven UI Generation',
-        description: 'Create UI components and pages that closely match your reference images, bringing designs to life',
+        description: 'Create UI components and pages that closely match your reference images',
         video: 'https://image.memfree.me/memfree-generate-ui-from-image.mp4',
         reverse: false,
     },
@@ -34,7 +34,7 @@ const features = [
     {
         header: 'Publish',
         name: 'One-Click UI Publishing',
-        description: 'Publish and share your UI to the web instantly with a single click, streamlining your workflow',
+        description: 'Publish and share your UI to the web instantly with a single click',
         video: 'https://image.memfree.me/memfree-generate-ui-publish.mp4',
         reverse: false,
     },

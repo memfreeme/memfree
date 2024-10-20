@@ -39,30 +39,25 @@ MemFree is a <b>Hybrid AI Search Engine</b>.
 
 With MemFree, you can instantly get Accurate Answers from your knowledge base and the whole internet.
 
-## Key Capabilities
+MemFree is an <b>AI UI Generator</b>.
 
-With MemFree, you can:
-
-- **Search and ask questions** using text, images, files, and web pages.
-- **Access results** in multiple formats, including text, mind maps, images, and videos, with just one click.
-- **Compare, summarize, and analyze** multiple images effortlessly.
-- **Summarize web pages and PDFs** and ask questions about their content.
-- **Generate and explain code** with efficiency.
-- **Ask academic and Twitter-based questions** using specialized AI models.
-- **Perform tasks found in other AI tools** like ChatGPT Plus, Claude Pro, and Gemini Advanced.
+Memfree uses the most powerful AI model - Claude 3.5 Sonnet and the most popular front-end framework - React + Tailwind + Shadcn UI to generate production-ready UI pages for you in seconds.
 
 ## What Makes MemFree Valuable?
 
 - **Efficient Knowledge Management**: MemFree eliminates the need for manual organization of notes, bookmarks, and documents. When you need information, simply search within MemFree to quickly find relevant answers, freeing up your memory and boosting productivity.
 - **Time-Saving AI Summaries**: Instead of clicking through multiple Google search results, MemFree uses AI to instantly summarize the best content from web pages and your knowledge base, saving valuable time.
 - **Cost-Effective Solution**: Avoid multiple subscriptions to services like ChatGPT Plus, Claude Pro, and Gemini Advanced. MemFree integrates their functionalities, significantly reducing monthly costs.
+- **100x Faster UI Page Creation**: Convert text or images into stunning, production-ready code in seconds,Visualize your designs as you create,Seamlessly publish your pages.
 
-## MemFree Features
+## MemFree Hybrid AI Search Features
 
 MemFree is equipped with powerful features that cater to various search and productivity needs:
 
 - **Multiple AI Models**: Integrates ChatGPT, Claude, and Gemini for diverse AI capabilities.
-- **Search Engines Supported**: Works with Google, Exa, and Vector.
+- **Multiple Search Engines Supported**: Works with Google, Exa, and Vector.
+- **Multiple Search Input Format**: Text, images, files, and web pages, In particular, it supports multi-image search, compare, summarize, and analyze
+- **Multiple results presentation methods**: Text, mind maps, images, and videos.
 - **Local File Format Compatibility**: Supports text, PDF, Docx, PPTX, and Markdown files.
 - **Cross-Device Syncing**: Save and sync search history across multiple devices.
 - **Multi-Language Support**: Available in English, Chinese, German, French, Spanish, Japanese, and Arabic.
@@ -70,9 +65,18 @@ MemFree is equipped with powerful features that cater to various search and prod
 - **Result Sharing**: Easily share your search findings.
 - **Contextual Continuous Search**: Search seamlessly based on context.
 - **Automatic Web Search Decisions**: Automatically determines when to perform internet searches.
-- **Serverless Vector Database**: Super-fast self-hosted database for advanced search capabilities.
-- **Open Source Code**: Full transparency with open-source availability.
-- **One-Click Deployment**: Deploy MemFree effortlessly with just a click.
+
+## MemFree AI UI Generator Features
+
+- **Real-Time Code Preview** : Instantly render and preview generated UI code
+- **AI-Powered Content Search** : Enrich your UI with relevant content using our advanced AI search functionality
+- **Image-Driven UI Generation** : Create UI components and pages that closely match your reference images
+- **React + TailWind + Shadcn UI Integration** : Leverage AI-generated code using the most popular front-end stack: React, TailWind, and Shadcn UI
+- **One-Click UI Publishing** : Publish and share your UI to the web instantly with a single click
+- **Responsive Code and Preview** : Preview your UI across various devices in real-time, ensuring perfect adaptation to all screen sizes
+- **Dark Mode Code and Preview** : Effortlessly generate AI-powered UI code with built-in dark mode support, allowing you to preview both light and dark modes instantly
+- **UI Screenshot Export** : Easily export and share your UI designs as high-quality screenshots for seamless collaboration
+- **Smart Error Correction** : While MemFree's advanced AI model and sophisticated code rules strive for perfection, occasional errors may occur. Our Smart Error Correction feature allows you to instantly fix any issues with just one click
 
 ## MemFree Hybrid AI Search Workflow
 
