@@ -8,7 +8,7 @@
 
 <div align="center">
 
-[English](./README.md) | [中文](./README_ZH.md) | [Deutsch](./README_DE.md) | **Français** | [Español](README_ES.md)
+[English](./README.md) | [中文](./README_ZH.md) | [Deutsch](./README_DE.md) | **Français** | [Español](README_ES.md) | [日本語](./README_JA.md)
 
 </div>
 
