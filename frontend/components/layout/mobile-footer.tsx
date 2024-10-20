@@ -28,12 +28,12 @@ export function MobileFooter() {
 
                     <NewSearchButton variant="icon" umamiEvent="Mobile New Search Click" />
                     <Button variant="ghost" size="icon" className="text-primary" asChild>
-                        <Link href="/pricing" data-umami-event="Mobile Footer Pricing Click" aria-label="Pricing">
+                        <Link href="/pricing" prefetch={false} data-umami-event="Mobile Footer Pricing Click" aria-label="Pricing">
                             <Gem className="size-5" />
                         </Link>
                     </Button>
                     <Button variant="ghost" size="icon" asChild>
-                        <Link href="/docs" data-umami-event="Mobile Doc Click" aria-label="Documentation">
+                        <Link href="/docs" prefetch={false} data-umami-event="Mobile Doc Click" aria-label="Documentation">
                             <HelpCircle className="size-5" />
                         </Link>
                     </Button>

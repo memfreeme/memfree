@@ -111,6 +111,7 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
                         offer.title === 'Free' ? (
                             <Link
                                 href="/"
+                                prefetch={false}
                                 className={cn(
                                     buttonVariants({
                                         variant: 'outline',

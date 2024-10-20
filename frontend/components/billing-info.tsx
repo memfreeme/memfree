@@ -3,14 +3,7 @@ import * as React from 'react';
 
 import { CustomerPortalButton } from '@/components/forms/customer-portal-button';
 import { buttonVariants } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn, formatDate } from '@/lib/utils';
 import { UserSubscriptionPlan } from 'types';
 
@@ -19,14 +12,7 @@ interface BillingInfoProps extends React.HTMLAttributes<HTMLFormElement> {
 }
 
 export function BillingInfo({ userSubscriptionPlan }: BillingInfoProps) {
-    const {
-        title,
-        description,
-        stripeCustomerId,
-        isPaid,
-        isCanceled,
-        stripeCurrentPeriodEnd,
-    } = userSubscriptionPlan;
+    const { title, description, stripeCustomerId, isPaid, isCanceled, stripeCurrentPeriodEnd } = userSubscriptionPlan;
 
     return (
         <Card>
@@ -41,16 +27,14 @@ export function BillingInfo({ userSubscriptionPlan }: BillingInfoProps) {
                 {isPaid && stripeCustomerId ? (
                     <CustomerPortalButton userStripeId={stripeCustomerId} />
                 ) : (
-                    <Link href="/pricing" className={cn(buttonVariants())}>
+                    <Link prefetch={false} href="/pricing" className={cn(buttonVariants())}>
                         Upgrade your plan
                     </Link>
                 )}
 
                 {isPaid ? (
                     <p className="rounded-full text-xs font-medium">
-                        {isCanceled
-                            ? 'Your plan will be canceled on '
-                            : 'Your plan renews on '}
+                        {isCanceled ? 'Your plan will be canceled on ' : 'Your plan renews on '}
                         {formatDate(stripeCurrentPeriodEnd)}.
                     </p>
                 ) : null}

@@ -93,6 +93,7 @@ const FeatureSections = () => {
                                         'mt-8',
                                     )}
                                     href="#hero"
+                                    prefetch={false}
                                 >
                                     Get Started
                                 </Link>

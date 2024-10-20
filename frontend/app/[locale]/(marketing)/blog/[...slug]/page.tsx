@@ -107,16 +107,16 @@ export default async function PostPage({ params }: PostPageProps) {
             <Mdx code={post.body.code} />
 
             <div className="flex flex-col justify-center mx-auto space-y-10 py-6">
-                <Link href="/" className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
+                <Link href="/" prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
                     Hybrid AI Search Now
                 </Link>
-                <Link href="/" className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
+                <Link href="/" prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
                     AI Generate UI Now
                 </Link>
             </div>
 
             <div className="flex justify-center py-10">
-                <Link href="/blog" className={cn(buttonVariants({ size: 'lg', rounded: 'full' }), 'gap-2')}>
+                <Link href="/blog" prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }), 'gap-2')}>
                     See all posts
                 </Link>
             </div>

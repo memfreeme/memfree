@@ -78,10 +78,11 @@ const components = {
     ),
     Steps: ({ ...props }) => <div className="[&>h3]:step steps mb-12 ml-4 border-l pl-8 [counter-reset:step]" {...props} />,
     Link: ({ className, ...props }: React.ComponentProps<typeof Link>) => (
-        <Link className={cn('font-medium underline underline-offset-4', className)} {...props} />
+        <Link prefetch={false} className={cn('font-medium underline underline-offset-4', className)} {...props} />
     ),
     LinkedCard: ({ className, ...props }: React.ComponentProps<typeof Link>) => (
         <Link
+            prefetch={false}
             className={cn(
                 'flex w-full flex-col items-center rounded-xl border bg-card p-6 text-card-foreground shadow transition-colors hover:bg-muted/50 sm:p-10',
                 className,

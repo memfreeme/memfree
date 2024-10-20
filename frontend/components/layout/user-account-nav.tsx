@@ -41,19 +41,19 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                    <Link href="/dashboard" className="flex items-center space-x-2.5">
+                    <Link prefetch={false} href="/dashboard" className="flex items-center space-x-2.5">
                         <LayoutDashboard className="size-4" />
                         <p className="text-sm">Dashboard</p>
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link href="/settings" className="flex items-center space-x-2.5">
+                    <Link prefetch={false} href="/settings" className="flex items-center space-x-2.5">
                         <Settings className="size-4" />
                         <p className="text-sm">Settings</p>
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link href="/pricing" className="flex items-center space-x-2.5">
+                    <Link prefetch={false} href="/pricing" className="flex items-center space-x-2.5">
                         <Gem className="size-4" />
                         <p className="text-sm">Upgrade Plan</p>
                     </Link>

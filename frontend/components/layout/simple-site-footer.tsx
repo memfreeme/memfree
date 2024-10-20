@@ -44,6 +44,7 @@ export function SimpleSiteFooter() {
                     target="_blank"
                     aria-label="MemFree Docs"
                     data-umami-event="Doc Link Click"
+                    prefetch={false}
                 >
                     Doc
                 </Link>

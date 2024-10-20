@@ -1,6 +1,4 @@
 import { generateId } from '@/lib/shared-utils';
-import { useSourceStore } from '@/lib/store';
-import { SearchCategory } from '@/lib/types';
 import { useRouter } from 'next/navigation';
 
 export function useNewSearch() {

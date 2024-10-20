@@ -46,7 +46,7 @@ export default async function SharePage({ params }: SharePageProps) {
                 demoQuestions={<></>}
             ></SearchWindow>
             <div className="flex justify-center py-6 mb-10">
-                <Link href={link} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }), 'gap-2')}>
+                <Link href={link} prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }), 'gap-2')}>
                     {content}
                 </Link>
             </div>

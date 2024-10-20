@@ -109,10 +109,10 @@ export default async function DocPage({ params }: DocPageProps) {
                 </div>
             </div>
             <div className="flex flex-col justify-center mx-auto space-y-10">
-                <Link href="/" className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
+                <Link href="/" prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
                     Hybrid AI Search Now
                 </Link>
-                <Link href="/" className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
+                <Link href="/" prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
                     AI Generate UI Now
                 </Link>
             </div>

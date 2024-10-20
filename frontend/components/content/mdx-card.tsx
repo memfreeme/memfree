@@ -7,13 +7,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     disabled?: boolean;
 }
 
-export function MdxCard({
-    href,
-    className,
-    children,
-    disabled,
-    ...props
-}: CardProps) {
+export function MdxCard({ href, className, children, disabled, ...props }: CardProps) {
     return (
         <div
             className={cn(
@@ -24,16 +18,10 @@ export function MdxCard({
             {...props}
         >
             <div className="flex flex-col justify-center items-center space-y-4">
-                <div className="space-y-2 [&>h3]:!mt-0 [&>h4]:!mt-0 [&>p]:text-muted-foreground">
-                    {children}
-                </div>
+                <div className="space-y-2 [&>h3]:!mt-0 [&>h4]:!mt-0 [&>p]:text-muted-foreground">{children}</div>
             </div>
             {href && (
-                <Link
-                    href={disabled ? '#' : href}
-                    target="_blank"
-                    className="absolute inset-0"
-                >
+                <Link href={disabled ? '#' : href} target="_blank" prefetch={false} className="absolute inset-0">
                     <span className="sr-only">View</span>
                 </Link>
             )}

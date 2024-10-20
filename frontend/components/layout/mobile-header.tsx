@@ -22,7 +22,7 @@ export default async function MobileHeader({ user }: NavBarProps) {
                     {user ? (
                         <UserAccountNav user={user} />
                     ) : (
-                        <Link href="/login" className={cn(buttonVariants({ variant: 'default' }), 'rounded-lg w-full h-10')}>
+                        <Link href="/login" prefetch={false} className={cn(buttonVariants({ variant: 'default' }), 'rounded-lg w-full h-10')}>
                             Sign In
                         </Link>
                     )}

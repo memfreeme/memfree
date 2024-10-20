@@ -21,22 +21,13 @@ export function DocsPager({ doc }: DocsPagerProps) {
     return (
         <div className="flex flex-row items-center justify-between">
             {pager?.prev && (
-                <Link
-                    href={pager.prev.href}
-                    className={cn(buttonVariants({ variant: 'outline' }))}
-                >
+                <Link href={pager.prev.href} prefetch={false} className={cn(buttonVariants({ variant: 'outline' }))}>
                     <Icons.chevronLeft className="mr-2 size-4" />
                     {pager.prev.title}
                 </Link>
             )}
             {pager?.next && (
-                <Link
-                    href={pager.next.href}
-                    className={cn(
-                        buttonVariants({ variant: 'outline' }),
-                        'ml-auto',
-                    )}
-                >
+                <Link href={pager.next.href} prefetch={false} className={cn(buttonVariants({ variant: 'outline' }), 'ml-auto')}>
                     {pager.next.title}
                     <Icons.chevronRight className="ml-2 size-4" />
                 </Link>
@@ -47,14 +38,9 @@ export function DocsPager({ doc }: DocsPagerProps) {
 
 export function getPagerForDoc(doc: Doc) {
     const flattenedLinks = [null, ...flatten(docsConfig.sidebarNav), null];
-    const activeIndex = flattenedLinks.findIndex(
-        (link) => doc.slug === link?.href,
-    );
+    const activeIndex = flattenedLinks.findIndex((link) => doc.slug === link?.href);
     const prev = activeIndex !== 0 ? flattenedLinks[activeIndex - 1] : null;
-    const next =
-        activeIndex !== flattenedLinks.length - 1
-            ? flattenedLinks[activeIndex + 1]
-            : null;
+    const next = activeIndex !== flattenedLinks.length - 1 ? flattenedLinks[activeIndex + 1] : null;
     return {
         prev,
         next,

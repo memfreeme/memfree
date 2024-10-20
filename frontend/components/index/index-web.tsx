@@ -104,6 +104,7 @@ export function IndexWebPage() {
             </Button>
             <Link
                 href="/docs/extension-user-guide"
+                prefetch={false}
                 target="_blank"
                 className={cn(
                     buttonVariants({

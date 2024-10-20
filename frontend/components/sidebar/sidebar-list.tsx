@@ -78,7 +78,7 @@ export function SidebarList({ user }: SidebarListProps) {
                 {user && <UserAccountNav user={user} />}
                 <ThemeToggle />
                 <LocaleSelect className="hover:bg-accent hover:text-accent-foreground" />
-                <Link href="/settings">
+                <Link href="/settings" prefetch={false}>
                     <Button variant="ghost" className="leading-none p-2 h-auto">
                         <Settings className="size-4" />
                     </Button>

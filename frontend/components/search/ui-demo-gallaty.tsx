@@ -93,7 +93,7 @@ const DemoGallery = () => {
             <h1 className="text-3xl font-bold mb-6 text-center">Showcase</h1>
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
                 {images.map((image, index) => (
-                    <Link key={index} href={image.link} target="_blank" className="group block break-inside-avoid">
+                    <Link prefetch={false} key={index} href={image.link} target="_blank" className="group block break-inside-avoid">
                         <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform duration-300 ease-in-out transform hover:scale-105">
                             <div className="w-full">
                                 <Image

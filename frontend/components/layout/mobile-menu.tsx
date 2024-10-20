@@ -6,12 +6,7 @@ import { Menu } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTrigger,
-} from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '@/components/ui/sheet';
 import Link from 'next/link';
 import { MainNavItem } from '@/types';
 import { Icons } from '@/components/shared/icons';
@@ -36,34 +31,26 @@ export function MarketingMenu({ items, user }: NavProps) {
     return (
         <Sheet open={open} onOpenChange={(value) => setOpen(value)}>
             <SheetTrigger asChild>
-                <Button
-                    size="icon"
-                    variant="outline"
-                    className="rounded-full"
-                    aria-label="menu"
-                >
+                <Button size="icon" variant="outline" className="rounded-full" aria-label="menu">
                     <Menu className="size-6" />
                 </Button>
             </SheetTrigger>
             <SheetContent side="top" className="flex flex-col">
                 <SheetHeader>
-                    <Link href="/" className="items-center space-x-2 flex">
+                    <Link href="/" prefetch={false} className="items-center space-x-2 flex">
                         <Icons.brain className="text-primary" />
-                        <span className="mx-2 font-urban text-xl font-bold">
-                            {siteConfig.name}
-                        </span>
+                        <span className="mx-2 font-urban text-xl font-bold">{siteConfig.name}</span>
                     </Link>
                 </SheetHeader>
                 <div className="flex flex-1 flex-col">
                     <ul className="grid">
                         {items.map(({ href, title }) => {
                             return (
-                                <li
-                                    key={title}
-                                    className="border-b border-gray-200"
-                                >
+                                <li key={title} className="border-b border-gray-200">
                                     <Button variant="link" asChild>
-                                        <Link href={href}>{title}</Link>
+                                        <Link href={href} prefetch={false}>
+                                            {title}
+                                        </Link>
                                     </Button>
                                 </li>
                             );
@@ -74,7 +61,9 @@ export function MarketingMenu({ items, user }: NavProps) {
                     <UserAccountNav user={user} />
                 ) : (
                     <Button className="rounded-full w-1/2">
-                        <Link href="login">Sign In</Link>
+                        <Link href="login" prefetch={false}>
+                            Sign In
+                        </Link>
                     </Button>
                 )}
             </SheetContent>

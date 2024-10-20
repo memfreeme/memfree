@@ -40,7 +40,7 @@ export default function SiteHeader({ user, items }: NavBarProps) {
     return (
         <header className={cn('grid w-full grid-cols-2 gap-2 md:grid-cols-5 py-5')}>
             <div className="flex items-center md:col-span-1 mx-5 md:mx-10">
-                <Link href="/" className="items-center space-x-2 flex">
+                <Link prefetch={false} href="/" className="items-center space-x-2 flex">
                     <Image src={'/logo.png'} width="24" height="24" alt="MemFree Logo"></Image>
                     <span className=" mx-2 font-urban text-xl font-bold">{siteConfig.name}</span>
                 </Link>
@@ -52,7 +52,7 @@ export default function SiteHeader({ user, items }: NavBarProps) {
                     const isActive = pathname.startsWith(href);
                     return (
                         <Button key={title} variant="link" className={isActive ? 'font-semibold' : undefined} asChild>
-                            <Link href={href} {...externalProps}>
+                            <Link href={href} {...externalProps} prefetch={false}>
                                 <span className="text-black dark:text-white">{title}</span>
                             </Link>
                         </Button>

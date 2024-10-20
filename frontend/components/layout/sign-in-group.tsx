@@ -64,11 +64,11 @@ export function SignInGroup() {
 
             <p className="p-4 text-center text-sm text-muted-foreground">
                 By clicking continue, you agree to our{' '}
-                <Link href="/terms" target="_blank" className="hover:text-brand underline underline-offset-4">
+                <Link href="/terms" prefetch={false} target="_blank" className="hover:text-brand underline underline-offset-4">
                     Terms of Service
                 </Link>{' '}
                 and{' '}
-                <Link href="/privacy" target="_blank" className="hover:text-brand underline underline-offset-4">
+                <Link href="/privacy" prefetch={false} target="_blank" className="hover:text-brand underline underline-offset-4">
                     Privacy Policy
                 </Link>
             </p>
