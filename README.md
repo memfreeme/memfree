@@ -70,7 +70,7 @@ MemFree is equipped with powerful features that cater to various search and prod
 
 ## MemFree AI UI Generator Features
 
-- **Real-Time Code Preview** : Instantly render and preview generated UI code
+- **Real-Time UI Preview** : Instantly render and preview generated UI
 - **AI-Powered Content Search** : Enrich your UI with relevant content using our advanced AI search functionality
 - **Image-Driven UI Generation** : Create UI components and pages that closely match your reference images
 - **React + TailWind + Shadcn UI Integration** : Leverage AI-generated code using the most popular front-end stack: React, TailWind, and Shadcn UI

@@ -5,8 +5,8 @@ import Link from 'next/link';
 const features = [
     {
         header: 'Preview',
-        name: 'Real-Time Code Preview',
-        description: 'Instantly render and preview React code with seamless support for React + Tailwind and React + Shadcn UI combinations',
+        name: 'Real-Time UI Preview',
+        description: 'Instantly render and preview generated UI',
         video: 'https://image.memfree.me/memfree-generate-ui-preview.mp4',
         reverse: false,
     },

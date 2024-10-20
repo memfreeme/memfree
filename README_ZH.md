@@ -38,6 +38,10 @@ MemFree 是一个<b>混合 AI 搜索引擎</b>。
 
 使用 MemFree，您可以立即从您的知识库和整个互联网获取准确答案。
 
+MemFree 是一个 <b> AI UI Generator </b>。
+
+Memfree 利用最强大的 AI 模型 (Claude 3.5 Sonnet) 和最流行的前端框架 (React + Tailwind + Shadcn UI), 几秒为你生成生产可用的 UI 组件和页面。
+
 ## 关键功能
 
 使用 MemFree，您可以：
@@ -56,7 +60,7 @@ MemFree 是一个<b>混合 AI 搜索引擎</b>。
 - **节省时间的 AI 摘要**：MemFree 使用 AI 即时总结网页和知识库中的最佳内容，节省宝贵时间，而无需点击多个 Google 搜索结果。
 - **经济实惠的解决方案**：避免多项 ChatGPT Plus、Claude Pro 和 Gemini Advanced 的订阅费用。MemFree 集成了这些功能，显著降低了每月费用。
 
-## MemFree 功能
+## MemFree Hybrid AI Search 功能
 
 MemFree 配备强大的功能，以满足各种搜索和生产力需求：
 
@@ -72,6 +76,18 @@ MemFree 配备强大的功能，以满足各种搜索和生产力需求：
 - **无服务器向量数据库**：超快速自托管数据库，提供高级搜索能力。
 - **开源代码**：开放源码，完全透明。
 - **一键部署**：仅需一次点击即可轻松部署 MemFree。
+
+## MemFree AI UI Generator 功能
+
+- 🖥️ 实时 UI 预览
+- 🔍 AI 驱动的内容搜索： 利用 AI 搜索丰富 UI 内容
+- 🖼 图像生成：生成和截图几乎一致的 UI 界面
+- ⚛️ React + TailWind + Shadcn UI 集成： 使用最流行的前端技术栈:React、TailWind 和 Shadcn UI
+- 🚀 一键发布生成的 UI Page
+- 📱 Responsive Code and Preview：代码生成和实时预览均支持响应式
+- 🌓 暗黑模式支持 ：代码生成和实时预览均支持 Dark 模式
+- 📸 截图导出： 一键截图导出 UI Page
+- 🛠️ 一键纠错： 一键自动修复极低概率出现的代码错误
 
 ## MemFree 混合 AI 搜索工作流程
 
