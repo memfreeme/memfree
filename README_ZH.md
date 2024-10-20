@@ -6,6 +6,12 @@
 
 <h1 align="center"><a href="https://www.memfree.me">MemFree</a></h1>
 
+<div align="center">
+
+[English](./README.md) | **中文** | [Deutsch](./README_DE.md) | [Français](./README_FR.md) | [Español](README_ES.md)
+
+</div>
+
 <h4 align="center">
   <a href="https://twitter.com/ahaapple2023">
     <img src="https://img.shields.io/twitter/follow/llmreport?style=flat&label=%40ahaapple&logo=twitter&color=0bf&logoColor=fff" alt="Twitter" />
