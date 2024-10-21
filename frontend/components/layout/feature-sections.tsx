@@ -74,14 +74,14 @@ const FeatureSections = () => {
             {features.map((feature) => (
                 <section key={feature.header}>
                     <div className="mx-auto px-4 md:px-24 py-6 sm:py-20">
-                        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-16 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-5">
+                        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-5">
                             <div
                                 className={cn('m-auto lg:col-span-2', {
                                     'lg:order-last': feature.reverse,
                                 })}
                             >
-                                <h2 className="text-base font-semibold leading-7 text-primary">{feature.header}</h2>
-                                <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl">{feature.name}</p>
+                                <p className="text-base font-semibold leading-7 text-primary">{feature.header}</p>
+                                <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl">{feature.name}</h2>
                                 <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">{feature.description}</p>
 
                                 <Link

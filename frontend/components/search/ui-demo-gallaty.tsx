@@ -90,7 +90,7 @@ const DemoGallery = () => {
 
     return (
         <div className="container mx-auto px-4 md:px-24 py-6 sm:py-20">
-            <h1 className="text-3xl font-bold mb-6 text-center">Showcase</h1>
+            <h2 className="text-3xl font-bold mb-6 text-center">Showcase</h2>
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
                 {images.map((image, index) => (
                     <Link prefetch={false} key={index} href={image.link} target="_blank" className="group block break-inside-avoid">
