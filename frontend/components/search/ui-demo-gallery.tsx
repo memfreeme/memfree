@@ -94,7 +94,7 @@ const DemoGallery = () => {
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
                 {images.map((image, index) => (
                     <Link prefetch={false} key={index} href={image.link} target="_blank" className="group block break-inside-avoid">
-                        <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform duration-300 ease-in-out transform hover:scale-105">
+                        <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform duration-300 ease-in-out hover:scale-105">
                             <div className="w-full">
                                 <Image
                                     src={image.src}
@@ -108,7 +108,7 @@ const DemoGallery = () => {
                                 />
                             </div>
                             <div className="p-4 flex items-center bg-white dark:bg-black">
-                                <Avatar className="size-6 mr-2 flex-shrink-0">
+                                <Avatar className="size-6 mr-2 shrink-0">
                                     <AvatarImage src={image.user} />
                                     <AvatarFallback>M</AvatarFallback>
                                 </Avatar>

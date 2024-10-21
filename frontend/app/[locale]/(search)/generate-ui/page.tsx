@@ -2,7 +2,7 @@ import UIWindowWapper from '@/app/[locale]/(search)/generate-ui/ui-window-wapper
 import FeatureSections from '@/components/layout/feature-sections';
 import { GenerateUIHeroLanding } from '@/components/layout/generate-ui-hero-landing';
 import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
-import DemoGallery from '@/components/search/ui-demo-gallaty';
+import DemoGallery from '@/components/search/ui-demo-gallery';
 import { siteConfig } from '@/config';
 import { getCurrentUser } from '@/lib/session';
 import { generateId } from '@/lib/shared-utils';
