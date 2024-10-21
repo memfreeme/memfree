@@ -1,8 +1,6 @@
 import { auth } from '@/auth';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { Ratelimit } from '@upstash/ratelimit';
-import { RATE_LIMIT_KEY, redisDB } from '@/lib/db';
 import { isProModel, O1_MIMI, O1_PREVIEW, validModel } from '@/lib/model';
 import { logError } from '@/lib/log';
 import { isProUser } from '@/lib/shared-utils';
@@ -14,13 +12,7 @@ import { autoAnswer } from '@/lib/tools/auto';
 import { o1Answer } from '@/lib/tools/o1-answer';
 import { productSearch } from '@/lib/tools/product';
 import { indieMakerSearch } from '@/lib/tools/indie';
-
-const ratelimit = new Ratelimit({
-    redis: redisDB,
-    limiter: Ratelimit.slidingWindow(3, '1 d'),
-    prefix: RATE_LIMIT_KEY,
-    analytics: false,
-});
+import { ratelimit } from '@/lib/ratelimit';
 
 const updateSource = function (model, source, messages) {
     if (model === O1_MIMI || model === O1_PREVIEW) {
@@ -47,17 +39,24 @@ export async function POST(req: NextRequest) {
     if (session) {
         userId = session.user.id;
         isPro = isProUser(session.user);
-    } else {
-        const ip = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0];
-        const { success } = await ratelimit.limit(ip);
-        if (!success) {
-            return NextResponse.json(
-                {
-                    error: 'Rate limit exceeded',
-                },
-                { status: 429 },
-            );
+        if (!isPro) {
+            const { success } = await ratelimit.limit(userId);
+            if (!success) {
+                return NextResponse.json(
+                    {
+                        error: 'You need to upgrade a pro plan',
+                    },
+                    { status: 429 },
+                );
+            }
         }
+    } else {
+        return NextResponse.json(
+            {
+                error: 'You need to sign in',
+            },
+            { status: 429 },
+        );
     }
     let { model, source, messages, profile } = await req.json();
 
@@ -66,7 +65,7 @@ export async function POST(req: NextRequest) {
     if (isProModel(model) && !isPro) {
         return NextResponse.json(
             {
-                error: 'You need to be a pro user to use this model',
+                error: 'You need to upgrade a pro plan',
             },
             { status: 429 },
         );

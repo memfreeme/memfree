@@ -234,7 +234,13 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                     async onopen(response) {
                         if (response.ok && response.status === 200) {
                         } else if (response.status === 429) {
-                            signInModal.onOpen();
+                            setIsLoading(false);
+                            if (!user) {
+                                signInModal.onOpen();
+                            } else {
+                                toast.error(t('free-search-limit'));
+                                upgradeModal.onOpen();
+                            }
                             return;
                         } else {
                             console.error(`Received unexpected status code: ${response.status}`);

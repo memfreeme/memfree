@@ -1,12 +1,11 @@
 import { auth } from '@/auth';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { Ratelimit } from '@upstash/ratelimit';
-import { RATE_LIMIT_KEY, redisDB } from '@/lib/db';
 import { logError } from '@/lib/log';
 import { isProUser } from '@/lib/shared-utils';
 import { streamController } from '@/lib/llm/utils';
 import { generateUI } from '@/lib/tools/generate-ui';
+import { ratelimit } from '@/lib/ratelimit';
 
 // TODO Fix edge error later
 // export const runtime = 'edge';
@@ -31,13 +30,6 @@ import { generateUI } from '@/lib/tools/generate-ui';
 //     'syd1',
 // ];
 
-const ratelimit = new Ratelimit({
-    redis: redisDB,
-    limiter: Ratelimit.slidingWindow(3, '1 d'),
-    prefix: RATE_LIMIT_KEY,
-    analytics: false,
-});
-
 export async function POST(req: NextRequest) {
     const session = await auth();
     let userId = '';
@@ -45,17 +37,24 @@ export async function POST(req: NextRequest) {
     if (session) {
         userId = session.user.id;
         isPro = isProUser(session.user);
-    } else {
-        const ip = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0];
-        const { success } = await ratelimit.limit(ip);
-        if (!success) {
-            return NextResponse.json(
-                {
-                    error: 'Rate limit exceeded',
-                },
-                { status: 429 },
-            );
+        if (!isPro) {
+            const { success } = await ratelimit.limit(userId);
+            if (!success) {
+                return NextResponse.json(
+                    {
+                        error: 'Rate limit exceeded',
+                    },
+                    { status: 429 },
+                );
+            }
         }
+    } else {
+        return NextResponse.json(
+            {
+                error: 'Rate limit exceeded',
+            },
+            { status: 429 },
+        );
     }
     let { messages, isSearch, isShadcnUI } = await req.json();
 
