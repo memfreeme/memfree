@@ -71,6 +71,7 @@
         "attach-button": "Attach",
         "index-tip": "Index Web Pages and Local Files",
         "attach-tip": "Attach Image and File to Ask",
+        "image-tip": "Generate UI Page from Image",
         "search-tip": "Enter to send, Shift + Enter to wrap"
     },
     "IndexModal": {

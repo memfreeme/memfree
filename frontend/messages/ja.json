@@ -74,6 +74,7 @@
         "attach-button": "添付",
         "index-tip": "ウェブページとローカルファイルをインデックス化",
         "attach-tip": "質問するために画像とファイルを添付",
+        "image-tip": "Generate UI Page from Image",
         "search-tip": "送信するにはEnterを押し、改行するにはShift + Enterを押す"
     },
     "IndexModal": {
