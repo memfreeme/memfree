@@ -59,6 +59,10 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
 
     const sendMessage = useCallback(
         async (question?: string, attachments?: string[], messageIdToUpdate?: string) => {
+            if (!user) {
+                signInModal.onOpen();
+                return;
+            }
             if (isReadOnly) {
                 toast.error(t('read-only-error'));
                 return;
