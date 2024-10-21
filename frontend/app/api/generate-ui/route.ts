@@ -5,7 +5,7 @@ import { logError } from '@/lib/log';
 import { isProUser } from '@/lib/shared-utils';
 import { streamController } from '@/lib/llm/utils';
 import { generateUI } from '@/lib/tools/generate-ui';
-import { ratelimit } from '@/lib/ratelimit';
+import { handleRateLimit } from '@/lib/ratelimit';
 
 // TODO Fix edge error later
 // export const runtime = 'edge';
@@ -37,16 +37,9 @@ export async function POST(req: NextRequest) {
     if (session) {
         userId = session.user.id;
         isPro = isProUser(session.user);
-        if (!isPro) {
-            const { success } = await ratelimit.limit(userId);
-            if (!success) {
-                return NextResponse.json(
-                    {
-                        error: 'Rate limit exceeded',
-                    },
-                    { status: 429 },
-                );
-            }
+        const rateLimitResponse = await handleRateLimit(session.user);
+        if (rateLimitResponse) {
+            return rateLimitResponse;
         }
     } else {
         return NextResponse.json(

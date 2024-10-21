@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { isProModel, O1_MIMI, O1_PREVIEW, validModel } from '@/lib/model';
 import { logError } from '@/lib/log';
-import { isProUser } from '@/lib/shared-utils';
 import { streamController } from '@/lib/llm/utils';
 import { SearchCategory } from '@/lib/types';
 import { containsValidUrl } from '@/lib/server-utils';
@@ -12,7 +11,8 @@ import { autoAnswer } from '@/lib/tools/auto';
 import { o1Answer } from '@/lib/tools/o1-answer';
 import { productSearch } from '@/lib/tools/product';
 import { indieMakerSearch } from '@/lib/tools/indie';
-import { ratelimit } from '@/lib/ratelimit';
+import { handleRateLimit } from '@/lib/ratelimit';
+import { isProUser } from '@/lib/shared-utils';
 
 const updateSource = function (model, source, messages) {
     if (model === O1_MIMI || model === O1_PREVIEW) {
@@ -39,16 +39,9 @@ export async function POST(req: NextRequest) {
     if (session) {
         userId = session.user.id;
         isPro = isProUser(session.user);
-        if (!isPro) {
-            const { success } = await ratelimit.limit(userId);
-            if (!success) {
-                return NextResponse.json(
-                    {
-                        error: 'You need to upgrade a pro plan',
-                    },
-                    { status: 429 },
-                );
-            }
+        const rateLimitResponse = await handleRateLimit(session.user);
+        if (rateLimitResponse) {
+            return rateLimitResponse;
         }
     } else {
         return NextResponse.json(
@@ -60,7 +53,7 @@ export async function POST(req: NextRequest) {
     }
     let { model, source, messages, profile } = await req.json();
 
-    // console.log('model', model, 'source', source, 'messages', messages, 'profile', profile);
+    console.log('model', model, 'source', source, 'messages', messages, 'userId', userId);
 
     if (isProModel(model) && !isPro) {
         return NextResponse.json(
