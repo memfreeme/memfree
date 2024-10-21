@@ -40,13 +40,13 @@ export function CodeToolbar({ code, searchId, isReadOnly, resizablePanelRef, pre
                             }
                         }}
                     >
-                        <ToggleGroupItem value="100" className="h-[22px] w-[22px] rounded-sm p-0">
+                        <ToggleGroupItem value="100" className="size-[22px] rounded-sm p-0">
                             <Monitor className="size-3.5" />
                         </ToggleGroupItem>
-                        <ToggleGroupItem value="60" className="h-[22px] w-[22px] rounded-sm p-0">
+                        <ToggleGroupItem value="60" className="size-[22px] rounded-sm p-0">
                             <Tablet className="size-3.5" />
                         </ToggleGroupItem>
-                        <ToggleGroupItem value="30" className="h-[22px] w-[22px] rounded-sm p-0">
+                        <ToggleGroupItem value="30" className="size-[22px] rounded-sm p-0">
                             <Smartphone className="size-3.5" />
                         </ToggleGroupItem>
                     </ToggleGroup>
