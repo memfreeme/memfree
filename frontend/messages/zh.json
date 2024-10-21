@@ -13,7 +13,8 @@
     "Pricing": {
         "title": "MemFree定价",
         "description": "立即获取无限访问权限",
-        "Free1": "每天最多10次基础AI搜索",
+        "Free1": "每天5次基础AI搜索",
+        "Free8": "每天5次 AI UI Page 生成",
         "Free2": "最多10个书签和网页进行索引",
         "Free3": "每个答案最多1024个token输出",
         "Free4": "单个文件和图像最多4MB",
@@ -21,7 +22,8 @@
         "Free6": "支持 GPT-4o-mini AI 模型",
         "Free7": "支持网页和Chrome扩展",
         "Pro1": "每月无限基础AI搜索",
-        "Pro2": "每月最多1000次专家AI搜索",
+        "Pro2": "每月500次专家AI搜索",
+        "Pro11": "每月500次 AI UI Page 生成",
         "Pro3": "最多1000个书签和网页进行索引",
         "Pro4": "每个答案最多4096个token输出",
         "Pro5": "单个文件和图像最多 20MB",
@@ -31,7 +33,8 @@
         "Pro8": "支持基于上下文的连续搜索",
         "Pro9": "支持重新排序以获得更好的搜索结果",
         "Premium1": "每月无限基础AI搜索",
-        "Premium2": "每月无限专家AI搜索",
+        "Premium2": "每月3000次 专家AI搜索",
+        "Premium9": "每月3000次 AI UI Page 生成",
         "Premium3": "无限书签和网页进行索引",
         "Premium4": "无限保存搜索历史",
         "Premium5": "单个文件最多50MB",
@@ -44,7 +47,7 @@
         "paid-call": "管理订阅",
         "upgrade-call": "通过 MemFree Pro 解锁高级功能",
         "upgrade-button": "立即升级",
-        "Reminder": "如果您在订阅选项中找不到首选的支付方式，请考虑使用一次性支付选项，它提供更多的支付方式。"
+        "Reminder": "一次性支付支持微信和支付宝支付"
     },
     "PricingFAQ": {
         "title": "常见问题解答",

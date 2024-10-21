@@ -20,11 +20,11 @@ interface PricingCardsProps {
     subscriptionPlan?: UserSubscriptionPlan;
 }
 
-const frees = ['Free1', 'Free2', 'Free3', 'Free5', 'Free6', 'Free7'] as const;
+const frees = ['Free1', 'Free8', 'Free2', 'Free3', 'Free5', 'Free6', 'Free7'] as const;
 
-const pros = ['Pro1', 'Pro2', 'Pro3', 'Pro4', 'Pro5', 'Pro10', 'Pro6', 'Pro7', 'Pro8', 'Pro9'] as const;
+const pros = ['Pro1', 'Pro2', 'Pro11', 'Pro3', 'Pro4', 'Pro5', 'Pro10', 'Pro6', 'Pro7', 'Pro8', 'Pro9'] as const;
 
-const premiums = ['Premium1', 'Premium2', 'Premium3', 'Premium4', 'Premium8', 'Premium5', 'Premium6', 'Premium7'] as const;
+const premiums = ['Premium1', 'Premium2', 'Premium9', 'Premium3', 'Premium4', 'Premium8', 'Premium5', 'Premium6', 'Premium7'] as const;
 
 export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
     const isYearlyDefault = !subscriptionPlan?.stripeCustomerId || subscriptionPlan.interval === 'year' ? true : false;
