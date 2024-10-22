@@ -47,7 +47,7 @@ export function SidebarList({ user }: SidebarListProps) {
         <div className="flex flex-1 flex-col overflow-hidden">
             <div className="flex-1 overflow-auto flex-col gap-3 items-center">
                 {searches?.length ? (
-                    <div className="space-y-2 px-2">
+                    <div className="space-y-3 p-3">
                         {searches.map(
                             (search, index) =>
                                 search && (

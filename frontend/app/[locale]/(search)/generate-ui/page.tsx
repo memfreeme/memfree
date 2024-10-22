@@ -50,7 +50,7 @@ export default async function GenerateUI({ searchParams }: { searchParams: { [ke
     const showFeatureSections = !searchParams.id;
 
     return (
-        <div className="group w-full flex flex-col flex-1 h-lvh mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
+        <div className="group w-full flex flex-col flex-1 h-lvh mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[300px] peer-[[data-state=open]]:xl:pl-[320px]">
             <div className="grow">
                 <GenerateUIHeroLanding />
                 <UIWindowWapper id={id} user={user} />
