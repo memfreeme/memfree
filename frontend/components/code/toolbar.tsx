@@ -7,6 +7,8 @@ import useCopyToClipboard from '@/hooks/use-copy-clipboard';
 import { Camera, Check, ClipboardIcon, Monitor, Smartphone, Tablet } from 'lucide-react';
 import { Icons } from '@/components/shared/icons';
 import { useCallback, useState } from 'react';
+import { useSigninModal } from '@/hooks/use-signin-modal';
+import { useUserStore } from '@/lib/store';
 
 export function CodeToolbar({ code, searchId, isReadOnly, resizablePanelRef, previewRef }) {
     const { hasCopied, copyToClipboard } = useCopyToClipboard();
@@ -17,6 +19,27 @@ export function CodeToolbar({ code, searchId, isReadOnly, resizablePanelRef, pre
             setIsDark(previewRef.current.isDaskMode());
         }
     }, [previewRef]);
+    const signInModal = useSigninModal();
+    const user = useUserStore((state) => state.user);
+
+    const handleCopyToClipboard = useCallback(() => {
+        if (user) {
+            copyToClipboard(code);
+        } else {
+            signInModal.onOpen();
+        }
+    }, [user, copyToClipboard, code, signInModal]);
+
+    const handleCaptureIframe = useCallback(() => {
+        if (user) {
+            if (previewRef.current) {
+                previewRef.current.captureIframe();
+            }
+        } else {
+            signInModal.onOpen();
+        }
+    }, [user, previewRef, signInModal]);
+
     return (
         <div className="flex justify-between items-center my-6">
             <div className="flex items-center gap-2">
@@ -56,19 +79,10 @@ export function CodeToolbar({ code, searchId, isReadOnly, resizablePanelRef, pre
                     <Button size="icon" variant="outline" className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5" onClick={toggleDarkMode}>
                         {isDark ? <Icons.moon className="size-4 transition-all" /> : <Icons.sun className="size-4 transition-all" />}
                     </Button>
-                    <Button
-                        size="icon"
-                        variant="outline"
-                        className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5"
-                        onClick={() => {
-                            if (previewRef.current) {
-                                previewRef.current.captureIframe();
-                            }
-                        }}
-                    >
+                    <Button size="icon" variant="outline" className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5" onClick={handleCaptureIframe}>
                         <Camera />
                     </Button>
-                    <Button size="icon" variant="outline" className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5" onClick={() => copyToClipboard(code)}>
+                    <Button size="icon" variant="outline" className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5" onClick={handleCopyToClipboard}>
                         {hasCopied ? <Check /> : <ClipboardIcon />}
                     </Button>
                     {!isReadOnly && (
