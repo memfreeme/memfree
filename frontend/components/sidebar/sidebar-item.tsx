@@ -35,7 +35,7 @@ export function SidebarItem({ search: search, children }: SidebarItemProps) {
     };
 
     return (
-        <div className="relative h-8">
+        <div className="relative h-9">
             <button
                 onClick={handleClick}
                 className={cn(
@@ -44,8 +44,23 @@ export function SidebarItem({ search: search, children }: SidebarItemProps) {
                     isActive && 'bg-zinc-200 pr-16 font-semibold dark:bg-zinc-800',
                 )}
             >
-                <div className="relative flex w-full items-center justify-start overflow-hidden" title={search.title}>
-                    <span className="truncate text-left">{search.title}</span>
+                <div className="relative flex w-full items-center justify-start" title={search.title}>
+                    <div className="flex flex-col w-full overflow-hidden">
+                        <span className="truncate text-left">{search.title}</span>
+                        <div className="flex flex-row justify-between text-xs font-normal">
+                            <span>
+                                {search.messages.length} {search.messages.length > 1 ? 'messages' : 'message'}
+                            </span>
+                            <span>
+                                {`${search.createdAt.toLocaleDateString('en-US')}, ${search.createdAt.toLocaleTimeString('en-US', {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    second: '2-digit',
+                                    hour12: true,
+                                })}`}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </button>
             {isActive && <div className="absolute right-2 top-1">{children}</div>}
