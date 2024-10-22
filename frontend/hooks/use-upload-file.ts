@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { toast } from 'sonner';
-import { NEXT_PUBLIC_VECTOR_HOST } from '@/lib/env';
 import { type ClientUploadedFileData } from 'uploadthing/types';
 import { getAuthToken } from '@/actions/token';
+import { NEXT_PUBLIC_VECTOR_HOST } from '@/lib/client_env';
 
 export interface UploadedFile<T = unknown> extends ClientUploadedFileData<T> {}
 

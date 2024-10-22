@@ -1,3 +1,5 @@
+import 'server-only';
+
 export let VECTOR_INDEX_HOST = '';
 // Let open source users could one click deploy
 if (process.env.VECTOR_INDEX_HOST) {
@@ -23,7 +25,6 @@ if (process.env.VECTOR_HOST) {
 
 // Auth
 export const AUTH_GOOGLE_ID = process.env.AUTH_GOOGLE_ID || '';
-export const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '';
 
 // Redis
 export const UPSTASH_REDIS_REST_URL = process.env.UPSTASH_REDIS_REST_URL || '';
@@ -46,19 +47,10 @@ export const API_TOKEN = process.env.API_TOKEN!;
 export const NODE_ENV = process.env.NODE_ENV || 'development';
 export const BLACKLIST = process.env.USER_BLACKLIST || '';
 
-export const NEXT_PUBLIC_APP_URL = process.env.NEXT_PUBLIC_APP_URL || '';
-export const NEXT_PUBLIC_VECTOR_HOST = process.env.NEXT_PUBLIC_VECTOR_HOST || '';
-
 // Stripe
 export const STRIPE_API_KEY = process.env.STRIPE_API_KEY || '';
 export const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
-
-export const STRIPE_PRO_MONTHLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID || '';
-export const STRIPE_PRO_YEARLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PLAN_ID || '';
-export const STRIPE_PRO_ONE_MONTH_ID = process.env.NEXT_PUBLIC_STRIPE_PRO_ONE_MONTH_ID || '';
-export const STRIPE_PRO_ONE_YEAR_ID = process.env.NEXT_PUBLIC_STRIPE_PRO_ONE_YEAR_ID || '';
-
 export const STRIPE_PREMIUM_MONTHLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_MONTHLY_PLAN_ID || '';
 export const STRIPE_PREMIUM_YEARLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_YEARLY_PLAN_ID || '';
-export const STRIPE_PREMIUM_ONE_MONTH_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_ONE_MONTH_ID || '';
-export const STRIPE_PREMIUM_ONE_YEAR_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_ONE_YEAR_ID || '';
+
+export const NEXT_PUBLIC_APP_URL = process.env.NEXT_PUBLIC_APP_URL || '';

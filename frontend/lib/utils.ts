@@ -1,7 +1,9 @@
 import { isProUser } from '@/lib/shared-utils';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { NEXT_PUBLIC_APP_URL } from '@/lib/env';
+import { toast } from 'sonner';
+import { NEXT_PUBLIC_APP_URL } from '@/lib/client_env';
+
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
@@ -83,8 +85,6 @@ async function convertHeicToJpeg(heicFile: File, quality: number = 0.8): Promise
         throw new Error('process heic file image error');
     }
 }
-
-import { toast } from 'sonner';
 
 export async function processImageFiles(imageFiles: File[]): Promise<File[]> {
     if (typeof window === 'undefined') {

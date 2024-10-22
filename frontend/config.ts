@@ -10,8 +10,8 @@ import {
     STRIPE_PREMIUM_MONTHLY_PLAN_ID,
     STRIPE_PREMIUM_YEARLY_PLAN_ID,
     STRIPE_PREMIUM_ONE_MONTH_ID,
-    STRIPE_PREMIUM_ONE_YEAR_ID
-} from '@/lib/env';
+    STRIPE_PREMIUM_ONE_YEAR_ID,
+} from '@/lib/client_env';
 
 const site_url = 'https://www.memfree.me';
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { type CredentialResponse } from 'google-one-tap';
 import { User } from 'next-auth';
-import { GOOGLE_CLIENT_ID } from '@/lib/env';
+import { GOOGLE_CLIENT_ID } from '@/lib/client_env';
 
 const useOneTapSignin = (options, user: User) => {
     const [isLoading, setIsLoading] = useState(false);

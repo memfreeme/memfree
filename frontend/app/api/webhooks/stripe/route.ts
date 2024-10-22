@@ -15,8 +15,6 @@ function logAndReturnResponse(message: string, status: number) {
     return new Response(message, { status });
 }
 
-
-
 function getLevelFromPriceId(priceId: string): number {
     return [STRIPE_PREMIUM_MONTHLY_PLAN_ID, STRIPE_PREMIUM_YEARLY_PLAN_ID].includes(priceId) ? 2 : 1;
 }
@@ -115,8 +113,6 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
 
     await updateUser(userId, updatedUserData);
 }
-
-
 
 const SECRET = STRIPE_WEBHOOK_SECRET;
 
