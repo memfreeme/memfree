@@ -1,0 +1,17 @@
+export const NEXT_PUBLIC_APP_URL = process.env.NEXT_PUBLIC_APP_URL || '';
+export const NEXT_PUBLIC_VECTOR_HOST = process.env.NEXT_PUBLIC_VECTOR_HOST || '';
+
+// Google one tap auth
+export const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '';
+
+// Stripe
+
+export const STRIPE_PRO_MONTHLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID || '';
+export const STRIPE_PRO_YEARLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PLAN_ID || '';
+export const STRIPE_PRO_ONE_MONTH_ID = process.env.NEXT_PUBLIC_STRIPE_PRO_ONE_MONTH_ID || '';
+export const STRIPE_PRO_ONE_YEAR_ID = process.env.NEXT_PUBLIC_STRIPE_PRO_ONE_YEAR_ID || '';
+
+export const STRIPE_PREMIUM_MONTHLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_MONTHLY_PLAN_ID || '';
+export const STRIPE_PREMIUM_YEARLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_YEARLY_PLAN_ID || '';
+export const STRIPE_PREMIUM_ONE_MONTH_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_ONE_MONTH_ID || '';
+export const STRIPE_PREMIUM_ONE_YEAR_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_ONE_YEAR_ID || '';

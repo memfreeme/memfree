@@ -1,6 +1,9 @@
 import 'server-only';
 import { Redis } from '@upstash/redis';
 import { ScoredURL, User } from '@/lib/types';
+import { UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN } from '@/lib/env';
+
+
 
 // search cache
 export const CACHE_KEY = 'cache:';
@@ -18,8 +21,8 @@ export const SEARCH_COUNT_KEY = 's_count:';
 export const TOTAL_SEARCH_COUNT_KEY = 't_s_count:';
 
 export const redisDB = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL!,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+    url: UPSTASH_REDIS_REST_URL!,
+    token: UPSTASH_REDIS_REST_TOKEN!,
 });
 
 // user

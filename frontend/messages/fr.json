@@ -74,6 +74,7 @@
         "attach-button": "Joindre",
         "index-tip": "Indexer les pages web et les fichiers locaux",
         "attach-tip": "Joindre une image et un fichier à demander",
+        "image-tip": "Generate UI Page from Image",
         "search-tip": "Appuyez sur Entrée pour envoyer, Maj + Entrée pour un retour à la ligne"
     },
     "IndexModal": {

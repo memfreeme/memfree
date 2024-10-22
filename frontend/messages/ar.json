@@ -74,6 +74,7 @@
         "attach-button": "إرفاق",
         "index-tip": "فهرس صفحات الويب والملفات المحلية",
         "attach-tip": "إرفاق صورة وملف للسؤال",
+        "image-tip": "Generate UI Page from Image",
         "search-tip": "اضغط Enter للإرسال، Shift + Enter للتفاف"
     },
     "IndexModal": {

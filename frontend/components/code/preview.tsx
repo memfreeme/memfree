@@ -176,7 +176,7 @@ export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode, on
                 <iframe className="w-full border-none" ref={iframeRef} title="Dynamic Component" sandbox="allow-scripts allow-same-origin" />
             )}
             {isGeneratingScreenshot && (
-                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                     <p className="text-white">Generating Screenshot...</p>
                 </div>
             )}

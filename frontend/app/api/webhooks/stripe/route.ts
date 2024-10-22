@@ -6,6 +6,8 @@ import { stripe } from '@/lib/stripe';
 import { User } from '@/lib/types';
 import { log } from '@/lib/log';
 import { getNextMonth, getNextYear } from '@/lib/server-utils';
+import { STRIPE_PREMIUM_MONTHLY_PLAN_ID, STRIPE_PREMIUM_YEARLY_PLAN_ID } from '@/lib/env';
+import { STRIPE_WEBHOOK_SECRET } from '@/lib/env';
 
 function logAndReturnResponse(message: string, status: number) {
     console.error(message);
@@ -14,7 +16,7 @@ function logAndReturnResponse(message: string, status: number) {
 }
 
 function getLevelFromPriceId(priceId: string): number {
-    return [process.env.NEXT_PUBLIC_STRIPE_PREMIUM_MONTHLY_PLAN_ID, process.env.NEXT_PUBLIC_STRIPE_PREMIUM_YEARLY_PLAN_ID].includes(priceId) ? 2 : 1;
+    return [STRIPE_PREMIUM_MONTHLY_PLAN_ID, STRIPE_PREMIUM_YEARLY_PLAN_ID].includes(priceId) ? 2 : 1;
 }
 
 async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
@@ -112,7 +114,7 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
     await updateUser(userId, updatedUserData);
 }
 
-const SECRET = process.env.STRIPE_WEBHOOK_SECRET;
+const SECRET = STRIPE_WEBHOOK_SECRET;
 
 export async function POST(req: Request) {
     const signature = headers().get('Stripe-Signature') as string;

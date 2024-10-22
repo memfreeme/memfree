@@ -6,10 +6,11 @@ import { type Search } from '@/lib/types';
 import { Redis } from '@upstash/redis';
 import { auth } from '@/auth';
 import { log } from '@/lib/log';
+import { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } from '@/lib/env';
 
 const redis = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL || '',
-    token: process.env.UPSTASH_REDIS_REST_TOKEN || '',
+    url: UPSTASH_REDIS_REST_URL || '',
+    token: UPSTASH_REDIS_REST_TOKEN || '',
 });
 
 const SEARCH_KEY = 'search:';

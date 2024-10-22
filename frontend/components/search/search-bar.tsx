@@ -1,8 +1,8 @@
 'use client';
 
-import React, { KeyboardEvent, useRef, useState } from 'react';
+import React, { KeyboardEvent, useMemo, useRef, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { SendHorizontal, FileTextIcon, Database } from 'lucide-react';
+import { SendHorizontal, FileTextIcon, Database, Image as ImageIcon } from 'lucide-react';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { ModelSelection } from '@/components/search/model-selection';
@@ -167,15 +167,25 @@ const SearchBar: React.FC<Props> = ({
 
     const maxSize = getFileSizeLimit(user);
 
+    const acceptedFiles = useMemo(() => {
+        if (searchType === SearchType.UI) {
+            return {
+                'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.HEIC'],
+            };
+        } else {
+            return {
+                'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.HEIC'],
+                'application/pdf': ['.pdf'],
+                'text/markdown': ['.md'],
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.pptx'],
+            };
+        }
+    }, [searchType]);
+
     const { getInputProps } = useDropzone({
         onDrop,
-        accept: {
-            'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.HEIC'],
-            'application/pdf': ['.pdf'],
-            'text/markdown': ['.md'],
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
-            'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.pptx'],
-        },
+        accept: acceptedFiles,
         maxSize: maxSize,
         noClick: true,
         noKeyboard: true,
@@ -279,14 +289,18 @@ const SearchBar: React.FC<Props> = ({
                                             <Icons.spinner size={20} strokeWidth={2} className="animate-spin" />
                                         ) : (
                                             <div className="flex items-center">
-                                                <Icons.mylink size={20} strokeWidth={2} />
-                                                <span className="font-serif text-sm">{t('attach-button')}</span>
+                                                {searchType === SearchType.SEARCH ? (
+                                                    <Icons.mylink size={20} strokeWidth={2} />
+                                                ) : (
+                                                    <ImageIcon size={20} strokeWidth={2} />
+                                                )}
+                                                {searchType === SearchType.SEARCH && <span className="font-serif text-sm">{t('attach-button')}</span>}
                                             </div>
                                         )}
                                     </button>
                                 </div>
                             </TooltipTrigger>
-                            <TooltipContent>{t('attach-tip')}</TooltipContent>
+                            <TooltipContent>{searchType === SearchType.SEARCH ? t('attach-tip') : t('image-tip')}</TooltipContent>
                         </Tooltip>
                     </div>
                     <div className="absolute right-0 bottom-0 mb-1 mr-2 mt-6 flex items-center space-x-4">

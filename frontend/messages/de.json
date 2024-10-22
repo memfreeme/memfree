@@ -74,6 +74,7 @@
         "attach-button": "Anhängen",
         "index-tip": "Webseiten und lokale Dateien indizieren",
         "attach-tip": "Bild und Datei anhängen, um zu fragen",
+        "image-tip": "Generate UI Page from Image",
         "search-tip": "Enter drücken, um zu senden, Shift + Enter für Umbruch"
     },
     "IndexModal": {

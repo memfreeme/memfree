@@ -2,6 +2,7 @@ import Exa from 'exa-js';
 import { SearchOptions, SearchResult, SearchSource } from '@/lib/search/search';
 import { TextSource } from '@/lib/types';
 import { logError } from '@/lib/log';
+import { EXA_API_KEY } from '@/lib/env';
 
 export class EXASearch implements SearchSource {
     private options: SearchOptions;
@@ -9,7 +10,7 @@ export class EXASearch implements SearchSource {
 
     constructor(params?: SearchOptions) {
         this.options = params || {};
-        this.exa = new Exa(process.env.EXA_API_KEY);
+        this.exa = new Exa(EXA_API_KEY);
     }
 
     async search(query: string): Promise<SearchResult> {

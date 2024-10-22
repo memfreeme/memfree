@@ -3,11 +3,10 @@
 import * as React from 'react';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { buttonVariants } from '@/components/ui/button';
 import { type Search } from '@/lib/types';
-import { cn } from '@/lib/utils';
 import { useSidebar } from '@/hooks/use-sidebar';
 import useMediaQuery from '@/hooks/use-media-query';
+import { format } from 'date-fns';
 
 interface SidebarItemProps {
     index: number;
@@ -35,20 +34,30 @@ export function SidebarItem({ search: search, children }: SidebarItemProps) {
     };
 
     return (
-        <div className="relative h-8">
-            <button
-                onClick={handleClick}
-                className={cn(
-                    buttonVariants({ variant: 'ghost' }),
-                    'group w-full px-4 transition-colors hover:bg-zinc-200/40 dark:hover:bg-zinc-300/10',
-                    isActive && 'bg-zinc-200 pr-16 font-semibold dark:bg-zinc-800',
-                )}
-            >
-                <div className="relative flex w-full items-center justify-start overflow-hidden" title={search.title}>
-                    <span className="truncate text-left">{search.title}</span>
+        <div
+            onClick={handleClick}
+            className={`rounded-lg shadow-sm p-3 relative group w-full
+        hover:bg-gray-100 dark:hover:bg-gray-800
+        focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600
+        cursor-pointer border
+         ${isActive ? 'bg-gray-200 pr-16 font-semibold dark:bg-gray-800' : ''}
+        `}
+        >
+            <div className="flex flex-col w-full space-y-2">
+                <div className="flex items-center w-full">
+                    <span className="font-semibold text-sm truncate" title={search.title}>
+                        {search.title}
+                    </span>
                 </div>
-            </button>
-            {isActive && <div className="absolute right-2 top-1">{children}</div>}
+                <div className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center">
+                        <span>{search.messages.length}</span>
+                        <span className="ml-1">{search.messages.length > 1 ? 'messages' : 'message'}</span>
+                    </div>
+                    {!isActive && <span>{format(new Date(search.createdAt), 'MMM d, yyyy h:mm a')}</span>}
+                </div>
+            </div>
+            {isActive && <div className="absolute right-2 top-1/2 transform -translate-y-1/2">{children}</div>}
         </div>
     );
 }

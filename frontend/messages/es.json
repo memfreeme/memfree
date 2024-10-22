@@ -74,6 +74,7 @@
         "attach-button": "Adjuntar",
         "index-tip": "Indexar páginas web y archivos locales",
         "attach-tip": "Adjuntar imagen y archivo para preguntar",
+        "image-tip": "Generate UI Page from Image",
         "search-tip": "Presiona Enter para enviar, Shift + Enter para saltar"
     },
     "IndexModal": {

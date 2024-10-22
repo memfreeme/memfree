@@ -2,6 +2,16 @@ import { MarketingConfig } from '@/types';
 import { SiteConfig } from '@/types';
 import { SubscriptionPlan } from '@/types';
 import { DocsConfig } from '@/types';
+import {
+    STRIPE_PRO_MONTHLY_PLAN_ID,
+    STRIPE_PRO_YEARLY_PLAN_ID,
+    STRIPE_PRO_ONE_MONTH_ID,
+    STRIPE_PRO_ONE_YEAR_ID,
+    STRIPE_PREMIUM_MONTHLY_PLAN_ID,
+    STRIPE_PREMIUM_YEARLY_PLAN_ID,
+    STRIPE_PREMIUM_ONE_MONTH_ID,
+    STRIPE_PREMIUM_ONE_YEAR_ID,
+} from '@/lib/client_env';
 
 const site_url = 'https://www.memfree.me';
 
@@ -105,12 +115,12 @@ export const pricingData: SubscriptionPlan[] = [
             yearly: 96,
         },
         stripeIds: {
-            monthly: process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID,
-            yearly: process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PLAN_ID,
+            monthly: STRIPE_PRO_MONTHLY_PLAN_ID,
+            yearly: STRIPE_PRO_YEARLY_PLAN_ID,
         },
         onceIds: {
-            monthly: process.env.NEXT_PUBLIC_STRIPE_PRO_ONE_MONTH_ID,
-            yearly: process.env.NEXT_PUBLIC_STRIPE_PRO_ONE_YEAR_ID,
+            monthly: STRIPE_PRO_ONE_MONTH_ID,
+            yearly: STRIPE_PRO_ONE_YEAR_ID,
         },
     },
     {
@@ -121,12 +131,12 @@ export const pricingData: SubscriptionPlan[] = [
             yearly: 288,
         },
         stripeIds: {
-            monthly: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_MONTHLY_PLAN_ID,
-            yearly: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_YEARLY_PLAN_ID,
+            monthly: STRIPE_PREMIUM_MONTHLY_PLAN_ID,
+            yearly: STRIPE_PREMIUM_YEARLY_PLAN_ID,
         },
         onceIds: {
-            monthly: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_ONE_MONTH_ID,
-            yearly: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_ONE_YEAR_ID,
+            monthly: STRIPE_PREMIUM_ONE_MONTH_ID,
+            yearly: STRIPE_PREMIUM_ONE_YEAR_ID,
         },
     },
 ];
