@@ -21,7 +21,38 @@ if (process.env.VECTOR_HOST) {
     throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
 }
 
+
 export const SERPER_API_KEY = process.env.SERPER_API_KEY;
 export const API_TOKEN = process.env.API_TOKEN!;
+export const JWT_SECRET = process.env.JWT_SECRET || '';
 export const OPENAI_BASE_URL = process.env.OPENAI_BASE_URL ?? 'https://api.openai.com/v1';
 export const BLACKLIST = process.env.USER_BLACKLIST || '';
+export const NEXT_PUBLIC_APP_URL = process.env.NEXT_PUBLIC_APP_URL || '';
+export const NEXT_PUBLIC_VECTOR_HOST = process.env.NEXT_PUBLIC_VECTOR_HOST || '';
+export const AUTH_GOOGLE_ID = process.env.AUTH_GOOGLE_ID || '';
+export const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '';
+export const EXA_API_KEY = process.env.EXA_API_KEY || '';
+
+export const STRIPE_API_KEY = process.env.STRIPE_API_KEY || '';
+export const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
+
+export const UPSTASH_REDIS_REST_URL = process.env.UPSTASH_REDIS_REST_URL || '';
+export const UPSTASH_REDIS_REST_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || '';
+
+export const NODE_ENV = process.env.NODE_ENV || 'development';
+
+export const STRIPE_PRO_MONTHLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID || '';
+export const STRIPE_PRO_YEARLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PLAN_ID || '';
+export const STRIPE_PRO_ONE_MONTH_ID = process.env.NEXT_PUBLIC_STRIPE_PRO_ONE_MONTH_ID || '';
+export const STRIPE_PRO_ONE_YEAR_ID = process.env.NEXT_PUBLIC_STRIPE_PRO_ONE_YEAR_ID || '';
+
+export const STRIPE_PREMIUM_MONTHLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_MONTHLY_PLAN_ID || '';
+export const STRIPE_PREMIUM_YEARLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_YEARLY_PLAN_ID || '';
+export const STRIPE_PREMIUM_ONE_MONTH_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_ONE_MONTH_ID || '';
+export const STRIPE_PREMIUM_ONE_YEAR_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_ONE_YEAR_ID || '';
+
+
+
+export const AXIOM_TOKEN = process.env.AXIOM_TOKEN || '';
+export const JINA_KEY = process.env.JINA_KEY || '';
+
