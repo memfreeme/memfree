@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { toast } from 'sonner';
-
+import { NEXT_PUBLIC_VECTOR_HOST } from '@/lib/env';
 import { type ClientUploadedFileData } from 'uploadthing/types';
 import { getAuthToken } from '@/actions/token';
 
@@ -10,10 +10,8 @@ export function useUploadFile() {
     const [uploadedFiles, setUploadedFiles] = React.useState<UploadedFile[]>();
     const [isUploading, setIsUploading] = React.useState(false);
 
-    // console.log('uploadedFiles', uploadedFiles);
-
     const indexLocalFile = async (files: File[]) => {
-        const endpoint = `${process.env.NEXT_PUBLIC_VECTOR_HOST}/api/index/local-file`;
+        const endpoint = `${NEXT_PUBLIC_VECTOR_HOST}/api/index/local-file`;
         setIsUploading(true);
         try {
             const token = await getAuthToken();

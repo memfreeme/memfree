@@ -4,6 +4,7 @@ import { ImageSource, TextSource } from '@/lib/types';
 import { SearchResult, SearchSource } from '@/lib/search/search';
 import { logError } from '@/lib/log';
 import { VECTOR_HOST } from '@/lib/env';
+import { API_TOKEN } from '@/lib/env';
 
 export class VectorSearch implements SearchSource {
     private userId: string;
@@ -22,7 +23,7 @@ export class VectorSearch implements SearchSource {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
-                    Authorization: process.env.API_TOKEN!,
+                    Authorization: API_TOKEN!,
                 },
                 body: JSON.stringify({
                     userId: this.userId,

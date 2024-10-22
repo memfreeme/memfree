@@ -3,6 +3,10 @@ import { signIn } from 'next-auth/react';
 import { type CredentialResponse } from 'google-one-tap';
 import { User } from 'next-auth';
 
+import { useState, useEffect } from 'react';
+import { GOOGLE_CLIENT_ID } from '@/lib/env';
+import { signIn } from 'next-auth/react';
+
 const useOneTapSignin = (options, user: User) => {
     const [isLoading, setIsLoading] = useState(false);
 
@@ -15,7 +19,7 @@ const useOneTapSignin = (options, user: User) => {
             setIsLoading(true);
             google.accounts.id.initialize({
                 // log_level: 'debug',
-                client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+                client_id: GOOGLE_CLIENT_ID!,
                 callback: async (response: CredentialResponse) => {
                     setIsLoading(true);
 

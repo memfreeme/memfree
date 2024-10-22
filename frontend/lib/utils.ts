@@ -1,7 +1,7 @@
 import { isProUser } from '@/lib/shared-utils';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-
+import { NEXT_PUBLIC_APP_URL } from '@/lib/env';
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
@@ -23,7 +23,7 @@ export function formatDateTime(input: string | number): string {
 }
 
 export function absoluteUrl(path: string) {
-    return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
+    return `${NEXT_PUBLIC_APP_URL}${path}`;
 }
 
 export function extractDomain(url) {

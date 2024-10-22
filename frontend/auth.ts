@@ -7,6 +7,8 @@ import Resend from 'next-auth/providers/resend';
 import Credentials from 'next-auth/providers/credentials';
 import { UpstashRedisAdapter } from '@auth/upstash-redis-adapter';
 import { sendVerificationRequest } from '@/lib/auth/auth-sind-request';
+import { NEXT_PUBLIC_APP_URL } from '@/lib/env';
+import { NODE_ENV } from '@/lib/env';
 
 declare module 'next-auth' {
     interface Session {
@@ -45,7 +47,7 @@ export const config = {
                 credential: { type: 'text' },
             },
             async authorize(credentials) {
-                const host = process.env.NEXT_PUBLIC_APP_URL;
+                const host = NEXT_PUBLIC_APP_URL;
                 const res = await fetch(`${host}/api/one-tap-login`, {
                     method: 'POST',
                     headers: {
@@ -104,7 +106,7 @@ export const config = {
             return true;
         },
     },
-    debug: process.env.NODE_ENV !== 'production',
+    debug: NODE_ENV !== 'production',
 } satisfies NextAuthConfig;
 
 export const { handlers, signIn, signOut, auth } = NextAuth(config);

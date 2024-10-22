@@ -1,8 +1,10 @@
 import 'server-only';
 import { Axiom } from '@axiomhq/js';
+import { AXIOM_TOKEN } from '@/lib/env';
+
 
 export const axiom = new Axiom({
-    token: process.env.AXIOM_TOKEN || '',
+    token: AXIOM_TOKEN,
 });
 
 export const log = async (message: any) => {

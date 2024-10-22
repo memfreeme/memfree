@@ -1,8 +1,8 @@
 import 'server-only';
 import { fetchWithTimeout } from '@/lib/server-utils';
 import { logError } from '@/lib/log';
+import { JINA_KEY } from '@/lib/env';
 
-const JINA_KEY = process.env.JINA_KEY!;
 const RERANK_MODEL = 'jina-reranker-v2-base-multilingual';
 
 export async function rerank(query: string, documents: string[]): Promise<any> {
