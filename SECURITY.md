@@ -2,22 +2,42 @@
 
 ## Supported Versions
 
-We release patches and updates for the following versions. Please make sure you are using a supported version to receive security updates.
+We release patches and updates for the following versions of the project. Please make sure you are using a supported version to ensure you receive security updates and fixes.
 
 | Version | Supported          |
 | ------- | ------------------ |
 | 1.0.x   | :white_check_mark:  |
 | < 1.0   | :x:                |
 
+Only the latest major and minor versions of the project are supported. For older versions, you may not receive security patches.
+
 ## Reporting a Vulnerability
 
-To report a vulnerability, please follow the steps below:
+We take the security of our project seriously. If you discover any security vulnerabilities, we encourage you to report them so that we can address the issue promptly and appropriately.
 
-1. **Do not disclose publicly**: Avoid opening a public issue that details the vulnerability.
-2. **Open a private issue**: Please report the vulnerability by opening an issue in the [GitHub Issues section](https://github.com/memfreeme/memfree/issues) and mark it as confidential or use a similar private reporting option.
-3. **Provide the following details**:
-   - A description of the vulnerability.
-   - Steps to reproduce the vulnerability.
-   - The impact or potential impact on the repository/project.
-   - Any potential fixes or recommendations.
-4. **Response timeline**: We aim to acknowledge receipt of vulnerability reports within 3 business days and provide updates as the investigation progresses.
+### Steps for Reporting
+
+1. **Do not disclose publicly**: Please avoid sharing the details of the vulnerability in a public space such as GitHub discussions or public issues.
+
+2. **Open a private issue**:
+   - Go to our [GitHub Issues section](https://github.com/memfreeme/memfree/issues).
+   - Create a new issue with the label `security` and mark it confidential if possible, or ensure that the issue is not visible publicly.
+
+3. **Provide necessary details**:
+   - **Description**: Provide a detailed description of the vulnerability.
+   - **Reproduction steps**: Include clear steps on how to reproduce the vulnerability.
+   - **Impact**: Describe the potential impact or risk posed by the vulnerability.
+   - **Recommendations**: If possible, include any recommended fixes or mitigations.
+
+4. **Response timeline**:
+   - We aim to acknowledge the receipt of your vulnerability report within 3 business days.
+   - We will follow up with updates during our investigation, and you will be informed when the issue is resolved.
+   - For high-priority vulnerabilities, we may issue an immediate patch or update.
+
+### Additional Information
+
+- We appreciate your help in keeping this project secure and ask that you act in good faith when disclosing vulnerabilities.
+- We request that you give us sufficient time to address any reported issues before publicly disclosing them.
+- If the vulnerability poses a significant risk, we may work with the broader community to release a security advisory or update the documentation to reflect the changes.
+
+Thank you for your help in keeping our project secure!
