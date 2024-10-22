@@ -17,7 +17,6 @@ const MonacoEditor = dynamic(() => import('@/components/code/editor'), {
 export default function CodeViewer({ code, searchId, isReadOnly, onSelect }) {
     const [activeTab, setActiveTab] = useState('preview');
     const cleanCode = code.substring(code.indexOf('import'));
-    const formattedContent = `\`\`\`jsx\n${cleanCode}\n\`\`\``;
     const ref = React.useRef<ImperativePanelHandle>(null);
     const previewRef = useRef<PreviewRef>(null);
     const signInModal = useSigninModal();

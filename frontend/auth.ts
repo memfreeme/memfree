@@ -69,6 +69,7 @@ export const config = {
     pages: {
         signIn: '/login',
         verifyRequest: '/verify',
+        error: '/auth/error',
     },
     callbacks: {
         async session({ session, user, token }) {
