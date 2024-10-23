@@ -246,6 +246,10 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                             setIsLoading(false);
                             toast.error('Your access has been restricted. If you have any questions, please contact support@memfree.me');
                             return;
+                        } else if (response.status === 400) {
+                            setIsLoading(false);
+                            toast.error(t('Please refresh the page and try again.'));
+                            return;
                         } else {
                             console.error(`Received unexpected status code: ${response.status}`);
                         }
