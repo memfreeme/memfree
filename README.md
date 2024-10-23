@@ -58,7 +58,7 @@ MemFree is equipped with powerful features that cater to various search and prod
 
 - **Multiple AI Models**: Integrates ChatGPT, Claude, and Gemini for diverse AI capabilities.
 - **Multiple Search Engines Supported**: Works with Google, Exa, and Vector.
-- **Multiple Search Input Format**: Text, images, files, and web pages, In particular, it supports multi-image search, compare, summarize, and analyze
+- **Multiple Search Input Format**: Text, images, files, and web pages, In particular, it supports multi-image search, comparison, summarization, and analysis.
 - **Multiple results presentation methods**: Text, mind maps, images, and videos.
 - **Local File Format Compatibility**: Supports text, PDF, Docx, PPTX, and Markdown files.
 - **Cross-Device Syncing**: Save and sync search history across multiple devices.
@@ -113,7 +113,7 @@ MemFree is equipped with powerful features that cater to various search and prod
 
 - [One Command Deploy MemFree Vector on Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
 
-## Self-Hosted Installation
+## Self-Hosted Installations
 
 ### Prerequisites
 
