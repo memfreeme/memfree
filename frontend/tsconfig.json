@@ -23,7 +23,8 @@
         "paths": {
             "@/*": ["./*"],
             "contentlayer/generated": ["./.contentlayer/generated"]
-        }
+        },
+        "types": ["jest"],
     },
     "include": [
         "next-env.d.ts",
