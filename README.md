@@ -122,6 +122,9 @@ MemFree is equipped with powerful features that cater to various search and prod
 ```
 curl -fsSL https://bun.sh/install | bash
 ```
+#### Bun Not Found Error
+
+If you get an error relating to bun command not found. Check out the official documentation: [Bun Official Documentation](https://bun.sh/docs/installation#checking-installation)
 
 #### Upstash Redis
 
