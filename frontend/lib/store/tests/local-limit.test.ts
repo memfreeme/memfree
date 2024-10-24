@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 import useSearchLimit from '../local-limit';
 
 // Utility function to reset Zustand store state for testing
