@@ -22,9 +22,7 @@ export function GitHubButton() {
             >
                 <Icons.gitHub className="mr-2 size-4" />
                 <p>
-                    Star{' '}
-                    <span className="hidden sm:inline-block">MemFree on</span>{' '}
-                    GitHub{' '}
+                    Star <span className="hidden sm:inline-block">MemFree on</span> GitHub{' '}
                 </p>
             </Link>
         </div>

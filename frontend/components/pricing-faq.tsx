@@ -1,11 +1,6 @@
 'use client';
 
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from '@/components/ui/accordion';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 import { useTranslations } from 'next-intl';
 
@@ -38,18 +33,14 @@ export function PricingFaq() {
     return (
         <section className="container max-w-4xl py-10">
             <div className="flex flex-col items-center text-center">
-                <h2 className="font-heading text-3xl md:text-4xl lg:text-[40px]">
-                    {t('title')}
-                </h2>
+                <h2 className="font-heading text-3xl md:text-4xl lg:text-[40px]">{t('title')}</h2>
             </div>
 
             <Accordion type="single" collapsible className="my-12 w-full">
                 {pricingFaqData.map((faqItem) => (
                     <AccordionItem key={faqItem.id} value={faqItem.id}>
                         <AccordionTrigger>{faqItem.question}</AccordionTrigger>
-                        <AccordionContent className="sm:text-[15px]">
-                            {faqItem.answer}
-                        </AccordionContent>
+                        <AccordionContent className="sm:text-[15px]">{faqItem.answer}</AccordionContent>
                     </AccordionItem>
                 ))}
             </Accordion>

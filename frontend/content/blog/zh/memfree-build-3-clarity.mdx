@@ -38,7 +38,8 @@ date: '2024-06-14'
 ```
 
 <Callout type="warning">
-    更新于 6 月 15 日：在尝试 Clarity 几天后，我发现 Clarity 的数据更新不够及时，因此我最终尝试了 Cloudflare Web Analytics。因为 Cloudflare Web Analytics 提供的分析指标足够我使用，数据也及时更新，而且是免费的。
+    更新于 6 月 15 日：在尝试 Clarity 几天后，我发现 Clarity 的数据更新不够及时，因此我最终尝试了 Cloudflare Web Analytics。因为 Cloudflare Web Analytics
+    提供的分析指标足够我使用，数据也及时更新，而且是免费的。
 </Callout>
 
 ## 如何将 Cloudflare Web Analytics 集成到 NextJS 14 中
@@ -46,9 +47,5 @@ date: '2024-06-14'
 只需将以下代码添加到应用根目录中的 layout.tsx 文件。
 
 ```js
-<Script
-    defer
-    src="https://static.cloudflareinsights.com/beacon.min.js"
-    data-cf-beacon='{"token": "xxxxx"}'
-></Script>
+<Script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "xxxxx"}'></Script>
 ```

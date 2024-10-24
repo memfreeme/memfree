@@ -59,12 +59,7 @@ const Featurebase = ({ user }: FeaturebaseProps) => {
 
     return (
         <>
-            <Script
-                defer
-                src="https://do.featurebase.app/js/sdk.js"
-                id="featurebase-sdk"
-                strategy="lazyOnload"
-            />
+            <Script defer src="https://do.featurebase.app/js/sdk.js" id="featurebase-sdk" strategy="lazyOnload" />
             <div></div>
         </>
     );
