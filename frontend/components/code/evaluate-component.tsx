@@ -112,11 +112,11 @@ export function checkImports(codeString: string): ImportCheckResult {
         });
 
         if (allImports.size > 0) {
-            const invalidImports = Array.from(allImports).filter((item) => !(item in lib));
+            const invalidImports = Array.from(allImports).filter((item) => !(item in lib || item.length === 0));
             if (invalidImports.length > 0) {
                 return {
                     isValid: false,
-                    message: `The following ${name} components/icons are not valid: ${invalidImports.join(', ')}`,
+                    message: `The following ${name} components or icons are not valid: ${invalidImports.join(', ')}`,
                 };
             }
         }
