@@ -26,9 +26,7 @@ export async function rerank(query: string, documents: string[]): Promise<any> {
 
         if (!response.ok) {
             const errorDetails = await response.text();
-            throw new Error(
-                `Fetch failed with status code: ${response.status} and Details: ${errorDetails}`,
-            );
+            throw new Error(`Fetch failed with status code: ${response.status} and Details: ${errorDetails}`);
         }
         const data = await response.json();
         return data.results;

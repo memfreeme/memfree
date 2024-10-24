@@ -23,10 +23,7 @@ export async function POST(req: Request) {
         // TODO: Check if the user is authenticated
         const user = await getUserById(userId);
         if (!user) {
-            return NextResponse.json(
-                { error: 'Unauthorized' },
-                { status: 401 },
-            );
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
         if (urls.length > 10) {
             return NextResponse.json(
@@ -56,12 +53,8 @@ export async function POST(req: Request) {
             })
                 .then(async (response) => {
                     if (!response.ok) {
-                        console.error(
-                            `Index Url Error! status: ${response.status}`,
-                        );
-                        throw new Error(
-                            `Index Url Error! status: ${response.status}`,
-                        );
+                        console.error(`Index Url Error! status: ${response.status}`);
+                        throw new Error(`Index Url Error! status: ${response.status}`);
                     }
                     const result = await response.json();
                     const indexCount = await addUrl(userId, url);
@@ -88,10 +81,7 @@ export async function POST(req: Request) {
         const failedUrls = results.filter((r) => r.error);
 
         if (successfulUrls.length === 0) {
-            return NextResponse.json(
-                { error: 'All URL requests failed' },
-                { status: 500 },
-            );
+            return NextResponse.json({ error: 'All URL requests failed' }, { status: 500 });
         }
 
         if (needCompact) {

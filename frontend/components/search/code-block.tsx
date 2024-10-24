@@ -6,11 +6,7 @@ interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {
     children: React.ReactNode;
 }
 
-const CodeBlock: React.FC<CodeBlockProps> = ({
-    className,
-    children,
-    ...props
-}) => {
+const CodeBlock: React.FC<CodeBlockProps> = ({ className, children, ...props }) => {
     const ref = useRef<HTMLPreElement>(null);
     const [hasCopied, setHasCopied] = React.useState(false);
 
@@ -30,11 +26,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
 
     return (
         <div className="relative group">
-            <pre
-                ref={ref}
-                className={`p-0 relative ${className ?? ''}`}
-                {...props}
-            >
+            <pre ref={ref} className={`p-0 relative ${className ?? ''}`} {...props}>
                 {children}
             </pre>
             <Button
@@ -44,11 +36,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
                 onClick={() => handleCopyValue()}
             >
                 <span className="sr-only">Copy</span>
-                {hasCopied ? (
-                    <Icons.check className="size-4 text-white hover:text-primary" />
-                ) : (
-                    <Icons.copy className="size-4 text-white hover:text-primary" />
-                )}
+                {hasCopied ? <Icons.check className="size-4 text-white hover:text-primary" /> : <Icons.copy className="size-4 text-white hover:text-primary" />}
             </Button>
         </div>
     );

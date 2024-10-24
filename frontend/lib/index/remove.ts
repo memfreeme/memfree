@@ -15,12 +15,8 @@ export async function remove(userId: string, urls: string[]) {
             body: JSON.stringify({ userId: userId, urls: urls }),
         });
         if (!response.ok) {
-            console.error(
-                `remove url Error! Status: ${response.status}, StatusText: ${response.statusText}`,
-            );
-            throw new Error(
-                `remove url Error! Status: ${response.status}, StatusText: ${response.statusText}`,
-            );
+            console.error(`remove url Error! Status: ${response.status}, StatusText: ${response.statusText}`);
+            throw new Error(`remove url Error! Status: ${response.status}, StatusText: ${response.statusText}`);
         }
         const result = await response.json();
         console.log(`remove url ${urls} for user ${userId}`);
