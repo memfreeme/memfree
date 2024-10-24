@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**Englisch**\|[chinesisch](./README_ZH.md)\|[Deutsch](./README_DE.md)\|[Französisch](./README_FR.md)\|[Spanisch](README_ES.md)\|[japanisch](./README_JA.md)
+**Englisch**\|[chinesisch](./README.zh-CN.md)\|[Deutsch](./README.de.md)\|[Französisch](./README.fr.md)\|[Spanisch](README.es.md)\|[japanisch](./README.ja.md)
 
 </div>
 
@@ -33,7 +33,7 @@
 
 <br/>
 
-## Was ist MemFree
+## Was ist MemFree?
 
 MemFree ist ein<b>Hybride KI-Suchmaschine</b>.
 
@@ -56,17 +56,27 @@ Memfree nutzt das leistungsstärkste KI-Modell – Claude 3.5 Sonnet und das bel
 
 MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such- und Produktivitätsanforderungen erfüllen:
 
--   **Mehrere KI-Modelle**: Integriert ChatGPT, Claude und Gemini für verschiedene KI-Funktionen.
--   **Mehrere Suchmaschinen werden unterstützt**: Funktioniert mit Google, Exa und Vector.
--   **Mehrere Sucheingabeformate**: Text, Bilder, Dateien und Webseiten. Insbesondere unterstützt es die Suche, den Vergleich, die Zusammenfassung und die Analyse mehrerer Bilder.
--   **Mehrere Methoden zur Ergebnispräsentation**: Text, Mindmaps, Bilder und Videos.
--   **Kompatibilität mit lokalen Dateiformaten**: Unterstützt Text-, PDF-, Docx-, PPTX- und Markdown-Dateien.
--   **Geräteübergreifende Synchronisierung**: Suchverlauf auf mehreren Geräten speichern und synchronisieren.
--   **Mehrsprachige Unterstützung**: Verfügbar in Englisch, Chinesisch, Deutsch, Französisch, Spanisch, Japanisch und Arabisch.
--   **Chrome-Lesezeichen-Synchronisierung**: Synchronisierung und Indizierung mit einem Klick.
--   **Ergebnisfreigabe**: Teilen Sie ganz einfach Ihre Suchergebnisse.
--   **Kontextuelle kontinuierliche Suche**: Nahtlose Suche basierend auf dem Kontext.
--   **Automatische Websuchentscheidungen**: Bestimmt automatisch, wann Internetsuchen durchgeführt werden sollen.
+-   🤖**Mehrere KI-Modelle**: Integriert ChatGPT, Claude und Gemini für verschiedene KI-Funktionen.
+
+-   🌐**Mehrere Suchmaschinen werden unterstützt**: Funktioniert mit Google, Exa und Vector.
+
+-   🖼️**Mehrere Sucheingabeformate**: Insbesondere Texte, Bilder, Dateien und Webseiten. Unterstützt die Suche, den Vergleich, die Zusammenfassung und die Analyse mehrerer Bilder.
+
+-   📊**Mehrere Methoden zur Ergebnispräsentation**: Text, Mindmaps, Bilder und Videos.
+
+-   📄**Kompatibilität mit lokalen Dateiformaten**: Unterstützt Text-, PDF-, Docx-, PPTX- und Markdown-Dateien.
+
+-   🔄**Geräteübergreifende Synchronisierung**: Suchverlauf auf mehreren Geräten speichern und synchronisieren.
+
+-   🌍**Mehrsprachige Unterstützung**: Verfügbar in Englisch, Chinesisch, Deutsch, Französisch, Spanisch, Japanisch und Arabisch.
+
+-   🔗**Chrome-Lesezeichen-Synchronisierung**: Synchronisierung und Indizierung mit einem Klick.
+
+-   📤**Ergebnisfreigabe**: Teilen Sie ganz einfach Ihre Suchergebnisse.
+
+-   🔍**Kontextuelle kontinuierliche Suche**: Nahtlose Suche basierend auf dem Kontext.
+
+-   ⚙️**Automatische Websuchentscheidungen**: Bestimmt automatisch, wann Internetsuchen durchgeführt werden sollen.
 
 ## Funktionen des MemFree AI UI Generators
 
@@ -120,6 +130,10 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 #### Gut installieren
 
     curl -fsSL https://bun.sh/install | bash
+
+> Fehler „Brötchen nicht gefunden“.
+
+Wenn Sie eine Fehlermeldung erhalten, die sich darauf bezieht, dass der Bun-Befehl nicht gefunden wurde. Schauen Sie sich Folgendes an:[Offizielle Bun-Dokumentation](https://bun.sh/docs/installation#checking-installation)
 
 #### Upstash Redis
 
@@ -184,6 +198,10 @@ So können Sie einen Beitrag leisten:
 ## Lizenz
 
 MemFree wird unterstützt von[MemFree](https://www.memfree.me/)und lizenziert unter[MIT](https://github.com/memfreeme/memfree/blob/main/LICENSE).
+
+## Verwandte Projekte
+
+-   [React + Shadcn UI-Vorschau](https://reactshadcn.com)
 
 ## Sternengeschichte
 
