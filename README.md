@@ -124,20 +124,7 @@ curl -fsSL https://bun.sh/install | bash
 ```
 #### Bun Not Found Error
 
-#### Windows
-
-```
-nano ~/.bashrc 
-BUN_INSTALL="/home/YOUR_USERNAME/.bun"
-#Where YOUR_USERNAME is your username
-PATH="$BUN_INSTALL/bin:$PATH"
-```
-
-#### Linux
-
-```
-ln -s $HOME/.bun/bin/bun /usr/local/bin/bun
-```
+If you get an error relating to bun command not found. Check out the official documentation: [Bun Official Documentation](https://bun.sh/docs/installation#checking-installation)
 
 #### Upstash Redis
 
