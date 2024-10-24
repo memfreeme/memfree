@@ -7,6 +7,23 @@ import * as Recharts from 'recharts';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import Link from 'next/link';
+import {
+    motion,
+    AnimatePresence,
+    useAnimation,
+    useMotionValue,
+    useTransform,
+    useCycle,
+    useInView,
+    useScroll,
+    useSpring,
+    animate,
+    MotionConfig,
+    useDragControls,
+    useMotionTemplate,
+    LayoutGroup,
+    Reorder,
+} from 'framer-motion';
 
 const moduleMap = {
     'react': React,
@@ -15,6 +32,23 @@ const moduleMap = {
     'next/link': Link,
     '@/lib/utils': { cn },
     'date-fns': { format },
+    'framer-motion': {
+        motion,
+        AnimatePresence,
+        useAnimation,
+        useMotionValue,
+        useTransform,
+        useCycle,
+        useInView,
+        useScroll,
+        useSpring,
+        animate,
+        MotionConfig,
+        useDragControls,
+        useMotionTemplate,
+        LayoutGroup,
+        Reorder,
+    },
 };
 const createRequire = () => {
     return (moduleName: string) => {
@@ -78,11 +112,11 @@ export function checkImports(codeString: string): ImportCheckResult {
         });
 
         if (allImports.size > 0) {
-            const invalidImports = Array.from(allImports).filter((item) => !(item in lib));
+            const invalidImports = Array.from(allImports).filter((item) => !(item in lib || item.length === 0));
             if (invalidImports.length > 0) {
                 return {
                     isValid: false,
-                    message: `The following ${name} components/icons are not valid: ${invalidImports.join(', ')}`,
+                    message: `The following ${name} components or icons are not valid: ${invalidImports.join(', ')}`,
                 };
             }
         }

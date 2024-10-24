@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import MyMarkdown from '@/components/search/my-markdown';
 import { Preview, PreviewRef } from '@/components/code/preview';
 import ErrorBoundary from '@/components/code/error-boundary';
 import { CodeToolbar } from '@/components/code/toolbar';
@@ -9,14 +8,24 @@ import { cn } from '@/lib/utils';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { useUserStore } from '@/lib/store';
+import dynamic from 'next/dynamic';
+
+const MonacoEditor = dynamic(() => import('@/components/code/editor'), {
+    loading: () => <p>Loading...</p>,
+});
 
 export default function CodeViewer({ code, searchId, isReadOnly, onSelect }) {
     const [activeTab, setActiveTab] = useState('preview');
     const cleanCode = code.substring(code.indexOf('import'));
-    const formattedContent = `\`\`\`jsx\n${cleanCode}\n\`\`\``;
     const ref = React.useRef<ImperativePanelHandle>(null);
     const previewRef = useRef<PreviewRef>(null);
     const signInModal = useSigninModal();
+    const [newCode, setCode] = useState<string>(cleanCode);
+    const handleCodeChange = (value: string | undefined) => {
+        if (value !== undefined) {
+            setCode(value);
+        }
+    };
     const user = useUserStore((state) => state.user);
     const onValueChange = (value) => {
         if (value === 'code') {
@@ -36,12 +45,12 @@ export default function CodeViewer({ code, searchId, isReadOnly, onSelect }) {
     return (
         <div className="flex flex-col size-full grow justify-center relative p-1">
             <Tabs className="relative w-full" value={activeTab} onValueChange={onValueChange}>
-                <CodeToolbar isReadOnly={isReadOnly} searchId={searchId} code={cleanCode} resizablePanelRef={ref} previewRef={previewRef} />
+                <CodeToolbar isReadOnly={isReadOnly} searchId={searchId} code={newCode} resizablePanelRef={ref} previewRef={previewRef} />
                 <TabsContent value="preview">
                     <ErrorBoundary>
                         <ResizablePanelGroup direction="horizontal" className="relative z-10">
                             <ResizablePanel ref={ref} className="relative rounded-lg border bg-background" defaultSize={100} minSize={30}>
-                                <Preview ref={previewRef} componentCode={cleanCode} onSelect={onSelect} />
+                                <Preview ref={previewRef} componentCode={newCode} onSelect={onSelect} />
                             </ResizablePanel>
                             <ResizableHandle
                                 className={cn(
@@ -53,9 +62,7 @@ export default function CodeViewer({ code, searchId, isReadOnly, onSelect }) {
                     </ErrorBoundary>
                 </TabsContent>
                 <TabsContent value="code">
-                    <div className="prose dark:prose-dark w-full max-w-full">
-                        <MyMarkdown content={formattedContent} sources={[]} />
-                    </div>
+                    <MonacoEditor defaultValue={newCode} onChange={handleCodeChange} />
                 </TabsContent>
             </Tabs>
         </div>

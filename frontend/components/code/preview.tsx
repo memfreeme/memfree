@@ -3,7 +3,7 @@ import { IframeRenderer } from '@/components/code/iframe-renderer';
 import { useTransformer } from '@/components/code/useTransformer';
 import { Button } from '@/components/ui/button';
 import { logClientError } from '@/lib/utils';
-import React, { useState, useEffect, useRef, useCallback, useMemo, forwardRef, useImperativeHandle, createElement } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo, forwardRef, useImperativeHandle } from 'react';
 
 interface PreviewProps {
     componentCode: string;
