@@ -8,10 +8,7 @@ export async function POST(req: Request) {
     try {
         const { token } = await req.json();
         if (!token) {
-            return NextResponse.json(
-                { message: 'Invalid token, please check' },
-                { status: 400 }
-            );
+            return NextResponse.json({ message: 'Invalid token, please check' }, { status: 400 });
         }
 
         const googleAuthClient = new OAuth2Client(AUTH_GOOGLE_ID);
@@ -22,25 +19,12 @@ export async function POST(req: Request) {
         });
         const payload = ticket.getPayload();
         if (!payload) {
-            return NextResponse.json(
-                { message: 'Cannot extract payload from signin token' },
-                { status: 400 }
-            );
+            return NextResponse.json({ message: 'Cannot extract payload from signin token' }, { status: 400 });
         }
 
-        const {
-            email,
-            sub,
-            given_name,
-            family_name,
-            email_verified,
-            picture: image,
-        } = payload;
+        const { email, sub, given_name, family_name, email_verified, picture: image } = payload;
         if (!email) {
-            return NextResponse.json(
-                { message: 'Email not available' },
-                { status: 400 }
-            );
+            return NextResponse.json({ message: 'Email not available' }, { status: 400 });
         }
 
         let user = await adapter.getUserByEmail!(email);
@@ -57,10 +41,7 @@ export async function POST(req: Request) {
         if (user) {
             return NextResponse.json(user);
         } else {
-            return NextResponse.json(
-                { message: 'User not found' },
-                { status: 404 }
-            );
+            return NextResponse.json({ message: 'User not found' }, { status: 404 });
         }
     } catch (error) {
         console.error('Request failed:', error);

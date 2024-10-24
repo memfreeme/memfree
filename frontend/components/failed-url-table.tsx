@@ -1,13 +1,6 @@
 'use client';
 
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatDateTime } from '@/lib/utils';
 import { ScoredURL } from '@/lib/types';
 import { Send, Trash2 } from 'lucide-react';
@@ -37,9 +30,7 @@ export function FailedUrlTable(props: { urls: ScoredURL[] }) {
                 return response.json();
             })
             .then((data) => {
-                setUrls((prevUrls) =>
-                    prevUrls.filter((u) => u.value !== url.value),
-                );
+                setUrls((prevUrls) => prevUrls.filter((u) => u.value !== url.value));
                 toast.success('Successfully Deleted');
             })
             .catch((error) => {
@@ -65,18 +56,12 @@ export function FailedUrlTable(props: { urls: ScoredURL[] }) {
                         </TableCell>
                         <TableCell>{formatDateTime(url.score)}</TableCell>
                         <TableCell>
-                            <button
-                                onClick={() => handleVisit(url)}
-                                title="visit"
-                            >
+                            <button onClick={() => handleVisit(url)} title="visit">
                                 <Send size={24} />
                             </button>
                         </TableCell>
                         <TableCell>
-                            <button
-                                onClick={() => handleDelete(url)}
-                                title="Feedback"
-                            >
+                            <button onClick={() => handleDelete(url)} title="Feedback">
                                 <Trash2 size={24} />
                             </button>
                         </TableCell>

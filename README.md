@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**English** | [中文](./README_ZH.md) | [Deutsch](./README_DE.md) | [Français](./README_FR.md) | [Español](README_ES.md) | [日本語](./README_JA.md)
+**English** | [中文](./README.zh-CN.md) | [Deutsch](./README.de.md) | [Français](./README.fr.md) | [Español](README.es.md) | [日本語](./README.ja.md)
 
 </div>
 
@@ -56,17 +56,27 @@ Memfree uses the most powerful AI model - Claude 3.5 Sonnet and the most popular
 
 MemFree is equipped with powerful features that cater to various search and productivity needs:
 
-- **Multiple AI Models**: Integrates ChatGPT, Claude, and Gemini for diverse AI capabilities.
-- **Multiple Search Engines Supported**: Works with Google, Exa, and Vector.
-- **Multiple Search Input Format**: Text, images, files, and web pages, In particular, it supports multi-image search, comparison, summarization, and analysis.
-- **Multiple results presentation methods**: Text, mind maps, images, and videos.
-- **Local File Format Compatibility**: Supports text, PDF, Docx, PPTX, and Markdown files.
-- **Cross-Device Syncing**: Save and sync search history across multiple devices.
-- **Multi-Language Support**: Available in English, Chinese, German, French, Spanish, Japanese, and Arabic.
-- **Chrome Bookmark Sync**: One-click synchronization and indexing.
-- **Result Sharing**: Easily share your search findings.
-- **Contextual Continuous Search**: Search seamlessly based on context.
-- **Automatic Web Search Decisions**: Automatically determines when to perform internet searches.
+- 🤖 **Multiple AI Models**: Integrates ChatGPT, Claude, and Gemini for diverse AI capabilities.
+
+- 🌐 **Multiple Search Engines Supported**: Works with Google, Exa, and Vector.
+
+- 🖼️ **Multiple Search Input Format**: Text, images, files, and web pages, in particular, it supports multi-image search, comparison, summarization, and analysis.
+
+- 📊 **Multiple Results Presentation Methods**: Text, mind maps, images, and videos.
+
+- 📄 **Local File Format Compatibility**: Supports text, PDF, Docx, PPTX, and Markdown files.
+
+- 🔄 **Cross-Device Syncing**: Save and sync search history across multiple devices.
+
+- 🌍 **Multi-Language Support**: Available in English, Chinese, German, French, Spanish, Japanese, and Arabic.
+
+- 🔗 **Chrome Bookmark Sync**: One-click synchronization and indexing.
+
+- 📤 **Result Sharing**: Easily share your search findings.
+
+- 🔍 **Contextual Continuous Search**: Search seamlessly based on context.
+
+- ⚙️ **Automatic Web Search Decisions**: Automatically determines when to perform internet searches.
 
 ## MemFree AI UI Generator Features
 
@@ -122,6 +132,10 @@ MemFree is equipped with powerful features that cater to various search and prod
 ```
 curl -fsSL https://bun.sh/install | bash
 ```
+
+> Bun Not Found Error
+
+If you get an error relating to bun command not found. Check out the: [Bun Official Documentation](https://bun.sh/docs/installation#checking-installation)
 
 #### Upstash Redis
 
@@ -190,6 +204,10 @@ Here's how you can contribute:
 ## License
 
 MemFree is backed by [MemFree](https://www.memfree.me/) and licensed under [MIT](https://github.com/memfreeme/memfree/blob/main/LICENSE).
+
+## Related Projects
+
+- [React + Shadcn UI Preview](https://reactshadcn.com)
 
 ## Star History
 

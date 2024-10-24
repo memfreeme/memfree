@@ -2,10 +2,7 @@ import { streamResponse } from '@/lib/llm/utils';
 import { fetchWithTimeout } from '@/lib/server-utils';
 import { TextSource } from '@/lib/types';
 
-export const accessWebPage = async (
-    url: string,
-    onStream?: (...args: any[]) => void,
-): Promise<{ texts: TextSource[] }> => {
+export const accessWebPage = async (url: string, onStream?: (...args: any[]) => void): Promise<{ texts: TextSource[] }> => {
     let texts: TextSource[] = [];
     try {
         const accessUrl = `https://r.jina.ai/${url}`;
@@ -17,9 +14,7 @@ export const accessWebPage = async (
             },
         });
         if (!response.ok) {
-            throw new Error(
-                `Fetch failed with status code: ${response.status}`,
-            );
+            throw new Error(`Fetch failed with status code: ${response.status}`);
         }
         const json = await response.json();
         texts.push({
@@ -27,10 +22,7 @@ export const accessWebPage = async (
             url: json.data.url,
             content: json.data.content,
         });
-        await streamResponse(
-            { sources: texts, status: 'Thinking ...' },
-            onStream,
-        );
+        await streamResponse({ sources: texts, status: 'Thinking ...' }, onStream);
     } catch (error) {
         console.error('Error: ' + error);
     } finally {

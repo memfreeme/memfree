@@ -11,10 +11,7 @@ export function Sidebar({ className, children }: SidebarProps) {
     const { isSidebarOpen, isLoading } = useSidebar();
 
     return (
-        <div
-            data-state={isSidebarOpen && !isLoading ? 'open' : 'closed'}
-            className={cn(className, 'h-full flex-col')}
-        >
+        <div data-state={isSidebarOpen && !isLoading ? 'open' : 'closed'} className={cn(className, 'h-full flex-col')}>
             {children}
         </div>
     );

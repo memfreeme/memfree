@@ -2,7 +2,6 @@ import 'server-only';
 import { Axiom } from '@axiomhq/js';
 import { AXIOM_TOKEN } from '@/lib/env';
 
-
 export const axiom = new Axiom({
     token: AXIOM_TOKEN,
 });

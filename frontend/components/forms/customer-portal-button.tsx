@@ -10,24 +10,17 @@ interface CustomerPortalButtonProps {
     userStripeId: string;
 }
 
-export function CustomerPortalButton({
-    userStripeId,
-}: CustomerPortalButtonProps) {
+export function CustomerPortalButton({ userStripeId }: CustomerPortalButtonProps) {
     let [isPending, startTransition] = useTransition();
-    const generateUserStripeSession = openCustomerPortal.bind(
-        null,
-        userStripeId,
-    );
+    const generateUserStripeSession = openCustomerPortal.bind(null, userStripeId);
 
-    const stripeSessionAction = () =>
-        startTransition(async () => await generateUserStripeSession());
+    const stripeSessionAction = () => startTransition(async () => await generateUserStripeSession());
 
     return (
         <Button disabled={isPending} onClick={stripeSessionAction}>
             {isPending ? (
                 <>
-                    <Icons.spinner className="mr-2 size-4 animate-spin" />{' '}
-                    Loading...
+                    <Icons.spinner className="mr-2 size-4 animate-spin" /> Loading...
                 </>
             ) : (
                 'Manage Your Plan'

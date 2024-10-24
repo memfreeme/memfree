@@ -31,9 +31,7 @@ I have enabled JWT authentication in auth.js, so the authentication token can be
 import { cookies } from 'next/headers';
 
 export const getAuthToken = async () => {
-    const token =
-        cookies().get('__Secure-authjs.session-token')?.value ??
-        cookies().get('authjs.session-token')?.value;
+    const token = cookies().get('__Secure-authjs.session-token')?.value ?? cookies().get('authjs.session-token')?.value;
     return {
         data: token,
     };
@@ -53,19 +51,9 @@ So, I checked the source code of auth.js and found that it uses the jose library
 ### 4.1 Generate the same encryption key
 
 ```ts
-async function getDerivedEncryptionKey(
-    enc: string,
-    keyMaterial: Parameters<typeof hkdf>[1],
-    salt: Parameters<typeof hkdf>[2],
-) {
+async function getDerivedEncryptionKey(enc: string, keyMaterial: Parameters<typeof hkdf>[1], salt: Parameters<typeof hkdf>[2]) {
     const length = enc === 'A256CBC-HS512' ? 64 : 32;
-    return await hkdf(
-        'sha256',
-        keyMaterial,
-        salt,
-        `Auth.js Generated Encryption Key (${salt})`,
-        length,
-    );
+    return await hkdf('sha256', keyMaterial, salt, `Auth.js Generated Encryption Key (${salt})`, length);
 }
 ```
 
@@ -79,9 +67,7 @@ It is important to note that the parameters for the hkdf method must be exactly 
 
 ```ts
 async function decryptToken(token: string, isDev: boolean) {
-    const salt = isDev
-        ? 'authjs.session-token'
-        : `__Secure-authjs.session-token`;
+    const salt = isDev ? 'authjs.session-token' : `__Secure-authjs.session-token`;
     const encryptionKey = await getDerivedEncryptionKey(enc, JWT_SECRET, salt);
     const { payload } = await jwtDecrypt(token, encryptionKey, {
         clockTolerance: 15,

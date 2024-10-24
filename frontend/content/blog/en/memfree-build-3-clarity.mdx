@@ -38,11 +38,9 @@ Add the following code to your layout.tsx file in app root dir.
 ```
 
 <Callout type="warning">
-    Updated on June 15th: After a few days of trying Clarity, I found that
-    Clarity's data was not updated in a timely manner, so I finally tried
-    Cloudflare Web Analytics. Because the analysis indicators provided by
-    Cloudflare Web Analytics are enough for me, the data is updated in a timely
-    manner, and it is also free.
+    Updated on June 15th: After a few days of trying Clarity, I found that Clarity's data was not updated in a timely manner, so I finally tried Cloudflare Web
+    Analytics. Because the analysis indicators provided by Cloudflare Web Analytics are enough for me, the data is updated in a timely manner, and it is also
+    free.
 </Callout>
 
 ## How Cloudflare Web Analytics integrated with NextJS 14
@@ -50,9 +48,5 @@ Add the following code to your layout.tsx file in app root dir.
 Only need to add the following code to your layout.tsx file in app root dir.
 
 ```js
-<Script
-    defer
-    src="https://static.cloudflareinsights.com/beacon.min.js"
-    data-cf-beacon='{"token": "xxxxx"}'
-></Script>
+<Script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "xxxxx"}'></Script>
 ```

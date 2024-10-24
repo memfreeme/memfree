@@ -3,8 +3,6 @@ import { Redis } from '@upstash/redis';
 import { ScoredURL, User } from '@/lib/types';
 import { UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN } from '@/lib/env';
 
-
-
 // search cache
 export const CACHE_KEY = 'cache:';
 
@@ -46,9 +44,7 @@ export async function updateUser(id: string, data) {
 
 export async function getUserIdByEmail(email: string) {
     try {
-        const userId: string | null = await redisDB.get(
-            `${USER_EMAIL_KEY}${email}`,
-        );
+        const userId: string | null = await redisDB.get(`${USER_EMAIL_KEY}${email}`);
         return userId;
     } catch {
         return null;
@@ -59,10 +55,7 @@ export async function incSearchCount(userId: string): Promise<void> {
     if (!userId) {
         userId = 'guest';
     }
-    const result = await Promise.all([
-        redisDB.incr(SEARCH_COUNT_KEY + userId),
-        redisDB.incr(TOTAL_SEARCH_COUNT_KEY),
-    ]);
+    const result = await Promise.all([redisDB.incr(SEARCH_COUNT_KEY + userId), redisDB.incr(TOTAL_SEARCH_COUNT_KEY)]);
 }
 
 export async function removeUrlFromErrorUrls(userId: string, url: string) {
@@ -70,16 +63,9 @@ export async function removeUrlFromErrorUrls(userId: string, url: string) {
     return result;
 }
 
-export type UserStatistics = [
-    ScoredURL[],
-    ScoredURL[],
-    number | null,
-    string | null,
-];
+export type UserStatistics = [ScoredURL[], ScoredURL[], number | null, string | null];
 
-export async function getUserStatistics(
-    userId: string,
-): Promise<UserStatistics> {
+export async function getUserStatistics(userId: string): Promise<UserStatistics> {
     const [urls, failedUrls, indexCount, searchCount] = await Promise.all([
         redisDB.zrange(URLS_KEY + userId, 0, 19, {
             rev: true,
@@ -109,12 +95,7 @@ export async function getUserStatistics(
         });
     }
 
-    return [
-        scoredURLs as ScoredURL[],
-        failedUrlss as ScoredURL[],
-        indexCount as number,
-        searchCount as string,
-    ];
+    return [scoredURLs as ScoredURL[], failedUrlss as ScoredURL[], indexCount as number, searchCount as string];
 }
 
 export async function getUserIndexCount(userId: string): Promise<number> {
@@ -124,26 +105,17 @@ export async function getUserIndexCount(userId: string): Promise<number> {
 
 export async function addUrl(userId: string, url: string): Promise<number> {
     const date = Date.now();
-    const [zaddResult, incrIndexCountResult, incrTotalIndexCountResult] =
-        await Promise.all([
-            redisDB.zadd(URLS_KEY + userId, { score: date, member: url }),
-            redisDB.incr(INDEX_COUNT_KEY + userId),
-            redisDB.incr(TOTAL_INDEX_COUNT_KEY),
-        ]);
+    const [zaddResult, incrIndexCountResult, incrTotalIndexCountResult] = await Promise.all([
+        redisDB.zadd(URLS_KEY + userId, { score: date, member: url }),
+        redisDB.incr(INDEX_COUNT_KEY + userId),
+        redisDB.incr(TOTAL_INDEX_COUNT_KEY),
+    ]);
 
-    console.log(
-        'Result of all operations:',
-        zaddResult,
-        incrIndexCountResult,
-        incrTotalIndexCountResult,
-    );
+    console.log('Result of all operations:', zaddResult, incrIndexCountResult, incrTotalIndexCountResult);
     return incrIndexCountResult;
 }
 
-export async function urlsExists(
-    userId: string,
-    urls: string[],
-): Promise<string[]> {
+export async function urlsExists(userId: string, urls: string[]): Promise<string[]> {
     const pipeline = redisDB.pipeline();
 
     urls.forEach((url) => {

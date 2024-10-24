@@ -58,6 +58,11 @@ const MonacoEditor: React.FC<EditorProps> = ({ defaultValue = 'code', onChange }
                     scrollBeyondLastLine: false,
                     automaticLayout: true,
                     tabSize: 2,
+                    quickSuggestions: true,
+                    contextmenu: true,
+                    copyWithSyntaxHighlighting: true,
+                    ariaLabel: 'code editor',
+                    readOnly: false,
                 }}
                 className="w-full h-full"
             />
