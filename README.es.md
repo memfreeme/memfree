@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**Inglés**\|[Chino](./README_ZH.md)\|[Alemán](./README_DE.md)\|[Francés](./README_FR.md)\|[Español](README_ES.md)\|[japonés](./README_JA.md)
+**Inglés**\|[中文](./README.zh-CN.md)\|[Alemán](./README.de.md)\|[Francés](./README.fr.md)\|[Español](README.es.md)\|[japonés](./README.ja.md)
 
 </div>
 
@@ -56,17 +56,27 @@ Memfree utiliza el modelo de IA más potente: Claude 3.5 Sonnet y el marco de in
 
 MemFree está equipado con potentes funciones que satisfacen diversas necesidades de búsqueda y productividad:
 
--   **Múltiples modelos de IA**: integra ChatGPT, Claude y Gemini para diversas capacidades de IA.
--   **Múltiples motores de búsqueda compatibles**: Funciona con Google, Exa y Vector.
--   **Formato de entrada de búsqueda múltiple**: Texto, imágenes, archivos y páginas web. En particular, admite búsqueda, comparación, resumen y análisis de múltiples imágenes.
--   **Múltiples métodos de presentación de resultados.**: Texto, mapas mentales, imágenes y vídeos.
--   **Compatibilidad de formatos de archivos locales**: Admite archivos de texto, PDF, Docx, PPTX y Markdown.
--   **Sincronización entre dispositivos**: guarde y sincronice el historial de búsqueda en múltiples dispositivos.
--   **Soporte multilingüe**: Disponible en inglés, chino, alemán, francés, español, japonés y árabe.
--   **Sincronización de marcadores de Chrome**: Sincronización e indexación con un solo clic.
--   **Compartir resultados**: comparta fácilmente los resultados de su búsqueda.
--   **Búsqueda continua contextual**: Busque sin problemas según el contexto.
--   **Decisiones automáticas de búsqueda web**: Determina automáticamente cuándo realizar búsquedas en Internet.
+-   🤖**Múltiples modelos de IA**: integra ChatGPT, Claude y Gemini para diversas capacidades de IA.
+
+-   🌐**Múltiples motores de búsqueda compatibles**: Funciona con Google, Exa y Vector.
+
+-   🖼️**Formato de entrada de búsqueda múltiple**: Texto, imágenes, archivos y páginas web, en particular, admite búsqueda, comparación, resumen y análisis de múltiples imágenes.
+
+-   📊**Múltiples métodos de presentación de resultados**: Texto, mapas mentales, imágenes y vídeos.
+
+-   📄**Compatibilidad de formatos de archivos locales**: Admite archivos de texto, PDF, Docx, PPTX y Markdown.
+
+-   🔄**Sincronización entre dispositivos**: guarde y sincronice el historial de búsqueda en múltiples dispositivos.
+
+-   🌍**Soporte multilingüe**: Disponible en inglés, chino, alemán, francés, español, japonés y árabe.
+
+-   🔗**Sincronización de marcadores de Chrome**: Sincronización e indexación con un solo clic.
+
+-   📤**Compartir resultados**: comparta fácilmente los resultados de su búsqueda.
+
+-   🔍**Búsqueda continua contextual**: Busque sin problemas según el contexto.
+
+-   ⚙️**Decisiones automáticas de búsqueda web**: Determina automáticamente cuándo realizar búsquedas en Internet.
 
 ## Funciones del generador de interfaz de usuario MemFree AI
 
@@ -78,7 +88,7 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 -   **📱 Código responsivo y vista previa**: Obtenga una vista previa de su interfaz de usuario en varios dispositivos en tiempo real, lo que garantiza una adaptación perfecta a todos los tamaños de pantalla.
 -   **🌓 Código y vista previa del modo oscuro**: Genere sin esfuerzo código de interfaz de usuario impulsado por IA con soporte para modo oscuro incorporado, lo que le permite obtener una vista previa de los modos claro y oscuro al instante.
 -   **📸 Exportación de capturas de pantalla de la interfaz de usuario**: Exporte y comparta fácilmente sus diseños de interfaz de usuario como capturas de pantalla de alta calidad para una colaboración perfecta
--   **🛠️ Corrección de errores inteligente**: Si bien el modelo avanzado de IA de MemFree y las sofisticadas reglas de código se esfuerzan por alcanzar la perfección, pueden ocurrir errores ocasionales. Nuestra función de corrección inteligente de errores le permite solucionar instantáneamente cualquier problema con solo un clic
+-   **🛠️ Corrección de errores inteligente**: Si bien el modelo de IA avanzado de MemFree y las sofisticadas reglas de código se esfuerzan por alcanzar la perfección, pueden ocurrir errores ocasionales. Nuestra función de corrección inteligente de errores le permite solucionar instantáneamente cualquier problema con un solo clic
 
 ## Flujo de trabajo de búsqueda de IA híbrida de MemFree
 
@@ -100,7 +110,7 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 
 <a href="https://zeabur.com/templates/CE71SC?referralCode=memfree"><img src="https://zeabur.com/button.svg" alt="Deploy on Zeabur"/></a>
 
-### 2 Implementar interfaz con Vercel
+### 2 Implementar frontend con Vercel
 
 <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree&env=UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,OPENAI_API_KEY,MEMFREE_HOST,AUTH_SECRET,API_TOKEN&envDescription=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree%2Fblob%2Fmain%2Ffrontend%2Fenv-example&project-name=memfree&repository-name=memfree&demo-title=MemFree&demo-description=MemFree – Hybrid AI Search Engine&demo-url=https%3A%2F%2Fwww.memfree.me%2F&demo-image=https%3A%2F%2Fwww.memfree.me%2Fog.png&root-directory=frontend"><img src="https://vercel.com/button" alt="Deploy with Vercel"/></a>
 
@@ -121,13 +131,17 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 
     curl -fsSL https://bun.sh/install | bash
 
+> Error de bollo no encontrado
+
+Si recibe un error relacionado con el comando bun no encontrado. Mira el:[Bun Official Documentation](https://bun.sh/docs/installation#checking-installation)
+
 #### Redis oculto
 
-Cree una base de datos compatible con Redis en segundos:[Upstash Redis](https://upstash.com/docs/redis/overall/getstarted)
+Cree una base de datos compatible con Redis en segundos:[Redis oculto](https://upstash.com/docs/redis/overall/getstarted)
 
 #### Clave API de OpenAI
 
-Obtenga una clave API de OpenAI:[Abierto AI](https://platform.openai.com)
+Obtenga una clave API de OpenAI:[AbiertoAI](https://platform.openai.com)
 
 #### Clave API de Serper
 
@@ -184,6 +198,10 @@ Así es como puedes contribuir:
 ## Licencia
 
 MemFree está respaldado por[MemFree](https://www.memfree.me/)y con licencia bajo[CON](https://github.com/memfreeme/memfree/blob/main/LICENSE).
+
+## Proyectos Relacionados
+
+-   [Vista previa de la interfaz de usuario de React + Shadcn](https://reactshadcn.com)
 
 ## Historia de las estrellas
 
