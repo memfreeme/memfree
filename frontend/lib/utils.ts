@@ -112,6 +112,7 @@ export async function processImageFiles(imageFiles: File[]): Promise<File[]> {
 
 export async function logClientError(error: string, action: string) {
     if (process.env.NODE_ENV !== 'production') {
+        console.error('Client error:', error, action);
         return;
     }
     try {

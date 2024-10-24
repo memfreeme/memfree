@@ -7,6 +7,23 @@ import * as Recharts from 'recharts';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import Link from 'next/link';
+import {
+    motion,
+    AnimatePresence,
+    useAnimation,
+    useMotionValue,
+    useTransform,
+    useCycle,
+    useInView,
+    useScroll,
+    useSpring,
+    animate,
+    MotionConfig,
+    useDragControls,
+    useMotionTemplate,
+    LayoutGroup,
+    Reorder,
+} from 'framer-motion';
 
 const moduleMap = {
     'react': React,
@@ -15,6 +32,23 @@ const moduleMap = {
     'next/link': Link,
     '@/lib/utils': { cn },
     'date-fns': { format },
+    'framer-motion': {
+        motion,
+        AnimatePresence,
+        useAnimation,
+        useMotionValue,
+        useTransform,
+        useCycle,
+        useInView,
+        useScroll,
+        useSpring,
+        animate,
+        MotionConfig,
+        useDragControls,
+        useMotionTemplate,
+        LayoutGroup,
+        Reorder,
+    },
 };
 const createRequire = () => {
     return (moduleName: string) => {

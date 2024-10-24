@@ -58,6 +58,7 @@
     "contentlayer2": "^0.4.6",
     "date-fns": "^4.1.0",
     "exa-js": "^1.0.14",
+    "framer-motion": "^11.11.9",
     "google-auth-library": "^9.4.1",
     "heic2any": "^0.0.4",
     "html2canvas": "^1.4.1",
