@@ -11,6 +11,14 @@ Thank you for considering contributing to MemFree! We appreciate your support an
 3. **Make a Pull Request**: If you have new features to add, quality-of-life improvements, or bug fixes, feel free to make a pull request. Ensure your code adheres to our code style and includes appropriate tests.
 4. **Feedback and Support**: Share your thoughts and feedback on our [Discord](https://discord.com/invite/7QqyMSTaRq) or via the [MemFree Feedback Form](https://feedback.memfree.me/).
 
+## Code Style and Formatting
+
+To maintain consistency across the codebase, please ensure you run the following command before submitting a pull request:
+
+```bash
+npm run prettier
+```
+
 ## Features You Can Contribute
 
 - **Search Engines and AI Models**: Integrate additional search engines or AI models to enhance search capabilities.
