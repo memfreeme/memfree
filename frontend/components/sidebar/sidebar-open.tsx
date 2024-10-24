@@ -58,7 +58,7 @@ export default function SidebarOpen({ user }: NavBarProps) {
                             <button
                                 onClick={handleNewGenerateUI}
                                 aria-label="New Generate UI"
-                                className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 m-2"
+                                className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg py-1 px-2 m-2"
                             >
                                 <span className="text-gray-800 dark:text-white">UI</span>
                             </button>
