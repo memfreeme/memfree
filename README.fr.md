@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**Anglais**\|[Chinois](./README_ZH.md)\|[Allemand](./README_DE.md)\|[Français](./README_FR.md)\|[Espagnol](README_ES.md)\|[japonais](./README_JA.md)
+**Anglais**\|[Chinois](./README.zh-CN.md)\|[Allemand](./README.de.md)\|[Français](./README.fr.md)\|[Espagnol](README.es.md)\|[japonais](./README.ja.md)
 
 </div>
 
@@ -56,17 +56,27 @@ Memfree utilise le modèle d'IA le plus puissant - Claude 3.5 Sonnet et le frame
 
 MemFree est équipé de fonctionnalités puissantes qui répondent à divers besoins de recherche et de productivité :
 
--   **Multiple AI Models**: Intègre ChatGPT, Claude et Gemini pour diverses capacités d'IA.
--   **Plusieurs moteurs de recherche pris en charge**: Fonctionne avec Google, Exa et Vector.
--   **Format d'entrée de recherche multiple**: Texte, images, fichiers et pages Web. En particulier, il prend en charge la recherche, la comparaison, la synthèse et l'analyse multi-images.
--   **Plusieurs méthodes de présentation des résultats**: Textes, cartes mentales, images et vidéos.
--   **Compatibilité des formats de fichiers locaux**: Prend en charge les fichiers texte, PDF, Docx, PPTX et Markdown.
--   **Synchronisation multi-appareils** : Enregistrez et synchronisez l'historique de recherche sur plusieurs appareils.
--   **Prise en charge multilingue**: Disponible en anglais, chinois, allemand, français, espagnol, japonais et arabe.
--   **Synchronisation des favoris Chrome**: Synchronisation et indexation en un clic.
--   **Partage des résultats**: partagez facilement vos résultats de recherche.
--   **Recherche continue contextuelle** : Recherchez de manière transparente en fonction du contexte.
--   **Décisions de recherche automatique sur le Web**: Détermine automatiquement quand effectuer des recherches sur Internet.
+-   🤖**Multiple AI Models**: Intègre ChatGPT, Claude et Gemini pour diverses capacités d'IA.
+
+-   🌐**Plusieurs moteurs de recherche pris en charge**: Fonctionne avec Google, Exa et Vector.
+
+-   🖼️**Format d'entrée de recherche multiple**: Texte, images, fichiers et pages Web, en particulier, il prend en charge la recherche, la comparaison, la synthèse et l'analyse multi-images.
+
+-   📊**Plusieurs méthodes de présentation des résultats**: Textes, cartes mentales, images et vidéos.
+
+-   📄**Compatibilité des formats de fichiers locaux**: Prend en charge les fichiers texte, PDF, Docx, PPTX et Markdown.
+
+-   🔄**Synchronisation multi-appareils** : Enregistrez et synchronisez l'historique de recherche sur plusieurs appareils.
+
+-   🌍**Prise en charge multilingue**: Disponible en anglais, chinois, allemand, français, espagnol, japonais et arabe.
+
+-   🔗**Chrome Bookmark Sync**: Synchronisation et indexation en un clic.
+
+-   📤**Partage des résultats**: partagez facilement vos résultats de recherche.
+
+-   🔍**Recherche continue contextuelle** : Recherchez de manière transparente en fonction du contexte.
+
+-   ⚙️**Automatic Web Search Decisions**: Détermine automatiquement quand effectuer des recherches sur Internet.
 
 ## Fonctionnalités du générateur d'interface utilisateur MemFree AI
 
@@ -74,7 +84,7 @@ MemFree est équipé de fonctionnalités puissantes qui répondent à divers bes
 -   **🔍 Recherche de contenu basée sur l'IA**: Enrichissez votre interface utilisateur avec du contenu pertinent grâce à notre fonctionnalité de recherche avancée par IA
 -   **🖼 Génération d'interface utilisateur basée sur l'image** : Créez des composants et des pages d'interface utilisateur qui correspondent étroitement à vos images de référence
 -   **⚛️ Intégration de l'interface utilisateur React + TailWind + Shadcn** : exploitez le code généré par l'IA à l'aide de la pile frontale la plus populaire : React, TailWind et Shadcn UI
--   **🚀 Publication de l'interface utilisateur en un clic**: Publiez et partagez instantanément votre interface utilisateur sur le Web en un seul clic
+-   **🚀 Publication de l'interface utilisateur en un clic**: Publiez et partagez votre interface utilisateur sur le Web instantanément en un seul clic
 -   **📱 Code réactif et aperçu**: prévisualisez votre interface utilisateur sur différents appareils en temps réel, garantissant une adaptation parfaite à toutes les tailles d'écran
 -   **🌓 Code et aperçu du mode sombre**: Générez sans effort du code d'interface utilisateur alimenté par l'IA avec prise en charge intégrée du mode sombre, vous permettant de prévisualiser instantanément les modes clair et sombre
 -   **📸 Exportation de capture d'écran de l'interface utilisateur**: Exportez et partagez facilement vos conceptions d'interface utilisateur sous forme de captures d'écran de haute qualité pour une collaboration transparente
@@ -111,7 +121,7 @@ MemFree est équipé de fonctionnalités puissantes qui répondent à divers bes
 
 ### 4 Backend de déploiement d'une seule commande avec Fly.io
 
--   [Une commande déploie MemFree Vector sur Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
+-   [Une commande déployer MemFree Vector sur Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
 
 ## Installations auto-hébergées
 
@@ -120,6 +130,10 @@ MemFree est équipé de fonctionnalités puissantes qui répondent à divers bes
 #### Bien installer
 
     curl -fsSL https://bun.sh/install | bash
+
+> Erreur de chignon introuvable
+
+Si vous obtenez une erreur relative à la commande bun introuvable. Découvrez le :[Documentation officielle du chignon](https://bun.sh/docs/installation#checking-installation)
 
 #### Upstash Redis
 
@@ -184,6 +198,10 @@ Voici comment vous pouvez contribuer :
 ## Licence
 
 MemFree est soutenu par[MemGratuit](https://www.memfree.me/)et sous licence[AVEC](https://github.com/memfreeme/memfree/blob/main/LICENSE).
+
+## Projets connexes
+
+-   [Aperçu de l'interface utilisateur React + Shadcn](https://reactshadcn.com)
 
 ## Histoire des étoiles
 
