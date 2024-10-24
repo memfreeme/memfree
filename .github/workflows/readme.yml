@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - master
+      - auto-translation
 jobs:
   build:
     runs-on: ubuntu-latest
