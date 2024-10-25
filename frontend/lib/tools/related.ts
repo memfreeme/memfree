@@ -8,11 +8,7 @@ import util from 'util';
 
 const model = getLLM(GPT_4o_MIMI);
 
-export async function getRelatedQuestions(
-    query: string,
-    contexts: TextSource[],
-    onStream: StreamHandler,
-) {
+export async function getRelatedQuestions(query: string, contexts: TextSource[], onStream: StreamHandler) {
     const system = promptFormatterRelated(contexts);
     try {
         const result = await streamText({

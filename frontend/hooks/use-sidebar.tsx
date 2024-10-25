@@ -10,16 +10,12 @@ interface SidebarContext {
     isLoading: boolean;
 }
 
-const SidebarContext = React.createContext<SidebarContext | undefined>(
-    undefined,
-);
+const SidebarContext = React.createContext<SidebarContext | undefined>(undefined);
 
 export function useSidebar() {
     const context = React.useContext(SidebarContext);
     if (!context) {
-        throw new Error(
-            'useSidebarContext must be used within a SidebarProvider',
-        );
+        throw new Error('useSidebarContext must be used within a SidebarProvider');
     }
     return context;
 }
@@ -52,11 +48,5 @@ export function SidebarProvider({ children }: SidebarProviderProps) {
         return null;
     }
 
-    return (
-        <SidebarContext.Provider
-            value={{ isSidebarOpen, toggleSidebar, isLoading }}
-        >
-            {children}
-        </SidebarContext.Provider>
-    );
+    return <SidebarContext.Provider value={{ isSidebarOpen, toggleSidebar, isLoading }}>{children}</SidebarContext.Provider>;
 }

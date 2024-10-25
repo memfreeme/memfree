@@ -15,12 +15,8 @@ export async function compact(userId: string) {
             body: JSON.stringify({ userId: userId }),
         });
         if (!response.ok) {
-            console.error(
-                `Compact Error! Status: ${response.status}, StatusText: ${response.statusText}`,
-            );
-            throw new Error(
-                `Compact Error! Status: ${response.status}, StatusText: ${response.statusText}`,
-            );
+            console.error(`Compact Error! Status: ${response.status}, StatusText: ${response.statusText}`);
+            throw new Error(`Compact Error! Status: ${response.status}, StatusText: ${response.statusText}`);
         }
         const result = await response.json();
         console.log(`Compacted ${result} for user ${userId}`);

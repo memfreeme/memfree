@@ -24,10 +24,7 @@ interface ClearHistoryProps {
     clearSearches: () => ServerActionResult<void>;
 }
 
-export function ClearHistory({
-    isEnabled = false,
-    clearSearches,
-}: ClearHistoryProps) {
+export function ClearHistory({ isEnabled = false, clearSearches }: ClearHistoryProps) {
     const [open, setOpen] = React.useState(false);
     const [isPending, startTransition] = React.useTransition();
     const { clearSearches: clearLocalSearches } = useSearchStore();
@@ -35,32 +32,17 @@ export function ClearHistory({
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
-                <Button
-                    variant="outline"
-                    className="p-2"
-                    disabled={!isEnabled || isPending}
-                >
-                    {isPending ? (
-                        <LoaderCircle className="size-4" />
-                    ) : (
-                        <>Delete All Search History</>
-                    )}
+                <Button variant="outline" className="p-2" disabled={!isEnabled || isPending}>
+                    {isPending ? <LoaderCircle className="size-4" /> : <>Delete All Search History</>}
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>
-                        Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                        This will permanently delete your search history and
-                        remove your data from our servers.
-                    </AlertDialogDescription>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>This will permanently delete your search history and remove your data from our servers.</AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel disabled={isPending}>
-                        Cancel
-                    </AlertDialogCancel>
+                    <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
                     <AlertDialogAction
                         disabled={isPending}
                         onClick={(event) => {
@@ -76,9 +58,7 @@ export function ClearHistory({
                             });
                         }}
                     >
-                        {isPending && (
-                            <LoaderCircle className="mr-2 animate-spin" />
-                        )}
+                        {isPending && <LoaderCircle className="mr-2 animate-spin" />}
                         Delete
                     </AlertDialogAction>
                 </AlertDialogFooter>

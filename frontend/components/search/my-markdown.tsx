@@ -10,10 +10,7 @@ import { TextSource } from '@/lib/types';
 import { InlineCitation } from '@/components/search/inline-citation';
 import MemoizedCodeBlock from '@/components/search/code-block';
 
-const processNodeWithCitations = (
-    nodeContent: string,
-    sources: TextSource[],
-) => {
+const processNodeWithCitations = (nodeContent: string, sources: TextSource[]) => {
     const matches = Array.from(nodeContent.matchAll(/\[citation:(\d+)\]/g));
     const elements: (string | JSX.Element)[] = [];
     let lastIndex = 0;
@@ -26,18 +23,8 @@ const processNodeWithCitations = (
             elements.push(nodeContent.slice(lastIndex, index));
         }
 
-        if (
-            !isNaN(citationNumber) &&
-            citationNumber > 0 &&
-            citationNumber <= sources.length
-        ) {
-            elements.push(
-                <InlineCitation
-                    key={`citation-${index}`}
-                    source={sources[citationNumber - 1]}
-                    sourceNumber={citationNumber}
-                />,
-            );
+        if (!isNaN(citationNumber) && citationNumber > 0 && citationNumber <= sources.length) {
+            elements.push(<InlineCitation key={`citation-${index}`} source={sources[citationNumber - 1]} sourceNumber={citationNumber} />);
         } else {
             elements.push(`[citation:${citationNumber}]`);
         }
@@ -52,13 +39,7 @@ const processNodeWithCitations = (
     return elements.filter((element) => element);
 };
 
-function MyMarkdown({
-    content,
-    sources,
-}: {
-    content: string;
-    sources: TextSource[];
-}) {
+function MyMarkdown({ content, sources }: { content: string; sources: TextSource[] }) {
     return (
         <ReactMarkdown
             remarkPlugins={[RemarkMath, remarkGfm]}
@@ -74,64 +55,36 @@ function MyMarkdown({
             ]}
             components={{
                 p: ({ node, ...props }) => {
-                    const childrenArray = React.Children.toArray(
-                        props.children,
-                    );
+                    const childrenArray = React.Children.toArray(props.children);
 
                     return (
                         <p dir="auto">
                             {childrenArray.map((child, index) => {
                                 if (typeof child === 'string') {
-                                    return (
-                                        <React.Fragment key={index}>
-                                            {processNodeWithCitations(
-                                                child,
-                                                sources,
-                                            )}
-                                        </React.Fragment>
-                                    );
+                                    return <React.Fragment key={index}>{processNodeWithCitations(child, sources)}</React.Fragment>;
                                 } else {
-                                    return (
-                                        <React.Fragment key={index}>
-                                            {child}
-                                        </React.Fragment>
-                                    );
+                                    return <React.Fragment key={index}>{child}</React.Fragment>;
                                 }
                             })}
                         </p>
                     );
                 },
                 li: ({ node, ...props }) => {
-                    const childrenArray = React.Children.toArray(
-                        props.children,
-                    );
+                    const childrenArray = React.Children.toArray(props.children);
 
                     return (
                         <li dir="auto">
                             {childrenArray.map((child, index) => {
                                 if (typeof child === 'string') {
-                                    return (
-                                        <React.Fragment key={index}>
-                                            {processNodeWithCitations(
-                                                child,
-                                                sources,
-                                            )}
-                                        </React.Fragment>
-                                    );
+                                    return <React.Fragment key={index}>{processNodeWithCitations(child, sources)}</React.Fragment>;
                                 } else {
-                                    return (
-                                        <React.Fragment key={index}>
-                                            {child}
-                                        </React.Fragment>
-                                    );
+                                    return <React.Fragment key={index}>{child}</React.Fragment>;
                                 }
                             })}
                         </li>
                     );
                 },
-                pre: ({ node, children, ...props }) => (
-                    <MemoizedCodeBlock {...props}>{children}</MemoizedCodeBlock>
-                ),
+                pre: ({ node, children, ...props }) => <MemoizedCodeBlock {...props}>{children}</MemoizedCodeBlock>,
             }}
         >
             {content}

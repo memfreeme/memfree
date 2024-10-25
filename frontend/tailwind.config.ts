@@ -2,13 +2,7 @@ import type { Config } from 'tailwindcss';
 
 const config = {
     darkMode: 'class',
-    content: [
-        './components/**/*.{ts,tsx}',
-        './app/**/*.{ts,tsx}',
-        './src/**/*.{ts,tsx}',
-        './ui/**/*.{ts,tsx}',
-        './content/**/*.{md,mdx}',
-    ],
+    content: ['./components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}', './ui/**/*.{ts,tsx}', './content/**/*.{md,mdx}'],
     future: {
         hoverOnlyWhenSupported: true,
     },
@@ -152,8 +146,7 @@ const config = {
                 'fade-in': 'fade-in 0.4s',
                 'fade-out': 'fade-out 0.4s',
 
-                'spin-around':
-                    'spin-around calc(var(--speed) * 2) infinite linear',
+                'spin-around': 'spin-around calc(var(--speed) * 2) infinite linear',
                 'slide': 'slide var(--speed) ease-in-out infinite alternate',
             },
             typography: (theme) => ({
@@ -200,10 +193,7 @@ const config = {
             }),
         },
     },
-    plugins: [
-        require('tailwindcss-animate'),
-        require('@tailwindcss/typography'),
-    ],
+    plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
 } satisfies Config;
 
 export default config;
