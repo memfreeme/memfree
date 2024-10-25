@@ -194,7 +194,6 @@ Here's how you can contribute:
 
 ## Help and Support
 
-- [MemFree Feedback](https://feedback.memfree.me/)
 - [MemFree Discord](https://discord.com/invite/7QqyMSTaRq)
 
 ## Roadmap
