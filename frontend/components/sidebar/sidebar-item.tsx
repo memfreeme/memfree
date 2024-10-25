@@ -7,6 +7,7 @@ import { type Search } from '@/lib/types';
 import { useSidebar } from '@/hooks/use-sidebar';
 import useMediaQuery from '@/hooks/use-media-query';
 import { format } from 'date-fns';
+import { resolveTime } from '@/lib/utils';
 
 interface SidebarItemProps {
     index: number;
@@ -54,7 +55,7 @@ export function SidebarItem({ search: search, children }: SidebarItemProps) {
                         <span>{search.messages.length}</span>
                         <span className="ml-1">{search.messages.length > 1 ? 'messages' : 'message'}</span>
                     </div>
-                    {!isActive && <span>{format(new Date(search.createdAt), 'MMM d, yyyy h:mm a')}</span>}
+                    {!isActive && <span>{resolveTime(search)}</span>}
                 </div>
             </div>
             {isActive && <div className="absolute right-2 top-1/2 transform -translate-y-1/2">{children}</div>}

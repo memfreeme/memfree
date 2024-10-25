@@ -3,6 +3,7 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { toast } from 'sonner';
 import { NEXT_PUBLIC_APP_URL } from '@/lib/client_env';
+import { format } from 'date-fns';
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -15,6 +16,23 @@ export function formatDate(input: string | number): string {
         day: 'numeric',
         year: 'numeric',
     });
+}
+
+export function resolveTime(search) {
+    const createdAt = new Date(search.createdAt);
+    const now = new Date();
+
+    const timeDiff = now.getTime() - createdAt.getTime();
+
+    const diffInMinutes = Math.floor(timeDiff / (1000 * 60));
+    const diffInHours = Math.floor(timeDiff / (1000 * 60 * 60));
+    const diffInDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+    if (diffInMinutes <= 60) return `${diffInMinutes} minutes ago`;
+    if (diffInHours <= 24) return `${diffInHours} hours ago`;
+    if (diffInDays <= 7) return `${diffInDays} days ago`;
+
+    return format(new Date(search.createdAt), 'MMM d, yyyy h:mm a');
 }
 
 export function formatDateTime(input: string | number): string {
@@ -53,7 +71,7 @@ export function formatBytes(
     const accurateSizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB'];
     if (bytes === 0) return '0 Byte';
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
-    return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${sizeType === 'accurate' ? accurateSizes[i] ?? 'Bytest' : sizes[i] ?? 'Bytes'}`;
+    return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${sizeType === 'accurate' ? (accurateSizes[i] ?? 'Bytest') : (sizes[i] ?? 'Bytes')}`;
 }
 
 export function getFileSizeLimit(user: any) {
