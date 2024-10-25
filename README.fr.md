@@ -54,7 +54,7 @@ Memfree utilise le modèle d'IA le plus puissant - Claude 3.5 Sonnet et le frame
 
 ## Fonctionnalités de recherche IA hybride MemFree
 
-MemFree is equipped with powerful features that cater to various search and productivity needs:
+MemFree est équipé de fonctionnalités puissantes qui répondent à divers besoins de recherche et de productivité :
 
 -   🤖**Multiple AI Models**: Intègre ChatGPT, Claude et Gemini pour diverses capacités d'IA.
 
