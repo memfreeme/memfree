@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface SearchLimit {
     searchCount: number;
@@ -38,7 +38,7 @@ const useSearchLimit = create<SearchLimit>()(
         }),
         {
             name: 'search-limit',
-            getStorage: () => localStorage,
+            storage: createJSONStorage(() => localStorage),
         },
     ),
 );
