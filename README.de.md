@@ -70,7 +70,11 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 
 -   🌍**Mehrsprachige Unterstützung**: Verfügbar in Englisch, Chinesisch, Deutsch, Französisch, Spanisch, Japanisch und Arabisch.
 
+<<<<<<< HEAD
+-   🔗**Chrome-Lesezeichen-Synchronisierung**: One-click synchronization and indexing.
+=======
 -   🔗**Chrome-Lesezeichen-Synchronisierung**: Synchronisierung und Indizierung mit einem Klick.
+>>>>>>> cc296ef9fbf7d399a15edfe9b9fda3f7dc086433
 
 -   📤**Ergebnisfreigabe**: Teilen Sie ganz einfach Ihre Suchergebnisse.
 
@@ -175,7 +179,7 @@ Holen Sie sich einen Serper-API-Schlüssel:[Serper](https://serper.dev/api-key)
 
 So können Sie einen Beitrag leisten:
 
--   [Öffnen Sie ein Problem](https://github.com/memfreeme/memfree/issues)wenn Sie glauben, dass Sie auf einen Fehler gestoßen sind.
+-   [Öffnen Sie ein Problem](https://github.com/memfreeme/memfree/issues) if you believe you've encountered a bug.
 -   Machen Sie ein[Pull-Anfrage](https://github.com/memfreeme/memfree/pulls)um neue Funktionen hinzuzufügen/die Lebensqualität zu verbessern/Fehler zu beheben.
 
 ## Vielen Dank an alle Mitwirkenden
