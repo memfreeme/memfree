@@ -54,7 +54,7 @@
         "clsx": "^2.1.1",
         "cmdk": "0.2.0",
         "contentlayer2": "^0.4.6",
-        "date-fns": "^4.1.0",
+        "date-fns": "^3.0.0",
         "exa-js": "^1.0.14",
         "google-auth-library": "^9.4.1",
         "heic2any": "^0.0.4",
