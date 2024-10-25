@@ -16,6 +16,7 @@ import { ImageSource, Message as StoreMessage, SearchCategory, TextSource, Video
 import { streamText, tool } from 'ai';
 import util from 'util';
 import { z } from 'zod';
+import { generateText } from 'ai';
 
 export async function autoAnswer(
     messages: StoreMessage[],
@@ -29,6 +30,21 @@ export async function autoAnswer(
     try {
         const newMessages = getHistoryMessages(isPro, messages);
         const query = newMessages[newMessages.length - 1].content;
+
+        let summaryTitle = '';
+        let summaryText = '';
+
+        try {
+            const { text } = await generateText({
+                model: getLLM('gpt-4o-mini'),
+                system: 'You are a professional writer. You write simple, clear, and concise content.',
+                prompt: `Summarize the following article in 3-5 sentences: ${query}`,
+            });
+            summaryTitle = `Summary of "${query}"`;
+            summaryText = text;
+        } catch (error) {
+            console.error('Error generating summary:', error);
+        }
 
         let texts: TextSource[] = [];
         let images: ImageSource[] = [];
@@ -171,6 +187,11 @@ export async function autoAnswer(
             const fetchedVideos = await videoFetchPromise;
             videos = fetchedVideos.videos.slice(0, 8);
             await streamResponse({ videos: videos }, onStream);
+        }
+
+        if (summaryText) {
+            await streamResponse({ sources: texts, title: summaryTitle }, onStream);
+            await streamResponse({ summary: summaryText }, onStream);
         }
 
         incSearchCount(userId).catch((error) => {
