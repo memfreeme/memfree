@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**英语**\|[中文](./README.zh-CN.md)\|[德语](./README.de.md)\|[法语](./README.fr.md) \| [西班牙语](README.es.md)\|[日本人](./README.ja.md)
+**英语**\|[中文](./README.zh-CN.md)\|[德语](./README.de.md)\|[法语](./README.fr.md)\|[Español](README.es.md)\|[日本人](./README.ja.md)
 
 </div>
 
@@ -83,7 +83,7 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 -   **🖥️ 实时 UI 预览**：即时渲染并预览生成的 UI
 -   **🔍 AI 支持的内容搜索**：使用我们先进的人工智能搜索功能，用相关内容丰富您的用户界面
 -   **🖼 图像驱动的 UI 生成**：创建与您的参考图像紧密匹配的 UI 组件和页面
--   **⚛️ React + TailWind + Shadcn UI Integration**：使用最流行的前端堆栈利用人工智能生成的代码：React、TailWind 和 Shadcn UI
+-   **⚛️ React + TailWind + Shadcn UI 集成**：使用最流行的前端堆栈利用人工智能生成的代码：React、TailWind 和 Shadcn UI
 -   **🚀 一键式 UI 发布**：只需单击一下即可立即将您的 UI 发布并共享到网络上
 -   **📱 响应式代码和预览**：跨各种设备实时预览您的UI，确保完美适应所有屏幕尺寸
 -   **🌓 深色模式代码和预览**：轻松生成人工智能驱动的 UI 代码，并内置深色模式支持，让您可以立即预览浅色和深色模式
