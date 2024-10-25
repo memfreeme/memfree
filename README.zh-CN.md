@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**英语**\|[中文](./README_ZH.md)\|[德语](./README_DE.md)\|[法语](./README_FR.md)\|[西班牙语](README_ES.md)\|[日本人](./README_JA.md)
+**英语**\|[中文](./README.zh-CN.md)\|[德语](./README.de.md)\|[法语](./README.fr.md)\|[西班牙语](README.es.md)\|[日本人](./README.ja.md)
 
 </div>
 
@@ -56,17 +56,27 @@ Memfree 使用最强大的 AI 模型 - Claude 3.5 Sonnet 和最流行的前端�
 
 MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
--   **多种AI模型**：集成ChatGPT、Claude、Gemini等多种AI能力。
--   **支持多种搜索引擎**：适用于 Google、Exa 和 Vector。
--   **多种搜索输入格式**：文本、图片、文件、网页，特别支持多图搜索、比较、总结、分析。
--   **多种结果呈现方式**：文本、思维导图、图像和视频。
--   **本地文件格式兼容性**：支持文本、PDF、Docx、PPTX 和 Markdown 文件。
--   **跨设备同步**：跨多个设备保存和同步搜索历史记录。
--   **多语言支持**：提供英语、中文、德语、法语、西班牙语、日语和阿拉伯语版本。
--   **Chrome 书签同步**：一键同步和索引。
--   **成果分享**：轻松分享您的搜索结果。
--   **上下文连续搜索**：根据上下文无缝搜索。
--   **自动网络搜索决策**：自动确定何时执行互联网搜索。
+-   🤖**多种AI模型**：集成ChatGPT、Claude、Gemini等多种AI能力。
+
+-   🌐**支持多种搜索引擎**：适用于 Google、Exa 和 Vector。
+
+-   🖼️**多种搜索输入格式**：文本、图片、文件、网页，特别支持多图搜索、比较、总结、分析。
+
+-   📊**多种结果呈现方法**：文本、思维导图、图像和视频。
+
+-   📄**本地文件格式兼容性**：支持文本、PDF、Docx、PPTX 和 Markdown 文件。
+
+-   🔄**跨设备同步**：跨多个设备保存和同步搜索历史记录。
+
+-   🌍**多语言支持**：提供英语、中文、德语、法语、西班牙语、日语和阿拉伯语版本。
+
+-   🔗**Chrome 书签同步**：一键同步和索引。
+
+-   📤**成果分享**：轻松分享您的搜索结果。
+
+-   🔍**上下文连续搜索**：根据上下文无缝搜索。
+
+-   ⚙️**自动网络搜索决策**：自动确定何时执行互联网搜索。
 
 ## MemFree AI UI 生成器功能
 
@@ -117,9 +127,13 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
 ### 先决条件
 
-#### 安装好
+#### Install Bun
 
     curl -fsSL https://bun.sh/install | bash
+
+> 未找到面包错误
+
+如果您收到与未找到 Bun 命令相关的错误。查看：[Bun 官方文档](https://bun.sh/docs/installation#checking-installation)
 
 #### Upstash Redis
 
@@ -184,6 +198,10 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 ## 执照
 
 MemFree 由以下机构支持[内存自由](https://www.memfree.me/)并获得许可[和](https://github.com/memfreeme/memfree/blob/main/LICENSE).
+
+## 相关项目
+
+-   [React + Shadcn UI 预览](https://reactshadcn.com)
 
 ## 明星历史
 
