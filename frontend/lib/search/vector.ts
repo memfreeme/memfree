@@ -10,16 +10,21 @@ export class VectorSearch implements SearchSource {
     private userId: string;
     private url?: string;
 
+    private static readonly DEFAULT_DISTANCE = 0.5;
+    private static readonly URL_DISTANCE = 0.9;
+
     constructor(userId: string, url?: string) {
         this.userId = userId;
         this.url = url;
     }
 
-    async search(query: string): Promise<SearchResult> {
-        const searchUrl = `${VECTOR_HOST}/api/vector/search`;
+    private get searchUrl() {
+        return `${VECTOR_HOST}/api/vector/search`;
+    }
 
+    async search(query: string): Promise<SearchResult> {
         try {
-            const response = await fetch(searchUrl, {
+            const response = await fetch(this.searchUrl, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -31,30 +36,27 @@ export class VectorSearch implements SearchSource {
                     query,
                 }),
             });
+
             if (!response.ok) {
                 throw new Error(`Error! status: ${response.status}`);
             }
 
-            let texts: TextSource[] = [];
-            let images: ImageSource[] = [];
             const result = await response.json();
 
-            // console.log('vector search result:', result);
+            const distance = this.url ? VectorSearch.URL_DISTANCE : VectorSearch.DEFAULT_DISTANCE;
 
-            let distance = 0.5;
-            if (this.url) {
-                distance = 0.9;
-            }
+            const texts: TextSource[] = [];
+            const images: ImageSource[] = [];
 
-            result
-                .filter((item) => item._distance <= distance)
-                .map((item) => {
+            result.forEach((item) => {
+                if (item._distance <= distance) {
                     texts.push({
                         title: item.title,
                         url: item.url,
                         content: item.text,
                         type: 'vector',
                     });
+                    // Uncomment if you need to handle images
                     // if (item.image) {
                     //     images.push({
                     //         title: item.title,
@@ -63,7 +65,9 @@ export class VectorSearch implements SearchSource {
                     //         type: 'vector',
                     //     });
                     // }
-                });
+                }
+            });
+
             return { texts, images };
         } catch (error) {
             logError(error, 'search-vector');
