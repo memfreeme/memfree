@@ -3,12 +3,7 @@ import 'server-only';
 import { SerperSearch } from '@/lib/search/serper';
 import { VectorSearch } from '@/lib/search/vector';
 import { EXASearch } from '@/lib/search/exa';
-import { 
-    ImageSource, 
-    SearchCategory, 
-    TextSource, 
-    VideoSource 
-} from '@/lib/types';
+import { ImageSource, SearchCategory, TextSource, VideoSource } from '@/lib/types';
 
 export interface SearchOptions {
     categories?: string[];
@@ -53,7 +48,7 @@ export function getVectorSearch(userId: string, url?: string): SearchSource {
  */
 export function getSearchEngine(options: SearchOptions = {}): SearchSource {
     const { categories = [], engines, language, domains } = options;
-    
+
     if (categories.includes(SearchCategory.ALL)) {
         return new SerperSearch(options);
     }
