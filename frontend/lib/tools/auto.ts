@@ -35,13 +35,14 @@ export async function autoAnswer(
         let summaryText = '';
 
         try {
-            const { text } = await generateText({
+            generateText({
                 model: getLLM('gpt-4o-mini'),
-                system: 'You are a professional writer. You write simple, clear, and concise content.',
-                prompt: `Summarize the following article in 3-5 sentences: ${query}`,
+                system: 'You are a professional writer. Write simple, clear, and concise content.',
+                prompt: `Please give the following question a concise title: ${query}`,
+            }).then(({ text }) => {
+                summaryTitle = `Summary of "${query}"`;
+                summaryText = text;
             });
-            summaryTitle = `Summary of "${query}"`;
-            summaryText = text;
         } catch (error) {
             console.error('Error generating summary:', error);
         }
