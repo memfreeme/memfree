@@ -32,7 +32,12 @@ export function ClearHistory({ isEnabled = false, clearSearches }: ClearHistoryP
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
-                <Button variant="outline" className="p-2" disabled={!isEnabled || isPending}>
+                <Button
+                    variant="outline"
+                    className="p-2"
+                    disabled={!isEnabled || isPending}
+                    aria-label={isPending ? 'Deleting search history' : 'Delete all search history'}
+                >
                     {isPending ? <LoaderCircle className="size-4" /> : <>Delete All Search History</>}
                 </Button>
             </AlertDialogTrigger>
