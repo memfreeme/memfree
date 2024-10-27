@@ -153,7 +153,7 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
     bun i
 
-    cp env.example .env
+    cp env-example .env
 
     # Add your OpenAI API Key, Upstash Redis URL, and Serper API Key to .env
 
@@ -165,7 +165,7 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
     bun i
 
-    cp env.example .env
+    cp env-example .env
 
     # Add your OpenAI API Key, Upstash Redis URL to .env
 
