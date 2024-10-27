@@ -156,7 +156,7 @@ cd frontend
 
 bun i
 
-cp env.example .env
+cp env-example .env
 
 # Add your OpenAI API Key, Upstash Redis URL, and Serper API Key to .env
 
@@ -170,7 +170,7 @@ cd vector
 
 bun i
 
-cp env.example .env
+cp env-example .env
 
 # Add your OpenAI API Key, Upstash Redis URL to .env
 

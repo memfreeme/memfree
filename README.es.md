@@ -153,7 +153,7 @@ Obtenga una clave API de Serper:[Serpiente](https://serper.dev/api-key)
 
     bun i
 
-    cp env.example .env
+    cp env-example .env
 
     # Add your OpenAI API Key, Upstash Redis URL, and Serper API Key to .env
 
@@ -165,7 +165,7 @@ Obtenga una clave API de Serper:[Serpiente](https://serper.dev/api-key)
 
     bun i
 
-    cp env.example .env
+    cp env-example .env
 
     # Add your OpenAI API Key, Upstash Redis URL to .env
 

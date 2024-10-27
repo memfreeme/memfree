@@ -42,7 +42,7 @@ Before contributing, ensure you have the following set up:
 ```
 cd frontend
 
-bun icp env.example .env
+bun icp env-example .env
 
 bun run dev
 ```
