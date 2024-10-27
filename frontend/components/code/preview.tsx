@@ -13,8 +13,21 @@ interface PreviewProps {
 export interface PreviewRef {
     captureIframe: () => Promise<void>;
     toggleDarkMode: () => void;
-    isDaskMode: () => boolean;
+    isDarkMode: () => boolean;
 }
+
+const ErrorDisplay: React.FC<{ error: string, onSelect: (code: string) => void }> = ({ error, onSelect }) => (
+    <div className="text-red-500 p-4 relative min-h-20">
+        Error: {error}
+        <Button
+            size="sm"
+            className="absolute bottom-2 right-2"
+            onClick={() => onSelect(`Please fix this error: \n${error}. \nGenerate the whole correct code again`)}
+        >
+            Auto Fix Error
+        </Button>
+    </div>
+);
 
 export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode, onSelect }, ref) => {
     const [error, setError] = useState<string | null>(null);
@@ -30,10 +43,11 @@ export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode, on
         try {
             const importCheckResult = checkImports(componentCode);
             if (!importCheckResult.isValid) {
-                logClientError(importCheckResult.message, 'checkImports');
                 setError(importCheckResult.message);
+                logClientError(importCheckResult.message, 'checkImports');
                 return null;
             }
+
             const { code } = transformer(componentCode, {
                 filename: 'dynamic-component.tsx',
                 presets: ['react', 'typescript'],
@@ -41,8 +55,9 @@ export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode, on
             });
             return code;
         } catch (error) {
-            logClientError(error.message, 'transformedCode');
-            setError(`Transformation error: ${error.message}`);
+            const errorMsg = error instanceof Error ? error.message : 'Unknown transformation error';
+            setError(`Transformation error: ${errorMsg}`);
+            logClientError(errorMsg, 'transformedCode');
             return null;
         }
     }, [componentCode, transformer]);
@@ -70,108 +85,73 @@ export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode, on
                 throw new Error('No valid React component found in the module');
             }
         } catch (error) {
-            logClientError(error.message, 'loadComponent');
-            console.error('Error loading component:', error);
-            setError(error instanceof Error ? error.message : 'An unknown error occurred');
+            const errorMsg = error instanceof Error ? error.message : 'Unknown component load error';
+            setError(errorMsg);
+            logClientError(errorMsg, 'loadComponent');
         }
     }, [transformedCode]);
 
     useEffect(() => {
         loadComponent();
-
-        return () => {
-            if (rendererRef.current) {
-                rendererRef.current.cleanup();
-            }
-        };
+        return () => rendererRef.current?.cleanup();
     }, [loadComponent]);
 
     const captureIframe = async () => {
-        if (iframeRef.current) {
-            try {
-                if (isGeneratingScreenshot) return;
-                setIsGeneratingScreenshot(true);
-                await new Promise((resolve) => {
-                    if (iframeRef.current.contentDocument.readyState === 'complete') {
-                        resolve(null);
-                    } else {
-                        iframeRef.current.onload = resolve;
-                    }
-                });
+        if (!iframeRef.current || isGeneratingScreenshot) return;
 
-                const html2canvas = (await import('html2canvas')).default;
+        try {
+            setIsGeneratingScreenshot(true);
+            await new Promise((resolve) => {
+                iframeRef.current?.contentDocument.readyState === 'complete'
+                    ? resolve(null)
+                    : iframeRef.current.onload = resolve;
+            });
 
-                const scale = window.devicePixelRatio || 1;
+            const html2canvas = (await import('html2canvas')).default;
+            const scale = window.devicePixelRatio || 1;
+            const canvas = await html2canvas(iframeRef.current.contentDocument.body, {
+                useCORS: true,
+                allowTaint: true,
+                foreignObjectRendering: true,
+                logging: false,
+                scale,
+            });
 
-                const canvas = await html2canvas(iframeRef.current.contentDocument.body, {
-                    useCORS: true,
-                    allowTaint: true,
-                    foreignObjectRendering: true,
-                    logging: false,
-                    scale: scale,
-                });
-
-                const timestamp = new Date().getTime();
-
-                const imgUrl = canvas.toDataURL('image/png');
-
-                const blob = await (await fetch(imgUrl)).blob();
-                const blobUrl = URL.createObjectURL(blob);
-
-                const link = document.createElement('a');
-                link.href = blobUrl;
-                link.download = `memfree-generate-ui-${timestamp}.png`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(blobUrl);
-            } catch (err) {
-                console.error('Failed to capture iframe content:', err);
-                setError('Failed to capture iframe content: ' + err.message);
-                logClientError(err.message, 'captureIframe');
-            } finally {
-                setIsGeneratingScreenshot(false);
-            }
-        } else {
-            console.error('Iframe element not found');
-            setError('Iframe element not found');
+            const imgUrl = canvas.toDataURL('image/png');
+            const blob = await (await fetch(imgUrl)).blob();
+            const blobUrl = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = `memfree-generate-ui-${Date.now()}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(blobUrl);
+        } catch (err) {
+            const errorMsg = err instanceof Error ? err.message : 'Unknown screenshot capture error';
+            setError('Failed to capture iframe content: ' + errorMsg);
+            logClientError(errorMsg, 'captureIframe');
+        } finally {
+            setIsGeneratingScreenshot(false);
         }
     };
 
     useImperativeHandle(ref, () => ({
         captureIframe,
         toggleDarkMode,
-        isDaskMode,
+        isDarkMode,
     }));
 
     const toggleDarkMode = useCallback(() => {
-        if (rendererRef.current) {
-            rendererRef.current.toggleDarkMode();
-        }
+        rendererRef.current?.toggleDarkMode();
     }, []);
 
-    const isDaskMode = useCallback(() => {
-        if (rendererRef.current) {
-            return rendererRef.current.isDark();
-        }
-        return false;
-    }, []);
+    const isDarkMode = useCallback(() => rendererRef.current?.isDark() ?? false, []);
 
     return (
         <div className="flex flex-col size-full grow justify-center">
             {error ? (
-                <div className="text-red-500 p-4 relative min-h-20">
-                    Error: {error}
-                    <Button
-                        size="sm"
-                        className="absolute bottom-2 right-2"
-                        onClick={() => {
-                            onSelect(`Plase fix this error: \n${error}. \nGenerate the whole correct code again`);
-                        }}
-                    >
-                        Auto Fix Error
-                    </Button>
-                </div>
+                <ErrorDisplay error={error} onSelect={onSelect!} />
             ) : (
                 <iframe className="w-full border-none" ref={iframeRef} title="Dynamic Component" sandbox="allow-scripts allow-same-origin" />
             )}
