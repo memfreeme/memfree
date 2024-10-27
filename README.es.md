@@ -66,7 +66,7 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 
 -   📄**Compatibilidad de formatos de archivos locales**: Admite archivos de texto, PDF, Docx, PPTX y Markdown.
 
--   🔄**Sincronización entre dispositivos**: guarde y sincronice el historial de búsqueda en varios dispositivos.
+-   🔄**Sincronización entre dispositivos**: guarde y sincronice el historial de búsqueda en múltiples dispositivos.
 
 -   🌍**Soporte multilingüe**: Disponible en inglés, chino, alemán, francés, español, japonés y árabe.
 
@@ -88,7 +88,7 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 -   **📱 Código responsivo y vista previa**: Obtenga una vista previa de su interfaz de usuario en varios dispositivos en tiempo real, lo que garantiza una adaptación perfecta a todos los tamaños de pantalla.
 -   **🌓 Código y vista previa del modo oscuro**: Genere sin esfuerzo código de interfaz de usuario impulsado por IA con soporte para modo oscuro incorporado, lo que le permite obtener una vista previa de los modos claro y oscuro al instante.
 -   **📸 Exportación de capturas de pantalla de la interfaz de usuario**: Exporte y comparta fácilmente sus diseños de interfaz de usuario como capturas de pantalla de alta calidad para una colaboración perfecta
--   **🛠️ Corrección de errores inteligente**: Si bien el modelo de IA avanzado de MemFree y las sofisticadas reglas de código se esfuerzan por alcanzar la perfección, pueden ocurrir errores ocasionales. Nuestra función de corrección inteligente de errores le permite solucionar instantáneamente cualquier problema con solo un clic
+-   **🛠️ Corrección de errores inteligente**: Si bien el modelo de IA avanzado de MemFree y las sofisticadas reglas de código se esfuerzan por alcanzar la perfección, pueden ocurrir errores ocasionales. Nuestra función de corrección inteligente de errores le permite solucionar instantáneamente cualquier problema con un solo clic
 
 ## Flujo de trabajo de búsqueda de IA híbrida de MemFree
 
@@ -159,7 +159,7 @@ Obtenga una clave API de Serper:[Serpiente](https://serper.dev/api-key)
 
     bun run dev
 
-### Servicio vectorial
+### Servicio de vectores
 
     cd vector
 
