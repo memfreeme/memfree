@@ -1,5 +1,4 @@
 'use client';
-
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { LoaderCircle } from 'lucide-react';
@@ -30,33 +29,43 @@ export function ShareButton({ search, onCopy, buttonText, loadingText }: ShareBu
     }, [hasCopied]);
 
     const copyShareLink = async (search: Search) => {
-        if (!search.sharePath) {
-            return toast.error(t('copy-error'));
-        }
+        try {
+            if (!search.sharePath) {
+                throw new Error('Share path is missing');
+            }
 
-        const handleCopyValue = (value: string) => {
-            navigator.clipboard.writeText(value);
+            const url = new URL(window.location.href);
+            url.pathname = search.sharePath;
+
+            await navigator.clipboard.writeText(url.toString());
             setHasCopied(true);
-        };
-
-        const url = new URL(window.location.href);
-        url.pathname = search.sharePath;
-        handleCopyValue(url.toString());
-        onCopy();
-        toast.success(t('copy-success'));
+            onCopy();
+            toast.success(t('copy-success'));
+        } catch (error) {
+            toast.error(t('copy-error'));
+            console.error('Failed to copy share link:', error);
+        }
     };
 
     const handleShare = () => {
         startShareTransition(async () => {
-            const result = await shareSearch(search.id);
+            try {
+                const result = await shareSearch(search.id);
 
-            if (result && 'error' in result) {
-                toast.error(result.error);
-                return;
+                if (!result) {
+                    throw new Error('No result from shareSearch');
+                }
+
+                if ('error' in result) {
+                    toast.error(result.error);
+                    return;
+                }
+
+                await copyShareLink(result);
+            } catch (error) {
+                toast.error(t('share-error'));
+                console.error('Failed to share:', error);
             }
-
-            // @ts-ignore
-            copyShareLink(result);
         });
     };
 
