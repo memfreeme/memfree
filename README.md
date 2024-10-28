@@ -188,7 +188,7 @@ Here's how you can contribute:
 
 <p align="left">
  <a href="https://github.com/memfreeme/memfree/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=memfreeme/memfree" />
+  <img src="https://contrib.rocks/image?repo=memfreeme/memfree" />
  </a>
 </p>
 
