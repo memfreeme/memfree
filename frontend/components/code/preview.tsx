@@ -16,7 +16,7 @@ export interface PreviewRef {
     isDarkMode: () => boolean;
 }
 
-const ErrorDisplay: React.FC<{ error: string, onSelect: (code: string) => void }> = ({ error, onSelect }) => (
+const ErrorDisplay: React.FC<{ error: string; onSelect: (code: string) => void }> = ({ error, onSelect }) => (
     <div className="text-red-500 p-4 relative min-h-20">
         Error: {error}
         <Button
@@ -102,9 +102,7 @@ export const Preview = forwardRef<PreviewRef, PreviewProps>(({ componentCode, on
         try {
             setIsGeneratingScreenshot(true);
             await new Promise((resolve) => {
-                iframeRef.current?.contentDocument.readyState === 'complete'
-                    ? resolve(null)
-                    : iframeRef.current.onload = resolve;
+                iframeRef.current?.contentDocument.readyState === 'complete' ? resolve(null) : (iframeRef.current.onload = resolve);
             });
 
             const html2canvas = (await import('html2canvas')).default;
