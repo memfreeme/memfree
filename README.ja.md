@@ -37,7 +37,7 @@
 
 メムフリーは、<b>ハイブリッドAI検索エンジン</b>.
 
-MemFree を使用すると、知識ベースやインターネット全体から正確な回答を即座に得ることができます。
+MemFree を使用すると、ナレッジ ベースやインターネット全体から正確な回答を即座に得ることができます。
 
 MemFree は、<b>AI UI ジェネレーター</b>.
 
@@ -47,7 +47,7 @@ Memfree は、最も強力な AI モデルである Claude 3.5 Sonnet と、最�
 
 ## MemFree の価値は何ですか?
 
--   **効率的なナレッジ管理**: MemFree を使用すると、メモ、ブックマーク、ドキュメントを手動で整理する必要がなくなります。情報が必要な場合は、MemFree 内を検索するだけで関連する回答がすぐに見つかり、メモリが解放され、生産性が向上します。
+-   **効率的なナレッジマネジメント**: MemFree を使用すると、メモ、ブックマーク、ドキュメントを手動で整理する必要がなくなります。情報が必要な場合は、MemFree 内を検索するだけで関連する回答がすぐに見つかり、メモリが解放され、生産性が向上します。
 -   **時間を節約する AI サマリー**: MemFree は、複数の Google 検索結果をクリックする代わりに、AI を使用して Web ページやナレッジ ベースから最適なコンテンツを即座に要約し、貴重な時間を節約します。
 -   **費用対効果の高いソリューション**: ChatGPT Plus、Claude Pro、Gemini Advanced などのサービスへの複数のサブスクリプションは避けてください。 MemFree はそれらの機能を統合し、月々のコストを大幅に削減します。
 -   **100 倍高速な UI ページ作成**: テキストや画像を数秒で素晴らしい、本番環境に対応したコードに変換し、デザインを作成しながら視覚化し、ページをシームレスに公開します。
@@ -182,7 +182,7 @@ Serper API キーを取得します。[サーペル](https://serper.dev/api-key)
 
 <p align="left">
  <a href="https://github.com/memfreeme/memfree/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=memfreeme/memfree" />
+  <img src="https://contrib.rocks/image?repo=memfreeme/memfree" />
  </a>
 </p>
 
@@ -196,7 +196,7 @@ Serper API キーを取得します。[サーペル](https://serper.dev/api-key)
 
 ## ライセンス
 
-MemFree を支援しているのは、[メムフリー](https://www.memfree.me/)そして以下にライセンスされています[と](https://github.com/memfreeme/memfree/blob/main/LICENSE).
+MemFree をサポートしているのは、[メムフリー](https://www.memfree.me/)そして以下にライセンスされています[と](https://github.com/memfreeme/memfree/blob/main/LICENSE).
 
 ## 関連プロジェクト
 
