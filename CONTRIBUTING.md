@@ -67,6 +67,10 @@ bun i
 bun run build
 ```
 
+## Testing Guidelines
+
+Please refer to the [Testing Guidelines](./frontend/TESTING_GUIDELINES.md) for details on how to test your changes.
+
 ## One-Click Deployment
 
 MemFree offers a straightforward one-click deployment process:
