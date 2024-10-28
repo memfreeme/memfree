@@ -10,13 +10,13 @@ import { getSearchEngine } from '@/lib/search/search';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { accessWebPage } from '@/lib/tools/access';
 import { directlyAnswer } from '@/lib/tools/answer';
+import { generateTitle } from '@/lib/tools/generate-title';
 import { getRelatedQuestions } from '@/lib/tools/related';
 import { searchRelevantContent } from '@/lib/tools/search';
 import { ImageSource, Message as StoreMessage, SearchCategory, TextSource, VideoSource } from '@/lib/types';
 import { streamText, tool } from 'ai';
 import util from 'util';
 import { z } from 'zod';
-import { generateText } from 'ai';
 
 export async function autoAnswer(
     messages: StoreMessage[],
@@ -30,22 +30,6 @@ export async function autoAnswer(
     try {
         const newMessages = getHistoryMessages(isPro, messages);
         const query = newMessages[newMessages.length - 1].content;
-
-        let summaryTitle = '';
-        let summaryText = '';
-
-        try {
-            generateText({
-                model: getLLM('gpt-4o-mini'),
-                system: 'You are a professional writer. Write simple, clear, and concise content.',
-                prompt: `Please give the following question a concise title: ${query}`,
-            }).then(({ text }) => {
-                summaryTitle = `Summary of "${query}"`;
-                summaryText = text;
-            });
-        } catch (error) {
-            console.error('Error generating summary:', error);
-        }
 
         let texts: TextSource[] = [];
         let images: ImageSource[] = [];
@@ -79,6 +63,11 @@ export async function autoAnswer(
                 }),
             },
         });
+
+        let titlePromise;
+        if (messages.length === 1) {
+            titlePromise = generateTitle(query);
+        }
 
         let hasAnswer = false;
         let fullAnswer = '';
@@ -190,16 +179,17 @@ export async function autoAnswer(
             await streamResponse({ videos: videos }, onStream);
         }
 
-        if (summaryText) {
-            await streamResponse({ sources: texts, title: summaryTitle }, onStream);
-            await streamResponse({ summary: summaryText }, onStream);
+        let title = messages[0].content.substring(0, 50);
+        if (titlePromise) {
+            title = await titlePromise;
+            await streamResponse({ title: title }, onStream);
         }
 
         incSearchCount(userId).catch((error) => {
             console.error(`Failed to increment search count for user ${userId}:`, error);
         });
 
-        await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated);
+        await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated, SearchCategory.ALL, title);
         onStream?.(null, true);
     } catch (error) {
         const errorMessage = extractErrorMessage(error);
