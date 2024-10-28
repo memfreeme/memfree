@@ -17,7 +17,7 @@ export function CustomerPortalButton({ userStripeId }: CustomerPortalButtonProps
     const stripeSessionAction = () => startTransition(async () => await generateUserStripeSession());
 
     return (
-        <Button disabled={isPending} onClick={stripeSessionAction}>
+        <Button disabled={isPending} onClick={stripeSessionAction} aria-label={isPending ? 'Loading' : 'Manage Your Plan'}>
             {isPending ? (
                 <>
                     <Icons.spinner className="mr-2 size-4 animate-spin" /> Loading...

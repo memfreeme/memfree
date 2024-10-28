@@ -126,7 +126,12 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
                             <BillingFormButton year={isYearly} offer={offer} subscriptionPlan={subscriptionPlan} />
                         )
                     ) : (
-                        <Button variant={offer.title.toLocaleLowerCase() === 'pro' ? 'default' : 'outline'} rounded="full" onClick={signInModal.onOpen}>
+                        <Button
+                            variant={offer.title.toLocaleLowerCase() === 'pro' ? 'default' : 'outline'}
+                            rounded="full"
+                            onClick={signInModal.onOpen}
+                            aria-label="Sign in"
+                        >
                             Sign in
                         </Button>
                     )}

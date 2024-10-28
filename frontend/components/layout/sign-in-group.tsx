@@ -32,6 +32,7 @@ export function SignInGroup() {
                             setSignInClicked(false);
                         });
                     }}
+                    aria-label={signInClicked ? 'Signing in with Google' : 'Sign in with Google'}
                 >
                     {signInClicked ? <Icons.spinner className="mr-2 size-4 animate-spin" /> : <Icons.google className="mr-2 size-4" />} Sign In with Google
                 </Button>
@@ -46,6 +47,7 @@ export function SignInGroup() {
                             setSignInClicked(false);
                         });
                     }}
+                    aria-label={signInClicked ? 'Signing in with GitHub' : 'Sign in with GitHub'}
                 >
                     {signInClicked ? <Icons.spinner className="mr-2 size-4 animate-spin" /> : <Icons.gitHub className="mr-2 size-4" />} Sign In with Github
                 </Button>
