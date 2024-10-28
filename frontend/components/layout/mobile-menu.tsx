@@ -48,7 +48,7 @@ export function MarketingMenu({ items, user }: NavProps) {
                             return (
                                 <li key={title} className="border-b border-gray-200">
                                     <Button variant="link" asChild>
-                                        <Link href={href} prefetch={false}>
+                                        <Link aria-label={title} href={href} prefetch={false}>
                                             {title}
                                         </Link>
                                     </Button>
@@ -61,7 +61,7 @@ export function MarketingMenu({ items, user }: NavProps) {
                     <UserAccountNav user={user} />
                 ) : (
                     <Button className="rounded-full w-1/2">
-                        <Link href="login" prefetch={false}>
+                        <Link aria-label="Sign In" href="login" prefetch={false}>
                             Sign In
                         </Link>
                     </Button>

@@ -62,7 +62,7 @@ export function CustomProfile() {
                 ></TextareaAutosize>
             </CardContent>
             <CardFooter>
-                <Button className="p-4" disabled={isPending} onClick={handleSave}>
+                <Button className="p-4" disabled={isPending} onClick={handleSave} aria-label="Save your profile">
                     Save your profile
                 </Button>
             </CardFooter>

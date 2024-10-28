@@ -100,12 +100,14 @@ export default function MindMap({ value }) {
             <button
                 onClick={captureScreenshot}
                 disabled={isGeneratingScreenshot}
+                aria-label="Capture screenshot"
                 className="absolute bottom-2 right-10 p-2 bg-purple-500 text-white rounded-full hover:bg-purple-600 transition-colors"
             >
                 <Camera size={12} />
             </button>
             <button
                 onClick={toggleFullscreen}
+                aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
                 className="absolute bottom-2 right-2 p-2 bg-purple-500 text-white rounded-full hover:bg-purple-600 transition-colors"
             >
                 {isFullscreen ? <Minimize2 size={12} /> : <Maximize2 size={12} />}

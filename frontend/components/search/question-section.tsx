@@ -73,10 +73,15 @@ const QuestionSection: React.FC<QuestionSectionProps> = React.memo(({ mesageId, 
                     </DialogHeader>
                     <Textarea value={editedContent} onChange={(e) => setEditedContent(e.target.value)} className="min-h-[200px]" />
                     <DialogFooter>
-                        <Button variant="outline" className="md:mr-4 rounded-xl my-4 md:my-0" onClick={() => setIsEditModalOpen(false)}>
+                        <Button
+                            variant="outline"
+                            className="md:mr-4 rounded-xl my-4 md:my-0"
+                            onClick={() => setIsEditModalOpen(false)}
+                            aria-label={t('Cancel')}
+                        >
                             {t('Cancel')}
                         </Button>
-                        <Button className="rounded-xl" onClick={handleSaveEdit}>
+                        <Button className="rounded-xl" onClick={handleSaveEdit} aria-label={t('Search')}>
                             {t('Search')}
                         </Button>
                     </DialogFooter>

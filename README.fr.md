@@ -60,7 +60,7 @@ MemFree est équipé de fonctionnalités puissantes qui répondent à divers bes
 
 -   🌐**Plusieurs moteurs de recherche pris en charge**: Fonctionne avec Google, Exa et Vector.
 
--   🖼️**Format d'entrée de recherche multiple**: Texte, images, fichiers et pages Web, en particulier, il prend en charge la recherche, la comparaison, le résumé et l'analyse multi-images.
+-   🖼️**Format d'entrée de recherche multiple**: Texte, images, fichiers et pages Web, en particulier, il prend en charge la recherche, la comparaison, la synthèse et l'analyse multi-images.
 
 -   📊**Plusieurs méthodes de présentation des résultats**: Textes, cartes mentales, images et vidéos.
 
@@ -153,7 +153,7 @@ Obtenez une clé API Serper :[Serper](https://serper.dev/api-key)
 
     bun i
 
-    cp env.example .env
+    cp env-example .env
 
     # Add your OpenAI API Key, Upstash Redis URL, and Serper API Key to .env
 
@@ -165,7 +165,7 @@ Obtenez une clé API Serper :[Serper](https://serper.dev/api-key)
 
     bun i
 
-    cp env.example .env
+    cp env-example .env
 
     # Add your OpenAI API Key, Upstash Redis URL to .env
 

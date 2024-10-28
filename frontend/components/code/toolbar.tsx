@@ -76,13 +76,31 @@ export function CodeToolbar({ code, searchId, isReadOnly, resizablePanelRef, pre
                 </div>
                 <Separator orientation="vertical" className="mx-2 hidden h-4 md:flex" />
                 <div className="flex items-center space-x-2">
-                    <Button size="icon" variant="outline" className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5" onClick={toggleDarkMode}>
+                    <Button
+                        size="icon"
+                        variant="outline"
+                        className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5"
+                        onClick={toggleDarkMode}
+                        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                    >
                         {isDark ? <Icons.moon className="size-4 transition-all" /> : <Icons.sun className="size-4 transition-all" />}
                     </Button>
-                    <Button size="icon" variant="outline" className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5" onClick={handleCaptureIframe}>
+                    <Button
+                        size="icon"
+                        variant="outline"
+                        className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5"
+                        onClick={handleCaptureIframe}
+                        aria-label="Capture iframe"
+                    >
                         <Camera />
                     </Button>
-                    <Button size="icon" variant="outline" className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5" onClick={handleCopyToClipboard}>
+                    <Button
+                        size="icon"
+                        variant="outline"
+                        className="[&_svg]-h-3.5 size-7 rounded-[6px] [&_svg]:w-3.5"
+                        onClick={handleCopyToClipboard}
+                        aria-label={hasCopied ? 'Copied to clipboard' : 'Copy to clipboard'}
+                    >
                         {hasCopied ? <Check /> : <ClipboardIcon />}
                     </Button>
                     {!isReadOnly && (

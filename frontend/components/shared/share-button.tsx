@@ -75,6 +75,7 @@ export function ShareButton({ search, onCopy, buttonText, loadingText }: ShareBu
             className="z-50 h-[calc(theme(spacing.7)_-_1px)] gap-1 rounded-[6px] px-3 text-xs"
             disabled={isSharePending}
             onClick={handleShare}
+            aria-label={isSharePending ? loadingText : buttonText}
         >
             {isSharePending ? (
                 <>

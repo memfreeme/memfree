@@ -99,7 +99,7 @@ export function IndexWebPage() {
     return (
         <div className="flex flex-col w-full space-y-6 mt-4">
             <Textarea placeholder={t('placeholder')} rows={3} value={url} onChange={(e) => setUrl(e.target.value)} />
-            <Button className="rounded-full" variant={'outline'} onClick={handleIndex}>
+            <Button className="rounded-full" variant={'outline'} onClick={handleIndex} aria-label={isLoading ? 'Loading' : t('index-button')}>
                 {isLoading ? <Loader2 className="size-6 text-primary animate-spin mr-2" /> : t('index-button')}
             </Button>
             <Link

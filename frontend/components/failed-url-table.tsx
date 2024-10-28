@@ -56,12 +56,12 @@ export function FailedUrlTable(props: { urls: ScoredURL[] }) {
                         </TableCell>
                         <TableCell>{formatDateTime(url.score)}</TableCell>
                         <TableCell>
-                            <button onClick={() => handleVisit(url)} title="visit">
+                            <button onClick={() => handleVisit(url)} title="visit" aria-label="Visit link">
                                 <Send size={24} />
                             </button>
                         </TableCell>
                         <TableCell>
-                            <button onClick={() => handleDelete(url)} title="Feedback">
+                            <button onClick={() => handleDelete(url)} title="Feedback" aria-label="Delete">
                                 <Trash2 size={24} />
                             </button>
                         </TableCell>
