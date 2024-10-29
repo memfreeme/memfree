@@ -10,6 +10,7 @@ import { getSearchEngine } from '@/lib/search/search';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { accessWebPage } from '@/lib/tools/access';
 import { directlyAnswer } from '@/lib/tools/answer';
+import { generateTitle } from '@/lib/tools/generate-title';
 import { getRelatedQuestions } from '@/lib/tools/related';
 import { searchRelevantContent } from '@/lib/tools/search';
 import { ImageSource, Message as StoreMessage, SearchCategory, TextSource, VideoSource } from '@/lib/types';
@@ -62,6 +63,11 @@ export async function autoAnswer(
                 }),
             },
         });
+
+        let titlePromise;
+        if (messages.length === 1) {
+            titlePromise = generateTitle(query);
+        }
 
         let hasAnswer = false;
         let fullAnswer = '';
@@ -173,11 +179,17 @@ export async function autoAnswer(
             await streamResponse({ videos: videos }, onStream);
         }
 
+        let title = messages[0].content.substring(0, 50);
+        if (titlePromise) {
+            title = await titlePromise;
+            await streamResponse({ title: title }, onStream);
+        }
+
         incSearchCount(userId).catch((error) => {
             console.error(`Failed to increment search count for user ${userId}:`, error);
         });
 
-        await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated);
+        await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated, SearchCategory.ALL, title);
         onStream?.(null, true);
     } catch (error) {
         const errorMessage = extractErrorMessage(error);

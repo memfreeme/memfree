@@ -46,7 +46,7 @@ export function SidebarItem({ search: search, children }: SidebarItemProps) {
         >
             <div className="flex flex-col w-full space-y-2">
                 <div className="flex items-center w-full">
-                    <span className="font-semibold text-sm truncate" title={search.title}>
+                    <span className="font-semibold text-xs truncate" title={search.title}>
                         {search.title}
                     </span>
                 </div>

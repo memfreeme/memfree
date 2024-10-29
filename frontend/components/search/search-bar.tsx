@@ -259,8 +259,8 @@ const SearchBar: React.FC<Props> = ({
                                             }
                                         }}
                                     >
-                                        <Database size={20} strokeWidth={2} />
-                                        <span className="font-serif text-sm">{t('index-button')}</span>
+                                        <Database color="white" size={20} strokeWidth={2} />
+                                        <span className="font-serif text-sm text-white font-semibold">{t('index-button')}</span>
                                     </button>
                                 </TooltipTrigger>
                                 <TooltipContent>{t('index-tip')}</TooltipContent>
@@ -290,11 +290,13 @@ const SearchBar: React.FC<Props> = ({
                                         ) : (
                                             <div className="flex items-center">
                                                 {searchType === SearchType.SEARCH ? (
-                                                    <Icons.mylink size={20} strokeWidth={2} />
+                                                    <Icons.mylink color="white" size={20} strokeWidth={2} />
                                                 ) : (
-                                                    <ImageIcon size={20} strokeWidth={2} />
+                                                    <ImageIcon color="white" size={20} strokeWidth={2} />
                                                 )}
-                                                {searchType === SearchType.SEARCH && <span className="font-serif text-sm">{t('attach-button')}</span>}
+                                                {searchType === SearchType.SEARCH && (
+                                                    <span className="font-serif text-sm text-white font-semibold">{t('attach-button')}</span>
+                                                )}
                                             </div>
                                         )}
                                     </button>

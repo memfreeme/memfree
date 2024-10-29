@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**Englisch**\|[chinesisch](./README.zh-CN.md)\|[Deutsch](./README.de.md)\|[Französisch](./README.fr.md)\|[Spanisch](README.es.md)\|[japanisch](./README.ja.md)
+**Englisch**\|[中文](./README.zh-CN.md)\|[Deutsch](./README.de.md)\|[Französisch](./README.fr.md)\|[Spanisch](README.es.md)\|[japanisch](./README.ja.md)
 
 </div>
 
@@ -114,7 +114,7 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 
 <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree&env=UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,OPENAI_API_KEY,MEMFREE_HOST,AUTH_SECRET,API_TOKEN&envDescription=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree%2Fblob%2Fmain%2Ffrontend%2Fenv-example&project-name=memfree&repository-name=memfree&demo-title=MemFree&demo-description=MemFree – Hybrid AI Search Engine&demo-url=https%3A%2F%2Fwww.memfree.me%2F&demo-image=https%3A%2F%2Fwww.memfree.me%2Fog.png&root-directory=frontend"><img src="https://vercel.com/button" alt="Deploy with Vercel"/></a>
 
-### 3 Stellen Sie das Frontend mit Netlify bereit
+### 3 Deploy Frontend with Netlify
 
 <a href="https://app.netlify.com/start/deploy?repository=https://github.com/memfreeme/memfree&create_from_path=frontend/#UPSTASH_REDIS_REST_TOKEN
 =your_api_token&UPSTASH_REDIS_REST_URL=your_rest_url&SERPER_API_KEY=your_api_key&AUTH_SECRET=your_auth_key&OPENAI_API_KEY=your_api_key"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
@@ -153,7 +153,7 @@ Holen Sie sich einen Serper-API-Schlüssel:[Serper](https://serper.dev/api-key)
 
     bun i
 
-    cp env.example .env
+    cp env-example .env
 
     # Add your OpenAI API Key, Upstash Redis URL, and Serper API Key to .env
 
@@ -165,7 +165,7 @@ Holen Sie sich einen Serper-API-Schlüssel:[Serper](https://serper.dev/api-key)
 
     bun i
 
-    cp env.example .env
+    cp env-example .env
 
     # Add your OpenAI API Key, Upstash Redis URL to .env
 
@@ -175,14 +175,14 @@ Holen Sie sich einen Serper-API-Schlüssel:[Serper](https://serper.dev/api-key)
 
 So können Sie einen Beitrag leisten:
 
-- [Öffnen Sie ein Problem](https://github.com/memfreeme/memfree/issues) if you believe you've encountered a bug.
-- Machen Sie ein[Pull-Anfrage](https://github.com/memfreeme/memfree/pulls)um neue Funktionen hinzuzufügen/die Lebensqualität zu verbessern/Fehler zu beheben.
+- [Öffnen Sie ein Problem](https://github.com/memfreeme/memfree/issues)wenn Sie glauben, dass Sie auf einen Fehler gestoßen sind.
+- Make a [Pull-Anfrage](https://github.com/memfreeme/memfree/pulls)um neue Funktionen hinzuzufügen/die Lebensqualität zu verbessern/Fehler zu beheben.
 
 ## Vielen Dank an alle Mitwirkenden
 
 <p align="left">
  <a href="https://github.com/memfreeme/memfree/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=memfreeme/memfree" />
+  <img src="https://contrib.rocks/image?repo=memfreeme/memfree" />
  </a>
 </p>
 

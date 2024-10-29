@@ -51,7 +51,7 @@ export default function SiteHeader({ user, items }: NavBarProps) {
                     const externalProps = isExternal ? { target: '_blank' } : {};
                     const isActive = pathname.startsWith(href);
                     return (
-                        <Button key={title} variant="link" className={isActive ? 'font-semibold' : undefined} asChild>
+                        <Button key={title} variant="link" className={isActive ? 'font-semibold' : undefined} aria-label={title} asChild>
                             <Link href={href} {...externalProps} prefetch={false}>
                                 <span className="text-black dark:text-white">{title}</span>
                             </Link>
@@ -77,7 +77,7 @@ export default function SiteHeader({ user, items }: NavBarProps) {
                 {user?.id ? (
                     <UserAccountNav user={user} />
                 ) : (
-                    <Button className="rounded-full" onClick={signInModal.onOpen}>
+                    <Button className="rounded-full" onClick={signInModal.onOpen} aria-label="Open sign-in modal">
                         <span>Sign In</span>
                     </Button>
                 )}

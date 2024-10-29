@@ -56,6 +56,7 @@ export async function saveMessages(
     videos?: VideoSource[],
     related?: string,
     type?: string,
+    title?: string,
 ) {
     if (!userId) {
         return;
@@ -72,12 +73,12 @@ export async function saveMessages(
         type: type ?? 'all',
     });
 
-    // console.log('saving search', messages);
+    // console.log('title', title, 'saving search', messages);
 
     await saveSearch(
         {
             id: messages[0].id,
-            title: messages[0].content.substring(0, 50),
+            title: title ?? messages[0].content.substring(0, 50),
             createdAt: new Date(),
             userId: userId,
             messages: messages,

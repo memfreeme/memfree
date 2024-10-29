@@ -35,6 +35,7 @@ export function BillingFormButton({ year, offer, subscriptionPlan }: BillingForm
             disabled={isPending}
             onClick={createStripeSession(isOnce)}
             data-umami-event="Pay Click"
+            aria-label={isPending ? 'Loading' : userOffer ? t('paid-call') : isOnce ? t('pre-once-call') : t('pre-call')}
         >
             {isPending ? (
                 <>

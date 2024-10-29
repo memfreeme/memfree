@@ -20,7 +20,7 @@ export default function SidebarOpen({ user }: NavBarProps) {
     const handleNewGenerateUI = useNewGenerateUI();
 
     return (
-        <div className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 flex-col space-y-2 rounded-lg bg-gray-50 dark:bg-gray-400 py-3">
+        <div className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 flex-col space-y-2 rounded-lg bg-gray-50 dark:bg-gray-700 py-3">
             {!isSidebarOpen && (
                 <>
                     <Tooltip>
@@ -60,7 +60,7 @@ export default function SidebarOpen({ user }: NavBarProps) {
                                 aria-label="New Generate UI"
                                 className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg py-1 px-2 m-2"
                             >
-                                <span className="text-gray-800 dark:text-white">UI</span>
+                                <span className="text-gray-800 font-semibold dark:text-white">UI</span>
                             </button>
                         </TooltipTrigger>
                         <TooltipContent className="bg-black text-white">
