@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 import { useSearchStore } from '../local-history';
 import { Search, Message } from '@/lib/types';
 
