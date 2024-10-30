@@ -11,17 +11,11 @@ interface FetchWithTimeoutOptions extends RequestInit {
 export const fetchWithTimeout = async (resource: RequestInfo, options: FetchWithTimeoutOptions = {}): Promise<Response> => {
     const { timeout = 10000 } = options;
 
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), timeout);
-    try {
-        const response = await fetch(resource, {
-            ...options,
-            signal: controller.signal,
-        });
-        return response;
-    } finally {
-        clearTimeout(id);
-    }
+    const response = await fetch(resource, {
+        ...options,
+        signal: AbortSignal.timeout(timeout),
+    });
+    return response;
 };
 
 export function extractYouTubeId(url: string): string {
