@@ -37,7 +37,7 @@ export const TEXT_LIMIT = 16;
  * @param url - Optional endpoint URL for the vector search engine.
  * @returns A VectorSearch instance.
  */
-export function getVectorSearch(userId: string, url?: string): SearchSource {
+export function getVectorSearch(userId: string, url: string = 'defaultURL'): SearchSource {
     return new VectorSearch(userId, url);
 }
 
@@ -47,18 +47,18 @@ export function getVectorSearch(userId: string, url?: string): SearchSource {
  * @returns An instance of the appropriate search engine.
  */
 export function getSearchEngine(options: SearchOptions = {}): SearchSource {
-    const { categories = [], engines, language, domains } = options;
+    const { categories = [] } = options;
 
-    if (categories.includes(SearchCategory.ALL)) {
-        return new SerperSearch(options);
-    }
+    const categoryEngines: Record<string, () => SearchSource> = {
+        [SearchCategory.ALL]: () => new SerperSearch(options),
+        [SearchCategory.TWEET]: () => new SerperSearch({ ...options, domains: ['x.com'] }),
+        [SearchCategory.ACADEMIC]: () => new EXASearch({ ...options, categories: ['research paper'] })
+    };
 
-    if (categories.includes(SearchCategory.TWEET)) {
-        return new SerperSearch({ ...options, domains: ['x.com'] });
-    }
-
-    if (categories.includes(SearchCategory.ACADEMIC)) {
-        return new EXASearch({ ...options, categories: ['research paper'] });
+    for (const category of categories) {
+        if (categoryEngines[category]) {
+            return categoryEngines[category]();
+        }
     }
 
     // Default fallback to SerperSearch with the provided options
