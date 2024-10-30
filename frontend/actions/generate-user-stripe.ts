@@ -16,7 +16,7 @@ export type responseAction = {
 const billingUrl = absoluteUrl('/pricing');
 
 async function createStripeSession(priceId, locale, session, params) {
-    return await stripe.checkout.sessions.create({
+    return stripe.checkout.sessions.create({
         success_url: billingUrl,
         cancel_url: billingUrl,
         billing_address_collection: 'auto',

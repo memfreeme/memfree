@@ -72,7 +72,7 @@ const openai = new OpenAI({
 
 async function readImageFile(filePath: string) {
     const baseDir = dirname(fileURLToPath(import.meta.url));
-    return await readFile(join(baseDir, filePath));
+    return readFile(join(baseDir, filePath));
 }
 
 export async function chatImage() {
