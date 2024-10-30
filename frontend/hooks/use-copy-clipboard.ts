@@ -4,9 +4,11 @@ function useCopyToClipboard() {
     const [hasCopied, setHasCopied] = useState(false);
 
     useEffect(() => {
-        setTimeout(() => {
+        const id = setTimeout(() => {
             setHasCopied(false);
         }, 2000);
+
+        return () => clearTimeout(id);
     }, [hasCopied]);
 
     const copyToClipboard = (text: string) => {
