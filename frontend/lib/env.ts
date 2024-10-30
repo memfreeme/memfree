@@ -1,56 +1,59 @@
 import 'server-only';
 
-export let VECTOR_INDEX_HOST = '';
-// Let open source users could one click deploy
-if (process.env.VECTOR_INDEX_HOST) {
-    VECTOR_INDEX_HOST = process.env.VECTOR_INDEX_HOST;
-} else if (process.env.VECTOR_HOST) {
-    VECTOR_INDEX_HOST = process.env.VECTOR_HOST;
-} else if (process.env.MEMFREE_HOST) {
-    VECTOR_INDEX_HOST = `${process.env.MEMFREE_HOST}/vector`;
-} else {
-    throw new Error('Neither VECTOR_INDEX_HOST, VECTOR_HOST, nor MEMFREE_HOST is defined');
-}
+const {
+  VECTOR_INDEX_HOST: indexHost,
+  VECTOR_HOST: vectorHost,
+  MEMFREE_HOST: memfreeHost,
+  AUTH_GOOGLE_ID, 
+  UPSTASH_REDIS_REST_URL,
+  UPSTASH_REDIS_REST_TOKEN,
+  SERPER_API_KEY, EXA_API_KEY,
+  OPENAI_BASE_URL, 
+  AXIOM_TOKEN,
+  JINA_KEY,
+  API_TOKEN,
+  NODE_ENV,
+  USER_BLACKLIST,
+  STRIPE_API_KEY,
+  STRIPE_WEBHOOK_SECRET, 
+  NEXT_PUBLIC_STRIPE_PREMIUM_MONTHLY_PLAN_ID,
+  NEXT_PUBLIC_STRIPE_PREMIUM_YEARLY_PLAN_ID,
+  NEXT_PUBLIC_APP_URL
+} = process.env;
 
-const memfreeHost = process.env.MEMFREE_HOST;
-export let VECTOR_HOST = '';
-// Let open source users could one click deploy
-if (process.env.VECTOR_HOST) {
-    VECTOR_HOST = process.env.VECTOR_HOST;
-} else if (memfreeHost) {
-    VECTOR_HOST = `${memfreeHost}/vector`;
-} else {
-    throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
-}
+// Set VECTOR_INDEX_HOST with precedence
+export let VECTOR_INDEX_HOST = indexHost || vectorHost || (memfreeHost ? `${memfreeHost}/vector` : '');
+if (!VECTOR_INDEX_HOST) throw new Error('VECTOR_INDEX_HOST, VECTOR_HOST, or MEMFREE_HOST must be defined.');
+
+// Set VECTOR_HOST with precedence
+export let VECTOR_HOST = vectorHost || (memfreeHost ? `${memfreeHost}/vector` : '');
+if (!VECTOR_HOST) throw new Error('MEMFREE_HOST or VECTOR_HOST must be defined.');
 
 // Auth
-export const AUTH_GOOGLE_ID = process.env.AUTH_GOOGLE_ID || '';
+export const GOOGLE_AUTH_ID = AUTH_GOOGLE_ID || '';
 
 // Redis
-export const UPSTASH_REDIS_REST_URL = process.env.UPSTASH_REDIS_REST_URL || '';
-export const UPSTASH_REDIS_REST_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || '';
+export const REDIS_URL = UPSTASH_REDIS_REST_URL || '';
+export const REDIS_TOKEN = UPSTASH_REDIS_REST_TOKEN || '';
 
-// Search
-export const SERPER_API_KEY = process.env.SERPER_API_KEY;
-export const EXA_API_KEY = process.env.EXA_API_KEY || '';
-export const OPENAI_BASE_URL = process.env.OPENAI_BASE_URL ?? 'https://api.openai.com/v1';
+// Search & API base URLs
+export const SEARCH_SERPER_KEY = SERPER_API_KEY;
+export const SEARCH_EXA_KEY = EXA_API_KEY || '';
+export const OPENAI_URL = OPENAI_BASE_URL || 'https://api.openai.com/v1';
 
-// Log
-export const AXIOM_TOKEN = process.env.AXIOM_TOKEN || '';
+// Logging and Rerank
+export const LOG_AXIOM_TOKEN = AXIOM_TOKEN || '';
+export const RERANK_JINA_KEY = JINA_KEY || '';
 
-// Rerank
-export const JINA_KEY = process.env.JINA_KEY || '';
-
-// API_TOKEN for vector service
-export const API_TOKEN = process.env.API_TOKEN!;
-
-export const NODE_ENV = process.env.NODE_ENV || 'development';
-export const BLACKLIST = process.env.USER_BLACKLIST || '';
+// App Environment and Blacklist
+export const ENVIRONMENT = NODE_ENV || 'development';
+export const USER_BLACKLIST = USER_BLACKLIST || '';
 
 // Stripe
-export const STRIPE_API_KEY = process.env.STRIPE_API_KEY || '';
-export const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
-export const STRIPE_PREMIUM_MONTHLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_MONTHLY_PLAN_ID || '';
-export const STRIPE_PREMIUM_YEARLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_YEARLY_PLAN_ID || '';
+export const STRIPE_KEY = STRIPE_API_KEY || '';
+export const STRIPE_WEBHOOK = STRIPE_WEBHOOK_SECRET || '';
+export const STRIPE_MONTHLY_PLAN = NEXT_PUBLIC_STRIPE_PREMIUM_MONTHLY_PLAN_ID || '';
+export const STRIPE_YEARLY_PLAN = NEXT_PUBLIC_STRIPE_PREMIUM_YEARLY_PLAN_ID || '';
 
-export const NEXT_PUBLIC_APP_URL = process.env.NEXT_PUBLIC_APP_URL || '';
+// App URL
+export const APP_URL = NEXT_PUBLIC_APP_URL || '';
