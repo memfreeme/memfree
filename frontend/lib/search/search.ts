@@ -37,7 +37,7 @@ export const TEXT_LIMIT = 16;
  * @param url - Optional endpoint URL for the vector search engine.
  * @returns A VectorSearch instance.
  */
-export function getVectorSearch(userId: string, url: string = 'defaultURL'): SearchSource {
+export function getVectorSearch(userId: string, url?: string): SearchSource {
     return new VectorSearch(userId, url);
 }
 
