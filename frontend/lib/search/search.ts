@@ -47,20 +47,15 @@ export function getVectorSearch(userId: string, url?: string): SearchSource {
  * @returns An instance of the appropriate search engine.
  */
 export function getSearchEngine(options: SearchOptions = {}): SearchSource {
-    const { categories = [], engines, language, domains } = options;
+    const { categories = [] } = options;
 
-    if (categories.includes(SearchCategory.ALL)) {
-        return new SerperSearch(options);
-    }
+    const categoryEngines: Record<string, () => SearchSource> = {
+        [SearchCategory.ALL]: () => new SerperSearch(options),
+        [SearchCategory.TWEET]: () => new SerperSearch({ ...options, domains: ['x.com'] }),
+        [SearchCategory.ACADEMIC]: () => new EXASearch({ ...options, categories: ['research paper'] })
+    };
 
-    if (categories.includes(SearchCategory.TWEET)) {
-        return new SerperSearch({ ...options, domains: ['x.com'] });
-    }
+    const matchedCategory = categories.find(category => category in categoryEngines);
 
-    if (categories.includes(SearchCategory.ACADEMIC)) {
-        return new EXASearch({ ...options, categories: ['research paper'] });
-    }
-
-    // Default fallback to SerperSearch with the provided options
-    return new SerperSearch(options);
+    return categoryEngines[matchedCategory || SearchCategory.ALL](options);
 }
