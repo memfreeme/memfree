@@ -13,7 +13,7 @@ export async function retryAsync<T>(
 
   while (attempt < retries) {
     try {
-      return await fn();
+      return fn();
     } catch (error) {
       attempt++;
       if (attempt < retries) {
@@ -110,11 +110,11 @@ export async function getMd(url: string, userId: string) {
   }
 
   try {
-    return await fetchWithRetry(primaryUrl, { headers }, 1, 1000);
+    return fetchWithRetry(primaryUrl, { headers }, 1, 1000);
   } catch (primaryError) {
     console.error("Primary URL failed:", primaryError);
     try {
-      return await fetchWithRetry(fallbackUrl, { headers }, 1, 1000);
+      return fetchWithRetry(fallbackUrl, { headers }, 1, 1000);
     } catch (fallbackError) {
       console.error("Fallback URL failed:", fallbackError);
       log({

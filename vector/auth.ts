@@ -23,7 +23,7 @@ export async function getToken(req: Request, isDev: boolean) {
     if (!tokenStr) {
       return null;
     }
-    return await decryptToken(tokenStr, isDev);
+    return decryptToken(tokenStr, isDev);
   } catch (error) {
     logError(error as Error, "getToken");
     return null;
@@ -47,7 +47,7 @@ async function getDerivedEncryptionKey(
   salt: Parameters<typeof hkdf>[2]
 ) {
   const length = enc === "A256CBC-HS512" ? 64 : 32;
-  return await hkdf(
+  return hkdf(
     "sha256",
     keyMaterial,
     salt,

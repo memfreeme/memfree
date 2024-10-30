@@ -58,7 +58,7 @@ export async function autoAnswer(
                         url: z.string().describe('the url to access'),
                     }),
                     execute: async ({ url }) => {
-                        return await accessWebPage(url, onStream);
+                        return accessWebPage(url, onStream);
                     },
                 }),
             },

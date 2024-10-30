@@ -53,7 +53,7 @@ So, I checked the source code of auth.js and found that it uses the jose library
 ```ts
 async function getDerivedEncryptionKey(enc: string, keyMaterial: Parameters<typeof hkdf>[1], salt: Parameters<typeof hkdf>[2]) {
     const length = enc === 'A256CBC-HS512' ? 64 : 32;
-    return await hkdf('sha256', keyMaterial, salt, `Auth.js Generated Encryption Key (${salt})`, length);
+    return hkdf('sha256', keyMaterial, salt, `Auth.js Generated Encryption Key (${salt})`, length);
 }
 ```
 

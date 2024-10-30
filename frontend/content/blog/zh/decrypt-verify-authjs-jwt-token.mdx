@@ -53,7 +53,7 @@ export const getAuthToken = async () => {
 ```ts
 async function getDerivedEncryptionKey(enc: string, keyMaterial: Parameters<typeof hkdf>[1], salt: Parameters<typeof hkdf>[2]) {
     const length = enc === 'A256CBC-HS512' ? 64 : 32;
-    return await hkdf('sha256', keyMaterial, salt, `Auth.js 生成的加密密钥 (${salt})`, length);
+    return hkdf('sha256', keyMaterial, salt, `Auth.js 生成的加密密钥 (${salt})`, length);
 }
 ```
 
