@@ -24,7 +24,7 @@ export function useUploadFile() {
                     Token: `${token.data}`,
                 },
             });
-            return res.json();
+            return await res.json();
         } catch (err) {
             console.error(err);
             toast.error(String(err));

@@ -23,7 +23,7 @@ export async function getToken(req: Request, isDev: boolean) {
     if (!tokenStr) {
       return null;
     }
-    return decryptToken(tokenStr, isDev);
+    return await decryptToken(tokenStr, isDev);
   } catch (error) {
     logError(error as Error, "getToken");
     return null;
