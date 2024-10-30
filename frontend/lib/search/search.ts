@@ -55,12 +55,7 @@ export function getSearchEngine(options: SearchOptions = {}): SearchSource {
         [SearchCategory.ACADEMIC]: () => new EXASearch({ ...options, categories: ['research paper'] })
     };
 
-    for (const category of categories) {
-        if (categoryEngines[category]) {
-            return categoryEngines[category]();
-        }
-    }
+    const matchedCategory = categories.find(category => category in categoryEngines);
 
-    // Default fallback to SerperSearch with the provided options
-    return new SerperSearch(options);
+    return categoryEngines[matchedCategory || SearchCategory.ALL](options);
 }
