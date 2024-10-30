@@ -42,9 +42,7 @@ export async function get_story_with_comments(id: number) {
     return {
         ...data,
         hnUrl: `https://news.ycombinator.com/item?id=${id}`,
-        comments: comments.map((comment: any) => ({
-            ...comment,
-        })),
+        comments,
     };
 }
 
