@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-      - master
-      - auto-translation
     paths:
       - "README.md"
 
