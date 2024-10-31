@@ -52,10 +52,10 @@ export function getSearchEngine(options: SearchOptions = {}): SearchSource {
     const categoryEngines: Record<string, () => SearchSource> = {
         [SearchCategory.ALL]: () => new SerperSearch(options),
         [SearchCategory.TWEET]: () => new SerperSearch({ ...options, domains: ['x.com'] }),
-        [SearchCategory.ACADEMIC]: () => new EXASearch({ ...options, categories: ['research paper'] })
+        [SearchCategory.ACADEMIC]: () => new EXASearch({ ...options, categories: ['research paper'] }),
     };
 
-    const matchedCategory = categories.find(category => category in categoryEngines);
+    const matchedCategory = categories.find((category) => category in categoryEngines);
 
-    return categoryEngines[matchedCategory || SearchCategory.ALL](options);
+    return categoryEngines[matchedCategory || SearchCategory.ALL]();
 }
