@@ -66,7 +66,7 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 
 -   📄**Compatibilidad de formatos de archivos locales**: Admite archivos de texto, PDF, Docx, PPTX y Markdown.
 
--   🔄**Cross-Device Syncing**: guarde y sincronice el historial de búsqueda en varios dispositivos.
+-   🔄**Sincronización entre dispositivos**: guarde y sincronice el historial de búsqueda en varios dispositivos.
 
 -   🌍**Soporte multilingüe**: Disponible en inglés, chino, alemán, francés, español, japonés y árabe.
 
@@ -141,7 +141,7 @@ Cree una base de datos compatible con Redis en segundos:[Redis oculto](https://u
 
 #### Clave API de OpenAI
 
-Obtenga una clave API de OpenAI:[Abierto AI](https://platform.openai.com)
+Obtenga una clave API de OpenAI:[AbiertoAI](https://platform.openai.com)
 
 #### Clave API de Serper
 
@@ -159,7 +159,7 @@ Obtenga una clave API de Serper:[Serpiente](https://serper.dev/api-key)
 
     bun run dev
 
-### Servicio vectorial
+### Servicio de vectores
 
     cd vector
 
