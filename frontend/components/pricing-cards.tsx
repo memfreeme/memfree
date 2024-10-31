@@ -173,7 +173,7 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
                 </ToggleGroup>
             </div>
 
-            <div className="mx-auto grid max-w-6xl gap-5 bg-inherit py-5 md:grid-cols-3 lg:grid-cols-3">
+            <div className="mx-auto grid gap-5 bg-inherit py-5 md:grid-cols-3 lg:grid-cols-3">
                 {pricingData.map((offer) => (
                     <PricingCard offer={offer} key={offer.title} />
                 ))}
