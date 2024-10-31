@@ -48,9 +48,9 @@ Memfree は、最も強力な AI モデルである Claude 3.5 Sonnet と、最�
 ## MemFree の価値は何ですか?
 
 -   **効率的なナレッジマネジメント**: MemFree を使用すると、メモ、ブックマーク、ドキュメントを手動で整理する必要がなくなります。情報が必要な場合は、MemFree 内を検索するだけで関連する回答がすぐに見つかり、メモリが解放され、生産性が向上します。
--   **時間を節約する AI サマリー**: MemFree は、複数の Google 検索結果をクリックする代わりに、AI を使用して Web ページやナレッジ ベースから最適なコンテンツを即座に要約し、貴重な時間を節約します。
+-   **時間を節約する AI サマリー**: MemFree は、複数の Google 検索結果をクリックする代わりに、AI を使用して Web ページとナレッジ ベースから最適なコンテンツを即座に要約し、貴重な時間を節約します。
 -   **費用対効果の高いソリューション**: ChatGPT Plus、Claude Pro、Gemini Advanced などのサービスへの複数のサブスクリプションは避けてください。 MemFree はそれらの機能を統合し、月々のコストを大幅に削減します。
--   **100 倍高速な UI ページ作成**: テキストや画像を数秒で素晴らしい、本番環境に対応したコードに変換し、作成しながらデザインを視覚化し、ページをシームレスに公開します。
+-   **100 倍高速な UI ページ作成**: テキストや画像を数秒で素晴らしい、本番環境に対応したコードに変換し、デザインを作成しながら視覚化し、ページをシームレスに公開します。
 
 ## MemFree ハイブリッド AI 検索機能
 
@@ -82,7 +82,7 @@ MemFree には、さまざまな検索と生産性のニーズに応える強力
 
 -   **🖥️ リアルタイム UI プレビュー**: 生成された UI を即座にレンダリングしてプレビューします
 -   **🔍 AI を活用したコンテンツ検索**: 高度な AI 検索機能を使用して、関連コンテンツで UI を強化します。
--   **🖼 画像主導の UI 生成**: 参照画像に厳密に一致する UI コンポーネントとページを作成します
+-   **🖼 Image-Driven UI Generation**: 参照画像に厳密に一致する UI コンポーネントとページを作成します
 -   **⚛️ React + TailWind + Shadcn UI 統合**: 最も人気のあるフロントエンド スタック (React、TailWind、Shadcn UI) を使用して AI 生成コードを活用します。
 -   **🚀 ワンクリック UI 公開**: ワンクリックで UI を即座に Web に公開して共有します
 -   **📱 レスポンシブコードとプレビュー**: さまざまなデバイスで UI をリアルタイムでプレビューし、すべての画面サイズに完全に適応できるようにします。
@@ -119,7 +119,11 @@ MemFree には、さまざまな検索と生産性のニーズに応える強力
 <a href="https://app.netlify.com/start/deploy?repository=https://github.com/memfreeme/memfree&create_from_path=frontend/#UPSTASH_REDIS_REST_TOKEN
 =your_api_token&UPSTASH_REDIS_REST_URL=your_rest_url&SERPER_API_KEY=your_api_key&AUTH_SECRET=your_auth_key&OPENAI_API_KEY=your_api_key"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
 
-### 4 Fly.io を使用して 1 つのコマンドでバックエンドをデプロイする
+### 4 鉄道への展開
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/HPTFRR)
+
+### 5 Fly.io を使用して 1 つのコマンドでバックエンドをデプロイする
 
 -   [ワンコマンドで MemFree Vector を Fly.io にデプロイ](https://www.memfree.me/docs/deploy-memfree-fly-io)
 
