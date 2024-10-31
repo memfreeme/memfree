@@ -45,10 +45,10 @@ Memfree 使用最强大的 AI 模型 - Claude 3.5 Sonnet 和最流行的前端�
 
 [MemFree AI UI Generator 展示](https://www.memfree.me/generate-ui).
 
-## 是什么让 MemFree 有价值？
+## What Makes MemFree Valuable?
 
 -   **高效的知识管理**：MemFree 消除了手动组织笔记、书签和文档的需要。当您需要信息时，只需在 MemFree 中搜索即可快速找到相关答案，从而释放您的内存并提高工作效率。
--   **节省时间的人工智能摘要**：MemFree 无需点击多个 Google 搜索结果，而是使用 AI 立即总结网页和知识库中的最佳内容，从而节省宝贵的时间。
+-   **节省时间的人工智能摘要**：MemFree 使用 AI 立即总结网页和知识库中的最佳内容，无需点击多个 Google 搜索结果，从而节省宝贵的时间。
 -   **经济高效的解决方案**：避免多次订阅 ChatGPT Plus、Claude Pro 和 Gemini Advanced 等服务。 MemFree 集成了它们的功能，显着降低了每月的成本。
 -   **UI 页面创建速度提高 100 倍**：在几秒钟内将文本或图像转换为令人惊叹的、可用于生产的代码，在创建时可视化您的设计，无缝发布您的页面。
 
@@ -56,7 +56,7 @@ Memfree 使用最强大的 AI 模型 - Claude 3.5 Sonnet 和最流行的前端�
 
 MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
--   🤖**多种AI模型**：集成ChatGPT、Claude、Gemini等多种AI能力。
+-   🤖**Multiple AI Models**：集成ChatGPT、Claude、Gemini等多种AI能力。
 
 -   🌐**支持多种搜索引擎**：适用于 Google、Exa 和 Vector。
 
@@ -74,9 +74,9 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
 -   📤**成果分享**：轻松分享您的搜索结果。
 
--   🔍**上下文连续搜索**：根据上下文无缝搜索。
+-   🔍**上下文连续搜索**: Search seamlessly based on context.
 
--   ⚙️ **自动网络搜索决策**：自动确定何时执行互联网搜索。
+-   ⚙️**自动网络搜索决策**：自动确定何时执行互联网搜索。
 
 ## MemFree AI UI 生成器功能
 
@@ -119,7 +119,11 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 <a href="https://app.netlify.com/start/deploy?repository=https://github.com/memfreeme/memfree&create_from_path=frontend/#UPSTASH_REDIS_REST_TOKEN
 =your_api_token&UPSTASH_REDIS_REST_URL=your_rest_url&SERPER_API_KEY=your_api_key&AUTH_SECRET=your_auth_key&OPENAI_API_KEY=your_api_key"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
 
-### 4 使用 Fly.io 一键部署后端
+### 4 铁路部署
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/HPTFRR)
+
+### 5 使用 Fly.io 进行一键部署后端
 
 -   [一条命令在 Fly.io 上部署 MemFree Vector](https://www.memfree.me/docs/deploy-memfree-fly-io)
 
@@ -147,7 +151,7 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
 获取 Serper API 密钥：[毒蛇](https://serper.dev/api-key)
 
-### Frontend
+### 前端
 
     cd frontend
 
@@ -198,7 +202,7 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
 MemFree 由以下机构支持[内存自由](https://www.memfree.me/)并获得许可[和](https://github.com/memfreeme/memfree/blob/main/LICENSE).
 
-## 相关项目
+## Related Projects
 
 -   [React + Shadcn UI 预览](https://reactshadcn.com)
 
