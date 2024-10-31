@@ -119,7 +119,11 @@ MemFree is equipped with powerful features that cater to various search and prod
 <a href="https://app.netlify.com/start/deploy?repository=https://github.com/memfreeme/memfree&create_from_path=frontend/#UPSTASH_REDIS_REST_TOKEN
 =your_api_token&UPSTASH_REDIS_REST_URL=your_rest_url&SERPER_API_KEY=your_api_key&AUTH_SECRET=your_auth_key&OPENAI_API_KEY=your_api_key"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
 
-### 4 One Command Deploy Backend with Fly.io
+### 4 Deploy on Railway
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/HPTFRR)
+
+### 5 One Command Deploy Backend with Fly.io
 
 - [One Command Deploy MemFree Vector on Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
 
