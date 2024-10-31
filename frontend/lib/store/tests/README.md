@@ -44,7 +44,7 @@ To run the tests in this project, follow these steps:
 1. **Install Dependencies**  
    Ensure all dependencies are installed. If not, run:
     ```bash
-    npm install
+    bun i
     ```
 2. **Run the Tests**
     ```bash
