@@ -83,10 +83,10 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 -   **🖥️ Echtzeit-UI-Vorschau**: Generierte Benutzeroberfläche sofort rendern und in der Vorschau anzeigen
 -   **🔍 KI-gestützte Inhaltssuche**: Bereichern Sie Ihre Benutzeroberfläche mit relevanten Inhalten mithilfe unserer erweiterten KI-Suchfunktion
 -   **🖼 Bildgesteuerte UI-Generierung**: Erstellen Sie UI-Komponenten und Seiten, die Ihren Referenzbildern genau entsprechen
--   **⚛️ React + TailWind + Shadcn UI Integration**: Nutzen Sie KI-generierten Code mit dem beliebtesten Front-End-Stack: React, TailWind und Shadcn UI
+-   **⚛️ React + TailWind + Shadcn UI-Integration**: Nutzen Sie KI-generierten Code mit dem beliebtesten Front-End-Stack: React, TailWind und Shadcn UI
 -   **🚀 One-Click-UI-Veröffentlichung**: Veröffentlichen und teilen Sie Ihre Benutzeroberfläche sofort mit einem einzigen Klick im Web
 -   **📱 Responsiver Code und Vorschau**: Sehen Sie sich Ihre Benutzeroberfläche in Echtzeit auf verschiedenen Geräten an und sorgen Sie so für eine perfekte Anpassung an alle Bildschirmgrößen
--   **🌓 Dark-Mode-Code und Vorschau**: Generieren Sie mühelos KI-gestützten UI-Code mit integrierter Unterstützung für den Dunkelmodus, sodass Sie sofort eine Vorschau sowohl des Hell- als auch des Dunkelmodus anzeigen können
+-   **🌓 Dark Mode Code and Preview**: Generieren Sie mühelos KI-gestützten UI-Code mit integrierter Unterstützung für den Dunkelmodus, sodass Sie sofort eine Vorschau sowohl des Hell- als auch des Dunkelmodus anzeigen können
 -   **📸 UI-Screenshot-Export**: Exportieren und teilen Sie Ihre UI-Designs ganz einfach als hochwertige Screenshots für eine nahtlose Zusammenarbeit
 -   **🛠️ Intelligente Fehlerkorrektur**: Während das fortschrittliche KI-Modell und die ausgefeilten Coderegeln von MemFree nach Perfektion streben, können gelegentlich Fehler auftreten. Mit unserer intelligenten Fehlerkorrekturfunktion können Sie alle Probleme sofort mit nur einem Klick beheben
 
@@ -119,7 +119,11 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 <a href="https://app.netlify.com/start/deploy?repository=https://github.com/memfreeme/memfree&create_from_path=frontend/#UPSTASH_REDIS_REST_TOKEN
 =your_api_token&UPSTASH_REDIS_REST_URL=your_rest_url&SERPER_API_KEY=your_api_key&AUTH_SECRET=your_auth_key&OPENAI_API_KEY=your_api_key"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
 
-### 4 One Command Deploy Backend mit Fly.io
+### 4 Einsatz auf der Schiene
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/HPTFRR)
+
+### 5 One Command Deploy Backend mit Fly.io
 
 -   [Ein Befehl: Bereitstellen von MemFree Vector auf Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
 
