@@ -82,7 +82,7 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 
 -   **🖥️ Vista previa de la interfaz de usuario en tiempo real**: Representa y previsualiza instantáneamente la interfaz de usuario generada
 -   **🔍 Búsqueda de contenido impulsada por IA**: Enriquezca su interfaz de usuario con contenido relevante utilizando nuestra función de búsqueda avanzada de IA
--   **🖼 Generación de UI basada en imágenes**: cree componentes de interfaz de usuario y páginas que coincidan estrechamente con sus imágenes de referencia
+-   **🖼 Generación de UI basada en imágenes**: cree componentes de interfaz de usuario y páginas que coincidan estrechamente con sus imágenes de referencia.
 -   **⚛️ Integración de interfaz de usuario de React + TailWind + Shadcn**: Aproveche el código generado por IA utilizando la pila de front-end más popular: React, TailWind y Shadcn UI
 -   **🚀 Publicación de UI con un clic**: Publique y comparta su interfaz de usuario en la web al instante con un solo clic
 -   **📱 Código responsivo y vista previa**: Obtenga una vista previa de su interfaz de usuario en varios dispositivos en tiempo real, lo que garantiza una adaptación perfecta a todos los tamaños de pantalla.
@@ -110,7 +110,7 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 
 <a href="https://zeabur.com/templates/CE71SC?referralCode=memfree"><img src="https://zeabur.com/button.svg" alt="Deploy on Zeabur"/></a>
 
-### 2 Implementar frontend con Vercel
+### 2 Implementar interfaz con Vercel
 
 <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree&env=UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,OPENAI_API_KEY,MEMFREE_HOST,AUTH_SECRET,API_TOKEN&envDescription=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree%2Fblob%2Fmain%2Ffrontend%2Fenv-example&project-name=memfree&repository-name=memfree&demo-title=MemFree&demo-description=MemFree – Hybrid AI Search Engine&demo-url=https%3A%2F%2Fwww.memfree.me%2F&demo-image=https%3A%2F%2Fwww.memfree.me%2Fog.png&root-directory=frontend"><img src="https://vercel.com/button" alt="Deploy with Vercel"/></a>
 
@@ -119,7 +119,11 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 <a href="https://app.netlify.com/start/deploy?repository=https://github.com/memfreeme/memfree&create_from_path=frontend/#UPSTASH_REDIS_REST_TOKEN
 =your_api_token&UPSTASH_REDIS_REST_URL=your_rest_url&SERPER_API_KEY=your_api_key&AUTH_SECRET=your_auth_key&OPENAI_API_KEY=your_api_key"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
 
-### 4 Implementación de backend con un solo comando con Fly.io
+### 4 Implementación en ferrocarril
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/HPTFRR)
+
+### 5 Implementación de backend con un solo comando con Fly.io
 
 -   [Un comando implementa MemFree Vector en Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
 
@@ -141,7 +145,7 @@ Cree una base de datos compatible con Redis en segundos:[Redis oculto](https://u
 
 #### Clave API de OpenAI
 
-Obtenga una clave API de OpenAI:[AbiertoAI](https://platform.openai.com)
+Obtenga una clave API de OpenAI:[Abierto AI](https://platform.openai.com)
 
 #### Clave API de Serper
 
@@ -159,7 +163,7 @@ Obtenga una clave API de Serper:[Serpiente](https://serper.dev/api-key)
 
     bun run dev
 
-### Servicio de vectores
+### Servicio vectorial
 
     cd vector
 
