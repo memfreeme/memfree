@@ -48,6 +48,6 @@ To run the tests in this project, follow these steps:
     ```
 2. **Run the Tests**
     ```bash
-    npm run test
+    bun run test
     ```
     This command will execute all test suites and display the results in the terminal.
