@@ -23,6 +23,7 @@ export const SubscribeModal = () => {
                         onClick={() => {
                             subscribeModal.onClose();
                         }}
+                        aria-label="Close modal"
                     >
                         Close
                     </Button>

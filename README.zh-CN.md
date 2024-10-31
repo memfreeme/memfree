@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**英语**\|[中文](./README.zh-CN.md)\|[德语](./README.de.md)\|[法语](./README.fr.md)\|[Español](README.es.md)\|[日本人](./README.ja.md)
+**英语**\|[中文](./README.zh-CN.md)\|[德语](./README.de.md)\|[法语](./README.fr.md)\|[西班牙语](README.es.md)\|[日本人](./README.ja.md)
 
 </div>
 
@@ -48,7 +48,7 @@ Memfree 使用最强大的 AI 模型 - Claude 3.5 Sonnet 和最流行的前端�
 ## 是什么让 MemFree 有价值？
 
 - **高效的知识管理**：MemFree 消除了手动组织笔记、书签和文档的需要。当您需要信息时，只需在 MemFree 中搜索即可快速找到相关答案，从而释放您的内存并提高工作效率。
-- **节省时间的人工智能摘要**：MemFree 无需点击多个 Google 搜索结果，而是使用 AI 立即总结网页和知识库中的最佳内容，从而节省宝贵的时间。
+- **节省时间的人工智能摘要**：MemFree 使用 AI 立即总结网页和知识库中的最佳内容，无需点击多个 Google 搜索结果，从而节省宝贵的时间。
 - **经济高效的解决方案**：避免多次订阅 ChatGPT Plus、Claude Pro 和 Gemini Advanced 等服务。 MemFree 集成了它们的功能，显着降低了每月的成本。
 - **UI 页面创建速度提高 100 倍**：在几秒钟内将文本或图像转换为令人惊叹的、可用于生产的代码，在创建时可视化您的设计，无缝发布您的页面。
 
@@ -83,7 +83,7 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 - **🖥️ 实时 UI 预览**：即时渲染并预览生成的 UI
 - **🔍 AI 支持的内容搜索**：使用我们先进的人工智能搜索功能，用相关内容丰富您的用户界面
 - **🖼 图像驱动的 UI 生成**：创建与您的参考图像紧密匹配的 UI 组件和页面
-- **⚛️ React + TailWind + Shadcn UI 集成**：使用最流行的前端堆栈利用人工智能生成的代码：React、TailWind 和 Shadcn UI
+- **⚛️ React + TailWind + Shadcn UI Integration**：使用最流行的前端堆栈利用人工智能生成的代码：React、TailWind 和 Shadcn UI
 - **🚀 一键式 UI 发布**：只需单击一下即可立即将您的 UI 发布并共享到网络上
 - **📱 响应式代码和预览**：跨各种设备实时预览您的 UI，确保完美适应所有屏幕尺寸
 - **🌓 深色模式代码和预览**：轻松生成人工智能驱动的 UI 代码，并内置深色模式支持，让您可以立即预览浅色和深色模式
@@ -153,7 +153,7 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
     bun i
 
-    cp env.example .env
+    cp env-example .env
 
     # Add your OpenAI API Key, Upstash Redis URL, and Serper API Key to .env
 
@@ -165,7 +165,7 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
     bun i
 
-    cp env.example .env
+    cp env-example .env
 
     # Add your OpenAI API Key, Upstash Redis URL to .env
 
@@ -182,7 +182,7 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
 <p align="left">
  <a href="https://github.com/memfreeme/memfree/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=memfreeme/memfree" />
+  <img src="https://contrib.rocks/image?repo=memfreeme/memfree" />
  </a>
 </p>
 

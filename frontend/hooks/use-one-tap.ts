@@ -7,40 +7,33 @@ import { GOOGLE_CLIENT_ID } from '@/lib/client_env';
 const useOneTapSignin = (options, user: User) => {
     const [isLoading, setIsLoading] = useState(false);
 
-    const oneTap = () => {
-        if (isLoading) {
-            return;
-        }
-        const { google } = window;
-        if (google) {
-            setIsLoading(true);
-            google.accounts.id.initialize({
-                // log_level: 'debug',
-                client_id: GOOGLE_CLIENT_ID!,
-                callback: async (response: CredentialResponse) => {
-                    setIsLoading(true);
+    const oneTap = async () => {
+        if (isLoading || !window.google) return;
 
-                    void signIn('googleonetap', {
+        setIsLoading(true);
+        window.google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID!,
+            callback: async (response: CredentialResponse) => {
+                try {
+                    await signIn('googleonetap', {
                         credential: response.credential,
                         redirect: true,
                         ...options,
                     });
+                } finally {
                     setIsLoading(false);
-                },
-            });
+                }
+            },
+        });
 
-            google.accounts.id.prompt();
-        }
+        window.google.accounts.id.prompt();
     };
 
     useEffect(() => {
-        if (user) {
-            return;
-        }
-        const timeout = setTimeout(() => oneTap(), 1000);
-        return () => {
-            clearTimeout(timeout);
-        };
+        if (user) return;
+
+        const timeout = setTimeout(oneTap, 1000);
+        return () => clearTimeout(timeout);
     }, [user]);
 
     return { isLoading };

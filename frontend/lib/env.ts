@@ -1,27 +1,18 @@
 import 'server-only';
 
-export let VECTOR_INDEX_HOST = '';
-// Let open source users could one click deploy
-if (process.env.VECTOR_INDEX_HOST) {
-    VECTOR_INDEX_HOST = process.env.VECTOR_INDEX_HOST;
-} else if (process.env.VECTOR_HOST) {
-    VECTOR_INDEX_HOST = process.env.VECTOR_HOST;
-} else if (process.env.MEMFREE_HOST) {
-    VECTOR_INDEX_HOST = `${process.env.MEMFREE_HOST}/vector`;
-} else {
-    throw new Error('Neither VECTOR_INDEX_HOST, VECTOR_HOST, nor MEMFREE_HOST is defined');
-}
+const {
+  VECTOR_INDEX_HOST: indexHost,
+  VECTOR_HOST: vectorHost,
+  MEMFREE_HOST: memfreeHost,
+} = process.env;
 
-const memfreeHost = process.env.MEMFREE_HOST;
-export let VECTOR_HOST = '';
-// Let open source users could one click deploy
-if (process.env.VECTOR_HOST) {
-    VECTOR_HOST = process.env.VECTOR_HOST;
-} else if (memfreeHost) {
-    VECTOR_HOST = `${memfreeHost}/vector`;
-} else {
-    throw new Error('Neither MEMFREE_HOST nor VECTOR_HOST is defined');
-}
+// Set VECTOR_INDEX_HOST with precedence
+export let VECTOR_INDEX_HOST = indexHost || vectorHost || (memfreeHost ? `${memfreeHost}/vector` : '');
+if (!VECTOR_INDEX_HOST) throw new Error('VECTOR_INDEX_HOST, VECTOR_HOST, or MEMFREE_HOST must be defined.');
+
+// Set VECTOR_HOST with precedence
+export let VECTOR_HOST = vectorHost || (memfreeHost ? `${memfreeHost}/vector` : '');
+if (!VECTOR_HOST) throw new Error('MEMFREE_HOST or VECTOR_HOST must be defined.');
 
 // Auth
 export const AUTH_GOOGLE_ID = process.env.AUTH_GOOGLE_ID || '';

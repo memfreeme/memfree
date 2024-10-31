@@ -47,7 +47,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link prefetch={false} href="/settings" className="flex items-center space-x-2.5">
+                    <Link prefetch={false} href="/settings" className="flex items-center space-x-2.5" aria-label="Settings">
                         <Settings className="size-4" />
                         <p className="text-sm">Settings</p>
                     </Link>

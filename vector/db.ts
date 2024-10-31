@@ -27,7 +27,7 @@ const schema = new Schema([
 async function getConnection() {
   const bucket = process.env.AWS_BUCKET || "";
   if (bucket) {
-    return await lancedb.connect(bucket, {
+    return lancedb.connect(bucket, {
       storageOptions: {
         awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
         s3Express: "true",
@@ -38,15 +38,15 @@ async function getConnection() {
   } else {
     // Let open source users could one click deploy
     const localDirectory = process.cwd();
-    return await lancedb.connect(localDirectory);
+    return lancedb.connect(localDirectory);
   }
 }
 
 async function getTable(db: any, tableName: string): Promise<lancedb.Table> {
   if ((await db.tableNames()).includes(tableName)) {
-    return await db.openTable(tableName);
+    return db.openTable(tableName);
   } else {
-    return await db.createEmptyTable(tableName, schema);
+    return db.createEmptyTable(tableName, schema);
   }
 }
 
@@ -151,12 +151,12 @@ export async function dropTable(tableName: string) {
 
 export async function createEmptyTable(tableName: string) {
   const db = await getConnection();
-  return await db.createEmptyTable(tableName, schema);
+  return db.createEmptyTable(tableName, schema);
 }
 
 export async function reCreateEmptyTable(tableName: string) {
   const db = await getConnection();
-  return await db.createEmptyTable(tableName, schema, { mode: "overwrite" });
+  return db.createEmptyTable(tableName, schema, { mode: "overwrite" });
 }
 
 export async function size(tableName: string) {

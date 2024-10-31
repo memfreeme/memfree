@@ -11,17 +11,11 @@ interface FetchWithTimeoutOptions extends RequestInit {
 export const fetchWithTimeout = async (resource: RequestInfo, options: FetchWithTimeoutOptions = {}): Promise<Response> => {
     const { timeout = 10000 } = options;
 
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), timeout);
-    try {
-        const response = await fetch(resource, {
-            ...options,
-            signal: controller.signal,
-        });
-        return response;
-    } finally {
-        clearTimeout(id);
-    }
+    const response = await fetch(resource, {
+        ...options,
+        signal: AbortSignal.timeout(timeout),
+    });
+    return response;
 };
 
 export function extractYouTubeId(url: string): string {
@@ -56,6 +50,7 @@ export async function saveMessages(
     videos?: VideoSource[],
     related?: string,
     type?: string,
+    title?: string,
 ) {
     if (!userId) {
         return;
@@ -72,12 +67,12 @@ export async function saveMessages(
         type: type ?? 'all',
     });
 
-    // console.log('saving search', messages);
+    // console.log('title', title, 'saving search', messages);
 
     await saveSearch(
         {
             id: messages[0].id,
-            title: messages[0].content.substring(0, 50),
+            title: title ?? messages[0].content.substring(0, 50),
             createdAt: new Date(),
             userId: userId,
             messages: messages,

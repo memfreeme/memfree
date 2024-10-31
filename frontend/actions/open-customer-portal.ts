@@ -14,26 +14,20 @@ export type responseAction = {
 const billingUrl = absoluteUrl('/');
 
 export async function openCustomerPortal(userStripeId: string): Promise<responseAction> {
-    let redirectUrl: string = '';
+    const session = await auth();
 
-    try {
-        const session = await auth();
-
-        if (!session?.user || !session?.user.email) {
-            throw new Error('Unauthorized');
-        }
-
-        if (userStripeId) {
-            const stripeSession = await stripe.billingPortal.sessions.create({
-                customer: userStripeId,
-                return_url: billingUrl,
-            });
-
-            redirectUrl = stripeSession.url as string;
-        }
-    } catch (error) {
-        throw new Error('Failed to generate user stripe session');
+    if (!session?.user?.email) {
+        throw new Error('Unauthorized');
     }
 
-    redirect(redirectUrl);
+    if (userStripeId) {
+        const stripeSession = await stripe.billingPortal.sessions.create({
+            customer: userStripeId,
+            return_url: billingUrl,
+        });
+
+        redirect(stripeSession.url as string);
+    }
+    
+    throw new Error('Failed to generate user stripe session');
 }

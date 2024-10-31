@@ -42,7 +42,7 @@ Before contributing, ensure you have the following set up:
 ```
 cd frontend
 
-bun icp env.example .env
+bun icp env-example .env
 
 bun run dev
 ```
@@ -66,6 +66,10 @@ bun i
 
 bun run build
 ```
+
+## Testing Guidelines
+
+Please refer to the [Testing Guidelines](./frontend/TESTING_GUIDELINES.md) for details on how to test your changes.
 
 ## One-Click Deployment
 

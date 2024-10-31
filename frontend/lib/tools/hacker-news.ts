@@ -24,7 +24,7 @@ export async function get_top_stories(limit: number, onStream?: (...args: any[])
 
 export async function get_story(id: number) {
     const response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
-    return await response.json();
+    return response.json();
 }
 
 export async function get_story_with_comments(id: number) {
@@ -42,9 +42,7 @@ export async function get_story_with_comments(id: number) {
     return {
         ...data,
         hnUrl: `https://news.ycombinator.com/item?id=${id}`,
-        comments: comments.map((comment: any) => ({
-            ...comment,
-        })),
+        comments,
     };
 }
 

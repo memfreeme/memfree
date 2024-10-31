@@ -135,6 +135,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                 newImages?: ImageSource[],
                 newRelated?: string,
                 newVideos?: VideoSource[],
+                title?: string,
             ) => {
                 const activeSearch = useSearchStore.getState().activeSearch;
                 if (messageIndex === null || !activeSearch.messages[messageIndex]) {
@@ -158,6 +159,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                 }
 
                 updateActiveSearch({
+                    title: title ?? activeSearch.title,
                     messages: activeSearch.messages.map((msg, index) => {
                         if (index === messageIndex) {
                             return {
@@ -261,7 +263,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                         }
                     },
                     onmessage(msg) {
-                        const { clear, answer, status, sources, images, related, videos, error } = JSON.parse(msg.data);
+                        const { clear, answer, status, sources, images, related, videos, error, title } = JSON.parse(msg.data);
                         if (clear) {
                             accumulatedMessage = '';
                             updateMessages(accumulatedMessage);
@@ -283,6 +285,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                             images,
                             related ? (accumulatedRelated += related) : undefined,
                             videos,
+                            title,
                         );
                     },
                 });

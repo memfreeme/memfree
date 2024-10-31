@@ -1,6 +1,9 @@
 // The utility functions in this file are shared between the client and the server.
 
 export function isValidUrl(input: string): boolean {
+    // return early if the url cannot be parsed
+    if ('canParse' in URL && !URL.canParse(input)) return false;
+    
     try {
         const url = new URL(input);
         if (url.protocol !== 'http:' && url.protocol !== 'https:') {
