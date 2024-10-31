@@ -51,3 +51,5 @@ body:
           required: true
         - label: "I have starred the repository"
           required: true
+        - label: "I would like to work on this"
+          required: false

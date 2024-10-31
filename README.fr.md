@@ -84,7 +84,7 @@ MemFree est équipé de fonctionnalités puissantes qui répondent à divers bes
 -   **🔍 Recherche de contenu basée sur l'IA**: Enrichissez votre interface utilisateur avec du contenu pertinent grâce à notre fonctionnalité de recherche avancée par IA
 -   **🖼 Génération d'interface utilisateur basée sur l'image** : Créez des composants et des pages d'interface utilisateur qui correspondent étroitement à vos images de référence
 -   **⚛️ Intégration de l'interface utilisateur React + TailWind + Shadcn** : exploitez le code généré par l'IA à l'aide de la pile frontale la plus populaire : React, TailWind et Shadcn UI
--   **🚀 Publication de l'interface utilisateur en un clic**: Publiez et partagez instantanément votre interface utilisateur sur le Web en un seul clic
+-   **🚀 Publication de l'interface utilisateur en un clic**: Publiez et partagez votre interface utilisateur sur le Web instantanément en un seul clic
 -   **📱 Code réactif et aperçu**: prévisualisez votre interface utilisateur sur différents appareils en temps réel, garantissant une adaptation parfaite à toutes les tailles d'écran
 -   **🌓 Code et aperçu du mode sombre**: Générez sans effort du code d'interface utilisateur alimenté par l'IA avec prise en charge intégrée du mode sombre, vous permettant de prévisualiser instantanément les modes clair et sombre
 -   **📸 Exportation de capture d'écran de l'interface utilisateur**: Exportez et partagez facilement vos conceptions d'interface utilisateur sous forme de captures d'écran de haute qualité pour une collaboration transparente
