@@ -68,7 +68,7 @@ export async function generateUI(
     onStream?: (...args: any[]) => void,
 ) {
     try {
-        const newMessages = messages.slice(-7);
+        const newMessages = messages.slice(-2);
         const historyMessages = convertToCoreMessages(newMessages);
         // console.log('historyMessages', JSON.stringify(historyMessages, null, 2));
 
