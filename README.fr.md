@@ -39,11 +39,11 @@ MemFree est un<b>Moteur de recherche IA hybride</b>.
 
 Avec MemFree, vous pouvez obtenir instantanément des réponses précises à partir de votre base de connaissances et de l'ensemble d'Internet.
 
-MemFree est un<b>AI UI Generator</b>.
+MemFree est un<b>AI Page Generator</b>.
 
 Memfree utilise le modèle d'IA le plus puissant - Claude 3.5 Sonnet et le framework front-end le plus populaire - React + Tailwind + Shadcn UI pour générer pour vous des pages d'interface utilisateur prêtes pour la production en quelques secondes.
 
-[La vitrine de MemFree AI UI Generator](https://www.memfree.me/generate-ui).
+[PageGen - AI Page Generator](https://pagegen.ai/).
 
 ## Qu'est-ce qui rend MemFree précieux ?
 
@@ -125,7 +125,7 @@ MemFree est équipé de fonctionnalités puissantes qui répondent à divers bes
 
 ### 5 Backend de déploiement d'une seule commande avec Fly.io
 
--   [Une commande déployer MemFree Vector sur Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
+-   [Une commande déploie MemFree Vector sur Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
 
 ## Installations auto-hébergées
 
@@ -137,7 +137,7 @@ MemFree est équipé de fonctionnalités puissantes qui répondent à divers bes
 
 > Erreur de chignon introuvable
 
-Si vous obtenez une erreur relative à la commande bun introuvable. Découvrez le :[Documentation officielle du chignon](https://bun.sh/docs/installation#checking-installation)
+If you get an error relating to bun command not found. Check out the: [Documentation officielle du chignon](https://bun.sh/docs/installation#checking-installation)
 
 #### Upstash Redis
 
@@ -202,9 +202,10 @@ Voici comment vous pouvez contribuer :
 
 MemFree est soutenu par[MemGratuit](https://www.memfree.me/)et sous licence[AVEC](https://github.com/memfreeme/memfree/blob/main/LICENSE).
 
-## Projets connexes
+## Propulsé par MemFree
 
 -   [Aperçu de l'interface utilisateur React + Shadcn](https://reactshadcn.com)
+-   [PageGen - AI Page Generator](https://pagegen.ai/)
 
 ## Histoire des étoiles
 
