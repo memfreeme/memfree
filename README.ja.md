@@ -39,18 +39,18 @@
 
 MemFree を使用すると、ナレッジ ベースやインターネット全体から正確な回答を即座に得ることができます。
 
-MemFree は、<b>AI UI ジェネレーター</b>.
+MemFree は、<b>AIページジェネレーター</b>.
 
-Memfree は、最も強力な AI モデルである Claude 3.5 Sonnet と、最も人気のあるフロントエンド フレームワークである React + Tailwind + Shadcn UI を使用して、本番環境に対応した UI ページを数秒で生成します。
+Memfree uses the most powerful AI model - Claude 3.5 Sonnet and the most popular front-end framework - React + Tailwind + Shadcn UI to generate production-ready UI pages for you in seconds.
 
-[MemFree AI UI Generatorのショーケース](https://www.memfree.me/generate-ui).
+[PageGen - AI ページジェネレーター](https://pagegen.ai/).
 
 ## MemFree の価値は何ですか?
 
--   **効率的なナレッジマネジメント**: MemFree を使用すると、メモ、ブックマーク、ドキュメントを手動で整理する必要がなくなります。情報が必要な場合は、MemFree 内を検索するだけで関連する回答がすぐに見つかり、メモリが解放され、生産性が向上します。
--   **時間を節約する AI サマリー**: MemFree は、複数の Google 検索結果をクリックする代わりに、AI を使用して Web ページとナレッジ ベースから最適なコンテンツを即座に要約し、貴重な時間を節約します。
+-   **効率的なナレッジ管理**: MemFree を使用すると、メモ、ブックマーク、ドキュメントを手動で整理する必要がなくなります。情報が必要な場合は、MemFree 内を検索するだけで関連する回答がすぐに見つかり、メモリが解放され、生産性が向上します。
+-   **時間を節約する AI サマリー**: MemFree は、複数の Google 検索結果をクリックする代わりに、AI を使用して Web ページやナレッジ ベースから最適なコンテンツを即座に要約し、貴重な時間を節約します。
 -   **費用対効果の高いソリューション**: ChatGPT Plus、Claude Pro、Gemini Advanced などのサービスへの複数のサブスクリプションは避けてください。 MemFree はそれらの機能を統合し、月々のコストを大幅に削減します。
--   **100 倍高速な UI ページ作成**: テキストや画像を数秒で素晴らしい、本番環境に対応したコードに変換し、デザインを作成しながら視覚化し、ページをシームレスに公開します。
+-   **100 倍高速な UI ページ作成**: テキストや画像を数秒で素晴らしい、本番環境に対応したコードに変換し、作成しながらデザインを視覚化し、ページをシームレスに公開します。
 
 ## MemFree ハイブリッド AI 検索機能
 
@@ -82,13 +82,13 @@ MemFree には、さまざまな検索と生産性のニーズに応える強力
 
 -   **🖥️ リアルタイム UI プレビュー**: 生成された UI を即座にレンダリングしてプレビューします
 -   **🔍 AI を活用したコンテンツ検索**: 高度な AI 検索機能を使用して、関連コンテンツで UI を強化します。
--   **🖼 Image-Driven UI Generation**: 参照画像に厳密に一致する UI コンポーネントとページを作成します
+-   **🖼 画像主導の UI 生成**: 参照画像に厳密に一致する UI コンポーネントとページを作成します
 -   **⚛️ React + TailWind + Shadcn UI 統合**: 最も人気のあるフロントエンド スタック (React、TailWind、Shadcn UI) を使用して AI 生成コードを活用します。
 -   **🚀 ワンクリック UI 公開**: ワンクリックで UI を即座に Web に公開して共有します
 -   **📱 レスポンシブコードとプレビュー**: さまざまなデバイスで UI をリアルタイムでプレビューし、すべての画面サイズに完全に適応できるようにします。
 -   **🌓 ダークモードのコードとプレビュー**: ダーク モード サポートが組み込まれた AI を活用した UI コードを簡単に生成し、ライト モードとダーク モードの両方を即座にプレビューできるようにします。
 -   **📸 UI スクリーンショットのエクスポート**: UI デザインを高品質のスクリーンショットとして簡単にエクスポートして共有し、シームレスなコラボレーションを実現します
--   **🛠️ スマートエラー修正**: MemFree の高度な AI モデルと洗練されたコード ルールは完璧を目指していますが、時折エラーが発生する可能性があります。スマートエラー修正機能により、ワンクリックで問題を即座に修正できます。
+-   **🛠️ スマートなエラー修正**: MemFree の高度な AI モデルと洗練されたコード ルールは完璧を目指していますが、時折エラーが発生する可能性があります。スマートエラー修正機能により、ワンクリックで問題を即座に修正できます。
 
 ## MemFree ハイブリッド AI 検索ワークフロー
 
@@ -100,7 +100,7 @@ MemFree には、さまざまな検索と生産性のニーズに応える強力
 
 ## 技術スタック
 
-[ハイブリッド AI 検索フル テクノロジー スタック](https://www.memfree.me/blog/hybrid-ai-search-tech-stack)
+[Hybrid AI Search Full Tech Stack](https://www.memfree.me/blog/hybrid-ai-search-tech-stack)
 
 ## ワンクリック導入
 
@@ -200,11 +200,12 @@ Serper API キーを取得します。[サーペル](https://serper.dev/api-key)
 
 ## ライセンス
 
-MemFree を支援しているのは、[メムフリー](https://www.memfree.me/)そして以下にライセンスされています[と](https://github.com/memfreeme/memfree/blob/main/LICENSE).
+MemFree をサポートしているのは、[メムフリー](https://www.memfree.me/)そして以下にライセンスされています[と](https://github.com/memfreeme/memfree/blob/main/LICENSE).
 
-## 関連プロジェクト
+## メモリフリーによる提供
 
 -   [React + Shadcn UI プレビュー](https://reactshadcn.com)
+-   [PageGen - AI ページジェネレーター](https://pagegen.ai/)
 
 ## スターの歴史
 
