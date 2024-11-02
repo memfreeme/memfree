@@ -31,7 +31,6 @@ export async function SearchHistory({ user }: SearchHistoryProps) {
 
             <div className="flex flex-col my-2 px-4 space-y-2">
                 <NewSearchButton umamiEvent="New Search Click" className={buttonVariants({ variant: 'outline' })} />
-                <NewSearchButton umamiEvent="New Generate UI" type="UI" className={buttonVariants({ variant: 'outline' })} />
             </div>
             <SidebarList user={user} />
         </div>

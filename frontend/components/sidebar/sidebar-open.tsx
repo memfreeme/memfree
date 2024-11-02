@@ -9,6 +9,7 @@ import { UserAccountNav } from '@/components/layout/user-account-nav';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import LocaleSelect from '@/components/locale-selection';
 import { useNewGenerateUI, useNewSearch } from '@/hooks/use-new-search';
+import { PageGenUrl } from '@/config';
 
 interface NavBarProps {
     user: User;
@@ -55,13 +56,14 @@ export default function SidebarOpen({ user }: NavBarProps) {
 
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <button
-                                onClick={handleNewGenerateUI}
-                                aria-label="New Generate UI"
+                            <Link
+                                href={PageGenUrl}
+                                prefetch={false}
+                                aria-label="AI Page Generator"
                                 className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg py-1 px-2 m-2"
                             >
                                 <span className="text-gray-800 font-semibold dark:text-white">UI</span>
-                            </button>
+                            </Link>
                         </TooltipTrigger>
                         <TooltipContent className="bg-black text-white">
                             <p>New Generate UI</p>

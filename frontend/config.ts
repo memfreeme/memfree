@@ -14,6 +14,7 @@ import {
 } from '@/lib/client_env';
 
 const site_url = 'https://www.memfree.me';
+export const PageGenUrl = 'https://pagegen.ai';
 
 export const siteConfig: SiteConfig = {
     name: 'MemFree',
