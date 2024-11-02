@@ -39,11 +39,11 @@ MemFree is a <b>Hybrid AI Search Engine</b>.
 
 With MemFree, you can instantly get Accurate Answers from your knowledge base and the whole internet.
 
-MemFree is an <b>AI UI Generator</b>.
+MemFree is an <b>AI Page Generator</b>.
 
 Memfree uses the most powerful AI model - Claude 3.5 Sonnet and the most popular front-end framework - React + Tailwind + Shadcn UI to generate production-ready UI pages for you in seconds.
 
-[The showcase of MemFree AI UI Generator](https://www.memfree.me/generate-ui).
+[PageGen - AI Page Generator](https://pagegen.ai/).
 
 ## What Makes MemFree Valuable?
 
@@ -208,9 +208,10 @@ Here's how you can contribute:
 
 MemFree is backed by [MemFree](https://www.memfree.me/) and licensed under [MIT](https://github.com/memfreeme/memfree/blob/main/LICENSE).
 
-## Related Projects
+## Powered By MemFree
 
 - [React + Shadcn UI Preview](https://reactshadcn.com)
+- [PageGen - AI Page Generator](https://pagegen.ai/)
 
 ## Star History
 
