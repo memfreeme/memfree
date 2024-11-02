@@ -33,17 +33,17 @@
 
 <br/>
 
-## Was ist MemFree?
+## Was ist MemFree
 
 MemFree ist ein<b>Hybride KI-Suchmaschine</b>.
 
 Mit MemFree können Sie sofort präzise Antworten aus Ihrer Wissensdatenbank und dem gesamten Internet erhalten.
 
-MemFree ist ein<b>AI-UI-Generator</b>.
+MemFree ist ein<b>AI-Seitengenerator</b>.
 
 Memfree nutzt das leistungsstärkste KI-Modell – Claude 3.5 Sonnet und das beliebteste Front-End-Framework – React + Tailwind + Shadcn UI, um in Sekundenschnelle produktionsbereite UI-Seiten für Sie zu generieren.
 
-[Das Schaufenster des MemFree AI UI Generators](https://www.memfree.me/generate-ui).
+[PageGen – KI-Seitengenerator](https://pagegen.ai/).
 
 ## Was macht MemFree wertvoll?
 
@@ -86,7 +86,7 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 -   **⚛️ React + TailWind + Shadcn UI-Integration**: Nutzen Sie KI-generierten Code mit dem beliebtesten Front-End-Stack: React, TailWind und Shadcn UI
 -   **🚀 One-Click-UI-Veröffentlichung**: Veröffentlichen und teilen Sie Ihre Benutzeroberfläche sofort mit einem einzigen Klick im Web
 -   **📱 Responsiver Code und Vorschau**: Sehen Sie sich Ihre Benutzeroberfläche in Echtzeit auf verschiedenen Geräten an und sorgen Sie so für eine perfekte Anpassung an alle Bildschirmgrößen
--   **🌓 Dark Mode Code and Preview**: Generieren Sie mühelos KI-gestützten UI-Code mit integrierter Unterstützung für den Dunkelmodus, sodass Sie sofort eine Vorschau sowohl des Hell- als auch des Dunkelmodus anzeigen können
+-   **🌓 Dark-Mode-Code und Vorschau**: Generieren Sie mühelos KI-gestützten UI-Code mit integrierter Unterstützung für den Dunkelmodus, sodass Sie sofort eine Vorschau sowohl des Hell- als auch des Dunkelmodus anzeigen können
 -   **📸 UI-Screenshot-Export**: Exportieren und teilen Sie Ihre UI-Designs ganz einfach als hochwertige Screenshots für eine nahtlose Zusammenarbeit
 -   **🛠️ Intelligente Fehlerkorrektur**: Während das fortschrittliche KI-Modell und die ausgefeilten Coderegeln von MemFree nach Perfektion streben, können gelegentlich Fehler auftreten. Mit unserer intelligenten Fehlerkorrekturfunktion können Sie alle Probleme sofort mit nur einem Klick beheben
 
@@ -200,11 +200,12 @@ So können Sie einen Beitrag leisten:
 
 ## Lizenz
 
-MemFree wird unterstützt von[MemFree](https://www.memfree.me/)und lizenziert unter[MIT](https://github.com/memfreeme/memfree/blob/main/LICENSE).
+MemFree is backed by [MemFree](https://www.memfree.me/)und lizenziert unter[MIT](https://github.com/memfreeme/memfree/blob/main/LICENSE).
 
-## Verwandte Projekte
+## Unterstützt von MemFree
 
 -   [React + Shadcn UI-Vorschau](https://reactshadcn.com)
+-   [PageGen – KI-Seitengenerator](https://pagegen.ai/)
 
 ## Sternengeschichte
 
