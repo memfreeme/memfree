@@ -259,8 +259,8 @@ const SearchBar: React.FC<Props> = ({
                                             }
                                         }}
                                     >
-                                        <Database color="white" size={20} strokeWidth={2} />
-                                        <span className="font-serif text-sm text-white font-semibold">{t('index-button')}</span>
+                                        <Database className="dark:text-white" size={20} strokeWidth={2} />
+                                        <span className="font-serif text-sm  font-semibold dark:text-white">{t('index-button')}</span>
                                     </button>
                                 </TooltipTrigger>
                                 <TooltipContent>{t('index-tip')}</TooltipContent>
@@ -288,14 +288,14 @@ const SearchBar: React.FC<Props> = ({
                                         {isUploading ? (
                                             <Icons.spinner size={20} strokeWidth={2} className="animate-spin" />
                                         ) : (
-                                            <div className="flex items-center">
+                                            <div className="flex items-center dark:text-white">
                                                 {searchType === SearchType.SEARCH ? (
-                                                    <Icons.mylink color="white" size={20} strokeWidth={2} />
+                                                    <Icons.mylink size={20} strokeWidth={2} />
                                                 ) : (
-                                                    <ImageIcon color="white" size={20} strokeWidth={2} />
+                                                    <ImageIcon size={20} strokeWidth={2} />
                                                 )}
                                                 {searchType === SearchType.SEARCH && (
-                                                    <span className="font-serif text-sm text-white font-semibold">{t('attach-button')}</span>
+                                                    <span className="font-semibold font-serif text-sm ">{t('attach-button')}</span>
                                                 )}
                                             </div>
                                         )}
