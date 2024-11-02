@@ -24,7 +24,7 @@ export default async function SettingsPage() {
     const userSubscriptionPlan = await getUserSubscriptionPlan(user.id);
 
     return (
-        <div className="group w-5/6 mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[300px] peer-[[data-state=open]]:xl:px-[320px] my-10">
+        <div className="group w-5/6 mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[300px] peer-[[data-state=open]]:xl:pl-[320px] my-10">
             <DashboardShell>
                 <DashboardHeader heading="MemFree Settings" text="Manage account and website settings." />
                 <div className="grid gap-10">
