@@ -82,13 +82,13 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 
 -   **🖥️ Vista previa de la interfaz de usuario en tiempo real**: Representa y previsualiza instantáneamente la interfaz de usuario generada
 -   **🔍 Búsqueda de contenido impulsada por IA**: Enriquezca su interfaz de usuario con contenido relevante utilizando nuestra función de búsqueda avanzada de IA
--   **🖼 Generación de UI basada en imágenes**: cree componentes de interfaz de usuario y páginas que coincidan estrechamente con sus imágenes de referencia.
+-   **🖼 Generación de UI basada en imágenes**: cree componentes de interfaz de usuario y páginas que coincidan estrechamente con sus imágenes de referencia
 -   **⚛️ Integración de interfaz de usuario de React + TailWind + Shadcn**: Aproveche el código generado por IA utilizando la pila de front-end más popular: React, TailWind y Shadcn UI
 -   **🚀 Publicación de UI con un clic**: Publique y comparta su interfaz de usuario en la web al instante con un solo clic
 -   **📱 Código responsivo y vista previa**: Obtenga una vista previa de su interfaz de usuario en varios dispositivos en tiempo real, lo que garantiza una adaptación perfecta a todos los tamaños de pantalla.
--   **🌓 Código y vista previa del modo oscuro**: Genere sin esfuerzo código de interfaz de usuario impulsado por IA con soporte para modo oscuro incorporado, lo que le permite obtener una vista previa de los modos claro y oscuro al instante.
+-   **🌓 Código y vista previa del modo oscuro** : Effortlessly generate AI-powered UI code with built-in dark mode support, allowing you to preview both light and dark modes instantly
 -   **📸 Exportación de capturas de pantalla de la interfaz de usuario**: Exporte y comparta fácilmente sus diseños de interfaz de usuario como capturas de pantalla de alta calidad para una colaboración perfecta
--   **🛠️ Corrección de errores inteligente**: Si bien el modelo avanzado de IA de MemFree y las sofisticadas reglas de código se esfuerzan por alcanzar la perfección, pueden ocurrir errores ocasionales. Nuestra función de corrección inteligente de errores le permite solucionar instantáneamente cualquier problema con solo un clic
+-   **🛠️ Corrección de errores inteligente**: Si bien el modelo de IA avanzado de MemFree y las sofisticadas reglas de código se esfuerzan por alcanzar la perfección, pueden ocurrir errores ocasionales. Nuestra función de corrección inteligente de errores le permite solucionar instantáneamente cualquier problema con un solo clic
 
 ## Flujo de trabajo de búsqueda de IA híbrida de MemFree
 
@@ -110,7 +110,7 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 
 <a href="https://zeabur.com/templates/CE71SC?referralCode=memfree"><img src="https://zeabur.com/button.svg" alt="Deploy on Zeabur"/></a>
 
-### 2 Implementar frontend con Vercel
+### 2 Implementar interfaz con Vercel
 
 <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree&env=UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,OPENAI_API_KEY,MEMFREE_HOST,AUTH_SECRET,API_TOKEN&envDescription=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree%2Fblob%2Fmain%2Ffrontend%2Fenv-example&project-name=memfree&repository-name=memfree&demo-title=MemFree&demo-description=MemFree – Hybrid AI Search Engine&demo-url=https%3A%2F%2Fwww.memfree.me%2F&demo-image=https%3A%2F%2Fwww.memfree.me%2Fog.png&root-directory=frontend"><img src="https://vercel.com/button" alt="Deploy with Vercel"/></a>
 
@@ -126,6 +126,10 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 ### 5 Implementación de backend con un solo comando con Fly.io
 
 -   [Un comando implementa MemFree Vector en Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
+
+### 6 Implemente MemFree en páginas de Cloudflare
+
+-   [Cómo migrar MemFree de Vercel a Cloudflare en las siguientes páginas](https://www.memfree.me/blog/couldflare-next-on-page-edge)
 
 ## Instalaciones autohospedadas
 
@@ -163,7 +167,7 @@ Obtenga una clave API de Serper:[Serpiente](https://serper.dev/api-key)
 
     bun run dev
 
-### Servicio de vectores
+### Servicio vectorial
 
     cd vector
 
@@ -204,8 +208,9 @@ MemFree está respaldado por[MemFree](https://www.memfree.me/)y con licencia baj
 
 ## Desarrollado por MemFree
 
+-   [Generador de páginas AI PageGen](https://pagegen.ai/)
+-   [Búsqueda de IA híbrida MemFree](https://www.memfree.me)
 -   [Vista previa de la interfaz de usuario de React + Shadcn](https://reactshadcn.com)
--   [PageGen - Generador de páginas AI](https://pagegen.ai/)
 
 ## Historia de las estrellas
 
