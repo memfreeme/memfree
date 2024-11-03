@@ -41,13 +41,13 @@ MemFree を使用すると、ナレッジ ベースやインターネット全�
 
 MemFree は、<b>AIページジェネレーター</b>.
 
-Memfree uses the most powerful AI model - Claude 3.5 Sonnet and the most popular front-end framework - React + Tailwind + Shadcn UI to generate production-ready UI pages for you in seconds.
+Memfree は、最も強力な AI モデルである Claude 3.5 Sonnet と、最も人気のあるフロントエンド フレームワークである React + Tailwind + Shadcn UI を使用して、本番環境に対応した UI ページを数秒で生成します。
 
 [PageGen - AI ページジェネレーター](https://pagegen.ai/).
 
 ## MemFree の価値は何ですか?
 
--   **効率的なナレッジ管理**: MemFree を使用すると、メモ、ブックマーク、ドキュメントを手動で整理する必要がなくなります。情報が必要な場合は、MemFree 内を検索するだけで関連する回答がすぐに見つかり、メモリが解放され、生産性が向上します。
+-   **効率的なナレッジマネジメント**: MemFree を使用すると、メモ、ブックマーク、ドキュメントを手動で整理する必要がなくなります。情報が必要な場合は、MemFree 内を検索するだけで関連する回答がすぐに見つかり、メモリが解放され、生産性が向上します。
 -   **時間を節約する AI サマリー**: MemFree は、複数の Google 検索結果をクリックする代わりに、AI を使用して Web ページやナレッジ ベースから最適なコンテンツを即座に要約し、貴重な時間を節約します。
 -   **費用対効果の高いソリューション**: ChatGPT Plus、Claude Pro、Gemini Advanced などのサービスへの複数のサブスクリプションは避けてください。 MemFree はそれらの機能を統合し、月々のコストを大幅に削減します。
 -   **100 倍高速な UI ページ作成**: テキストや画像を数秒で素晴らしい、本番環境に対応したコードに変換し、作成しながらデザインを視覚化し、ページをシームレスに公開します。
@@ -100,7 +100,7 @@ MemFree には、さまざまな検索と生産性のニーズに応える強力
 
 ## 技術スタック
 
-[Hybrid AI Search Full Tech Stack](https://www.memfree.me/blog/hybrid-ai-search-tech-stack)
+[ハイブリッド AI 検索フル テクノロジー スタック](https://www.memfree.me/blog/hybrid-ai-search-tech-stack)
 
 ## ワンクリック導入
 
@@ -126,6 +126,10 @@ MemFree には、さまざまな検索と生産性のニーズに応える強力
 ### 5 Fly.io を使用して 1 つのコマンドでバックエンドをデプロイする
 
 -   [ワンコマンドで MemFree Vector を Fly.io にデプロイ](https://www.memfree.me/docs/deploy-memfree-fly-io)
+
+### 6 CloudflareページにMemFreeをデプロイする
+
+-   [MemFree を Vercel から Cloudflare の次のページに移行する方法](https://www.memfree.me/blog/couldflare-next-on-page-edge)
 
 ## セルフホスト型インストール
 
@@ -200,12 +204,13 @@ Serper API キーを取得します。[サーペル](https://serper.dev/api-key)
 
 ## ライセンス
 
-MemFree をサポートしているのは、[メムフリー](https://www.memfree.me/)そして以下にライセンスされています[と](https://github.com/memfreeme/memfree/blob/main/LICENSE).
+MemFree を支援しているのは、[メムフリー](https://www.memfree.me/)そして以下にライセンスされています[と](https://github.com/memfreeme/memfree/blob/main/LICENSE).
 
 ## メモリフリーによる提供
 
+-   [PageGen AI ページジェネレーター](https://pagegen.ai/)
+-   [MemFree ハイブリッド AI 検索](https://www.memfree.me)
 -   [React + Shadcn UI プレビュー](https://reactshadcn.com)
--   [PageGen - AI ページジェネレーター](https://pagegen.ai/)
 
 ## スターの歴史
 
