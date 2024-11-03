@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**英语**\|[中文](./README.zh-CN.md) \| [德语](./README.de.md)\|[法语](./README.fr.md)\|[西班牙语](README.es.md)\|[日本人](./README.ja.md)
+**英语**\|[中文](./README.zh-CN.md)\|[德语](./README.de.md)\|[Français](./README.fr.md)\|[西班牙语](README.es.md)\|[日本人](./README.ja.md)
 
 </div>
 
@@ -35,7 +35,7 @@
 
 ## 什么是MemFree
 
-MemFree 是一个<b>混合人工智能搜索引擎</b>.
+MemFree is a <b>混合人工智能搜索引擎</b>.
 
 借助 MemFree，您可以立即从您的知识库和整个互联网中获得准确的答案。
 
@@ -48,7 +48,7 @@ Memfree 使用最强大的 AI 模型 - Claude 3.5 Sonnet 和最流行的前端�
 ## 是什么让 MemFree 有价值？
 
 -   **高效的知识管理**：MemFree 消除了手动组织笔记、书签和文档的需要。当您需要信息时，只需在 MemFree 中搜索即可快速找到相关答案，从而释放您的内存并提高工作效率。
--   **Time-Saving AI Summaries**：MemFree 无需点击多个 Google 搜索结果，而是使用 AI 立即总结网页和知识库中的最佳内容，从而节省宝贵的时间。
+-   **节省时间的人工智能摘要**：MemFree 无需点击多个 Google 搜索结果，而是使用 AI 立即总结网页和知识库中的最佳内容，从而节省宝贵的时间。
 -   **经济高效的解决方案**：避免多次订阅 ChatGPT Plus、Claude Pro 和 Gemini Advanced 等服务。 MemFree 集成了它们的功能，显着降低了每月的成本。
 -   **UI 页面创建速度提高 100 倍**：在几秒钟内将文本或图像转换为令人惊叹的、可用于生产的代码，在创建时可视化您的设计，无缝发布您的页面。
 
@@ -127,6 +127,10 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
 -   [一条命令在 Fly.io 上部署 MemFree Vector](https://www.memfree.me/docs/deploy-memfree-fly-io)
 
+### 6 在 Cloudflare 页面上部署 MemFree
+
+-   [How to migrate MemFree from Vercel to Cloudflare next-on-pages](https://www.memfree.me/blog/couldflare-next-on-page-edge)
+
 ## 自托管安装
 
 ### 先决条件
@@ -177,9 +181,9 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
 ## 贡献
 
-您可以通过以下方式做出贡献：
+Here's how you can contribute:
 
--   [打开一个问题](https://github.com/memfreeme/memfree/issues)如果您认为自己遇到了错误。
+-   [打开一个问题](https://github.com/memfreeme/memfree/issues) if you believe you've encountered a bug.
 -   做一个[拉取请求](https://github.com/memfreeme/memfree/pulls)添加新功能/提高生活质量/修复错误。
 
 ## 感谢所有贡献者
@@ -204,8 +208,9 @@ MemFree 由以下机构支持[内存自由](https://www.memfree.me/)并获得许
 
 ## 由 MemFree 提供支持
 
+-   [PageGen AI 页面生成器](https://pagegen.ai/)
+-   [MemFree 混合人工智能搜索](https://www.memfree.me)
 -   [React + Shadcn UI 预览](https://reactshadcn.com)
--   [PageGen - AI 页面生成器](https://pagegen.ai/)
 
 ## 明星历史
 
