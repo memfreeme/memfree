@@ -60,7 +60,7 @@ MemFree est équipé de fonctionnalités puissantes qui répondent à divers bes
 
 -   🌐**Plusieurs moteurs de recherche pris en charge**: Fonctionne avec Google, Exa et Vector.
 
--   🖼️**Format d'entrée de recherche multiple**: Texte, images, fichiers et pages Web, en particulier, il prend en charge la recherche, la comparaison, la synthèse et l'analyse multi-images.
+-   🖼️**Format d'entrée de recherche multiple**: Texte, images, fichiers et pages Web, en particulier, il prend en charge la recherche, la comparaison, le résumé et l'analyse multi-images.
 
 -   📊**Plusieurs méthodes de présentation des résultats**: Textes, cartes mentales, images et vidéos.
 
@@ -80,11 +80,11 @@ MemFree est équipé de fonctionnalités puissantes qui répondent à divers bes
 
 ## Fonctionnalités du générateur d'interface utilisateur MemFree AI
 
--   **🖥️ Aperçu de l'interface utilisateur en temps réel** : Rendu et aperçu instantanés de l'interface utilisateur générée
+-   **🖥️ Aperçu de l'interface utilisateur en temps réel** : Rendu et prévisualisation instantanés de l'interface utilisateur générée
 -   **🔍 Recherche de contenu basée sur l'IA**: Enrichissez votre interface utilisateur avec du contenu pertinent grâce à notre fonctionnalité de recherche avancée par IA
 -   **🖼 Génération d'interface utilisateur basée sur l'image** : Créez des composants et des pages d'interface utilisateur qui correspondent étroitement à vos images de référence
 -   **⚛️ Intégration de l'interface utilisateur React + TailWind + Shadcn** : exploitez le code généré par l'IA à l'aide de la pile frontale la plus populaire : React, TailWind et Shadcn UI
--   **🚀 Publication de l'interface utilisateur en un clic**: Publiez et partagez votre interface utilisateur sur le Web instantanément en un seul clic
+-   **🚀 Publication de l'interface utilisateur en un clic**: Publiez et partagez instantanément votre interface utilisateur sur le Web en un seul clic
 -   **📱 Code réactif et aperçu**: prévisualisez votre interface utilisateur sur différents appareils en temps réel, garantissant une adaptation parfaite à toutes les tailles d'écran
 -   **🌓 Code et aperçu du mode sombre**: Générez sans effort du code d'interface utilisateur alimenté par l'IA avec prise en charge intégrée du mode sombre, vous permettant de prévisualiser instantanément les modes clair et sombre
 -   **📸 Exportation de capture d'écran de l'interface utilisateur**: Exportez et partagez facilement vos conceptions d'interface utilisateur sous forme de captures d'écran de haute qualité pour une collaboration transparente
@@ -127,6 +127,10 @@ MemFree est équipé de fonctionnalités puissantes qui répondent à divers bes
 
 -   [Une commande déploie MemFree Vector sur Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
 
+### 6 Déployer MemFree sur les pages Cloudflare
+
+-   [Comment migrer MemFree de Vercel vers Cloudflare - pages suivantes](https://www.memfree.me/blog/couldflare-next-on-page-edge)
+
 ## Installations auto-hébergées
 
 ### Conditions préalables
@@ -137,7 +141,7 @@ MemFree est équipé de fonctionnalités puissantes qui répondent à divers bes
 
 > Erreur de chignon introuvable
 
-If you get an error relating to bun command not found. Check out the: [Documentation officielle du chignon](https://bun.sh/docs/installation#checking-installation)
+Si vous obtenez une erreur relative à la commande bun introuvable. Découvrez le :[Documentation officielle du chignon](https://bun.sh/docs/installation#checking-installation)
 
 #### Upstash Redis
 
@@ -204,8 +208,9 @@ MemFree est soutenu par[MemGratuit](https://www.memfree.me/)et sous licence[AVEC
 
 ## Propulsé par MemFree
 
+-   [PageGen AI Page Generator](https://pagegen.ai/)
+-   [Recherche d'IA hybride MemFree](https://www.memfree.me)
 -   [Aperçu de l'interface utilisateur React + Shadcn](https://reactshadcn.com)
--   [PageGen - AI Page Generator](https://pagegen.ai/)
 
 ## Histoire des étoiles
 
