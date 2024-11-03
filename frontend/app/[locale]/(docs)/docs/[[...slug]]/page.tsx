@@ -17,6 +17,7 @@ import { type Locale, routing } from '@/i18n/routing';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
+import { ProductFooter } from '@/components/layout/product-footer';
 
 interface DocPageProps {
     params: {
@@ -94,7 +95,7 @@ export default async function DocPage({ params }: DocPageProps) {
     const toc = await getTableOfContents(doc.body.raw);
 
     return (
-        <main className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+        <main className="relative py-10 lg:gap-10 xl:grid xl:grid-cols-[1fr_300px]">
             <div className="mx-auto w-full min-w-0">
                 <DocsPageHeader heading={doc.title} text={doc.description} />
                 <div className="pb-4 pt-11">
@@ -108,14 +109,7 @@ export default async function DocPage({ params }: DocPageProps) {
                     <DashboardTableOfContents toc={toc} />
                 </div>
             </div>
-            <div className="flex flex-col justify-center items-center mx-auto space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10 p-4 pb-10">
-                <Link href="/" prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }), 'w-full sm:w-auto')}>
-                    Hybrid AI Search Now
-                </Link>
-                <Link href={PageGenUrl} prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
-                    AI Page Generator Now
-                </Link>
-            </div>
+            <ProductFooter />
         </main>
     );
 }

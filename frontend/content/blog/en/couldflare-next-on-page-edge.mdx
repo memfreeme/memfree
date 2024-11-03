@@ -1,5 +1,5 @@
 ---
-title: How to migrate MemFree from vercel to cloudflare next-on-pages
+title: How to migrate MemFree from Vercel to Cloudflare next-on-pages
 description: Issues and solutions for migrating MemFree from vercel to cloudflare next-on-pages
 image: /images/blog/blog-post-3.jpg
 date: '2024-11-03'
@@ -97,7 +97,21 @@ The documentation and blog sections of MemFree were generated using `contentlaye
 EvalError: Code generation from strings disallowed for this context
 ```
 
-This limitation is unreasonable, as static pages can be fully generated during the build process without needing runtime generation. Ultimately, I replaced `contentlayer2` with `next/mdx`, allowing for complete static page generation during compilation.
+The reason for the error with contentlayer2 is that it uses the Function constructor, which is not allowed in edge environments.
+
+```ts
+export const getMDXComponent = (code: string, globals: Record<string, unknown> = {}): React.FC<MDXContentProps> => {
+    const scope = { React, ReactDOM, _jsx_runtime, ...globals };
+    const fn = new Function(...Object.keys(scope), code);
+    return fn(...Object.values(scope)).default;
+};
+
+export const useMDXComponent = (code: string, globals: Record<string, unknown> = {}) => {
+    return React.useMemo(() => getMDXComponent(code, globals), [code, globals]);
+};
+```
+
+However, this is actually unnecessary because static pages can be fully generated during the build process without the need for runtime dynamic rendering. In the end, I replaced contentlayer2 with `next/mdx`, which completely replaces mdx with static pages during the compilation phase.
 
 For more details, refer to [Markdown and MDX](https://nextjs.org/docs/pages/building-your-application/configuring/mdx).
 

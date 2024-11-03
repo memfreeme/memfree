@@ -127,6 +127,10 @@ MemFree is equipped with powerful features that cater to various search and prod
 
 - [One Command Deploy MemFree Vector on Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
 
+### 6 Deploy MemFree on Cloudflare Pages
+
+- [How to migrate MemFree from Vercel to Cloudflare next-on-pages](https://www.memfree.me/blog/couldflare-next-on-page-edge)
+
 ## Self-Hosted Installations
 
 ### Prerequisites
@@ -210,8 +214,9 @@ MemFree is backed by [MemFree](https://www.memfree.me/) and licensed under [MIT]
 
 ## Powered By MemFree
 
+- [PageGen AI Page Generator](https://pagegen.ai/)
+- [MemFree Hybrid AI Search](https://www.memfree.me)
 - [React + Shadcn UI Preview](https://reactshadcn.com)
-- [PageGen - AI Page Generator](https://pagegen.ai/)
 
 ## Star History
 

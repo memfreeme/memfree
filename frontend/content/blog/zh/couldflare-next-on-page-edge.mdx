@@ -1,5 +1,5 @@
 ---
-title: How to migrate MemFree from vercel to cloudflare next-on-pages
+title: How to migrate MemFree from Vercel to Cloudflare next-on-pages
 description: Issues and solutions for migrating MemFree from vercel to cloudflare next-on-pages
 image: /images/blog/blog-post-3.jpg
 date: '2024-11-03'
@@ -88,13 +88,27 @@ NEXT_PUBLIC 的 env 变量在 cloudflare next-on-pages 中无法直接访问，�
 
 ### 6 用 next/mdx 替换 contentlayer2
 
-memfree的doc和blog 都是利用contentlayer2 基于mdx文件生成的静态页面， 使用 contentlayer2，在 cloudflare next-on-pages 中会得到下面的报错：
+MemFree 的 doc和blog 都是利用 contentlayer2 基于mdx文件生成的静态页面， 使用 contentlayer2，在 cloudflare next-on-pages 中会得到下面的报错：
 
 ```ts
 EvalError: Code generation from strings disallowed for this context
 ```
 
-但是这一点其实是不合理的，因为是静态页面完全可以在build期间全部生成，不需要运行时动态生成。 最后我使用 next/mdx 替换了 contentlayer2，在编译期间将 mdx 完全替换成静态页面。
+contentlayer2 会报错的原因是contentlayer2 用到了 Function 构造函数，这个在 edge 环境中是不允许的。
+
+```ts
+export const getMDXComponent = (code: string, globals: Record<string, unknown> = {}): React.FC<MDXContentProps> => {
+    const scope = { React, ReactDOM, _jsx_runtime, ...globals };
+    const fn = new Function(...Object.keys(scope), code);
+    return fn(...Object.values(scope)).default;
+};
+
+export const useMDXComponent = (code: string, globals: Record<string, unknown> = {}) => {
+    return React.useMemo(() => getMDXComponent(code, globals), [code, globals]);
+};
+```
+
+但这是其实是没有必要的，因为是静态页面完全可以在build期间全部生成，不需要运行时动态渲染。 最后我使用 next/mdx 替换了 contentlayer2，在编译期间将 mdx 完全替换成静态页面。
 
 大家可以参考 [Markdown and MDX](https://nextjs.org/docs/pages/building-your-application/configuring/mdx)
 
