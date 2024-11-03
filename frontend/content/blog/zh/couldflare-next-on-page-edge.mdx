@@ -1,0 +1,125 @@
+---
+title: How to migrate MemFree from vercel to cloudflare next-on-pages
+description: Issues and solutions for migrating MemFree from vercel to cloudflare next-on-pages
+image: /images/blog/blog-post-3.jpg
+date: '2024-11-03'
+---
+
+## Deploy Static Nextjs App on cloudflare page is very easy
+
+你只需要参考 https://developers.cloudflare.com/pages/framework-guides/nextjs/deploy-a-static-nextjs-site/ 几行命令就可以搞定。
+
+为了实践验证，我首先将 MemFree AI Page generator 中的react review 功能拆分出来，单独部署成一个网页： [React Shadcn UI Preview](https://reactshadcn.com/)
+
+整个过程十分流程，基本上没有阻碍
+
+## 将 MemFree AI Page Generator 部署到 cloudflare
+
+### 挑战一：API 需要支持 edge runtime
+
+### 挑战二：动态页面需要支持 edge runtime
+
+## 具体的 edge 兼容性问题
+
+### 1 自定义的 format 替换 util.format
+
+```ts
+// Replace the util.format function with this one, this method could work on edge environment
+export function format(template, ...args) {
+    if (args.length === 0) return template;
+
+    if (args.length === 1 && typeof args[0] === 'object') {
+        return template.replace(/%[sdj]/g, (match) => String(args[0]));
+    }
+
+    let index = 0;
+    return template.replace(/%[sdj]/g, () => {
+        if (index >= args.length) return '';
+        const arg = args[index++];
+        return String(arg);
+    });
+}
+```
+
+### 2 @upstash/redis/cloudflare 替换 @upstash/redis
+
+直接使用 @upstash/redis 会得到下面的报错：
+
+```ts
+Failed to get searches: Error: The 'cache' field on 'RequestInitializerDict' is not implemented
+```
+
+只需要在 import 中用 @upstash/redis/cloudflare 替换 @upstash/redis， 其他代码都不需要改
+
+```ts
+import { Redis } from '@upstash/redis/cloudflare';
+```
+
+### 3 unpdf 替换 pdfjs dist
+
+pdfjs 是一个使用比较广泛的 PDF 解析库，但是在edge 环境无法运行。 使用 pdfjs， 在执行
+`bun run deploy` 时，你会得到下面的报错：
+
+```ts
+⚡️ Unexpected error: Build failed with 4 errors:
+⚡️ <stdin>:883:64363: ERROR: Could not resolve "fs"
+⚡️ <stdin>:883:64423: ERROR: Could not resolve "http"
+⚡️ <stdin>:883:64450: ERROR: Could not resolve "https"
+⚡️ <stdin>:883:64476: ERROR: Could not resolve "url"
+```
+
+原因是 edge 环境不支持对应node 模块。
+
+解决方案是使用 [unpdf](https://github.com/unjs/unpdf)
+
+### 4 R2 替换 uploadthing
+
+uploadthing 是一款简化客户端文件上传的组件，对各种流行的框架进行了封装，简化使用，但是部支持 Cloudflare edge 环境。
+
+当使用 cloudflare 的page 或者worker 时，几行代码就可以将文件上传到 R2 上，并免费获得CDN 加速， 十分简单，性能也不错。
+
+```ts
+const res = await getRequestContext().env.IMAGES.put(safeFileName, file);
+```
+
+### 5 用静态变量替换 NEXT_PUBLIC env 变量
+
+NEXT_PUBLIC 的 env 变量在 cloudflare next-on-pages 中无法直接访问，可以直接用静态变量替换
+
+### 6 用 next/mdx 替换 contentlayer2
+
+memfree的doc和blog 都是利用contentlayer2 基于mdx文件生成的静态页面， 使用 contentlayer2，在 cloudflare next-on-pages 中会得到下面的报错：
+
+```ts
+EvalError: Code generation from strings disallowed for this context
+```
+
+但是这一点其实是不合理的，因为是静态页面完全可以在build期间全部生成，不需要运行时动态生成。 最后我使用 next/mdx 替换了 contentlayer2，在编译期间将 mdx 完全替换成静态页面。
+
+大家可以参考 [Markdown and MDX](https://nextjs.org/docs/pages/building-your-application/configuring/mdx)
+
+具体的效果可以参考 PageGen 的 [PageGen Privacy Policy](https://pagegen.ai/privacy) 和 [PageGen Terms of Service](https://pagegen.ai/terms) 页面。
+
+### 7 利用 bundle-analyzer 减小打包大小
+
+这里会出问题的原因时，当你对一些动态页面开启edge runtime时，一些很大的客户端依赖进入了runtime的依赖。
+
+```ts
+│ __next-on-pages-dist__/functions/search/[id].func.js                │ esm  │ 8995.45 KiB │
+```
+
+例如上面这个示例，一个search 页面大小显示 8 M 左右，经过bundle-analyzer 分区edge 环境的包依赖后，就会两个很大的客户端包：`@babel/standalone` 和 `heic2any`。
+
+然后我们就这两个包进行动态导入，延迟加载，单例化，整个项目的总体积直接从25M降低到2M。
+
+### 8 使用 cloudflare Image Loader
+
+这个比较简单，参考 [Cloudflare Image Transform integrate nextjs](https://developers.cloudflare.com/images/transform-images/integrate-with-frameworks/) 进行处理就行。 核心就是2步：
+
+1. 代码中定义 `imageLoader.ts`
+2. 对域名启用 Cloudflare image transformation 服务 [Cloudflare Image Transform Image](https://developers.cloudflare.com/images/get-started/)
+
+### 9 域名绑定和重定向
+
+cloudflare page和vercel的域名绑定，重定向设置不同。
+对于一个page 项目，我们需要将 带www的域名和根域名都绑定到 page 项目，然后利用couldflare 自带的重定向规则，将www的域名 重定向到根域名。

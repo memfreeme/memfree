@@ -1,0 +1,133 @@
+---
+title: How to migrate MemFree from vercel to cloudflare next-on-pages
+description: Issues and solutions for migrating MemFree from vercel to cloudflare next-on-pages
+image: /images/blog/blog-post-3.jpg
+date: '2024-11-03'
+---
+
+## Deploying a Static Next.js App on Cloudflare Pages
+
+Deploying a static Next.js application on Cloudflare Pages is straightforward. You can accomplish this with just a few commands by following the guide on [Cloudflare's documentation for deploying a static Next.js site](https://developers.cloudflare.com/pages/framework-guides/nextjs/deploy-a-static-nextjs-site/).
+
+To validate this process, I first extracted the React review feature from the MemFree AI Page Generator and deployed it as a standalone webpage: [React Shadcn UI Preview](https://reactshadcn.com/).
+
+The entire deployment process was smooth, with minimal obstacles encountered.
+
+## Deploying MemFree AI Page Generator on Cloudflare
+
+You can experience the online version here: [PageGen - AI Page Generator](https://pagegen.ai/).
+
+1. Challenge 1: All APIs Support for Edge Runtime
+
+2. Challenge 2: All Dynamic Pages Support for Edge Runtime
+
+## Specific Cloudflare Page Edge Compatibility Issues
+
+### 1. Custom Format Replacement for `util.format`
+
+To ensure compatibility with the edge environment, replace the `util.format` function with the following implementation:
+
+```ts
+// Replace the util.format function with this one; this method works in the edge environment
+export function format(template, ...args) {
+    if (args.length === 0) return template;
+
+    if (args.length === 1 && typeof args[0] === 'object') {
+        return template.replace(/%[sdj]/g, (match) => String(args[0]));
+    }
+
+    let index = 0;
+    return template.replace(/%[sdj]/g, () => {
+        if (index >= args.length) return '';
+        const arg = args[index++];
+        return String(arg);
+    });
+}
+```
+
+### 2. Replace `@upstash/redis` with `@upstash/redis/cloudflare`
+
+Using `@upstash/redis` directly may result in the following error:
+
+```ts
+Failed to get searches: Error: The 'cache' field on 'RequestInitializerDict' is not implemented
+```
+
+To resolve this, simply replace the import statement:
+
+```ts
+import { Redis } from '@upstash/redis/cloudflare';
+```
+
+No other code modifications are necessary.
+
+### 3. Replace `pdfjs` with `unpdf`
+
+The `pdfjs` library, widely used for PDF parsing, is incompatible with the edge environment. If you attempt to use `pdfjs`, you may encounter the following errors during deployment:
+
+```ts
+⚡️ Unexpected error: Build failed with 4 errors:
+⚡️ <stdin>:883:64363: ERROR: Could not resolve "fs"
+⚡️ <stdin>:883:64423: ERROR: Could not resolve "http"
+⚡️ <stdin>:883:64450: ERROR: Could not resolve "https"
+⚡️ <stdin>:883:64476: ERROR: Could not resolve "url"
+```
+
+The reason for these errors is that the edge environment does not support certain Node.js modules. The solution is to use [unpdf](https://github.com/unjs/unpdf) instead.
+
+### 4. Replace `uploadthing` with R2
+
+`uploadthing` is a component designed to simplify client-side file uploads across various frameworks, but it does not support the Cloudflare edge environment.
+
+When using Cloudflare Pages or Workers, you can easily upload files to R2 with just a few lines of code, benefiting from free CDN acceleration:
+
+```ts
+const res = await getRequestContext().env.IMAGES.put(safeFileName, file);
+```
+
+### 5. Use Static Variables Instead of `NEXT_PUBLIC` Environment Variables
+
+In Cloudflare's Next-on-Pages, `NEXT_PUBLIC` environment variables cannot be accessed directly. You can replace them with static variables instead.
+
+### 6. Replace `contentlayer2` with `next/mdx`
+
+The documentation and blog sections of MemFree were generated using `contentlayer2` based on MDX files. However, using `contentlayer2` in Cloudflare Next-on-Pages results in the following error:
+
+```ts
+EvalError: Code generation from strings disallowed for this context
+```
+
+This limitation is unreasonable, as static pages can be fully generated during the build process without needing runtime generation. Ultimately, I replaced `contentlayer2` with `next/mdx`, allowing for complete static page generation during compilation.
+
+For more details, refer to [Markdown and MDX](https://nextjs.org/docs/pages/building-your-application/configuring/mdx).
+
+You can see the results on PageGen's [Privacy Policy](https://pagegen.ai/privacy) and [Terms of Service](https://pagegen.ai/terms) pages.
+
+### 7. Use Bundle Analyzer to Reduce Bundle Size
+
+One issue arises when enabling edge runtime for dynamic pages, as some large client dependencies may inadvertently enter the runtime's dependency tree:
+
+```ts
+│ __next-on-pages-dist__/functions/search/[id].func.js                │ esm  │ 8995.45 KiB │
+```
+
+For instance, the size of the search page can reach around 8 MB. By analyzing the bundle, we identified two large client packages: `@babel/standalone` and `heic2any`.
+
+We addressed this by dynamically importing these packages, enabling lazy loading and singleton instantiation, which reduced the overall project size from 25 MB to just 2 MB.
+
+### 8. Use Cloudflare Image Loader
+
+Integrating Cloudflare's Image Loader is straightforward. Follow the steps outlined in [Cloudflare Image Transform integration with Next.js](https://developers.cloudflare.com/images/transform-images/integrate-with-frameworks/). The core steps include:
+
+1. Defining `imageLoader.ts` in your code.
+2. Enabling Cloudflare's image transformation service for your domain [Cloudflare Image Transform Image](https://developers.cloudflare.com/images/get-started/).
+
+### 9. Domain Binding and Redirection
+
+The domain binding and redirection settings differ between Cloudflare Pages and Vercel. For a Pages project, you need to bind both the www and root domains to the Pages project. Then, use Cloudflare's built-in redirection rules to redirect the www domain to the root domain.
+
+## Online Experience
+
+You can explore the live version here: [PageGen - AI Page Generator](https://pagegen.ai/).
+
+All source code for MemFree is open-source, and contributions are welcome! Feel free to give it a star on GitHub: [MemFree GitHub](https://github.com/memfreeme/memfree).

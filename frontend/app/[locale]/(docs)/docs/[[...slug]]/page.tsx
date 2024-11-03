@@ -12,7 +12,7 @@ import '@/styles/mdx.css';
 import { Metadata } from 'next';
 
 import { absoluteUrl, cn } from '@/lib/utils';
-import { siteConfig } from '@/config';
+import { PageGenUrl, siteConfig } from '@/config';
 import { type Locale, routing } from '@/i18n/routing';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
@@ -112,8 +112,8 @@ export default async function DocPage({ params }: DocPageProps) {
                 <Link href="/" prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }), 'w-full sm:w-auto')}>
                     Hybrid AI Search Now
                 </Link>
-                <Link href="/" prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }), 'w-full sm:w-auto')}>
-                    AI Generate UI Now
+                <Link href={PageGenUrl} prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
+                    AI Page Generator Now
                 </Link>
             </div>
         </main>

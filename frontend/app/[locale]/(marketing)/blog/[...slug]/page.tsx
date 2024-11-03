@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 import { absoluteUrl, cn, formatDate } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
-import { siteConfig } from '@/config';
+import { PageGenUrl, siteConfig } from '@/config';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import { type Locale, routing } from '@/i18n/routing';
 
@@ -110,8 +110,8 @@ export default async function PostPage({ params }: PostPageProps) {
                 <Link href="/" prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
                     Hybrid AI Search Now
                 </Link>
-                <Link href="/" prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
-                    AI Generate UI Now
+                <Link href={PageGenUrl} prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }))}>
+                    AI Page Generator Now
                 </Link>
             </div>
 
