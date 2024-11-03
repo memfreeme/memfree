@@ -4,6 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import { toast } from 'sonner';
 import { NEXT_PUBLIC_APP_URL } from '@/lib/client_env';
 import { format } from 'date-fns';
+import { convertHeicToJpeg } from '@/lib/heicConverter';
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -79,29 +80,6 @@ export function getFileSizeLimit(user: any) {
         return 20 * 1024 * 1024;
     }
     return 4 * 1024 * 1024;
-}
-
-let heic2any: any = null;
-async function convertHeicToJpeg(heicFile: File, quality: number = 0.8): Promise<File> {
-    try {
-        if (!heic2any) {
-            heic2any = (await import('heic2any')).default;
-        }
-        const jpegBlob = await heic2any({
-            blob: heicFile,
-            toType: 'image/jpeg',
-            quality: quality,
-        });
-
-        const jpegFile = new File([jpegBlob as Blob], heicFile.name.replace(/\.heic$/i, '.jpg'), {
-            type: 'image/jpeg',
-            lastModified: new Date().getTime(),
-        });
-        return jpegFile;
-    } catch (error) {
-        console.error('process heic image file error: ', error);
-        throw new Error('process heic file image error');
-    }
 }
 
 export async function processImageFiles(imageFiles: File[]): Promise<File[]> {
