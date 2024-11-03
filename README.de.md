@@ -119,13 +119,17 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 <a href="https://app.netlify.com/start/deploy?repository=https://github.com/memfreeme/memfree&create_from_path=frontend/#UPSTASH_REDIS_REST_TOKEN
 =your_api_token&UPSTASH_REDIS_REST_URL=your_rest_url&SERPER_API_KEY=your_api_key&AUTH_SECRET=your_auth_key&OPENAI_API_KEY=your_api_key"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
 
-### 4 Einsatz auf der Schiene
+### 4 Einsatz auf der Eisenbahn
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/HPTFRR)
 
 ### 5 One Command Deploy Backend mit Fly.io
 
 -   [Ein Befehl: Bereitstellen von MemFree Vector auf Fly.io](https://www.memfree.me/docs/deploy-memfree-fly-io)
+
+### 6 Stellen Sie MemFree auf Cloudflare-Seiten bereit
+
+-   [Weitere Informationen zur Migration von MemFree von Vercel zu Cloudflare finden Sie auf den nächsten Seiten](https://www.memfree.me/blog/couldflare-next-on-page-edge)
 
 ## Selbstgehostete Installationen
 
@@ -200,12 +204,13 @@ So können Sie einen Beitrag leisten:
 
 ## Lizenz
 
-MemFree is backed by [MemFree](https://www.memfree.me/)und lizenziert unter[MIT](https://github.com/memfreeme/memfree/blob/main/LICENSE).
+MemFree wird unterstützt von[MemFree](https://www.memfree.me/)und lizenziert unter[MIT](https://github.com/memfreeme/memfree/blob/main/LICENSE).
 
 ## Unterstützt von MemFree
 
+-   [PageGen AI-Seitengenerator](https://pagegen.ai/)
+-   [MemFree Hybrid AI-Suche](https://www.memfree.me)
 -   [React + Shadcn UI-Vorschau](https://reactshadcn.com)
--   [PageGen – KI-Seitengenerator](https://pagegen.ai/)
 
 ## Sternengeschichte
 
