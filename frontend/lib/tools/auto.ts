@@ -1,11 +1,11 @@
-'use server';
+import 'server-only';
 
 import { incSearchCount } from '@/lib/db';
 import { convertToCoreMessages, getLLM, getMaxOutputToken } from '@/lib/llm/llm';
 import { AutoAnswerPrompt } from '@/lib/llm/prompt';
 import { getHistory, getHistoryMessages, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
-import { GPT_4o_MIMI } from '@/lib/model';
+import { Claude_35_Sonnet, GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine } from '@/lib/search/search';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { accessWebPage } from '@/lib/tools/access';
@@ -15,7 +15,6 @@ import { getRelatedQuestions } from '@/lib/tools/related';
 import { searchRelevantContent } from '@/lib/tools/search';
 import { ImageSource, Message as StoreMessage, SearchCategory, TextSource, VideoSource } from '@/lib/types';
 import { streamText, tool } from 'ai';
-import util from 'util';
 import { z } from 'zod';
 
 export async function autoAnswer(
@@ -35,13 +34,28 @@ export async function autoAnswer(
         let images: ImageSource[] = [];
         let videos: VideoSource[] = [];
 
-        const system = util.format(AutoAnswerPrompt, profile);
-
+        const userMessages = convertToCoreMessages(newMessages);
         const maxTokens = getMaxOutputToken(isPro, model);
         const result = await streamText({
             model: getLLM(model),
-            system: system,
-            messages: convertToCoreMessages(newMessages),
+            messages: [
+                {
+                    role: 'system',
+                    content: AutoAnswerPrompt,
+                    experimental_providerMetadata: {
+                        anthropic: { cacheControl: { type: 'ephemeral' } },
+                    },
+                },
+                ...(profile
+                    ? [
+                          {
+                              role: 'system' as const,
+                              content: `User Profile:\n${profile}`,
+                          },
+                      ]
+                    : []),
+                ...userMessages,
+            ],
             maxTokens: maxTokens,
             temperature: 0.1,
             tools: {
@@ -61,6 +75,23 @@ export async function autoAnswer(
                         return accessWebPage(url, onStream);
                     },
                 }),
+            },
+            onFinish({ finishReason, usage, experimental_providerMetadata }) {
+                console.log('auto answer finish', { finishReason, usage, experimental_providerMetadata });
+                if (model === Claude_35_Sonnet) {
+                    const inputTokens = usage.promptTokens;
+                    const outputTokens = usage.completionTokens;
+                    const inputCost = (inputTokens / 1_000_000.0) * 3;
+                    const outputCost = (outputTokens / 1_000_000.0) * 15;
+                    const totalCost = inputCost + outputCost;
+                    console.log({
+                        inputTokens,
+                        outputTokens,
+                        inputCost: `$${inputCost.toFixed(6)}`,
+                        outputCost: `$${outputCost.toFixed(6)}`,
+                        totalCost: `$${totalCost.toFixed(6)}`,
+                    });
+                }
             },
         });
 

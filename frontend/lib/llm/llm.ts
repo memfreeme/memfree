@@ -39,7 +39,9 @@ const openai = createOpenAI({
 
 export function getLLM(model: string): LanguageModel {
     if (model.startsWith('claude')) {
-        return anthropic(model);
+        return anthropic(model, {
+            cacheControl: true,
+        });
     } else if (model.startsWith('models/gemini')) {
         return google(model);
     } else {

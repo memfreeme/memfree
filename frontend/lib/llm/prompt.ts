@@ -227,12 +227,6 @@ Rephrased: Car working
 
 If the User Profile is not empty, please use the information in the User Profile to give a more specific and personalized answer.
 
-# User Profile
-
-\`\`\`
-%s
-\`\`\`
-
 # General Instructions
 
 Write an accurate, detailed, and comprehensive response to the user''s QUESTION based on context.
