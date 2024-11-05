@@ -1,7 +1,7 @@
 import { allPosts } from 'contentlayer/generated';
 import { compareDesc } from 'date-fns';
 
-import { BlogPosts } from '@/components/blog-posts';
+import { BlogPosts } from '@/components/blog/blog-posts';
 import { siteConfig } from '@/config';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import { type Locale } from '@/i18n/routing';
