@@ -83,6 +83,9 @@ MemFree is equipped with powerful features that cater to various search and prod
 - **🖥️ Real-Time UI Preview** : Instantly render and preview generated UI
 - **🔍 AI-Powered Content Search** : Enrich your UI with relevant content using our advanced AI search functionality
 - **🖼 Image-Driven UI Generation** : Create UI components and pages that closely match your reference images
+- **📄 File-to-Page Generation** : Transform any file content into a beautifully structured web page with AI parsing and AI summary
+- **✏️ Code Editor Integration** : Edit and refine your generated code with VSCode-like editing capabilities, complete with syntax highlighting and auto-completion
+- **✨ Animation Support**: Create engaging web pages with built-in animation effects, bringing your content to life with smooth transitions and dynamic elements
 - **⚛️ React + TailWind + Shadcn UI Integration** : Leverage AI-generated code using the most popular front-end stack: React, TailWind, and Shadcn UI
 - **🚀 One-Click UI Publishing** : Publish and share your UI to the web instantly with a single click
 - **📱 Responsive Code and Preview** : Preview your UI across various devices in real-time, ensuring perfect adaptation to all screen sizes
