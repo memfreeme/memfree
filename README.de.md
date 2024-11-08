@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**Englisch**\|[chinesisch](./README.zh-CN.md)\|[Deutsch](./README.de.md)\|[Französisch](./README.fr.md)\|[Spanisch](README.es.md)\|[japanisch](./README.ja.md)
+**Englisch**\|[chinesisch](./README.zh-CN.md)\|[Deutsch](./README.de.md)\|[Französisch](./README.fr.md)\|[Español](README.es.md)\|[japanisch](./README.ja.md)
 
 </div>
 
@@ -60,7 +60,7 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 
 -   🌐**Mehrere Suchmaschinen werden unterstützt**: Funktioniert mit Google, Exa und Vector.
 
--   🖼️**Mehrere Sucheingabeformate**: Insbesondere Texte, Bilder, Dateien und Webseiten. Unterstützt die Suche, den Vergleich, die Zusammenfassung und die Analyse mehrerer Bilder.
+-   🖼️**Mehrere Sucheingabeformate**: Insbesondere Texte, Bilder, Dateien und Webseiten. Es unterstützt die Suche, den Vergleich, die Zusammenfassung und die Analyse mehrerer Bilder.
 
 -   📊**Mehrere Methoden zur Ergebnispräsentation**: Text, Mindmaps, Bilder und Videos.
 
@@ -83,6 +83,9 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 -   **🖥️ Echtzeit-UI-Vorschau**: Generierte Benutzeroberfläche sofort rendern und in der Vorschau anzeigen
 -   **🔍 KI-gestützte Inhaltssuche**: Bereichern Sie Ihre Benutzeroberfläche mit relevanten Inhalten mithilfe unserer erweiterten KI-Suchfunktion
 -   **🖼 Bildgesteuerte UI-Generierung**: Erstellen Sie UI-Komponenten und Seiten, die Ihren Referenzbildern genau entsprechen
+-   **📄 Datei-zu-Seite-Generierung**: Verwandeln Sie jeden Dateiinhalt in eine schön strukturierte Webseite mit KI-Analyse und KI-Zusammenfassung
+-   **✏️ Code-Editor-Integration**: Bearbeiten und verfeinern Sie Ihren generierten Code mit VSCode-ähnlichen Bearbeitungsfunktionen, komplett mit Syntaxhervorhebung und automatischer Vervollständigung
+-   **✨ Animationsunterstützung**: Erstellen Sie ansprechende Webseiten mit integrierten Animationseffekten und erwecken Sie Ihre Inhalte mit sanften Übergängen und dynamischen Elementen zum Leben
 -   **⚛️ React + TailWind + Shadcn UI-Integration**: Nutzen Sie KI-generierten Code mit dem beliebtesten Front-End-Stack: React, TailWind und Shadcn UI
 -   **🚀 One-Click-UI-Veröffentlichung**: Veröffentlichen und teilen Sie Ihre Benutzeroberfläche sofort mit einem einzigen Klick im Web
 -   **📱 Responsiver Code und Vorschau**: Sehen Sie sich Ihre Benutzeroberfläche in Echtzeit auf verschiedenen Geräten an und sorgen Sie so für eine perfekte Anpassung an alle Bildschirmgrößen
@@ -129,7 +132,7 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 
 ### 6 Stellen Sie MemFree auf Cloudflare-Seiten bereit
 
--   [Weitere Informationen zur Migration von MemFree von Vercel zu Cloudflare finden Sie auf den nächsten Seiten](https://www.memfree.me/blog/couldflare-next-on-page-edge)
+-   [Weitere Informationen zur Migration von MemFree von Vercel zu Cloudflare finden Sie weiter unten](https://www.memfree.me/blog/couldflare-next-on-page-edge)
 
 ## Selbstgehostete Installationen
 
@@ -209,7 +212,7 @@ MemFree wird unterstützt von[MemFree](https://www.memfree.me/)und lizenziert un
 ## Unterstützt von MemFree
 
 -   [PageGen AI-Seitengenerator](https://pagegen.ai/)
--   [MemFree Hybrid AI-Suche](https://www.memfree.me)
+-   [MemFree Hybrid-KI-Suche](https://www.memfree.me)
 -   [React + Shadcn UI-Vorschau](https://reactshadcn.com)
 
 ## Sternengeschichte
