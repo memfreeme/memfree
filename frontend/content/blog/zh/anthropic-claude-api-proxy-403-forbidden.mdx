@@ -1,0 +1,215 @@
+---
+title: Use Anthropic cloude api proxy to reslove the 403 forbidden issue
+description: How to anthropic cloude api proxy to reslove the 403 forbidden issue for a Cloudflare next-on-pages application
+image: /images/blog/blog-post-3.jpg
+date: '2024-11-09'
+---
+
+## 一 背景
+
+参考上篇 [Migrate MemFree from Vercel to Cloudflare next-on-pages](https://www.memfree.me/blog/couldflare-next-on-page-edge), 我将 [PageGen AI](https://pagegen.ai/) 部署在了 Cloudflare next-on-pages 上。
+
+但是最近当我访问 Anthropic 的 claude-3-5-sonnet-20241022 时，我得到了 403 forbidden 的异常，我的用户是从新加坡访问，Anthropic的支持的地区是包括新加坡的，所以我一开始有点困惑。
+
+当我让 [MemFree](https://www.memfree.me/) 分析错误日志后，MemFree 发现了一个关键点，即 Cloudflare 最终是通过 HKG 的 edge 节点向 Anthropic 发起的请求，所以得到了 403 forbidden 的异常。
+
+```ts
+  responseHeaders: {
+    'cf-cache-status': 'DYNAMIC',
+    'cf-ray': '8df5c220856a5dfc-HKG',
+    connection: 'keep-alive',
+    'content-type': 'application/json',
+    date: 'Fri, 08 Nov 2024 13:02:35 GMT',
+    server: 'cloudflare',
+    'transfer-encoding': 'chunked',
+    vary: 'Accept-Encoding',
+    'x-robots-tag': 'none'
+  },
+  responseBody: '{\n' +
+    '  "error": {\n' +
+    '    "type": "forbidden",\n' +
+    '    "message": "Request not allowed"\n' +
+    '  }\n' +
+    '}',
+```
+
+## 二 分析
+
+MemFree 给出的用户请求流程如下：
+
+```ts
+Your Next.js App (Singapore) -> Cloudflare Edge (Hong Kong) -> Anthropic API
+```
+
+也就是说：
+
+1. 用户的确是在新加坡发起的请求（通过 cf-ipcountry: SG 可以确认）
+2. 但是Cloudflare 将请求路由到了香港的边缘节点处理
+3. Anthropic API 看到的请求来源是香港，所以禁止了请求
+
+### 2.1 为什么新加坡发起的请求会经过香港的边缘节点
+
+虽然用户的请求是从新加坡发起的，但是：
+
+-   Cloudflare 根据自己的网络优化策略，选择了香港的边缘节点来处理您的请求
+-   这是因为 Cloudflare 可能认为通过香港节点访问 Anthropic API 的路由更优
+
+CF-Ray ID 中的 HKG 表示：
+
+-   这是处理请求的 Cloudflare 边缘节点位置
+-   不是请求的发起地或目标服务器的位置
+
+如果是在 Vercel 部署，Vercel 支持限制 edge API 运行的地区，我们简单配置下即可，但是 Cloudflare 并不支持设置 Page 运行的地区，虽然有一个 Smart的放置策略，但是和我的需求不符合。
+
+我希望我的整个 Next js 应用依然是完全edge的，只是请求 Anthropic的一个 API 不经过 Cloudflare Hong Kong的 Edge 节点。
+
+## 三 放弃的方案
+
+### 1 使用 Cloudflare Load Balancer
+
+1. 创建一个负载均衡器
+2. 指定新加坡区域作为优先节点
+3. 将 API 请求路由通过这个负载均衡器
+
+这个需要 Cloudflare的企业版，放弃了
+
+### 2 Cloudflare Workers 中间件
+
+中间件无法解决这个问题，因为当 Cloudflare Workers 向 Anthropic 发起请求时，还是有可能被路由到香港的 edge 节点，中间件 没法设置请求不走 香港的 edge 节点
+
+### 3 Cloudflare Argo Smart Routing
+
+1. 启用 Argo Smart Routing
+2. 在 Dashboard 中：
+
+-   Network -> Traffic
+-   启用 Argo Smart Routing
+-   这将自动优化路由路径
+
+但是这种方案没法保证百分之一百新加坡的请求不走香港的边缘节点
+
+### 4 Cloudflare DNS 设置
+
+```ts
+const API_ENDPOINTS = {
+    SG: 'https://sg-api.your-domain.com',
+    DEFAULT: 'https://api.your-domain.com',
+};
+
+async function fetchAPI() {
+    const endpoint = userIsInSG ? API_ENDPOINTS.SG : API_ENDPOINTS.DEFAULT;
+}
+```
+
+不满足我的需求，不易扩展
+
+## 四 最终方案：利用 Vercel 的Edge API 代理对 Anthropic API的请求
+
+前面提到，既然 Vercel的 Edge API 支持设置运行的地区，那么我们就可以让 Vercel 的 Edge API 代理 对 Anthropic API的请求，禁掉香港的region就可以。
+
+Anthropic API 代理的代码如下，同时支持 Stream 和非 Stream的请求：
+
+```ts
+import { NextRequest } from 'next/server';
+
+export const runtime = 'edge';
+export const preferredRegion = [
+    'arn1',
+    'bom1',
+    'cdg1',
+    'cle1',
+    'cpt1',
+    'dub1',
+    'fra1',
+    'gru1',
+    'hnd1',
+    'iad1',
+    'icn1',
+    'kix1',
+    'lhr1',
+    'pdx1',
+    'sfo1',
+    'sin1',
+    'syd1',
+];
+
+const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, anthropic-version, x-api-key',
+};
+
+const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
+
+export async function OPTIONS() {
+    return new Response(null, {
+        status: 204,
+        headers: corsHeaders,
+    });
+}
+
+export async function POST(req: NextRequest) {
+    try {
+        const headers = new Headers(req.headers);
+        const body = await req.json();
+        const anthropicResponse = await fetch(ANTHROPIC_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'anthropic-version': headers.get('anthropic-version') || '2023-06-01',
+                'x-api-key': headers.get('x-api-key') || '',
+            },
+            body: body ? JSON.stringify(body) : null,
+        });
+
+        const responseHeaders = new Headers(corsHeaders);
+
+        if (anthropicResponse.headers.get('content-type')?.includes('text/event-stream')) {
+            responseHeaders.set('Content-Type', 'text/event-stream');
+            responseHeaders.set('Cache-Control', 'no-cache');
+            responseHeaders.set('Connection', 'keep-alive');
+
+            return new Response(anthropicResponse.body, {
+                status: anthropicResponse.status,
+                headers: responseHeaders,
+            });
+        }
+
+        const data = await anthropicResponse.json();
+        if (!anthropicResponse.ok) {
+            return new Response(JSON.stringify(data), {
+                status: anthropicResponse.status,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            });
+        }
+
+        return new Response(JSON.stringify(data), {
+            status: anthropicResponse.status,
+            headers: responseHeaders,
+        });
+    } catch (error) {
+        console.error('Proxy error:', error);
+        return new Response(
+            JSON.stringify({
+                type: 'error',
+                error: {
+                    type: 'internal_server_error',
+                    message: 'Internal Server Error',
+                },
+            }),
+            {
+                status: 500,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            },
+        );
+    }
+}
+```
+
+我们通过 `npx create-next-app@latest --typescript` 创建一个最简单的next应用，然后将上面的代码复制到API 文件，部署即可, 这样就可以解决非预期内的Anthropic API的403 forbidden 问题。

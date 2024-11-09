@@ -1,0 +1,215 @@
+---
+title: Use Anthropic Cloud API Proxy to Resolve the 403 Forbidden Issue
+description: How to use the Anthropic Cloud API proxy to resolve the 403 forbidden issue for a Cloudflare Next.js on Pages application
+image: /images/blog/blog-post-3.jpg
+date: '2024-11-09'
+---
+
+## I Background
+
+Referencing the previous article [Migrate MemFree from Vercel to Cloudflare Next.js on Pages](https://www.memfree.me/blog/couldflare-next-on-page-edge), I have deployed [PageGen AI](https://pagegen.ai/) on Cloudflare Next.js on Pages.
+
+However, recently when I accessed Anthropic's claude-3-5-sonnet-20241022, I received a 403 forbidden exception. My user was accessing it from Singapore, and Anthropic's supported regions include Singapore, so I was a bit confused at first.
+
+After having [MemFree](https://www.memfree.me/) analyze the error logs, it was discovered that the crucial point is that Cloudflare ultimately sent the request to Anthropic via the edge node in Hong Kong, resulting in the 403 forbidden exception.
+
+```ts
+  responseHeaders: {
+    'cf-cache-status': 'DYNAMIC',
+    'cf-ray': '8df5c220856a5dfc-HKG',
+    connection: 'keep-alive',
+    'content-type': 'application/json',
+    date: 'Fri, 08 Nov 2024 13:02:35 GMT',
+    server: 'cloudflare',
+    'transfer-encoding': 'chunked',
+    vary: 'Accept-Encoding',
+    'x-robots-tag': 'none'
+  },
+  responseBody: '{\n' +
+    '  "error": {\n' +
+    '    "type": "forbidden",\n' +
+    '    "message": "Request not allowed"\n' +
+    '  }\n' +
+    '}',
+```
+
+## II Analysis
+
+The user request flow provided by MemFree is as follows:
+
+```ts
+Your Next.js App (Singapore) -> Cloudflare Edge (Hong Kong) -> Anthropic API
+```
+
+This means:
+
+1. The request was indeed initiated from Singapore (confirmed by cf-ipcountry: SG).
+2. However, Cloudflare routed the request to the edge node in Hong Kong for processing.
+3. The Anthropic API saw the request source as Hong Kong, resulting in the request being banned.
+
+### 2.1 Why did a request initiated from Singapore go through the Hong Kong edge node?
+
+Although the user's request was initiated from Singapore, the reasons are as follows:
+
+- Cloudflare chose the Hong Kong edge node to process your request based on its own network optimization strategy.
+- This is because Cloudflare may have deemed the routing through the Hong Kong node to access the Anthropic API as more optimal.
+
+The HKG in the CF-Ray ID indicates:
+
+- This is the location of the Cloudflare edge node processing the request.
+- It is not the origin of the request or the location of the target server.
+
+If it were deployed on Vercel, Vercel supports limiting the regions in which edge APIs run, and we could simply configure it. However, Cloudflare does not support setting the operational region of Pages, although it has a smart routing strategy, which does not match my requirements.
+
+I hope that my entire Next.js application remains fully edge-based, only requiring requests to the Anthropic API to bypass the Cloudflare Hong Kong edge node.
+
+## III Abandoned Solutions
+
+### 1 Use Cloudflare Load Balancer
+
+1. Create a load balancer.
+2. Specify Singapore as the preferred region.
+3. Route API requests through this load balancer.
+
+This option requires Cloudflare's enterprise edition, so it was abandoned.
+
+### 2 Cloudflare Workers Middleware
+
+The middleware cannot resolve this issue because when Cloudflare Workers send requests to Anthropic, they may still be routed to the Hong Kong edge node, and the middleware cannot configure requests to bypass the Hong Kong edge node.
+
+### 3 Cloudflare Argo Smart Routing
+
+1. Enable Argo Smart Routing.
+2. In the Dashboard:
+
+- Network -> Traffic
+- Enable Argo Smart Routing.
+- This will automatically optimize the routing path.
+
+However, this solution does not guarantee that 100% of requests from Singapore will not go through the Hong Kong edge node.
+
+### 4 Cloudflare DNS Settings
+
+```ts
+const API_ENDPOINTS = {
+    SG: 'https://sg-api.your-domain.com',
+    DEFAULT: 'https://api.your-domain.com',
+};
+
+async function fetchAPI() {
+    const endpoint = userIsInSG ? API_ENDPOINTS.SG : API_ENDPOINTS.DEFAULT;
+}
+```
+
+This does not meet my requirements and is not easy to scale.
+
+## IV Final Solution: Using Vercel's Edge API Proxy for Requests to Anthropic API
+
+As mentioned earlier, since Vercel's Edge API supports setting the operational region, we can configure Vercel's Edge API proxy for requests to the Anthropic API and disable the Hong Kong region.
+
+The code for the Anthropic API proxy is as follows, supporting both Stream and non-Stream requests:
+
+```ts
+import { NextRequest } from 'next/server';
+
+export const runtime = 'edge';
+export const preferredRegion = [
+    'arn1',
+    'bom1',
+    'cdg1',
+    'cle1',
+    'cpt1',
+    'dub1',
+    'fra1',
+    'gru1',
+    'hnd1',
+    'iad1',
+    'icn1',
+    'kix1',
+    'lhr1',
+    'pdx1',
+    'sfo1',
+    'sin1',
+    'syd1',
+];
+
+const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, anthropic-version, x-api-key',
+};
+
+const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
+
+export async function OPTIONS() {
+    return new Response(null, {
+        status: 204,
+        headers: corsHeaders,
+    });
+}
+
+export async function POST(req: NextRequest) {
+    try {
+        const headers = new Headers(req.headers);
+        const body = await req.json();
+        const anthropicResponse = await fetch(ANTHROPIC_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'anthropic-version': headers.get('anthropic-version') || '2023-06-01',
+                'x-api-key': headers.get('x-api-key') || '',
+            },
+            body: body ? JSON.stringify(body) : null,
+        });
+
+        const responseHeaders = new Headers(corsHeaders);
+
+        if (anthropicResponse.headers.get('content-type')?.includes('text/event-stream')) {
+            responseHeaders.set('Content-Type', 'text/event-stream');
+            responseHeaders.set('Cache-Control', 'no-cache');
+            responseHeaders.set('Connection', 'keep-alive');
+
+            return new Response(anthropicResponse.body, {
+                status: anthropicResponse.status,
+                headers: responseHeaders,
+            });
+        }
+
+        const data = await anthropicResponse.json();
+        if (!anthropicResponse.ok) {
+            return new Response(JSON.stringify(data), {
+                status: anthropicResponse.status,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            });
+        }
+
+        return new Response(JSON.stringify(data), {
+            status: anthropicResponse.status,
+            headers: responseHeaders,
+        });
+    } catch (error) {
+        console.error('Proxy error:', error);
+        return new Response(
+            JSON.stringify({
+                type: 'error',
+                error: {
+                    type: 'internal_server_error',
+                    message: 'Internal Server Error',
+                },
+            }),
+            {
+                status: 500,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            },
+        );
+    }
+}
+```
+
+We create the simplest next application using `npx create-next-app@latest --typescript`, then copy the above code into the API file and deploy it. This way, we can resolve the unexpected 403 forbidden issue with the Anthropic API.
