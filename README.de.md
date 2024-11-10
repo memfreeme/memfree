@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**Englisch**\|[chinesisch](./README.zh-CN.md)\|[Deutsch](./README.de.md)\|[Französisch](./README.fr.md)\|[Español](README.es.md)\|[japanisch](./README.ja.md)
+**Englisch**\|[chinesisch](./README.zh-CN.md)\|[Deutsch](./README.de.md)\|[Französisch](./README.fr.md)\|[Spanisch](README.es.md)\|[japanisch](./README.ja.md)
 
 </div>
 
@@ -50,7 +50,7 @@ Memfree nutzt das leistungsstärkste KI-Modell – Claude 3.5 Sonnet und das bel
 -   **Effizientes Wissensmanagement**: MemFree macht die manuelle Organisation von Notizen, Lesezeichen und Dokumenten überflüssig. Wenn Sie Informationen benötigen, suchen Sie einfach in MemFree, um schnell relevante Antworten zu finden, was Ihren Speicher frei macht und die Produktivität steigert.
 -   **Zeitsparende KI-Zusammenfassungen**: Anstatt sich durch mehrere Google-Suchergebnisse zu klicken, nutzt MemFree KI, um sofort die besten Inhalte von Webseiten und Ihrer Wissensdatenbank zusammenzufassen und so wertvolle Zeit zu sparen.
 -   **Kostengünstige Lösung**: Vermeiden Sie mehrere Abonnements für Dienste wie ChatGPT Plus, Claude Pro und Gemini Advanced. MemFree integriert deren Funktionalitäten und reduziert so die monatlichen Kosten erheblich.
--   **100x schnellere UI-Seitenerstellung**: Konvertieren Sie Text oder Bilder in Sekundenschnelle in beeindruckenden, produktionsbereiten Code. Visualisieren Sie Ihre Designs während der Erstellung. Veröffentlichen Sie Ihre Seiten nahtlos.
+-   **100x schnellere UI-Seitenerstellung**: Konvertieren Sie Text oder Bilder in Sekundenschnelle in atemberaubenden, produktionsbereiten Code. Visualisieren Sie Ihre Designs während der Erstellung. Veröffentlichen Sie Ihre Seiten nahtlos.
 
 ## MemFree Hybrid AI-Suchfunktionen
 
@@ -60,7 +60,7 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 
 -   🌐**Mehrere Suchmaschinen werden unterstützt**: Funktioniert mit Google, Exa und Vector.
 
--   🖼️**Mehrere Sucheingabeformate**: Insbesondere Texte, Bilder, Dateien und Webseiten. Es unterstützt die Suche, den Vergleich, die Zusammenfassung und die Analyse mehrerer Bilder.
+-   🖼️**Mehrere Sucheingabeformate**: Insbesondere Texte, Bilder, Dateien und Webseiten. Unterstützt die Suche, den Vergleich, die Zusammenfassung und die Analyse mehrerer Bilder.
 
 -   📊**Mehrere Methoden zur Ergebnispräsentation**: Text, Mindmaps, Bilder und Videos.
 
@@ -203,7 +203,7 @@ So können Sie einen Beitrag leisten:
 
 ## Roadmap
 
--   [MemFree-Roadmap](https://feedback.memfree.me/roadmap)
+-   KI-Codierungsassistent
 
 ## Lizenz
 
@@ -211,8 +211,9 @@ MemFree wird unterstützt von[MemFree](https://www.memfree.me/)und lizenziert un
 
 ## Unterstützt von MemFree
 
--   [PageGen AI-Seitengenerator](https://pagegen.ai/)
--   [MemFree Hybrid-KI-Suche](https://www.memfree.me)
+-   [PageGen – KI-Seitengenerator](https://pagegen.ai)
+-   [MemFree – Hybride KI-Suche](https://www.memfree.me)
+-   [StorySnap – Verwandeln Sie Bilder in Geschichten](https://www.snapstoryai.com)
 -   [React + Shadcn UI-Vorschau](https://reactshadcn.com)
 
 ## Sternengeschichte
