@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**英语**\|[中文](./README.zh-CN.md)\|[Deutsch](./README.de.md)\|[法语](./README.fr.md)\|[西班牙语](README.es.md)\|[日本人](./README.ja.md)
+**英语**\|[中文](./README.zh-CN.md)\|[德语](./README.de.md)\|[法语](./README.fr.md)\|[西班牙语](README.es.md)\|[日本人](./README.ja.md)
 
 </div>
 
@@ -49,7 +49,7 @@ Memfree 使用最强大的 AI 模型 - Claude 3.5 Sonnet 和最流行的前端�
 
 -   **高效的知识管理**：MemFree 消除了手动组织笔记、书签和文档的需要。当您需要信息时，只需在 MemFree 中搜索即可快速找到相关答案，从而释放您的内存并提高工作效率。
 -   **节省时间的人工智能摘要**：MemFree 无需点击多个 Google 搜索结果，而是使用 AI 立即总结网页和知识库中的最佳内容，从而节省宝贵的时间。
--   **经济高效的解决方案**: Avoid multiple subscriptions to services like ChatGPT Plus, Claude Pro, and Gemini Advanced. MemFree integrates their functionalities, significantly reducing monthly costs.
+-   **经济高效的解决方案**：避免多次订阅 ChatGPT Plus、Claude Pro 和 Gemini Advanced 等服务。 MemFree 集成了它们的功能，显着降低了每月的成本。
 -   **UI 页面创建速度提高 100 倍**：在几秒钟内将文本或图像转换为令人惊叹的、可用于生产的代码，在创建时可视化您的设计，无缝发布您的页面。
 
 ## MemFree 混合人工智能搜索功能
@@ -62,7 +62,7 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
 -   🖼️**多种搜索输入格式**：文本、图片、文件、网页，特别支持多图搜索、比较、总结、分析。
 
--   📊**Multiple Results Presentation Methods**：文本、思维导图、图像和视频。
+-   📊**多种结果呈现方法**：文本、思维导图、图像和视频。
 
 -   📄**本地文件格式兼容性**：支持文本、PDF、Docx、PPTX 和 Markdown 文件。
 
@@ -122,7 +122,7 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 <a href="https://app.netlify.com/start/deploy?repository=https://github.com/memfreeme/memfree&create_from_path=frontend/#UPSTASH_REDIS_REST_TOKEN
 =your_api_token&UPSTASH_REDIS_REST_URL=your_rest_url&SERPER_API_KEY=your_api_key&AUTH_SECRET=your_auth_key&OPENAI_API_KEY=your_api_key"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
 
-### 4 部署在铁路上
+### 4 铁路部署
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/HPTFRR)
 
@@ -158,7 +158,7 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
 获取 Serper API 密钥：[毒蛇](https://serper.dev/api-key)
 
-### Frontend
+### 前端
 
     cd frontend
 
@@ -203,7 +203,7 @@ MemFree 配备强大的功能，可满足各种搜索和生产力需求：
 
 ## 路线图
 
--   [MemFree 路线图](https://feedback.memfree.me/roadmap)
+-   人工智能编码助手
 
 ## 执照
 
@@ -211,8 +211,9 @@ MemFree 由以下机构支持[内存自由](https://www.memfree.me/)并获得许
 
 ## 由 MemFree 提供支持
 
--   [PageGen AI 页面生成器](https://pagegen.ai/)
--   [MemFree 混合人工智能搜索](https://www.memfree.me)
+-   [PageGen - AI 页面生成器](https://pagegen.ai)
+-   [MemFree - 混合人工智能搜索](https://www.memfree.me)
+-   [StorySnap - 将图像变成故事](https://www.snapstoryai.com)
 -   [React + Shadcn UI 预览](https://reactshadcn.com)
 
 ## 明星历史
