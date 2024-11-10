@@ -312,7 +312,7 @@ const SearchBar: React.FC<Props> = ({
                                     type="button"
                                     aria-label={t('search-tip')}
                                     disabled={(content.trim() === '' && files.length === 0) || isUploading}
-                                    className="text-gray-500 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+                                    className="text-gray-500 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50 p-2"
                                     onClick={handleClick}
                                 >
                                     <span className="sr-only">{t('search-tip')}</span>

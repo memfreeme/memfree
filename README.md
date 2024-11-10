@@ -209,7 +209,7 @@ Here's how you can contribute:
 
 ## Roadmap
 
-- [MemFree Roadmap](https://feedback.memfree.me/roadmap)
+- AI Coding Assistant
 
 ## License
 
@@ -217,8 +217,9 @@ MemFree is backed by [MemFree](https://www.memfree.me/) and licensed under [MIT]
 
 ## Powered By MemFree
 
-- [PageGen AI Page Generator](https://pagegen.ai/)
-- [MemFree Hybrid AI Search](https://www.memfree.me)
+- [PageGen - AI Page Generator](https://pagegen.ai)
+- [MemFree - Hybrid AI Search](https://www.memfree.me)
+- [StorySnap - Turn Images Into Stories](https://www.snapstoryai.com)
 - [React + Shadcn UI Preview](https://reactshadcn.com)
 
 ## Star History
