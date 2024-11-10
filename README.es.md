@@ -37,7 +37,7 @@
 
 MemFree es un<b>Motor de búsqueda híbrido de IA</b>.
 
-Con MemFree, puede obtener instantáneamente respuestas precisas de su base de conocimientos y de todo Internet.
+With MemFree, you can instantly get Accurate Answers from your knowledge base and the whole internet.
 
 MemFree es un<b>Generador de páginas AI</b>.
 
@@ -45,7 +45,7 @@ Memfree utiliza el modelo de IA más potente: Claude 3.5 Sonnet y el marco de in
 
 [PageGen - Generador de páginas AI](https://pagegen.ai/).
 
-## ¿Qué hace que MemFree sea valioso?
+## What Makes MemFree Valuable?
 
 -   **Gestión eficiente del conocimiento**: MemFree elimina la necesidad de organización manual de notas, marcadores y documentos. Cuando necesite información, simplemente busque en MemFree para encontrar rápidamente respuestas relevantes, liberando su memoria y aumentando la productividad.
 -   **Resúmenes de IA que ahorran tiempo**: En lugar de hacer clic en varios resultados de búsqueda de Google, MemFree utiliza IA para resumir instantáneamente el mejor contenido de las páginas web y su base de conocimientos, lo que ahorra un tiempo valioso.
@@ -80,10 +80,10 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 
 ## Funciones del generador de interfaz de usuario MemFree AI
 
--   **🖥️ Vista previa de la interfaz de usuario en tiempo real**: Representa y previsualiza instantáneamente la interfaz de usuario generada
+-   **🖥️ Vista previa de la interfaz de usuario en tiempo real**: Renderiza y previsualiza instantáneamente la interfaz de usuario generada
 -   **🔍 Búsqueda de contenido impulsada por IA**: Enriquezca su interfaz de usuario con contenido relevante utilizando nuestra función de búsqueda avanzada de IA
 -   **🖼 Generación de UI basada en imágenes**: cree componentes de interfaz de usuario y páginas que coincidan estrechamente con sus imágenes de referencia.
--   **📄 Generación de archivo a página**: Transforme el contenido de cualquier archivo en una página web bellamente estructurada con análisis y resumen de IA
+-   **📄 Generación de archivo a página**: Transforme el contenido de cualquier archivo en una página web bellamente estructurada con análisis y resumen de IA.
 -   **✏️ Integración del editor de código**: Edite y refine su código generado con capacidades de edición similares a VSCode, completo con resaltado de sintaxis y autocompletado.
 -   **✨ Soporte de animación**: cree páginas web atractivas con efectos de animación integrados, dando vida a su contenido con transiciones suaves y elementos dinámicos.
 -   **⚛️ Integración de interfaz de usuario de React + TailWind + Shadcn**: Aproveche el código generado por IA utilizando la pila de front-end más popular: React, TailWind y Shadcn UI
@@ -152,7 +152,7 @@ Cree una base de datos compatible con Redis en segundos:[Redis oculto](https://u
 
 #### Clave API de OpenAI
 
-Obtenga una clave API de OpenAI:[Abierto AI](https://platform.openai.com)
+Obtenga una clave API de OpenAI:[AbiertoAI](https://platform.openai.com)
 
 #### Clave API de Serper
 
@@ -170,7 +170,7 @@ Obtenga una clave API de Serper:[Serpiente](https://serper.dev/api-key)
 
     bun run dev
 
-### Servicio vectorial
+### Servicio de vectores
 
     cd vector
 
@@ -203,7 +203,7 @@ Así es como puedes contribuir:
 
 ## Hoja de ruta
 
--   [Hoja de ruta de MemFree](https://feedback.memfree.me/roadmap)
+-   Asistente de codificación de IA
 
 ## Licencia
 
@@ -211,8 +211,9 @@ MemFree está respaldado por[MemFree](https://www.memfree.me/)y con licencia baj
 
 ## Desarrollado por MemFree
 
--   [Generador de páginas AI PageGen](https://pagegen.ai/)
--   [Búsqueda de IA híbrida MemFree](https://www.memfree.me)
+-   [PageGen - Generador de páginas AI](https://pagegen.ai)
+-   [MemFree - Búsqueda híbrida con IA](https://www.memfree.me)
+-   [StorySnap: convierte imágenes en historias](https://www.snapstoryai.com)
 -   [Vista previa de la interfaz de usuario de React + Shadcn](https://reactshadcn.com)
 
 ## Historia de las estrellas
