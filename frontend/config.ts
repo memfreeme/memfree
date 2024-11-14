@@ -15,6 +15,7 @@ import {
 
 const site_url = 'https://www.memfree.me';
 export const PageGenUrl = 'https://pagegen.ai';
+export const StorySnapUrl = 'https://www.snapstoryai.com';
 export const SearchUrl = 'https://www.memfree.me';
 export const ReactShadcnUrl = 'https://reactshadcn.com';
 

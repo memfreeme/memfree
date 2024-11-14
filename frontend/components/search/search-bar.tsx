@@ -234,7 +234,7 @@ const SearchBar: React.FC<Props> = ({
                 <TextareaAutosize
                     value={content}
                     placeholder={t('search-tip')}
-                    minRows={2}
+                    minRows={3}
                     maxRows={10}
                     aria-label="Search"
                     className="w-full border-0 bg-transparent p-4 mb-8 text-sm placeholder:text-muted-foreground overflow-y-auto  outline-0 ring-0  focus-visible:outline-none focus-visible:ring-0 resize-none"
