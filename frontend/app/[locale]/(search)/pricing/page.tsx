@@ -1,3 +1,4 @@
+import PromotionBanner from '@/components/layout/banner';
 import WallOfLove from '@/components/layout/wall-of-love';
 import { PricingCards } from '@/components/pricing-cards';
 import { PricingFaq } from '@/components/pricing-faq';
@@ -27,7 +28,8 @@ export default async function PricingPage() {
     }
 
     return (
-        <div className="group mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[300px] peer-[[data-state=open]]:xl:pl-[320px] peer-[[data-state=closed]]:lg:px-[100px] my-10">
+        <div className="group mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[300px] peer-[[data-state=open]]:xl:pl-[320px] peer-[[data-state=closed]]:lg:px-[100px]">
+            <PromotionBanner />
             <PricingCards userId={user?.id} subscriptionPlan={subscriptionPlan} />
             <WallOfLove />
             <PricingFaq />
