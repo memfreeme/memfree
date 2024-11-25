@@ -1,6 +1,6 @@
 import { Icons } from '@/components/shared/icons';
 import useCopyToClipboard from '@/hooks/use-copy-clipboard';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, RefreshCcw, Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,14 +9,7 @@ import { useTranslations } from 'next-intl';
 import { useSearchStore } from '@/lib/store/local-history';
 import IconButton from '@/components/layout/icon-button';
 
-interface QuestionSectionProps {
-    mesageId: string;
-    content: string;
-    isShared?: boolean;
-    onContentChange: (newContent: string) => void;
-}
-
-const QuestionSection: React.FC<QuestionSectionProps> = React.memo(({ mesageId, content, onContentChange, isShared }) => {
+const QuestionSection = ({ mesageId, content, onContentChange, isShared, reload }) => {
     const getTextSizeClass = (text: string) => {
         const length = text.length;
         if (length < 20) return 'text-lg font-medium';
@@ -30,6 +23,10 @@ const QuestionSection: React.FC<QuestionSectionProps> = React.memo(({ mesageId, 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editedContent, setEditedContent] = useState(content);
 
+    const handleReloadClick = React.useCallback(() => {
+        reload(mesageId, true);
+    }, [mesageId, reload]);
+
     const handleEditClick = () => {
         setEditedContent(content);
         setIsEditModalOpen(true);
@@ -40,6 +37,7 @@ const QuestionSection: React.FC<QuestionSectionProps> = React.memo(({ mesageId, 
         setIsEditModalOpen(false);
     };
     const t = useTranslations('Question');
+    const t_search = useTranslations('ActionButtons');
 
     const { deleteMessage } = useSearchStore();
 
@@ -55,6 +53,9 @@ const QuestionSection: React.FC<QuestionSectionProps> = React.memo(({ mesageId, 
                     <div className="flex space-x-4 opacity-0 group-hover/question:opacity-100">
                         <IconButton onClick={() => copyToClipboard(content)} tooltipText="Copy">
                             {hasCopied ? <Icons.check className="text-primary" /> : <Icons.copy className="text-primary" />}
+                        </IconButton>
+                        <IconButton onClick={handleReloadClick} tooltipText={t_search('Reload')}>
+                            <RefreshCcw className="text-primary" />
                         </IconButton>
                         <IconButton onClick={handleEditClick} tooltipText="Edit">
                             <Pencil className="text-primary " />
@@ -89,7 +90,7 @@ const QuestionSection: React.FC<QuestionSectionProps> = React.memo(({ mesageId, 
             </Dialog>
         </>
     );
-});
+};
 
 QuestionSection.displayName = 'QuestionSection';
 export default QuestionSection;

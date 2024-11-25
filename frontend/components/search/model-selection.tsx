@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { Claude_35_Sonnet, GEMINI_PRO, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/model';
+import { Claude_35_Haiku, Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/model';
 import { isProUser, isPremiumUser } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
@@ -24,20 +24,20 @@ export const modelMap: Record<string, Model> = {
         flag: 'Pro',
         value: GPT_4o,
     },
-    [O1_MIMI]: {
-        name: 'O1-Mini',
+    [Claude_35_Haiku]: {
+        name: 'Claude 3.5 Haiku',
         flag: 'Pro',
-        value: O1_MIMI,
+        value: Claude_35_Haiku,
     },
-    // [GEMINI_PRO]: {
-    //     name: 'Gemini 1.5 Pro',
-    //     flag: 'Pro',
-    //     value: GEMINI_PRO,
-    // },
     [Claude_35_Sonnet]: {
         name: 'Claude 3.5 Sonnet',
         flag: 'Pro',
         value: Claude_35_Sonnet,
+    },
+    [O1_MIMI]: {
+        name: 'O1-Mini',
+        flag: 'Pro',
+        value: O1_MIMI,
     },
     [O1_PREVIEW]: {
         name: 'O1-Preview',

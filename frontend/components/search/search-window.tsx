@@ -309,7 +309,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
     );
 
     const reload = useCallback(
-        async (msgId: string) => {
+        async (msgId: string, isQuestion: boolean) => {
             const activeSearch = useSearchStore.getState().activeSearch;
             if (!activeSearch) {
                 return;
@@ -318,22 +318,31 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
             if (currentIndex === -1) return;
 
             const updatedMessages = [...activeSearch.messages];
-            updatedMessages.splice(currentIndex, 1);
 
-            let previousMessage;
-            if (currentIndex > 0) {
-                previousMessage = updatedMessages.splice(currentIndex - 1, 1)[0];
-                updatedMessages.push(previousMessage);
+            if (isQuestion) {
+                updatedMessages.splice(currentIndex + 1);
+            } else {
+                updatedMessages.splice(currentIndex, 1);
+                if (currentIndex > 0) {
+                    const previousMessage = updatedMessages.splice(currentIndex - 1, 1)[0];
+                    updatedMessages.push(previousMessage);
+                }
             }
 
             updateActiveSearch({
                 messages: updatedMessages,
             });
-            if (previousMessage) {
+
+            const questionIndex = isQuestion ? currentIndex : currentIndex - 1;
+            if (questionIndex < 0 || questionIndex >= activeSearch.messages.length) {
+                return;
+            }
+            const question = activeSearch.messages[questionIndex].content;
+            if (question) {
                 setTimeout(() => {
                     scrollToBottom();
                 }, 500);
-                await sendMessage(previousMessage.content, null, msgId);
+                await sendMessage(question, null, msgId);
             }
         },
         [sendMessage, updateActiveSearch, scrollToBottom],

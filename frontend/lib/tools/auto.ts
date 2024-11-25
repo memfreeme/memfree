@@ -5,7 +5,7 @@ import { convertToCoreMessages, getLLM, getMaxOutputToken } from '@/lib/llm/llm'
 import { AutoAnswerPrompt } from '@/lib/llm/prompt';
 import { getHistory, getHistoryMessages, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
-import { Claude_35_Sonnet, GPT_4o_MIMI } from '@/lib/model';
+import { GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine } from '@/lib/search/search';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { accessWebPage } from '@/lib/tools/access';
@@ -36,8 +36,12 @@ export async function autoAnswer(
 
         const userMessages = convertToCoreMessages(newMessages);
         const maxTokens = getMaxOutputToken(isPro, model);
-        const result = await streamText({
+        // const mexSteps = isPro ? 2 : 1;
+        // const isContinued = isPro ? true : false;
+        // console.log('auto answer', { maxTokens, mexSteps, isContinued });
+        const result = streamText({
             model: getLLM(model),
+            maxSteps: 1,
             messages: [
                 {
                     role: 'system',
@@ -76,22 +80,8 @@ export async function autoAnswer(
                     },
                 }),
             },
-            onFinish({ finishReason, usage, experimental_providerMetadata }) {
-                console.log('auto answer finish', { finishReason, usage, experimental_providerMetadata });
-                if (model === Claude_35_Sonnet) {
-                    const inputTokens = usage.promptTokens;
-                    const outputTokens = usage.completionTokens;
-                    const inputCost = (inputTokens / 1_000_000.0) * 3;
-                    const outputCost = (outputTokens / 1_000_000.0) * 15;
-                    const totalCost = inputCost + outputCost;
-                    console.log({
-                        inputTokens,
-                        outputTokens,
-                        inputCost: `$${inputCost.toFixed(6)}`,
-                        outputCost: `$${outputCost.toFixed(6)}`,
-                        totalCost: `$${totalCost.toFixed(6)}`,
-                    });
-                }
+            onFinish({ finishReason, usage }) {
+                console.log('auto answer finish', { finishReason, usage });
             },
         });
 
@@ -107,6 +97,10 @@ export async function autoAnswer(
         let hasError = false;
         for await (const delta of result.fullStream) {
             switch (delta.type) {
+                case 'step-finish': {
+                    console.log('step is continued', delta.isContinued, ' finish reason ', delta.finishReason);
+                    break;
+                }
                 case 'text-delta': {
                     if (delta.textDelta) {
                         if (!hasAnswer) {
@@ -134,7 +128,7 @@ export async function autoAnswer(
                     if (delta.toolName === 'getInformation') {
                         texts = texts.concat(delta.result.texts);
                         images = images.concat(delta.result.images);
-                        // console.log(`rewrite ${rewriteQuery} to ${delta.args.question}`);
+                        console.log(`rewrite ${rewriteQuery} to ${delta.args.question}`);
                         rewriteQuery = delta.args.question;
                     } else if (delta.toolName === 'accessWebPage') {
                         texts = texts.concat(delta.result.texts);
@@ -150,6 +144,9 @@ export async function autoAnswer(
                 }
             }
         }
+
+        // console.log('tool call count', toolCallCount);
+        // console.log('full answer', fullAnswer);
 
         if (toolCallCount > 1) {
             rewriteQuery = query;
@@ -223,6 +220,7 @@ export async function autoAnswer(
         await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated, SearchCategory.ALL, title);
         onStream?.(null, true);
     } catch (error) {
+        console.error('Error:', error);
         const errorMessage = extractErrorMessage(error);
         logError(new Error(errorMessage), `llm-auto-${model}`);
         onStream?.(JSON.stringify({ error: errorMessage }));

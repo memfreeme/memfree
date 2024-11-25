@@ -17,7 +17,7 @@ const ActionButtons = ({ content, searchId, msgId, reload, searchType }) => {
     const { hasCopied, copyToClipboard } = useCopyToClipboard();
 
     const handleReloadClick = React.useCallback(() => {
-        reload(msgId);
+        reload(msgId, false);
     }, [msgId, reload]);
 
     const t = useTranslations('ActionButtons');

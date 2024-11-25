@@ -19,7 +19,7 @@ const SearchMessage = memo(
         searchId: string;
         message: Message;
         onSelect: (question: string) => void;
-        reload: (msgId: string) => void;
+        reload: (msgId: string, isQuestion: boolean) => void;
         isLoading: boolean;
         isReadOnly: boolean;
     }) => {
@@ -113,7 +113,7 @@ const SearchMessage = memo(
                     </div>
                 )}
 
-                {isUser && <QuestionSection mesageId={id} content={content} isShared={isReadOnly} onContentChange={onSelect}></QuestionSection>}
+                {isUser && <QuestionSection mesageId={id} content={content} isShared={isReadOnly} onContentChange={onSelect} reload={reload}></QuestionSection>}
                 {isUser && attachments && attachments.length > 0 && (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4">
                         {attachments.map((attachment, index) => (
