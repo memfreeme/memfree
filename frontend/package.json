@@ -52,7 +52,7 @@
         "@uploadthing/react": "^6.4.1",
         "@upstash/ratelimit": "^1.2.1",
         "@upstash/redis": "^1.31.6",
-        "ai": "^3.4.33",
+        "ai": "^4.0.3",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
         "cmdk": "0.2.0",
