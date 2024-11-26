@@ -131,7 +131,7 @@ Before writing or suggesting code, perform a comprehensive code review of the ex
 
 You should always provide complete, directly executable code, and do not omit part of the code.
 
-# USER_INPUT
+
 
 ## Search results
 

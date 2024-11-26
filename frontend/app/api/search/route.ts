@@ -16,11 +16,11 @@ import { isProUser } from '@/lib/shared-utils';
 import { chat } from '@/lib/tools/chat';
 
 const updateSource = function (model, source, messages, isSearch) {
-    if (!isSearch) {
-        return SearchCategory.CHAT;
-    }
     if (model === O1_MIMI || model === O1_PREVIEW) {
         return SearchCategory.O1;
+    }
+    if (!isSearch) {
+        return SearchCategory.CHAT;
     }
     const file = messages[0].attachments?.[0];
     if (file) {
@@ -83,12 +83,12 @@ export async function POST(req: NextRequest) {
         const readableStream = new ReadableStream({
             async start(controller) {
                 switch (source) {
-                    case SearchCategory.CHAT: {
-                        await chat(messages, isPro, userId, profile, streamController(controller), model);
+                    case SearchCategory.O1: {
+                        await o1Answer(isSearch, messages, isPro, userId, profile, streamController(controller), model);
                         break;
                     }
-                    case SearchCategory.O1: {
-                        await o1Answer(messages, isPro, userId, profile, streamController(controller), model);
+                    case SearchCategory.CHAT: {
+                        await chat(messages, isPro, userId, profile, streamController(controller), model);
                         break;
                     }
                     case SearchCategory.PRODUCT_HUNT: {

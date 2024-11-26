@@ -1,4 +1,4 @@
-'use server';
+import 'server-only';
 
 import { incSearchCount } from '@/lib/db';
 import { getLLM } from '@/lib/llm/llm';
@@ -15,6 +15,7 @@ import { generateText } from 'ai';
 import util from 'util';
 
 export async function o1Answer(
+    isSearch: boolean,
     messages: StoreMessage[],
     isPro: boolean,
     userId: string,
@@ -33,18 +34,22 @@ export async function o1Answer(
 
         let history = getHistory(isPro, messages);
 
-        const result = await searchRelevantContent(query, userId, source, onStream);
-        texts = result.texts;
+        let imageFetchPromise;
+        let videoFetchPromise;
+        if (isSearch) {
+            const result = await searchRelevantContent(query, userId, source, onStream);
+            texts = result.texts;
 
-        const imageFetchPromise = getSearchEngine({
-            categories: [SearchCategory.IMAGES],
-        })
-            .search(query)
-            .then((results) => results.images.filter((img) => img.image.startsWith('https')));
+            imageFetchPromise = getSearchEngine({
+                categories: [SearchCategory.IMAGES],
+            })
+                .search(query)
+                .then((results) => results.images.filter((img) => img.image.startsWith('https')));
 
-        const videoFetchPromise = getSearchEngine({
-            categories: [SearchCategory.VIDEOS],
-        }).search(query);
+            videoFetchPromise = getSearchEngine({
+                categories: [SearchCategory.VIDEOS],
+            }).search(query);
+        }
 
         await streamResponse(
             { status: 'OpenAI latest O1 model does not support streaming results, so the entire answer will be returned at once. Please wait.' },
@@ -53,6 +58,7 @@ export async function o1Answer(
 
         const context = texts.map((item, index) => `[citation:${index + 1}] ${item.content}`).join('\n\n');
 
+        // Unsupported value: 'messages[0].role' does not support 'system' with this model.
         const prompt = util.format(DirectAnswerPrompt, profile, context, history) + '\n' + query;
 
         console.log('prompt', prompt);
@@ -66,18 +72,20 @@ export async function o1Answer(
         await streamResponse({ status: 'Answering ...', answer: fullAnswer }, onStream);
 
         let fullRelated = '';
-        await getRelatedQuestions(query, texts, (msg) => {
-            fullRelated += msg;
-            onStream?.(JSON.stringify({ related: msg }));
-        });
+        if (isSearch) {
+            await getRelatedQuestions(query, texts, (msg) => {
+                fullRelated += msg;
+                onStream?.(JSON.stringify({ related: msg }));
+            });
 
-        const fetchedImages = await imageFetchPromise;
-        images = [...images, ...fetchedImages];
-        await streamResponse({ images: images }, onStream);
+            const fetchedImages = await imageFetchPromise;
+            images = [...images, ...fetchedImages];
+            await streamResponse({ images: images }, onStream);
 
-        const fetchedVideos = await videoFetchPromise;
-        videos = fetchedVideos.videos.slice(0, 8);
-        await streamResponse({ videos: videos }, onStream);
+            const fetchedVideos = await videoFetchPromise;
+            videos = fetchedVideos.videos.slice(0, 8);
+            await streamResponse({ videos: videos }, onStream);
+        }
 
         incSearchCount(userId).catch((error) => {
             console.error(`Failed to increment search count for user ${userId}:`, error);
