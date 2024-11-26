@@ -24,7 +24,7 @@ export default function SearchWindowWapper({ id, user }: SearchPageProps) {
             user={user}
             initialMessages={[]}
             demoQuestions={<></>}
-            searchBar={({ handleSearch }) => <SearchBar handleSearch={handleSearch} showIndexButton={false} showSourceSelection={false} />}
+            searchBar={({ handleSearch }) => <SearchBar handleSearch={handleSearch} showShadcnUI={false} showSourceSelection={false} />}
         />
     );
 }

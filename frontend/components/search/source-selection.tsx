@@ -49,11 +49,11 @@ export function SourceSelection() {
             name: 'Indie Maker',
             value: SearchCategory.INDIE_MAKER,
         },
-        [SearchCategory.ACADEMIC]: {
-            name: t('Academic'),
-            flag: 'Pro',
-            value: SearchCategory.ACADEMIC,
-        },
+        // [SearchCategory.ACADEMIC]: {
+        //     name: t('Academic'),
+        //     flag: 'Pro',
+        //     value: SearchCategory.ACADEMIC,
+        // },
         [SearchCategory.TWEET]: {
             name: 'Twitter',
             flag: 'Pro',

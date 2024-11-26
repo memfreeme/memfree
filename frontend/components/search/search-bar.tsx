@@ -26,7 +26,7 @@ import { SearchType } from '@/lib/types';
 interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
     showSourceSelection?: boolean;
-    showIndexButton?: boolean;
+    showShadcnUI?: boolean;
     showModelSelection?: boolean;
     showWebSearch?: boolean;
     searchType?: SearchType;
@@ -39,7 +39,7 @@ interface FileWithPreview extends File {
 const SearchBar: React.FC<Props> = ({
     handleSearch,
     showSourceSelection = true,
-    showIndexButton = true,
+    showShadcnUI = false,
     showModelSelection = true,
     showWebSearch = false,
     searchType = SearchType.SEARCH,
@@ -243,7 +243,7 @@ const SearchBar: React.FC<Props> = ({
                 ></TextareaAutosize>
                 <div className="flex relative">
                     <div className="absolute left-0 bottom-0 mb-1 ml-2 mt-6 flex items-center space-x-4">
-                        {showIndexButton && (
+                        {/* {showIndexButton && (
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <button
@@ -265,7 +265,7 @@ const SearchBar: React.FC<Props> = ({
                                 </TooltipTrigger>
                                 <TooltipContent>{t('index-tip')}</TooltipContent>
                             </Tooltip>
-                        )}
+                        )} */}
 
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -325,21 +325,21 @@ const SearchBar: React.FC<Props> = ({
                 </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2">
-                {showWebSearch && (
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-2">
+                {showShadcnUI && (
                     <div className="flex items-center space-x-2 mb-1">
                         <Switch id="shadcn" checked={isShadcnUI} onCheckedChange={(checked) => setIsShadcnUI(checked)} />
                         <Label htmlFor="shadcn">Shadcn UI</Label>
                     </div>
                 )}
+                {showModelSelection && <ModelSelection />}
+                {showSourceSelection && <SourceSelection />}
                 {showWebSearch && (
                     <div className="flex items-center space-x-2 mb-1">
                         <Switch id="search" checked={isSearch} onCheckedChange={(checked) => setIsSearch(checked)} />
-                        <Label htmlFor="search">AI Search</Label>
+                        <Label htmlFor="search">Web Search</Label>
                     </div>
                 )}
-                {showModelSelection && <ModelSelection />}
-                {showSourceSelection && <SourceSelection />}
             </div>
             {user && <IndexModal />}
         </div>

@@ -45,6 +45,7 @@ export type ServerActionResult<Result> = Promise<
 
 export enum SearchCategory {
     ALL = 'all',
+    CHAT = 'chat',
     SCIENCE = 'science',
     ACADEMIC = 'academic',
     O1 = 'o1',
