@@ -13,6 +13,7 @@ import ExpandableSection from '@/components/search/expandable-section';
 import MindMap from '@/components/search/mindmap';
 import { useTranslations } from 'next-intl';
 import UISection from '@/components/code/ui-section';
+import { useUIStore } from '@/lib/store';
 
 const SearchMessage = memo(
     (props: {
@@ -48,6 +49,7 @@ const SearchMessage = memo(
         }, [message.attachments, isUser, content]);
 
         const t = useTranslations('SearchMessage');
+        const { showMindMap } = useUIStore();
 
         return (
             <div className="flex flex-col w-full items-start space-y-6 pb-10">
@@ -61,11 +63,6 @@ const SearchMessage = memo(
 
                 {(images.length > 0 || !isLoading) && !isUser && !isReadOnly && (
                     <ActionButtons content={content} searchId={searchId} msgId={id} reload={reload} searchType={type} />
-                )}
-                {!isUser && content && !isLoading && type != SearchCategory.UI && (
-                    <ExpandableSection title={t('MindMap')} icon={Map} open={isReadOnly}>
-                        <MindMap value={content} />
-                    </ExpandableSection>
                 )}
                 {sources.length > 0 && (
                     <ExpandableSection title={t('Sources')} icon={TextSearchIcon}>
@@ -111,6 +108,12 @@ const SearchMessage = memo(
                             ))}
                         </div>
                     </div>
+                )}
+
+                {showMindMap && !isUser && content && !isLoading && type != SearchCategory.UI && (
+                    <ExpandableSection title={t('MindMap')} icon={Map}>
+                        <MindMap value={content} />
+                    </ExpandableSection>
                 )}
 
                 {isUser && <QuestionSection mesageId={id} content={content} isShared={isReadOnly} onContentChange={onSelect} reload={reload}></QuestionSection>}

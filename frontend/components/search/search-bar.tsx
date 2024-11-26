@@ -203,7 +203,7 @@ const SearchBar: React.FC<Props> = ({
         loading: () => <></>,
     });
 
-    const { isSearch, isShadcnUI, setIsSearch, setIsShadcnUI } = useUIStore();
+    const { isSearch, isShadcnUI, showMindMap, setIsSearch, setIsShadcnUI, setShowMindMap } = useUIStore();
 
     return (
         <div className="w-full text-center">
@@ -325,7 +325,7 @@ const SearchBar: React.FC<Props> = ({
                 </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-2">
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-4 gap-2">
                 {showShadcnUI && (
                     <div className="flex items-center space-x-2 mb-1">
                         <Switch id="shadcn" checked={isShadcnUI} onCheckedChange={(checked) => setIsShadcnUI(checked)} />
@@ -334,6 +334,12 @@ const SearchBar: React.FC<Props> = ({
                 )}
                 {showModelSelection && <ModelSelection />}
                 {showSourceSelection && <SourceSelection />}
+                {showModelSelection && (
+                    <div className="flex items-center space-x-2 mb-1">
+                        <Switch id="mindmap" checked={showMindMap} onCheckedChange={(checked) => setShowMindMap(checked)} />
+                        <Label htmlFor="mindmap">Show MindMap</Label>
+                    </div>
+                )}
                 {showWebSearch && (
                     <div className="flex items-center space-x-2 mb-1">
                         <Switch id="search" checked={isSearch} onCheckedChange={(checked) => setIsSearch(checked)} />

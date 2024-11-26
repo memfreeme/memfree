@@ -23,8 +23,10 @@ export const useProfileStore = create<ProfileState>()(
 type UIState = {
     isSearch: boolean;
     isShadcnUI: boolean;
+    showMindMap: boolean;
     setIsSearch: (isSearch: boolean) => void;
     setIsShadcnUI: (isShadcnUI: boolean) => void;
+    setShowMindMap: (showMindMap: boolean) => void;
 };
 
 export const useUIStore = create<UIState>()(
@@ -32,8 +34,10 @@ export const useUIStore = create<UIState>()(
         (set) => ({
             isSearch: true,
             isShadcnUI: true,
+            showMindMap: false,
             setIsSearch: (search: boolean) => set({ isSearch: search }),
             setIsShadcnUI: (shadcnUI: boolean) => set({ isShadcnUI: shadcnUI }),
+            setShowMindMap: (showMindMap: boolean) => set({ showMindMap }),
         }),
         {
             name: 'UI-config',
