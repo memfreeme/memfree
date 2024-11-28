@@ -1,11 +1,11 @@
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
-import RemarkMath from 'remark-math';
+// import RemarkMath from 'remark-math';
 import remarkGfm from 'remark-gfm';
 import React, { memo } from 'react';
-import RehypeKatex from 'rehype-katex';
+// import RehypeKatex from 'rehype-katex';
 import '@/styles/highlight.css';
-import 'katex/dist/katex.min.css';
+// import 'katex/dist/katex.min.css';
 import { TextSource } from '@/lib/types';
 import { InlineCitation } from '@/components/search/inline-citation';
 import MemoizedCodeBlock from '@/components/search/code-block';
@@ -42,9 +42,8 @@ const processNodeWithCitations = (nodeContent: string, sources: TextSource[]) =>
 function MyMarkdown({ content, sources }: { content: string; sources: TextSource[] }) {
     return (
         <ReactMarkdown
-            remarkPlugins={[RemarkMath, remarkGfm]}
+            remarkPlugins={[remarkGfm]}
             rehypePlugins={[
-                RehypeKatex,
                 [
                     rehypeHighlight as any,
                     {
