@@ -1,5 +1,5 @@
 import ReactMarkdown from 'react-markdown';
-import RehypeHighlight from 'rehype-highlight';
+import rehypeHighlight from 'rehype-highlight';
 import RemarkMath from 'remark-math';
 import remarkGfm from 'remark-gfm';
 import React, { memo } from 'react';
@@ -46,7 +46,7 @@ function MyMarkdown({ content, sources }: { content: string; sources: TextSource
             rehypePlugins={[
                 RehypeKatex,
                 [
-                    RehypeHighlight,
+                    rehypeHighlight as any,
                     {
                         detect: false,
                         ignoreMissing: true,
