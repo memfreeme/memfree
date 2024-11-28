@@ -116,7 +116,9 @@ const SearchMessage = memo(
                     </ExpandableSection>
                 )}
 
-                {isUser && <QuestionSection mesageId={id} content={content} isShared={isReadOnly} onContentChange={onSelect} reload={reload}></QuestionSection>}
+                {isUser && (
+                    <QuestionSection messageId={id} content={content} isShared={isReadOnly} onContentChange={onSelect} reload={reload}></QuestionSection>
+                )}
                 {isUser && attachments && attachments.length > 0 && (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4">
                         {attachments.map((attachment, index) => (
