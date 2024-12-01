@@ -20,7 +20,7 @@ export default async function SearchPage({ params }: SearchPageProps) {
 
     return (
         <div className="group w-full h-lvh mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[300px] peer-[[data-state=open]]:xl:pl-[320px]">
-            <PromotionBanner />
+            {/* <PromotionBanner /> */}
             <HeroLanding />
             <SearchResult id={params.id} user={user}></SearchResult>
             <SimpleSiteFooter />

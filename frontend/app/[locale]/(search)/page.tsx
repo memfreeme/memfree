@@ -18,7 +18,7 @@ export default async function IndexPage() {
 
     return (
         <div className="group w-full flex flex-col flex-1 h-lvh mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[300px] peer-[[data-state=open]]:xl:pl-[320px]">
-            <PromotionBanner />
+            {/* <PromotionBanner /> */}
             <div className="grow">
                 <HeroLanding />
                 <SearchWindow id={id} user={user} initialMessages={[]} demoQuestions={<DemoQuestions />} />
