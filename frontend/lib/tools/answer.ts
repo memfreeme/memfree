@@ -28,6 +28,7 @@ export async function directlyAnswer(
             model: model,
             system: system,
             prompt: query,
+            maxRetries: 0,
             maxTokens: maxTokens,
             temperature: 0.1,
         });

@@ -65,6 +65,7 @@ export async function o1Answer(
 
         const { text: fullAnswer } = await generateText({
             model: getLLM(model),
+            maxRetries: 0,
             temperature: 1,
             prompt: prompt,
         });

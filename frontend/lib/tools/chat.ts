@@ -31,6 +31,7 @@ export async function chat(
 
         const result = await streamText({
             model: getLLM(model),
+            maxRetries: 0,
             messages: [
                 {
                     role: 'system',

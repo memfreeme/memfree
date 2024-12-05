@@ -42,6 +42,7 @@ export async function autoAnswer(
         const result = streamText({
             model: getLLM(model),
             maxSteps: 1,
+            maxRetries: 0,
             messages: [
                 {
                     role: 'system',

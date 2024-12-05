@@ -94,6 +94,7 @@ export async function generateUI(
 
         const result = await streamText({
             model: getLLM(Claude_35_Sonnet),
+            maxRetries: 0,
             system: prompt,
             messages: historyMessages,
             maxTokens: 8192,
