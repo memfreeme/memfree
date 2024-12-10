@@ -59,10 +59,12 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
 # Local image upload (Optional)
 
-# You could get the free api key in https://uploadthing.com/dashboard
+# You could get the R2 ACCESS_KEY and SECRET_ACCESS_KEY in https://developers.cloudflare.com/r2/get-started/
 
-UPLOADTHING_SECRET=
-UPLOADTHING_APP_ID=
+R2_ACCESS_KEY_ID=
+R2_SECRET_ACCESS_KEY=
+R2_BUCKET_NAME=
+R2_ACCOUNT_ID=
 
 # Axiom log (optional)
 
