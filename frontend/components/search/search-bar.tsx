@@ -76,6 +76,7 @@ const SearchBar: React.FC<Props> = ({
             return;
         }
         if (uploadedFiles && uploadedFiles.length > 0) {
+            console.log('uploadedFiles', uploadedFiles);
             const fileUrls = uploadedFiles.map((file) => file.url);
             handleSearch(content, fileUrls);
             setFiles([]);
