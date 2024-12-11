@@ -2,6 +2,7 @@ import * as React from 'react';
 import { toast } from 'sonner';
 import { getAuthToken } from '@/actions/token';
 import { NEXT_PUBLIC_VECTOR_HOST } from '@/lib/client_env';
+import { useImageCompression } from '@/hooks/use-image-compression';
 
 export interface UploadedFile {
     name: string;
@@ -64,6 +65,7 @@ async function uploadSingleFile(file: File): Promise<UploadedFile> {
 export function useUploadFile() {
     const [uploadedFiles, setUploadedFiles] = React.useState<UploadedFile[]>();
     const [isUploading, setIsUploading] = React.useState(false);
+    const { compressImage, compressionError } = useImageCompression({});
 
     const indexLocalFile = async (files: File[]) => {
         const endpoint = `${NEXT_PUBLIC_VECTOR_HOST}/api/index/local-file`;
@@ -96,7 +98,11 @@ export function useUploadFile() {
                 const results = await Promise.all(
                     files.map(async (file) => {
                         try {
-                            return await uploadSingleFile(file);
+                            let compressedFile = await compressImage(file);
+                            if (compressionError) {
+                                compressedFile = file;
+                            }
+                            return await uploadSingleFile(compressedFile);
                         } catch (error) {
                             console.error(`Error uploading ${file.name}:`, error);
                             toast.error(`Failed to upload ${file.name}`);
@@ -108,7 +114,6 @@ export function useUploadFile() {
                 if (successfulUploads.length > 0) {
                     setUploadedFiles((prev) => (prev ? [...prev, ...successfulUploads] : successfulUploads));
                 }
-                console.log('successfulUploads', successfulUploads);
             } else {
                 const res = await indexLocalFile(files);
                 setUploadedFiles((prev) => (prev ? [...prev, ...res] : res));
@@ -118,7 +123,6 @@ export function useUploadFile() {
             setUploadedFiles([]);
             toast.error('Something went wrong, please try again later.');
         } finally {
-            console.log('uploadedFiles', uploadedFiles);
             setIsUploading(false);
         }
     }
