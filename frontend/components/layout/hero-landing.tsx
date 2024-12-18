@@ -1,4 +1,4 @@
-import { PageGenUrl, StorySnapUrl } from '@/config';
+import { AhaToolUrl, PageGenUrl, StorySnapUrl } from '@/config';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -10,7 +10,7 @@ export async function HeroLanding() {
     const PageGenElement = (
         <Link href={PageGenUrl} target="_blank">
             <div className="rounded-full px-6 py-2 flex items-center gap-2 hover:bg-primary/10 transition-all duration-300">
-                <Image src="/logo.png" alt="Penguin" width={30} height={30} className="size-6" />
+                <Image src="/logo.png" alt="PageGen" width={30} height={30} className="size-6" />
                 <span>PageGen - AI Page Generator</span>
                 <span className="ml-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-1 rounded-full text-sm font-medium hover:shadow-lg transition-all">
                     Try Free Now
@@ -19,13 +19,13 @@ export async function HeroLanding() {
         </Link>
     );
 
-    const StorySnapElement = (
-        <Link href={StorySnapUrl} target="_blank">
+    const AhaToolElement = (
+        <Link href={AhaToolUrl} target="_blank">
             <div className="rounded-full px-6 py-2 flex items-center gap-2 hover:bg-primary/10 transition-all duration-300">
-                <Image src="/penguin.png" alt="Penguin" width={30} height={30} className="size-6" />
-                <span>Transform Images into Stories with AI</span>
+                <Image src="/ahatool.png" alt="Ahatool" width={30} height={30} className="size-6" />
+                <span>Discover the Best AI Tools Daily</span>
                 <span className="ml-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-1 rounded-full text-sm font-medium hover:shadow-lg transition-all">
-                    Try Free Now
+                    Free Submit Your Tool
                 </span>
             </div>
         </Link>
@@ -35,7 +35,7 @@ export async function HeroLanding() {
             <div className="flex flex-col items-center text-center space-y-4">
                 <h1 className="text-balance text-4xl md:text-5xl font-bold">{t('hero')}</h1>
                 <h2 className="hidden ">MemFree - Hybrid AI Search</h2>
-                {isPageGen ? <>{PageGenElement}</> : <>{StorySnapElement}</>}
+                {isPageGen ? <>{PageGenElement}</> : <>{AhaToolElement}</>}
             </div>
         </section>
     );
