@@ -63,7 +63,7 @@ async function uploadSingleFile(file: File): Promise<UploadedFile> {
 }
 
 export function useUploadFile() {
-    const [uploadedFiles, setUploadedFiles] = React.useState<UploadedFile[]>();
+    const [uploadedFiles, setUploadedFiles] = React.useState<UploadedFile[]>([]);
     const [isUploading, setIsUploading] = React.useState(false);
     const { compressImage, compressionError } = useImageCompression({});
 

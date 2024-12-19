@@ -2,8 +2,7 @@
 
 import React, { KeyboardEvent, useMemo, useRef, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { SendHorizontal, FileTextIcon, Database, Image as ImageIcon } from 'lucide-react';
-import { useIndexModal } from '@/hooks/use-index-modal';
+import { SendHorizontal, FileTextIcon, Database, Image as ImageIcon, Link } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { ModelSelection } from '@/components/search/model-selection';
 import { SourceSelection } from '@/components/search/source-selection';
@@ -11,7 +10,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { useUIStore, useUserStore } from '@/lib/store';
 import { toast } from 'sonner';
 import { Icons } from '@/components/shared/icons';
-import Image from 'next/image';
 import { type FileRejection, useDropzone } from 'react-dropzone';
 import { useUploadFile } from '@/hooks/use-upload-file';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
@@ -22,6 +20,7 @@ import dynamic from 'next/dynamic';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { SearchType } from '@/lib/types';
+import WebImageModal, { WebImageFile } from '@/components/modal/web-images-model';
 
 interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
@@ -46,9 +45,26 @@ const SearchBar: React.FC<Props> = ({
 }) => {
     const [content, setContent] = useState<string>('');
     const signInModal = useSigninModal();
-    const indexModal = useIndexModal();
     const upgradeModal = useUpgradeModal();
     const user = useUserStore((state) => state.user);
+
+    const [showImageUrlModal, setShowImageUrlModal] = useState(false);
+    const handleImagesAdded = (images: WebImageFile[]) => {
+        try {
+            setUploadedFiles((prev) => [...prev, ...images]);
+            const newPreviewFiles: FileWithPreview[] = images.map(
+                (image) =>
+                    ({
+                        name: image.name,
+                        type: 'image/jpeg',
+                        preview: image.url,
+                    }) as FileWithPreview,
+            );
+            setFiles((prev) => [...prev, ...newPreviewFiles]);
+        } catch (error) {
+            toast.error('Failed to add images');
+        }
+    };
 
     const checkEmptyInput = () => {
         if (isUploading) {
@@ -76,7 +92,6 @@ const SearchBar: React.FC<Props> = ({
             return;
         }
         if (uploadedFiles && uploadedFiles.length > 0) {
-            console.log('uploadedFiles', uploadedFiles);
             const fileUrls = uploadedFiles.map((file) => file.url);
             handleSearch(content, fileUrls);
             setFiles([]);
@@ -148,7 +163,6 @@ const SearchBar: React.FC<Props> = ({
         }
 
         const processedImageFiles = await processImageFiles(acceptedFiles);
-
         const newFiles = processedImageFiles.map(
             (file) =>
                 Object.assign(file, {
@@ -214,7 +228,7 @@ const SearchBar: React.FC<Props> = ({
                         {files.map((file, index) => (
                             <div key={index}>
                                 {file.type.startsWith('image/') ? (
-                                    <Image
+                                    <img
                                         src={file.preview}
                                         alt={file.name}
                                         width={100}
@@ -244,30 +258,6 @@ const SearchBar: React.FC<Props> = ({
                 ></TextareaAutosize>
                 <div className="flex relative">
                     <div className="absolute left-0 bottom-0 mb-1 ml-2 mt-6 flex items-center space-x-4">
-                        {/* {showIndexButton && (
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <button
-                                        type="button"
-                                        aria-label={t('index-tip')}
-                                        className="text-gray-500 hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 flex items-center space-x-1"
-                                        data-umami-event="Index Button Click"
-                                        onClick={() => {
-                                            if (!user) {
-                                                signInModal.onOpen();
-                                            } else {
-                                                indexModal.onOpen();
-                                            }
-                                        }}
-                                    >
-                                        <Database className="dark:text-white" size={20} strokeWidth={2} />
-                                        <span className="font-serif text-sm  font-semibold dark:text-white">{t('index-button')}</span>
-                                    </button>
-                                </TooltipTrigger>
-                                <TooltipContent>{t('index-tip')}</TooltipContent>
-                            </Tooltip>
-                        )} */}
-
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <div>
@@ -305,6 +295,25 @@ const SearchBar: React.FC<Props> = ({
                             </TooltipTrigger>
                             <TooltipContent>{searchType === SearchType.SEARCH ? t('attach-tip') : t('image-tip')}</TooltipContent>
                         </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <div>
+                                    <button
+                                        type="button"
+                                        disabled={isUploading}
+                                        data-umami-event="Attach Button Click"
+                                        className="text-gray-500 hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 flex items-center"
+                                        onClick={() => setShowImageUrlModal(true)}
+                                    >
+                                        <div className="flex items-center dark:text-white space-x-1">
+                                            <Link size={20} strokeWidth={2} />
+                                            <span className="font-semibold font-serif text-sm">Web Image</span>
+                                        </div>
+                                    </button>
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent>Attach Web Image</TooltipContent>
+                        </Tooltip>
                     </div>
                     <div className="absolute right-0 bottom-0 mb-1 mr-2 mt-6 flex items-center space-x-4">
                         <Tooltip>
@@ -325,6 +334,8 @@ const SearchBar: React.FC<Props> = ({
                     </div>
                 </div>
             </div>
+
+            <WebImageModal open={showImageUrlModal} onOpenChange={setShowImageUrlModal} onImagesAdded={handleImagesAdded} />
 
             <div className="mt-4 grid grid-cols-1 md:grid-cols-4 gap-2">
                 {showShadcnUI && (

@@ -72,12 +72,12 @@ export function convertToCoreMessages(messages: Message[]): CoreMessage[] {
 
 export function createUserMessages(query: string, attachments: string[] = []) {
     let text = query;
-    if (attachments.length === 0) {
-        attachments = extractAllImageUrls(query);
-        if (attachments.length > 0) {
-            text = replaceImageUrl(query, attachments);
-        }
-    }
+    // if (attachments.length === 0) {
+    //     attachments = extractAllImageUrls(query);
+    //     if (attachments.length > 0) {
+    //         text = replaceImageUrl(query, attachments);
+    //     }
+    // }
     return {
         role: 'user',
         content: [{ type: 'text', text: text }, ...attachmentsToParts(attachments)],

@@ -70,7 +70,7 @@
         "index-button": "索引",
         "attach-button": "附加",
         "index-tip": "索引网页和本地文件",
-        "attach-tip": "附加图像和文件进行提问",
+        "attach-tip": "附加本地图像和文件进行提问",
         "image-tip": "根据图像生成 UI 页面",
         "search-tip": "按 Enter 发送，Shift + Enter 换行"
     },

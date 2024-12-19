@@ -12,7 +12,7 @@ import { ImageSource, Message, SearchType, TextSource, User, VideoSource } from 
 import { LoaderCircle } from 'lucide-react';
 import { useScrollAnchor } from '@/hooks/use-scroll-anchor';
 import { toast } from 'sonner';
-import { isProUser, extractAllImageUrls, generateId } from '@/lib/shared-utils';
+import { isProUser, generateId } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useSearchStore } from '@/lib/store/local-history';
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
@@ -110,16 +110,16 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                 messageValue = 'Please generate the same UI as the image';
             }
 
-            const imageUrls = extractAllImageUrls(messageValue);
-            if (imageUrls.length > 1 && user && !isProUser(user)) {
-                toast.error(t('multi-image-free-limit'));
-                upgradeModal.onOpen();
-                return;
-            }
-            if (imageUrls.length > 5) {
-                toast.error(t('multi-image-pro-limit'));
-                return;
-            }
+            // const imageUrls = extractAllImageUrls(messageValue);
+            // if (imageUrls.length > 1 && user && !isProUser(user)) {
+            //     toast.error(t('multi-image-free-limit'));
+            //     upgradeModal.onOpen();
+            //     return;
+            // }
+            // if (imageUrls.length > 5) {
+            //     toast.error(t('multi-image-pro-limit'));
+            //     return;
+            // }
 
             setInput('');
             setIsLoading(true);

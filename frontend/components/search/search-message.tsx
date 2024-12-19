@@ -7,7 +7,6 @@ import React, { memo, useMemo } from 'react';
 import AnswerSection from '@/components/search/answer-section';
 import QuestionSection from '@/components/search/question-section';
 import ActionButtons from '@/components/search/action-buttons';
-import { extractAllImageUrls } from '@/lib/shared-utils';
 import VideoGallery from '@/components/search/video-gallery';
 import ExpandableSection from '@/components/search/expandable-section';
 import MindMap from '@/components/search/mindmap';
@@ -36,17 +35,18 @@ const SearchMessage = memo(
         const isUser = role === 'user';
 
         const message = props.message;
+        const attachments = message.attachments;
 
-        const attachments = useMemo(() => {
-            let initialAttachments = message.attachments ?? [];
-            if (isUser) {
-                const imageUrls = extractAllImageUrls(content);
-                if (imageUrls.length > 0) {
-                    initialAttachments = initialAttachments.concat(imageUrls);
-                }
-            }
-            return initialAttachments;
-        }, [message.attachments, isUser, content]);
+        // const attachments = useMemo(() => {
+        //     let initialAttachments = message.attachments ?? [];
+        //     if (isUser) {
+        //         const imageUrls = extractAllImageUrls(content);
+        //         if (imageUrls.length > 0) {
+        //             initialAttachments = initialAttachments.concat(imageUrls);
+        //         }
+        //     }
+        //     return initialAttachments;
+        // }, [message.attachments, isUser, content]);
 
         const t = useTranslations('SearchMessage');
         const { showMindMap } = useUIStore();

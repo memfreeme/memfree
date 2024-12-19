@@ -24,6 +24,24 @@ export function isValidUrl(input: string): boolean {
     }
 }
 
+export function isValidImageUrl(url: string): boolean {
+    if (!url || typeof url !== 'string') {
+        return false;
+    }
+
+    try {
+        new URL(url);
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            return false;
+        }
+
+        const imageExtensionRegex = /\.(jpg|jpeg|png|gif|bmp|webp)$/i;
+        return imageExtensionRegex.test(url);
+    } catch (error) {
+        return false;
+    }
+}
+
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
 function isSubscriptionActive(user: any): boolean {

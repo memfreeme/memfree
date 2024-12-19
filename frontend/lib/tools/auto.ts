@@ -81,9 +81,6 @@ export async function autoAnswer(
                     },
                 }),
             },
-            onFinish({ finishReason, usage }) {
-                console.log('auto answer finish', { finishReason, usage });
-            },
         });
 
         let titlePromise;
