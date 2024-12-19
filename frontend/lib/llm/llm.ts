@@ -5,7 +5,6 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/model';
 import { google } from '@ai-sdk/google';
-import { extractAllImageUrls, replaceImageUrl } from '@/lib/shared-utils';
 import { Message } from '@/lib/types';
 import { OPENAI_BASE_URL } from '@/lib/env';
 

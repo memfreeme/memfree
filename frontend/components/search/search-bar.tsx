@@ -7,13 +7,13 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { ModelSelection } from '@/components/search/model-selection';
 import { SourceSelection } from '@/components/search/source-selection';
 import TextareaAutosize from 'react-textarea-autosize';
-import { useUIStore, useUserStore } from '@/lib/store';
+import { configStore, useUIStore, useUserStore } from '@/lib/store';
 import { toast } from 'sonner';
 import { Icons } from '@/components/shared/icons';
 import { type FileRejection, useDropzone } from 'react-dropzone';
 import { useUploadFile } from '@/hooks/use-upload-file';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
-import { getFileSizeLimit, processImageFiles } from '@/lib/utils';
+import { getFileSizeLimit, hasImageInput, processImageFiles } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { isProUser } from '@/lib/shared-utils';
 import dynamic from 'next/dynamic';
@@ -21,6 +21,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { SearchType } from '@/lib/types';
 import WebImageModal, { WebImageFile } from '@/components/modal/web-images-model';
+import { isImageInputModel } from '@/lib/model';
 
 interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
@@ -83,6 +84,14 @@ const SearchBar: React.FC<Props> = ({
         return false;
     };
 
+    const checkImageInput = (attachments: string[]) => {
+        if (hasImageInput(attachments) && !isImageInputModel(configStore.getState().model)) {
+            toast.error('Image input is not supported for this AI model, please switch to GPT-4o mini, GPT-4o, Claude 3.5 Sonnet AI models');
+            return true;
+        }
+        return false;
+    };
+
     const handleClick = () => {
         if (!user) {
             signInModal.onOpen();
@@ -93,6 +102,9 @@ const SearchBar: React.FC<Props> = ({
         }
         if (uploadedFiles && uploadedFiles.length > 0) {
             const fileUrls = uploadedFiles.map((file) => file.url);
+            if (checkImageInput(fileUrls)) {
+                return;
+            }
             handleSearch(content, fileUrls);
             setFiles([]);
             setUploadedFiles([]);

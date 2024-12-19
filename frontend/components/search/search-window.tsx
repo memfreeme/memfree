@@ -109,7 +109,6 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
             if (!messageValue && attachments && searchType === 'ui') {
                 messageValue = 'Please generate the same UI as the image';
             }
-
             // const imageUrls = extractAllImageUrls(messageValue);
             // if (imageUrls.length > 1 && user && !isProUser(user)) {
             //     toast.error(t('multi-image-free-limit'));

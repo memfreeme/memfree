@@ -1,4 +1,4 @@
-import { isProUser } from '@/lib/shared-utils';
+import { isProUser, isValidImageUrl } from '@/lib/shared-utils';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { toast } from 'sonner';
@@ -80,6 +80,11 @@ export function getFileSizeLimit(user: any) {
         return 20 * 1024 * 1024;
     }
     return 4 * 1024 * 1024;
+}
+
+export function hasImageInput(attachments?: string[]): boolean {
+    if (!attachments || attachments.length === 0) return false;
+    return attachments.some((attachment) => isValidImageUrl(attachment));
 }
 
 export async function processImageFiles(imageFiles: File[]): Promise<File[]> {

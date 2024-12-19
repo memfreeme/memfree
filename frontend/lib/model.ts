@@ -9,5 +9,8 @@ const validModels = [GPT_4o_MIMI, GPT_4o, O1_MIMI, O1_PREVIEW, Claude_35_Sonnet,
 
 const proModels = [GPT_4o, Claude_35_Sonnet, Claude_35_Haiku, O1_MIMI, O1_PREVIEW];
 
+export const ImageInputModels = [GPT_4o, GPT_4o_MIMI, Claude_35_Sonnet];
+
 export const validModel = (model: string) => validModels.includes(model);
 export const isProModel = (model: string) => proModels.includes(model);
+export const isImageInputModel = (model: string) => ImageInputModels.includes(model);
