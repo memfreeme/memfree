@@ -7,7 +7,7 @@ import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/componen
 import { cn } from '@/lib/utils';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { useUserStore } from '@/lib/store';
+import { useUserStore } from '@/lib/store/local-store';
 import dynamic from 'next/dynamic';
 
 const MonacoEditor = dynamic(() => import('@/components/code/editor'), {

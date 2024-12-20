@@ -11,7 +11,7 @@ import { useControllableState } from '@/hooks/use-controllable-state';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useUserStore } from '@/lib/store';
+import { useUserStore } from '@/lib/store/local-store';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import { useTranslations } from 'next-intl';

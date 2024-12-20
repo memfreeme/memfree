@@ -4,7 +4,7 @@ import { Button, buttonVariants } from '@/components//ui/button';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { isValidUrl } from '@/lib/shared-utils';
-import { useUserStore } from '@/lib/store';
+import { useUserStore } from '@/lib/store/local-store';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';

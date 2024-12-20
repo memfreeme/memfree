@@ -55,9 +55,24 @@ export async function POST(req: NextRequest) {
             { status: 429 },
         );
     }
-    let { model, source, messages, profile, isSearch } = await req.json();
+    let { model, source, messages, profile, isSearch, questionLanguage, answerLanguage } = await req.json();
 
-    console.log('model', model, 'source', source, 'messages', messages, 'userId', userId, 'isSearch', isSearch);
+    console.log(
+        'model',
+        model,
+        'source',
+        source,
+        'messages',
+        messages,
+        'userId',
+        userId,
+        'isSearch',
+        isSearch,
+        'questionLanguage',
+        questionLanguage,
+        'answerLanguage',
+        answerLanguage,
+    );
 
     if (isProModel(model) && !isPro) {
         return NextResponse.json(
@@ -88,7 +103,7 @@ export async function POST(req: NextRequest) {
                         break;
                     }
                     case SearchCategory.CHAT: {
-                        await chat(messages, isPro, userId, profile, streamController(controller), model);
+                        await chat(messages, isPro, userId, profile, streamController(controller), answerLanguage, model);
                         break;
                     }
                     case SearchCategory.PRODUCT_HUNT: {
@@ -104,7 +119,7 @@ export async function POST(req: NextRequest) {
                         break;
                     }
                     default: {
-                        await autoAnswer(messages, isPro, userId, profile, streamController(controller), model, source);
+                        await autoAnswer(messages, isPro, userId, profile, streamController(controller), questionLanguage, answerLanguage, model, source);
                     }
                 }
             },

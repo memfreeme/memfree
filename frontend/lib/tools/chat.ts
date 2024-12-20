@@ -2,15 +2,18 @@ import 'server-only';
 
 import { incSearchCount } from '@/lib/db';
 import { convertToCoreMessages, getLLM, getMaxOutputToken } from '@/lib/llm/llm';
-import { ChatPrompt, DirectAnswerPrompt } from '@/lib/llm/prompt';
-import { getHistory, getHistoryMessages, streamResponse } from '@/lib/llm/utils';
+import { ChatPrompt } from '@/lib/llm/prompt';
+import { getHistoryMessages, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
-import { ImageSource, Message as StoreMessage, SearchCategory, TextSource, VideoSource } from '@/lib/types';
-import { generateText, streamText } from 'ai';
+import { Message as StoreMessage, SearchCategory, TextSource, VideoSource } from '@/lib/types';
+import { streamText } from 'ai';
 import util from 'util';
 import { generateTitle } from '@/lib/tools/generate-title';
+
+const AutoLanguagePrompt = `Your answer MUST be written in the same language as the user question, For example, if the user QUESTION is written in chinese, your answer should be written in chinese too, if user's QUESTION is written in english, your answer should be written in english too.`;
+const UserLanguagePrompt = `Your answer MUST be written in %s language.`;
 
 export async function chat(
     messages: StoreMessage[],
@@ -18,13 +21,22 @@ export async function chat(
     userId: string,
     profile?: string,
     onStream?: (...args: any[]) => void,
+    answerLanguage?: string,
     model = GPT_4o_MIMI,
 ) {
     try {
         const newMessages = getHistoryMessages(isPro, messages);
         const query = newMessages[newMessages.length - 1].content;
 
-        const prompt = util.format(ChatPrompt, profile);
+        console.log('answerLanguage', answerLanguage);
+        let languageInstructions = '';
+        if (answerLanguage !== 'auto') {
+            languageInstructions = util.format(UserLanguagePrompt, answerLanguage);
+        } else {
+            languageInstructions = AutoLanguagePrompt;
+        }
+
+        const prompt = util.format(ChatPrompt, profile, languageInstructions);
         console.log('chat prompt', prompt);
         const userMessages = convertToCoreMessages(newMessages);
         const maxTokens = getMaxOutputToken(isPro, model);

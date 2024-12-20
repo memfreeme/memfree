@@ -16,6 +16,45 @@ import { searchRelevantContent } from '@/lib/tools/search';
 import { ImageSource, Message as StoreMessage, SearchCategory, TextSource, VideoSource } from '@/lib/types';
 import { streamText, tool } from 'ai';
 import { z } from 'zod';
+import util from 'util';
+
+const ProfilePrompt = `Please use the information in the User Profile to give a more specific and personalized answer:
+\`\`\`
+%s
+\`\`\`
+`;
+
+const WebSearchPromptWithTranslate = `When you use the searchWeb tool to search the internet, you must do this in two steps:
+
+    1. First rephrase the user's question appropriately to facilitate more accurate search:
+
+        Example:
+        - User question: What is a cat?
+        - Rephrased: A cat
+
+        - User question: How does an A.C work?
+        - Rephrased: A.C working
+
+        - User question: What is a car? How does it works?
+        - Rephrased: Car working
+
+    2. then Translate rephrased question into %s language
+
+    3. finally Call the searchWeb tool with the translated user question as a parameter`;
+
+const WebSearchPrompt = `When you use the searchWeb tool to search the internet, please rephrase the user's question appropriately to facilitate more accurate search:
+        Example:
+        - User question: What is a cat?
+        - Rephrased: A cat
+
+        - User question: How does an A.C work?
+        - Rephrased: A.C working
+
+        - User question: What is a car? How does it works?
+        - Rephrased: Car working`;
+
+const AutoLanguagePrompt = `Your final answer MUST be written in the same language as the user question, For example, if the user question is written in chinese, your answer should be written in chinese too, if user's question is written in english, your answer should be written in english too.`;
+const UserLanguagePrompt = `Your final answer MUST be written in %s language.`;
 
 export async function autoAnswer(
     messages: StoreMessage[],
@@ -23,6 +62,8 @@ export async function autoAnswer(
     userId: string,
     profile?: string,
     onStream?: (...args: any[]) => void,
+    questionLanguage?: string,
+    answerLanguage?: string,
     model = GPT_4o_MIMI,
     source = SearchCategory.ALL,
 ) {
@@ -34,11 +75,36 @@ export async function autoAnswer(
         let images: ImageSource[] = [];
         let videos: VideoSource[] = [];
 
+        let profileInstructions = '';
+        if (profile) {
+            profileInstructions = util.format(ProfilePrompt, profile);
+        }
+
+        console.log('questionLanguage', questionLanguage);
+        let searchWebInstructions = '';
+        if (questionLanguage !== 'auto') {
+            searchWebInstructions = util.format(WebSearchPromptWithTranslate, questionLanguage);
+        } else {
+            searchWebInstructions = WebSearchPrompt;
+        }
+
+        console.log('answerLanguage', answerLanguage);
+        let languageInstructions = '';
+        if (answerLanguage !== 'auto') {
+            languageInstructions = util.format(UserLanguagePrompt, answerLanguage);
+        } else {
+            languageInstructions = AutoLanguagePrompt;
+        }
+
+        const systemPrompt = util.format(AutoAnswerPrompt, searchWebInstructions, profileInstructions, languageInstructions);
+        console.log('system prompt', systemPrompt);
+
         const userMessages = convertToCoreMessages(newMessages);
         const maxTokens = getMaxOutputToken(isPro, model);
         // const mexSteps = isPro ? 2 : 1;
         // const isContinued = isPro ? true : false;
         // console.log('auto answer', { maxTokens, mexSteps, isContinued });
+
         const result = streamText({
             model: getLLM(model),
             maxSteps: 1,
@@ -46,28 +112,20 @@ export async function autoAnswer(
             messages: [
                 {
                     role: 'system',
-                    content: AutoAnswerPrompt,
+                    content: systemPrompt,
                     experimental_providerMetadata: {
                         anthropic: { cacheControl: { type: 'ephemeral' } },
                     },
                 },
-                ...(profile
-                    ? [
-                          {
-                              role: 'system' as const,
-                              content: `User Profile:\n${profile}`,
-                          },
-                      ]
-                    : []),
                 ...userMessages,
             ],
             maxTokens: maxTokens,
             temperature: 0.1,
             tools: {
-                getInformation: tool({
-                    description: `get information from internet to answer user questions.`,
+                searchWeb: tool({
+                    description: `search web to answer user's question, rephrase and translate the question before calling this tool.`,
                     parameters: z.object({
-                        question: z.string().describe('the users question'),
+                        question: z.string().describe(`the user's question after rewriting and translating`),
                     }),
                     execute: async ({ question }) => searchRelevantContent(question, userId, source, onStream),
                 }),
@@ -95,10 +153,10 @@ export async function autoAnswer(
         let hasError = false;
         for await (const delta of result.fullStream) {
             switch (delta.type) {
-                case 'step-finish': {
-                    console.log('step is continued', delta.isContinued, ' finish reason ', delta.finishReason);
-                    break;
-                }
+                // case 'step-finish': {
+                //     console.log('step is continued', delta.isContinued, ' finish reason ', delta.finishReason);
+                //     break;
+                // }
                 case 'text-delta': {
                     if (delta.textDelta) {
                         if (!hasAnswer) {
@@ -123,7 +181,7 @@ export async function autoAnswer(
                     );
                     break;
                 case 'tool-result':
-                    if (delta.toolName === 'getInformation') {
+                    if (delta.toolName === 'searchWeb') {
                         texts = texts.concat(delta.result.texts);
                         images = images.concat(delta.result.images);
                         console.log(`rewrite ${rewriteQuery} to ${delta.args.question}`);

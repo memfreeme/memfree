@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Box } from 'lucide-react';
-import { useModelStore, useUserStore } from '@/lib/store';
+import { useModelStore, useUserStore } from '@/lib/store/local-store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { Claude_35_Haiku, Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/model';
 import { isProUser, isPremiumUser } from '@/lib/shared-utils';
@@ -60,15 +60,8 @@ const ModelItem: React.FC<{ model: Model }> = ({ model }) => (
 );
 
 export function ModelSelection() {
-    const { model, setModel, initModel } = useModelStore();
+    const { model, setModel } = useModelStore();
     const selectedModel = modelMap[model] ?? modelMap[GPT_4o_MIMI];
-
-    React.useEffect(() => {
-        const initialModel = initModel();
-        if (initialModel && initialModel !== model) {
-            setModel(initialModel);
-        }
-    }, [model, initModel, setModel]);
 
     const signInModal = useSigninModal();
     const upgradeModal = useUpgradeModal();

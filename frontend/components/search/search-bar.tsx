@@ -2,12 +2,12 @@
 
 import React, { KeyboardEvent, useMemo, useRef, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { SendHorizontal, FileTextIcon, Database, Image as ImageIcon, Link } from 'lucide-react';
+import { SendHorizontal, FileTextIcon, Image as ImageIcon, Link, Settings } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { ModelSelection } from '@/components/search/model-selection';
 import { SourceSelection } from '@/components/search/source-selection';
 import TextareaAutosize from 'react-textarea-autosize';
-import { configStore, useUIStore, useUserStore } from '@/lib/store';
+import { useConfigStore, useUIStore, useUserStore } from '@/lib/store/local-store';
 import { toast } from 'sonner';
 import { Icons } from '@/components/shared/icons';
 import { type FileRejection, useDropzone } from 'react-dropzone';
@@ -22,6 +22,7 @@ import { Label } from '@/components/ui/label';
 import { SearchType } from '@/lib/types';
 import WebImageModal, { WebImageFile } from '@/components/modal/web-images-model';
 import { isImageInputModel } from '@/lib/model';
+import { SearchSettingsDialog } from '@/components/search/search-settings';
 
 interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
@@ -85,7 +86,7 @@ const SearchBar: React.FC<Props> = ({
     };
 
     const checkImageInput = (attachments: string[]) => {
-        if (hasImageInput(attachments) && !isImageInputModel(configStore.getState().model)) {
+        if (hasImageInput(attachments) && !isImageInputModel(useConfigStore.getState().model)) {
             toast.error('Image input is not supported for this AI model, please switch to GPT-4o mini, GPT-4o, Claude 3.5 Sonnet AI models');
             return true;
         }
@@ -230,6 +231,7 @@ const SearchBar: React.FC<Props> = ({
         loading: () => <></>,
     });
 
+    const [openSettingsDialog, setOpenSettingsDialog] = React.useState(false);
     const { isSearch, isShadcnUI, showMindMap, setIsSearch, setIsShadcnUI, setShowMindMap } = useUIStore();
 
     return (
@@ -358,18 +360,17 @@ const SearchBar: React.FC<Props> = ({
                 )}
                 {showModelSelection && <ModelSelection />}
                 {showSourceSelection && <SourceSelection />}
-                {showModelSelection && (
-                    <div className="flex items-center space-x-2 mb-1">
-                        <Switch id="mindmap" checked={showMindMap} onCheckedChange={(checked) => setShowMindMap(checked)} />
-                        <Label htmlFor="mindmap">Show MindMap</Label>
-                    </div>
-                )}
                 {showWebSearch && (
                     <div className="flex items-center space-x-2 mb-1">
                         <Switch id="search" checked={isSearch} onCheckedChange={(checked) => setIsSearch(checked)} />
                         <Label htmlFor="search">Web Search</Label>
                     </div>
                 )}
+                <div className="flex items-center space-x-2 mb-1 cursor-pointer hover:text-primary" onClick={() => setOpenSettingsDialog(true)}>
+                    <Settings />
+                    <Label>More Search Settings</Label>
+                </div>
+                <SearchSettingsDialog open={openSettingsDialog} onOpenChange={setOpenSettingsDialog} />
             </div>
             {user && <IndexModal />}
         </div>

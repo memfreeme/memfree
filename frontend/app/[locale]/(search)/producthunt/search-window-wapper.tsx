@@ -2,7 +2,7 @@
 
 import SearchBar from '@/components/search/search-bar';
 import SearchWindow from '@/components/search/search-window';
-import { useSourceStore } from '@/lib/store';
+import { useSourceStore } from '@/lib/store/local-store';
 import { SearchCategory, User } from '@/lib/types';
 import React from 'react';
 

@@ -10,7 +10,7 @@ export const searchRelevantContent = async (query: string, userId: string, sourc
         categories: [source],
     };
 
-    // console.log('searchRelevantContent:', query, userId, source);
+    // qconsole.log('searchRelevantContent:', query, userId, source);
 
     if (userId && source === SearchCategory.ALL) {
         const vectorSearchPromise = getVectorSearch(userId).search(query);

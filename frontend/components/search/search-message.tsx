@@ -12,7 +12,7 @@ import ExpandableSection from '@/components/search/expandable-section';
 import MindMap from '@/components/search/mindmap';
 import { useTranslations } from 'next-intl';
 import UISection from '@/components/code/ui-section';
-import { useUIStore } from '@/lib/store';
+import { useUIStore } from '@/lib/store/local-store';
 
 const SearchMessage = memo(
     (props: {

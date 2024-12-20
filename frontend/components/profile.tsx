@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import TextareaAutosize from 'react-textarea-autosize';
 import React, { useEffect, useState } from 'react';
 import { Label } from '@/components/ui/label';
-import { useProfileStore } from '@/lib/store';
+import { useProfileStore } from '@/lib/store/local-store';
 import { toast } from 'sonner';
 
 export function CustomProfile() {

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Globe } from 'lucide-react';
-import { useSourceStore, useUserStore } from '@/lib/store';
+import { useSourceStore, useUserStore } from '@/lib/store/local-store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { SearchCategory } from '@/lib/types';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
@@ -37,23 +37,10 @@ export function SourceSelection() {
             name: t('Knowledge'),
             value: SearchCategory.KNOWLEDGE_BASE,
         },
-        // [SearchCategory.UI]: {
-        //     name: 'Generate UI',
-        //     value: SearchCategory.UI,
-        // },
-        // [SearchCategory.PRODUCT_HUNT]: {
-        //     name: 'Product Hunt',
-        //     value: SearchCategory.PRODUCT_HUNT,
-        // },
         [SearchCategory.INDIE_MAKER]: {
             name: 'Indie Maker',
             value: SearchCategory.INDIE_MAKER,
         },
-        // [SearchCategory.ACADEMIC]: {
-        //     name: t('Academic'),
-        //     flag: 'Pro',
-        //     value: SearchCategory.ACADEMIC,
-        // },
         [SearchCategory.TWEET]: {
             name: 'Twitter',
             flag: 'Pro',
@@ -61,15 +48,8 @@ export function SourceSelection() {
         },
     };
 
-    const { source, setSource, initSource } = useSourceStore();
+    const { source, setSource } = useSourceStore();
     const selectedSource = sourceMap[source] ?? sourceMap[SearchCategory.ALL];
-
-    React.useEffect(() => {
-        const initialSource = initSource();
-        if (initialSource && initialSource !== source) {
-            setSource(initialSource);
-        }
-    }, [source, initSource, setSource]);
 
     const signInModal = useSigninModal();
     const upgradeModal = useUpgradeModal();

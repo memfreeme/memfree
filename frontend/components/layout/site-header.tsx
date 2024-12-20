@@ -11,7 +11,7 @@ import { MarketingMenu } from '@/components/layout/mobile-menu';
 import { User } from 'next-auth';
 import { MainNavItem } from '@/types';
 import { UserAccountNav } from '@/components/layout/user-account-nav';
-import { useUserStore } from '@/lib/store';
+import { useUserStore } from '@/lib/store/local-store';
 import { siteConfig } from '@/config';
 import Image from 'next/image';
 

@@ -20,14 +20,14 @@ export const useProfileStore = create<ProfileState>()(
     ),
 );
 
-type UIState = {
+interface UIState {
     isSearch: boolean;
     isShadcnUI: boolean;
     showMindMap: boolean;
     setIsSearch: (isSearch: boolean) => void;
     setIsShadcnUI: (isShadcnUI: boolean) => void;
     setShowMindMap: (showMindMap: boolean) => void;
-};
+}
 
 export const useUIStore = create<UIState>()(
     persist(
@@ -45,6 +45,47 @@ export const useUIStore = create<UIState>()(
     ),
 );
 
+interface ConfigState {
+    model: string;
+    source: string;
+    questionLanguage: string;
+    answerLanguage: string;
+    setModel: (model: string) => void;
+    setSource: (source: string) => void;
+    setQuestionLanguage: (language: string) => void;
+    setAnswerLanguage: (language: string) => void;
+}
+
+export const useConfigStore = create<ConfigState>()(
+    persist(
+        (set) => ({
+            model: GPT_4o_MIMI,
+            source: 'all',
+            questionLanguage: 'auto',
+            answerLanguage: 'auto',
+            setModel: (model: string) => set({ model }),
+            setSource: (source: string) => set({ source }),
+            setQuestionLanguage: (language: string) => set({ questionLanguage: language }),
+            setAnswerLanguage: (language: string) => set({ answerLanguage: language }),
+        }),
+        {
+            name: 'config-storage',
+        },
+    ),
+);
+
+export const useModelStore = () =>
+    useConfigStore((state) => ({
+        model: state.model,
+        setModel: state.setModel,
+    }));
+
+export const useSourceStore = () =>
+    useConfigStore((state) => ({
+        source: state.source,
+        setSource: state.setSource,
+    }));
+
 type UserState = {
     user: User | null;
     setUser: (user: User) => void;
@@ -54,57 +95,3 @@ export const useUserStore = create<UserState>((set) => ({
     user: null,
     setUser: (user: User) => set({ user }),
 }));
-
-type ConfigState = {
-    model: string;
-    source: string;
-    language: string;
-    colorScheme: 'light' | 'dark';
-    setModel: (model: string) => void;
-    setSource: (source: string) => void;
-    initModel: () => string;
-    initSource: () => string;
-};
-
-export const configStore = create<ConfigState>()((set) => ({
-    model: GPT_4o_MIMI,
-    source: 'all',
-    language: 'en',
-    colorScheme: 'light',
-    setModel: (model: string) => {
-        set({ model });
-        localStorage.setItem('model', model);
-    },
-    setSource: (source: string) => {
-        set({ source });
-        localStorage.setItem('source', source);
-    },
-    initModel: () => {
-        const model = localStorage.getItem('model');
-        if (model) {
-            set({ model });
-        }
-        return model || GPT_4o_MIMI;
-    },
-    initSource() {
-        const source = localStorage.getItem('source');
-        if (source) {
-            set({ source });
-        }
-        return source || 'all';
-    },
-}));
-
-export const useModelStore = () =>
-    configStore((state) => ({
-        model: state.model,
-        setModel: state.setModel,
-        initModel: state.initModel,
-    }));
-
-export const useSourceStore = () =>
-    configStore((state) => ({
-        source: state.source,
-        setSource: state.setSource,
-        initSource: state.initSource,
-    }));

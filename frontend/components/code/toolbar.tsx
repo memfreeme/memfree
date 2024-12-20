@@ -8,7 +8,7 @@ import { Camera, Check, ClipboardIcon, Monitor, Smartphone, Tablet } from 'lucid
 import { Icons } from '@/components/shared/icons';
 import { useCallback, useState } from 'react';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { useUserStore } from '@/lib/store';
+import { useUserStore } from '@/lib/store/local-store';
 
 export function CodeToolbar({ code, searchId, isReadOnly, resizablePanelRef, previewRef }) {
     const { hasCopied, copyToClipboard } = useCopyToClipboard();

@@ -6,7 +6,7 @@ import SearchMessage from '@/components/search/search-message';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useSearchParams } from 'next/navigation';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { configStore, useProfileStore, useUIStore } from '@/lib/store';
+import { useConfigStore, useProfileStore, useUIStore } from '@/lib/store/local-store';
 
 import { ImageSource, Message, SearchType, TextSource, User, VideoSource } from '@/lib/types';
 import { LoaderCircle } from 'lucide-react';
@@ -221,8 +221,10 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                         'Accept': 'text/event-stream',
                     },
                     body: JSON.stringify({
-                        model: configStore.getState().model,
-                        source: configStore.getState().source,
+                        model: useConfigStore.getState().model,
+                        source: useConfigStore.getState().source,
+                        questionLanguage: useConfigStore.getState().questionLanguage,
+                        answerLanguage: useConfigStore.getState().answerLanguage,
                         profile: useProfileStore.getState().profile,
                         isSearch: useUIStore.getState().isSearch,
                         isShadcnUI: useUIStore.getState().isShadcnUI,
