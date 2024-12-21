@@ -14,6 +14,7 @@ interface SearchStore {
     setActiveSearch: (id: string) => void;
     updateActiveSearch: (updatedSearch: Partial<Search>) => void;
     deleteMessage: (messageId: string) => void;
+    syncActiveSearchToSearches: () => void;
 }
 
 export const useSearchStore = create<SearchStore>()(
@@ -90,7 +91,14 @@ export const useSearchStore = create<SearchStore>()(
                     };
                     return {
                         activeSearch: newSearch,
-                        searches: state.searches.map((s) => (s.id === newSearch.id ? newSearch : s)),
+                    };
+                });
+            },
+            syncActiveSearchToSearches: () => {
+                set((state) => {
+                    if (!state.activeSearch) return state;
+                    return {
+                        searches: state.searches.map((s) => (s.id === state.activeSearch!.id ? state.activeSearch! : s)),
                     };
                 });
             },

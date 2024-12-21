@@ -52,8 +52,13 @@ const SearchItem = memo(({ search, index }: { search: any; index: number }) => (
 ));
 SearchItem.displayName = 'SearchItem';
 
+// Important for performance
+const useSearchesSelector = () => useSearchStore((state) => state.searches);
+const useAddSearchesSelector = () => useSearchStore((state) => state.addSearches);
+
 export function SidebarList({ user }: SidebarListProps) {
-    const { searches, addSearches } = useSearchStore();
+    const searches = useSearchesSelector();
+    const addSearches = useAddSearchesSelector();
     const [loading, setLoading] = useState(false);
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);

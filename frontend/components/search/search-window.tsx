@@ -39,7 +39,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
     const [isLoading, setIsLoading] = useState(false);
     const [status, setStatus] = useState(t('status-think'));
 
-    const { addSearch, activeId, activeSearch, setActiveSearch, updateActiveSearch } = useSearchStore();
+    const { addSearch, activeId, activeSearch, setActiveSearch, updateActiveSearch, syncActiveSearchToSearches } = useSearchStore();
 
     const { scrollRef, visibilityRef, isVisible, scrollToBottom } = useScrollAnchor();
 
@@ -258,6 +258,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                         }
                     },
                     onclose() {
+                        syncActiveSearchToSearches();
                         setIsLoading(false);
                         if (user && !isProUser(user)) {
                             incrementSearchCount();
