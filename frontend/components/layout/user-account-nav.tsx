@@ -24,6 +24,13 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         if (user) {
             setUser(user);
             window.postMessage({ user: user }, '*');
+            try {
+                (window as any).umami?.identify({
+                    userId: user.email,
+                });
+            } catch (error) {
+                console.error('Umami tracking failed:', error);
+            }
         }
     }, [setUser, user]);
 
