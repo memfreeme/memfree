@@ -25,8 +25,10 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
             setUser(user);
             window.postMessage({ user: user }, '*');
             try {
+                const referrer = localStorage.getItem('userReferrer');
                 (window as any).umami?.identify({
                     userId: user.email,
+                    ...(referrer ? { referrer } : {}),
                 });
             } catch (error) {
                 console.error('Umami tracking failed:', error);

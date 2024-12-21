@@ -12,6 +12,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
+import { ReferrerTracker } from '@/components/shared/referrer-tracker';
 
 export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));
@@ -96,6 +97,7 @@ export default async function RootLayout({ children, params: { locale } }: { chi
                         </TooltipProvider>
                     </SidebarProvider>
                 </ThemeProvider>
+                <ReferrerTracker />
                 <Script defer src="https://accounts.google.com/gsi/client" strategy="lazyOnload" />
                 <Script
                     defer
