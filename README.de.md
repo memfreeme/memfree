@@ -35,7 +35,7 @@
 
 ## Was ist MemFree
 
-MemFree ist ein<b>Hybride KI-Suchmaschine</b>.
+MemFree ist ein<b>Hybrid AI Search Engine</b>.
 
 Mit MemFree können Sie sofort präzise Antworten aus Ihrer Wissensdatenbank und dem gesamten Internet erhalten.
 
@@ -50,7 +50,7 @@ Memfree nutzt das leistungsstärkste KI-Modell – Claude 3.5 Sonnet und das bel
 -   **Effizientes Wissensmanagement**: MemFree macht die manuelle Organisation von Notizen, Lesezeichen und Dokumenten überflüssig. Wenn Sie Informationen benötigen, suchen Sie einfach in MemFree, um schnell relevante Antworten zu finden, was Ihren Speicher frei macht und die Produktivität steigert.
 -   **Zeitsparende KI-Zusammenfassungen**: Anstatt sich durch mehrere Google-Suchergebnisse zu klicken, nutzt MemFree KI, um sofort die besten Inhalte von Webseiten und Ihrer Wissensdatenbank zusammenzufassen und so wertvolle Zeit zu sparen.
 -   **Kostengünstige Lösung**: Vermeiden Sie mehrere Abonnements für Dienste wie ChatGPT Plus, Claude Pro und Gemini Advanced. MemFree integriert deren Funktionalitäten und reduziert so die monatlichen Kosten erheblich.
--   **100x schnellere UI-Seitenerstellung**: Konvertieren Sie Text oder Bilder in Sekundenschnelle in atemberaubenden, produktionsbereiten Code. Visualisieren Sie Ihre Designs während der Erstellung. Veröffentlichen Sie Ihre Seiten nahtlos.
+-   **100x schnellere UI-Seitenerstellung**: Konvertieren Sie Text oder Bilder in Sekundenschnelle in beeindruckenden, produktionsbereiten Code. Visualisieren Sie Ihre Designs während der Erstellung. Veröffentlichen Sie Ihre Seiten nahtlos.
 
 ## MemFree Hybrid AI-Suchfunktionen
 
@@ -60,7 +60,7 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 
 -   🌐**Mehrere Suchmaschinen werden unterstützt**: Funktioniert mit Google, Exa und Vector.
 
--   🖼️**Mehrere Sucheingabeformate**: Insbesondere Texte, Bilder, Dateien und Webseiten. Unterstützt die Suche, den Vergleich, die Zusammenfassung und die Analyse mehrerer Bilder.
+-   🖼️**Mehrere Sucheingabeformate**: Insbesondere Texte, Bilder, Dateien und Webseiten. Es unterstützt die Suche, den Vergleich, die Zusammenfassung und die Analyse mehrerer Bilder.
 
 -   📊**Mehrere Methoden zur Ergebnispräsentation**: Text, Mindmaps, Bilder und Videos.
 
@@ -84,7 +84,7 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 -   **🔍 KI-gestützte Inhaltssuche**: Bereichern Sie Ihre Benutzeroberfläche mit relevanten Inhalten mithilfe unserer erweiterten KI-Suchfunktion
 -   **🖼 Bildgesteuerte UI-Generierung**: Erstellen Sie UI-Komponenten und Seiten, die Ihren Referenzbildern genau entsprechen
 -   **📄 Datei-zu-Seite-Generierung**: Verwandeln Sie jeden Dateiinhalt in eine schön strukturierte Webseite mit KI-Analyse und KI-Zusammenfassung
--   **✏️ Code-Editor-Integration**: Bearbeiten und verfeinern Sie Ihren generierten Code mit VSCode-ähnlichen Bearbeitungsfunktionen, komplett mit Syntaxhervorhebung und automatischer Vervollständigung
+-   **✏️ Code-Editor-Integration**: Bearbeiten und verfeinern Sie Ihren generierten Code mit VSCode-ähnlichen Bearbeitungsfunktionen, einschließlich Syntaxhervorhebung und automatischer Vervollständigung
 -   **✨ Animationsunterstützung**: Erstellen Sie ansprechende Webseiten mit integrierten Animationseffekten und erwecken Sie Ihre Inhalte mit sanften Übergängen und dynamischen Elementen zum Leben
 -   **⚛️ React + TailWind + Shadcn UI-Integration**: Nutzen Sie KI-generierten Code mit dem beliebtesten Front-End-Stack: React, TailWind und Shadcn UI
 -   **🚀 One-Click-UI-Veröffentlichung**: Veröffentlichen und teilen Sie Ihre Benutzeroberfläche sofort mit einem einzigen Klick im Web
@@ -99,7 +99,7 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 
 ## ChangeLog
 
-[MemFree ChangeLog](https://feedback.memfree.me/changelog)
+[MemFree ChangeLog](https://www.memfree.me/changelog)
 
 ## Tech-Stack
 
@@ -122,7 +122,7 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 <a href="https://app.netlify.com/start/deploy?repository=https://github.com/memfreeme/memfree&create_from_path=frontend/#UPSTASH_REDIS_REST_TOKEN
 =your_api_token&UPSTASH_REDIS_REST_URL=your_rest_url&SERPER_API_KEY=your_api_key&AUTH_SECRET=your_auth_key&OPENAI_API_KEY=your_api_key"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
 
-### 4 Einsatz auf der Eisenbahn
+### 4 Einsatz auf der Schiene
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/HPTFRR)
 
@@ -132,13 +132,13 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 
 ### 6 Stellen Sie MemFree auf Cloudflare-Seiten bereit
 
--   [Weitere Informationen zur Migration von MemFree von Vercel zu Cloudflare finden Sie weiter unten](https://www.memfree.me/blog/couldflare-next-on-page-edge)
+-   [Weitere Informationen zur Migration von MemFree von Vercel zu Cloudflare finden Sie auf den nächsten Seiten](https://www.memfree.me/blog/couldflare-next-on-page-edge)
 
 ## Selbstgehostete Installationen
 
 ### Voraussetzungen
 
-#### Gut installieren
+#### Install Bun
 
     curl -fsSL https://bun.sh/install | bash
 
