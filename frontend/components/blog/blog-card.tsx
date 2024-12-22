@@ -9,22 +9,19 @@ import { getRandomImage } from '@/components/blog/random-image';
 interface BlogCardProps {
     href: string;
     title: string;
+    image: string;
     description: string;
     date: string;
     readTime?: string;
 }
 
-export default function BlogCard({ href, title, description, date, readTime = '5 min read' }: BlogCardProps) {
+export default function BlogCard({ href, title, image, description, date, readTime = '5 min read' }: BlogCardProps) {
     return (
         <Link href={href} className="block size-full max-w-sm mx-auto">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="h-full">
                 <Card className="overflow-hidden bg-white dark:bg-gray-800 hover:shadow-xl transition-all duration-300 group h-full flex flex-col">
                     <div className="relative h-48 overflow-hidden">
-                        <img
-                            src={getRandomImage()}
-                            alt={title}
-                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
+                        <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                     </div>
 
                     <CardContent className="p-6 flex flex-col flex-grow">

@@ -11,6 +11,7 @@ export function BlogPosts({ posts }) {
                 <LatestBlogCard
                     key={latestPost._id}
                     title={latestPost.title}
+                    image={latestPost.image}
                     description={latestPost.description}
                     date={formatDate(latestPost.date)}
                     href={latestPost.slug}
@@ -21,7 +22,14 @@ export function BlogPosts({ posts }) {
                 <h2 className="mb-4 font-bold text-2xl">Blog Posts</h2>
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {posts.slice(1).map((post) => (
-                        <BlogCard key={post._id} title={post.title} description={post.description} date={formatDate(post.date)} href={post.slug} />
+                        <BlogCard
+                            key={post._id}
+                            title={post.title}
+                            image={post.image}
+                            description={post.description}
+                            date={formatDate(post.date)}
+                            href={post.slug}
+                        />
                     ))}
                 </div>
             </section>

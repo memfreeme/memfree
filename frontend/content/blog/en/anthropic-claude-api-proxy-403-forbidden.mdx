@@ -1,7 +1,7 @@
 ---
 title: Use Anthropic Cloud API Proxy to Resolve the 403 Forbidden Issue
 description: How to use the Anthropic Cloud API proxy to resolve the 403 forbidden issue for a Cloudflare Next.js on Pages application
-image: /images/blog/blog-post-3.jpg
+image: https://fal.media/files/lion/D8TCaEOe-flvaHTzuta2P_image.webp
 date: '2024-11-09'
 ---
 
@@ -51,13 +51,13 @@ This means:
 
 Although the user's request was initiated from Singapore, the reasons are as follows:
 
-- Cloudflare chose the Hong Kong edge node to process your request based on its own network optimization strategy.
-- This is because Cloudflare may have deemed the routing through the Hong Kong node to access the Anthropic API as more optimal.
+-   Cloudflare chose the Hong Kong edge node to process your request based on its own network optimization strategy.
+-   This is because Cloudflare may have deemed the routing through the Hong Kong node to access the Anthropic API as more optimal.
 
 The HKG in the CF-Ray ID indicates:
 
-- This is the location of the Cloudflare edge node processing the request.
-- It is not the origin of the request or the location of the target server.
+-   This is the location of the Cloudflare edge node processing the request.
+-   It is not the origin of the request or the location of the target server.
 
 If it were deployed on Vercel, Vercel supports limiting the regions in which edge APIs run, and we could simply configure it. However, Cloudflare does not support setting the operational region of Pages, although it has a smart routing strategy, which does not match my requirements.
 
@@ -82,9 +82,9 @@ The middleware cannot resolve this issue because when Cloudflare Workers send re
 1. Enable Argo Smart Routing.
 2. In the Dashboard:
 
-- Network -> Traffic
-- Enable Argo Smart Routing.
-- This will automatically optimize the routing path.
+-   Network -> Traffic
+-   Enable Argo Smart Routing.
+-   This will automatically optimize the routing path.
 
 However, this solution does not guarantee that 100% of requests from Singapore will not go through the Hong Kong edge node.
 

@@ -9,12 +9,13 @@ import { getRandomImage } from '@/components/blog/random-image';
 interface LastBlogCardProps {
     href: string;
     title: string;
+    image: string;
     description: string;
     date: string;
     readTime?: string;
 }
 
-export default function LatestBlogCard({ href, title, description, date, readTime = '8 min read' }: LastBlogCardProps) {
+export default function LatestBlogCard({ href, title, image, description, date, readTime = '8 min read' }: LastBlogCardProps) {
     return (
         <Link href={href} className="block w-full">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -22,11 +23,7 @@ export default function LatestBlogCard({ href, title, description, date, readTim
                     <CardContent className="p-0">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="relative h-64 md:h-full overflow-hidden">
-                                <img
-                                    src={getRandomImage()}
-                                    alt={title}
-                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                />
+                                <img src={image} alt={title} className="object-cover transition-transform duration-300 group-hover:scale-105" />
                             </div>
 
                             <div className="p-6 flex flex-col justify-between h-full">

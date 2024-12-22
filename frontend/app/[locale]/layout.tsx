@@ -8,6 +8,7 @@ import { ThemeProvider } from 'next-themes';
 import Script from 'next/script';
 import { SidebarProvider } from '@/hooks/use-sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Inter } from 'next/font/google';
 
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-intl/server';
@@ -17,6 +18,8 @@ import { ReferrerTracker } from '@/components/shared/referrer-tracker';
 export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));
 }
+
+const inter = Inter({ subsets: ['latin'] });
 
 export async function generateMetadata({ params: { locale } }) {
     unstable_setRequestLocale(locale);
@@ -85,7 +88,7 @@ export default async function RootLayout({ children, params: { locale } }: { chi
     return (
         <html lang={locale} suppressHydrationWarning>
             <head />
-            <body className={cn(`min-h-screen bg-background ${isZh ? 'font-serif' : 'font-sans'} antialiased`)}>
+            <body className={inter.className}>
                 <Toaster position="top-center" />
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                     <SidebarProvider>
