@@ -129,12 +129,12 @@ export async function urlsExists(userId: string, urls: string[]): Promise<string
     });
 }
 
-async function deleteKey(key: string): Promise<boolean> {
+export const ChangelogKey = 'changelog:';
+export async function getChangelogData() {
     try {
-        const result = await redisDB.del(key);
-        return result > 0;
-    } catch (err) {
-        console.error('Error deleting key:', err);
-        return false;
+        return await redisDB.get(ChangelogKey);
+    } catch (error) {
+        console.error('get changlog failed:', error);
+        return null;
     }
 }
