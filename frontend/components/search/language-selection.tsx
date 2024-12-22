@@ -14,10 +14,8 @@ type LanguageSelectionProps = {
 };
 
 const LanguageItem: React.FC<{ language: Language }> = ({ language }) => (
-    <SelectItem key={language.value} value={language.value} className="w-full p-2 block">
-        <div className="flex w-full justify-between">
-            <span className="text-md mr-2">{language.name}</span>
-        </div>
+    <SelectItem key={language.value} value={language.value}>
+        <span className="text-md mr-2">{language.name}</span>
     </SelectItem>
 );
 

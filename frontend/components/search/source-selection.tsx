@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RowSelectItem, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Globe } from 'lucide-react';
 import { useSourceStore, useUserStore } from '@/lib/store/local-store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
@@ -16,14 +16,14 @@ type Source = {
 };
 
 const SourceItem: React.FC<{ source: Source }> = ({ source }) => (
-    <SelectItem key={source.value} value={source.value} className="w-full p-2 block">
+    <RowSelectItem key={source.value} value={source.value} className="w-full p-2 block">
         <div className="flex w-full justify-between">
             <span className="text-md mr-2">{source.name}</span>
             <span className={`text-xs flex items-center justify-center ${source.flag === 'Pro' ? ' text-primary bg-purple-300 rounded-xl px-2' : ''}`}>
                 {source.flag}
             </span>
         </div>
-    </SelectItem>
+    </RowSelectItem>
 );
 
 export function SourceSelection() {

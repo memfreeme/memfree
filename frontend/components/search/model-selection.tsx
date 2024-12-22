@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RowSelectItem, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store/local-store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
@@ -47,8 +47,8 @@ export const modelMap: Record<string, Model> = {
 };
 
 const ModelItem: React.FC<{ model: Model }> = ({ model }) => (
-    <SelectItem key={model.value} value={model.value} className="w-full p-2 block">
-        <div className="flex w-full justify-between">
+    <RowSelectItem key={model.value} value={model.value} className="w-full p-2">
+        <div className="flex justify-between">
             <span className="text-md">{model.name}</span>
             <span
                 className={`text-xs flex items-center justify-center ${model.flag === 'Pro' || model.flag === 'Premium' ? ' text-primary bg-purple-300 rounded-xl px-2' : ''}`}
@@ -56,7 +56,7 @@ const ModelItem: React.FC<{ model: Model }> = ({ model }) => (
                 {model.flag}
             </span>
         </div>
-    </SelectItem>
+    </RowSelectItem>
 );
 
 export function ModelSelection() {
@@ -101,7 +101,7 @@ export function ModelSelection() {
                     </div>
                 </SelectValue>
             </SelectTrigger>
-            <SelectContent className="w-full">
+            <SelectContent>
                 {Object.values(modelMap).map((model) => (
                     <ModelItem key={model.value} model={model} />
                 ))}
