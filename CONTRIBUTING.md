@@ -9,7 +9,7 @@ Thank you for considering contributing to MemFree! We appreciate your support an
 2. **Resolve any Issue**: You can resolve any issue mentioned in [issue section](https://github.com/memfreeme/memfree/issues) by getting assigned to yourself and start contributing by making PR mention the issue number.
 
 3. **Make a Pull Request**: If you have new features to add, quality-of-life improvements, or bug fixes, feel free to make a pull request. Ensure your code adheres to our code style and includes appropriate tests.
-4. **Feedback and Support**: Share your thoughts and feedback on our [Discord](https://discord.com/invite/7QqyMSTaRq) or via the [MemFree Feedback Form](https://feedback.memfree.me/).
+4. **Feedback and Support**: Share your thoughts and feedback on our [Discord](https://discord.com/invite/7QqyMSTaRq) or via the [MemFree Feedback Form](https://www.memfree.me/feedback).
 
 ## Code Style and Formatting
 

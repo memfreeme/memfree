@@ -16,7 +16,7 @@ export function MobileFooter() {
                     <Button variant="ghost" size="icon" asChild>
                         <Link
                             data-featurebase-link
-                            href="https://feedback.memfree.me"
+                            href="https://www.memfree.me/feedback"
                             target="_blank"
                             aria-label="MemFree Feedback"
                             data-umami-event="Mobile Feedback Click"

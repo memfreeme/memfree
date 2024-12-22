@@ -58,17 +58,6 @@ export default function SiteHeader({ user, items }: NavBarProps) {
                         </Button>
                     );
                 })}
-                <Button key="changelog" variant="link" asChild>
-                    <Link
-                        href="https://feedback.memfree.me/changelog"
-                        data-featurebase-link
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="MemFree Changelog"
-                    >
-                        <span className="text-black dark:text-white">Changelog</span>
-                    </Link>
-                </Button>
             </div>
             <div className="block md:hidden ml-auto mr-4">
                 <MarketingMenu items={items} user={user} />

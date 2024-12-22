@@ -29,7 +29,7 @@ export const siteConfig: SiteConfig = {
         twitter: 'https://twitter.com/intent/user?&region=follow&screen_name=ahaapple2023',
         github: 'https://github.com/memfreeme/memfree',
         discord: 'https://discord.gg/7QqyMSTaRq',
-        feedback: 'https://feedback.memfree.me',
+        feedback: 'https://www.memfree.me/feedback',
     },
     mailSupport: 'support@memfree.me',
 };
@@ -47,6 +47,10 @@ export const mainNavConfig: MarketingConfig = {
         {
             title: 'Blog',
             href: '/blog',
+        },
+        {
+            title: 'ChangeLog',
+            href: '/changelog',
         },
     ],
 };
