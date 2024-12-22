@@ -7,10 +7,6 @@ interface MarketingLayoutProps {
     children: React.ReactNode;
 }
 
-const Featurebase = dynamic(() => import('@/components/featurebase'), {
-    loading: () => <></>,
-});
-
 const OneTapComponent = dynamic(() => import('@/components/google-one-tap'), {
     loading: () => <></>,
 });
@@ -29,7 +25,6 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
         <div className="flex flex-col flex-1 min-h-screen">
             <MobileHeader user={user} />
             {!user && <OneTapComponent user={user} />}
-            {user && <Featurebase user={user} />}
             <main className="relative flex h-lvh overflow-hidden">
                 <SidebarDesktop />
                 <SidebarOpen user={user} />

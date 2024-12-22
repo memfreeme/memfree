@@ -29,7 +29,6 @@ export function SimpleSiteFooter() {
                 <span className="text-gray-300">|</span>
                 <Link
                     className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:font-semibold"
-                    data-featurebase-link
                     href={siteConfig.links.feedback}
                     target="_blank"
                     aria-label="MemFree Feedback"

@@ -38,7 +38,6 @@ const ActionButtons = ({ content, searchId, msgId, reload, searchType }) => {
                     <TooltipTrigger asChild>
                         <Link
                             href="/feedback"
-                            data-featurebase-link
                             target="_blank"
                             rel="noreferrer"
                             className={cn(

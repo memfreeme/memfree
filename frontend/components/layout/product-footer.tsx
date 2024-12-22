@@ -23,7 +23,6 @@ export function ProductFooter() {
                 <span className="text-gray-300 hidden md:block">|</span>
                 <Link
                     className="font-semibold text-gray-800 dark:text-gray-300 hover:text-primary dark:hover:text-primary text-left md:text-center w-full md:w-auto"
-                    data-featurebase-link
                     href={ReactShadcnUrl}
                 >
                     React Shadcn UI Preview
