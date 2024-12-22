@@ -37,7 +37,7 @@
 
 MemFree es un<b>Motor de búsqueda híbrido de IA</b>.
 
-With MemFree, you can instantly get Accurate Answers from your knowledge base and the whole internet.
+Con MemFree, puede obtener instantáneamente respuestas precisas de su base de conocimientos y de todo Internet.
 
 MemFree es un<b>Generador de páginas AI</b>.
 
@@ -45,7 +45,7 @@ Memfree utiliza el modelo de IA más potente: Claude 3.5 Sonnet y el marco de in
 
 [PageGen - Generador de páginas AI](https://pagegen.ai/).
 
-## What Makes MemFree Valuable?
+## ¿Qué hace que MemFree sea valioso?
 
 -   **Gestión eficiente del conocimiento**: MemFree elimina la necesidad de organización manual de notas, marcadores y documentos. Cuando necesite información, simplemente busque en MemFree para encontrar rápidamente respuestas relevantes, liberando su memoria y aumentando la productividad.
 -   **Resúmenes de IA que ahorran tiempo**: En lugar de hacer clic en varios resultados de búsqueda de Google, MemFree utiliza IA para resumir instantáneamente el mejor contenido de las páginas web y su base de conocimientos, lo que ahorra un tiempo valioso.
@@ -80,7 +80,7 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 
 ## Funciones del generador de interfaz de usuario MemFree AI
 
--   **🖥️ Vista previa de la interfaz de usuario en tiempo real**: Renderiza y previsualiza instantáneamente la interfaz de usuario generada
+-   **🖥️ Vista previa de la interfaz de usuario en tiempo real**: Representa y previsualiza instantáneamente la interfaz de usuario generada
 -   **🔍 Búsqueda de contenido impulsada por IA**: Enriquezca su interfaz de usuario con contenido relevante utilizando nuestra función de búsqueda avanzada de IA
 -   **🖼 Generación de UI basada en imágenes**: cree componentes de interfaz de usuario y páginas que coincidan estrechamente con sus imágenes de referencia.
 -   **📄 Generación de archivo a página**: Transforme el contenido de cualquier archivo en una página web bellamente estructurada con análisis y resumen de IA.
@@ -91,7 +91,7 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 -   **📱 Código responsivo y vista previa**: Obtenga una vista previa de su interfaz de usuario en varios dispositivos en tiempo real, lo que garantiza una adaptación perfecta a todos los tamaños de pantalla.
 -   **🌓 Código y vista previa del modo oscuro**: Genere sin esfuerzo código de interfaz de usuario impulsado por IA con soporte para modo oscuro incorporado, lo que le permite obtener una vista previa de los modos claro y oscuro al instante.
 -   **📸 Exportación de capturas de pantalla de la interfaz de usuario**: Exporte y comparta fácilmente sus diseños de interfaz de usuario como capturas de pantalla de alta calidad para una colaboración perfecta
--   **🛠️ Corrección de errores inteligente**: Si bien el modelo avanzado de IA de MemFree y las sofisticadas reglas de código se esfuerzan por alcanzar la perfección, pueden ocurrir errores ocasionales. Nuestra función de corrección inteligente de errores le permite solucionar instantáneamente cualquier problema con solo un clic
+-   **🛠️ Corrección de errores inteligente**: Si bien el modelo de IA avanzado de MemFree y las sofisticadas reglas de código se esfuerzan por alcanzar la perfección, pueden ocurrir errores ocasionales. Nuestra función de corrección inteligente de errores le permite solucionar instantáneamente cualquier problema con un solo clic
 
 ## Flujo de trabajo de búsqueda de IA híbrida de MemFree
 
@@ -99,7 +99,7 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 
 ## Registro de cambios
 
-[Registro de cambios de MemFree](https://feedback.memfree.me/changelog)
+[Registro de cambios de MemFree](https://www.memfree.me/changelog)
 
 ## Pila de tecnología
 
@@ -113,7 +113,7 @@ MemFree está equipado con potentes funciones que satisfacen diversas necesidade
 
 <a href="https://zeabur.com/templates/CE71SC?referralCode=memfree"><img src="https://zeabur.com/button.svg" alt="Deploy on Zeabur"/></a>
 
-### 2 Implementar interfaz con Vercel
+### 2 Implementar frontend con Vercel
 
 <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree&env=UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,OPENAI_API_KEY,MEMFREE_HOST,AUTH_SECRET,API_TOKEN&envDescription=https%3A%2F%2Fgithub.com%2Fmemfreeme%2Fmemfree%2Fblob%2Fmain%2Ffrontend%2Fenv-example&project-name=memfree&repository-name=memfree&demo-title=MemFree&demo-description=MemFree – Hybrid AI Search Engine&demo-url=https%3A%2F%2Fwww.memfree.me%2F&demo-image=https%3A%2F%2Fwww.memfree.me%2Fog.png&root-directory=frontend"><img src="https://vercel.com/button" alt="Deploy with Vercel"/></a>
 
