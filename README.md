@@ -99,7 +99,7 @@ MemFree is equipped with powerful features that cater to various search and prod
 
 ## ChangeLog
 
-[MemFree ChangeLog](https://feedback.memfree.me/changelog)
+[MemFree ChangeLog](https://www.memfree.me/changelog)
 
 ## Tech Stack
 
