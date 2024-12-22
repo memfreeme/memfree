@@ -15,11 +15,12 @@ import { useUserStore } from '@/lib/store/local-store';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useIndexModal } from '@/hooks/use-index-modal';
 import { useTranslations } from 'next-intl';
+import { UploadedFile } from '@/lib/uploader';
 
 interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
     value?: File[];
     onValueChange?: (files: File[]) => void;
-    onUpload?: (files: File[]) => Promise<void>;
+    onUpload?: (files: File[]) => Promise<UploadedFile[]>;
     accept?: DropzoneProps['accept'];
     disabled?: boolean;
 }

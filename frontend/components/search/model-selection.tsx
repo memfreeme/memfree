@@ -47,9 +47,9 @@ export const modelMap: Record<string, Model> = {
 };
 
 const ModelItem: React.FC<{ model: Model }> = ({ model }) => (
-    <RowSelectItem key={model.value} value={model.value} className="w-full p-2">
-        <div className="flex justify-between">
-            <span className="text-md">{model.name}</span>
+    <RowSelectItem key={model.value} value={model.value} className="w-full p-2 block">
+        <div className="flex w-full justify-between">
+            <span className="text-md mr-2">{model.name}</span>
             <span
                 className={`text-xs flex items-center justify-center ${model.flag === 'Pro' || model.flag === 'Premium' ? ' text-primary bg-purple-300 rounded-xl px-2' : ''}`}
             >

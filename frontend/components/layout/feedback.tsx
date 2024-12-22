@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { SendHorizonal } from 'lucide-react';
 import { toast } from 'sonner';
 import { Icons } from '@/components/shared/icons';
+import { ImageUploader } from '@/components/image/image-uploader';
 
 export default function FeedbackForm() {
     const [name, setName] = useState('');
@@ -108,12 +109,12 @@ export default function FeedbackForm() {
                             </div>
                         </div>
 
-                        {/* <div>
+                        <div>
                             <label htmlFor="content" className="block text-sm font-medium mb-2">
                                 Screenshot
                             </label>
                             <ImageUploader value={''} onChange={(e) => setFile(e)} showGeneratedImage={false} />
-                        </div> */}
+                        </div>
 
                         <Button type="submit" className="w-full md:w-auto rounded-full">
                             {loading ? (

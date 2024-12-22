@@ -3,64 +3,7 @@ import { toast } from 'sonner';
 import { getAuthToken } from '@/actions/token';
 import { NEXT_PUBLIC_VECTOR_HOST } from '@/lib/client_env';
 import { useImageCompression } from '@/hooks/use-image-compression';
-
-export interface UploadedFile {
-    name: string;
-    url: string;
-    type: string;
-}
-
-interface PresignedResponse {
-    url: string;
-    file: string;
-}
-
-class UploadError extends Error {
-    constructor(
-        message: string,
-        public fileName: string,
-    ) {
-        super(message);
-        this.name = 'UploadError';
-    }
-}
-
-async function getPresignedUrl(filename: string): Promise<PresignedResponse> {
-    const response = await fetch(`/api/pre-signed`, {
-        method: 'POST',
-        body: JSON.stringify({ filename }),
-    });
-
-    if (!response.ok) {
-        throw new UploadError(`Failed to get presigned URL`, filename);
-    }
-
-    return response.json();
-}
-
-async function uploadFileToR2(presignedUrl: string, file: File): Promise<void> {
-    const response = await fetch(presignedUrl, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': file.type,
-        },
-        body: file,
-    });
-
-    if (!response.ok) {
-        throw new UploadError('Upload failed', file.name);
-    }
-}
-
-async function uploadSingleFile(file: File): Promise<UploadedFile> {
-    const presignedData = await getPresignedUrl(file.name);
-    await uploadFileToR2(presignedData.url, file);
-    return {
-        name: file.name,
-        url: `https://image.memfree.me/${presignedData.file}`,
-        type: file.type,
-    };
-}
+import { UploadedFile, uploadSingleFile } from '@/lib/uploader';
 
 export function useUploadFile() {
     const [uploadedFiles, setUploadedFiles] = React.useState<UploadedFile[]>([]);
@@ -114,6 +57,7 @@ export function useUploadFile() {
                 if (successfulUploads.length > 0) {
                     setUploadedFiles((prev) => (prev ? [...prev, ...successfulUploads] : successfulUploads));
                 }
+                return successfulUploads;
             } else {
                 const res = await indexLocalFile(files);
                 setUploadedFiles((prev) => (prev ? [...prev, ...res] : res));
