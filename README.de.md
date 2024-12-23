@@ -35,7 +35,7 @@
 
 ## Was ist MemFree
 
-MemFree ist ein<b>Hybrid AI Search Engine</b>.
+MemFree ist ein<b>Hybride KI-Suchmaschine</b>.
 
 Mit MemFree können Sie sofort präzise Antworten aus Ihrer Wissensdatenbank und dem gesamten Internet erhalten.
 
@@ -60,7 +60,7 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 
 -   🌐**Mehrere Suchmaschinen werden unterstützt**: Funktioniert mit Google, Exa und Vector.
 
--   🖼️**Mehrere Sucheingabeformate**: Insbesondere Texte, Bilder, Dateien und Webseiten. Es unterstützt die Suche, den Vergleich, die Zusammenfassung und die Analyse mehrerer Bilder.
+-   🖼️**Mehrere Sucheingabeformate**: Insbesondere Texte, Bilder, Dateien und Webseiten. Unterstützt die Suche, den Vergleich, die Zusammenfassung und die Analyse mehrerer Bilder.
 
 -   📊**Mehrere Methoden zur Ergebnispräsentation**: Text, Mindmaps, Bilder und Videos.
 
@@ -138,7 +138,7 @@ MemFree ist mit leistungsstarken Funktionen ausgestattet, die verschiedene Such-
 
 ### Voraussetzungen
 
-#### Install Bun
+#### Gut installieren
 
     curl -fsSL https://bun.sh/install | bash
 
@@ -203,7 +203,7 @@ So können Sie einen Beitrag leisten:
 
 ## Roadmap
 
--   KI-Codierungsassistent
+-   [MemFree-Roadmap](https://www.memfree.me/roadmap)
 
 ## Lizenz
 
