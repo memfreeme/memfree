@@ -95,7 +95,7 @@ export function ModelSelection() {
         >
             <SelectTrigger aria-label="AI Model" className="focus:ring-0 border-none outline-none">
                 <SelectValue>
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center space-x-1 text-muted-foreground">
                         <Box></Box>
                         <span className="font-semibold"> {selectedModel.name}</span>
                     </div>

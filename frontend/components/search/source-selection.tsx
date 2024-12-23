@@ -77,7 +77,7 @@ export function SourceSelection() {
         >
             <SelectTrigger aria-label="Search Source" className="focus:ring-0 border-none outline-none">
                 <SelectValue>
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center space-x-1 text-muted-foreground">
                         <Globe></Globe>
                         <span className="font-semibold"> {selectedSource.name}</span>
                     </div>

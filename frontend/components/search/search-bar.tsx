@@ -361,14 +361,21 @@ const SearchBar: React.FC<Props> = ({
                 {showModelSelection && <ModelSelection />}
                 {showSourceSelection && <SourceSelection />}
                 {showWebSearch && (
-                    <div className="flex items-center space-x-2 mb-1">
+                    <div className="flex items-center space-x-2 mb-1 text-muted-foreground">
                         <Switch id="search" checked={isSearch} onCheckedChange={(checked) => setIsSearch(checked)} />
-                        <Label htmlFor="search">Web Search</Label>
+                        <Label htmlFor="search" className="font-semibold">
+                            Web Search
+                        </Label>
                     </div>
                 )}
-                <div className="flex items-center space-x-2 mb-1 cursor-pointer hover:text-primary" onClick={() => setOpenSettingsDialog(true)}>
-                    <Settings />
-                    <Label>More Search Settings</Label>
+                <div
+                    className="flex items-center space-x-2 mb-1 text-muted-foreground cursor-pointer hover:text-primary"
+                    onClick={() => setOpenSettingsDialog(true)}
+                >
+                    <Settings id="settings" />
+                    <Label htmlFor="settings" className="font-semibold">
+                        More Search Settings
+                    </Label>
                 </div>
                 <SearchSettingsDialog open={openSettingsDialog} onOpenChange={setOpenSettingsDialog} />
             </div>

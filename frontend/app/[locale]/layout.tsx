@@ -83,12 +83,11 @@ export async function generateMetadata({ params: { locale } }) {
 export default async function RootLayout({ children, params: { locale } }: { children: React.ReactNode; params: { locale: string } }) {
     unstable_setRequestLocale(locale);
     const messages = await getMessages();
-    const isZh = locale == 'zh';
 
     return (
         <html lang={locale} suppressHydrationWarning>
             <head />
-            <body className={inter.className}>
+            <body className={cn(inter.className, 'antialiased')}>
                 <Toaster position="top-center" />
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                     <SidebarProvider>
