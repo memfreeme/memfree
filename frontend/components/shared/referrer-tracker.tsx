@@ -2,31 +2,44 @@
 
 import { useEffect } from 'react';
 
+const STORAGE_KEY = 'userReferrer';
+const isSameDomain = (referrer) => {
+    if (!referrer || referrer.trim() === '') return false;
+    try {
+        const currentDomain = window.location.hostname;
+        const referrerDomain = new URL(referrer).hostname;
+        return referrerDomain === currentDomain;
+    } catch (error) {
+        return false;
+    }
+};
+
 export const ReferrerTracker = () => {
     useEffect(() => {
         try {
-            const existingReferrer = localStorage.getItem('userReferrer');
+            const existingReferrer = localStorage.getItem(STORAGE_KEY);
 
             if (!existingReferrer) {
                 const referrer = document.referrer;
-
                 const url = new URL(window.location.href);
                 const utmSource = url.searchParams.get('utm_source');
-                const utmMedium = url.searchParams.get('utm_medium');
-                const utmCampaign = url.searchParams.get('utm_campaign');
                 const urlRef = url.searchParams.get('ref');
 
-                if (referrer || utmSource || urlRef) {
+                let source = null;
+                if (referrer && !isSameDomain(referrer)) {
+                    source = referrer;
+                } else if (utmSource) {
+                    source = utmSource;
+                } else if (urlRef) {
+                    source = urlRef;
+                }
+
+                if (source) {
                     const referrerData = {
-                        referrer,
-                        utmSource,
-                        utmMedium,
-                        utmCampaign,
-                        urlRef,
-                        firstVisit: new Date().toISOString(),
+                        refer: source,
+                        timestamp: new Date().toISOString(),
                     };
-                    console.log('Referrer tracking:', referrerData);
-                    localStorage.setItem('userReferrer', JSON.stringify(referrerData));
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(referrerData));
                 }
             }
         } catch (error) {
