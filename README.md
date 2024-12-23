@@ -209,7 +209,7 @@ Here's how you can contribute:
 
 ## Roadmap
 
-- AI Coding Assistant
+- [MemFree Roadmap](https://www.memfree.me/roadmap)
 
 ## License
 

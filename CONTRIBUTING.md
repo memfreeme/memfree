@@ -83,7 +83,7 @@ One Command Deploy Backend with Fly.io: [One command deploy MemFree Vector on Fl
 
 ## Roadmap
 
-To get a sense of our planned features and improvements, check out our [Roadmap](https://feedback.memfree.me/roadmap).
+To get a sense of our planned features and improvements, check out our [Roadmap](https://www.memfree.me/roadmap).
 
 ## License
 
