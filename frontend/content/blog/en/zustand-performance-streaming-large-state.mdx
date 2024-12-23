@@ -1,0 +1,250 @@
+---
+title: Two Key Points for Performance Optimization of Zustand in Streaming and Large States
+description: A real case analysis of MemFree Zustand performance optimization
+image: https://fal.media/files/lion/mrbqpdraj3w3PWfNuk9SV_image.webp
+date: '2024-12-23'
+---
+
+## Background
+
+Recently, when I was generating ultra-long code using MemFree, I noticed that Chrome consumed a large amount of memory, eventually causing the page to crash.
+
+## Problem Analysis
+
+### Search
+
+At first, I suspected the issue was caused by code highlighting. After some research, I indeed found a suspicious point, [rehype-highlight v7.0.0 memory leak](https://github.com/remarkjs/react-markdown/issues/791), but updating the rehype-highlight version did not resolve the problem.
+
+### Analyzing with React Developer Tools
+
+Upon analyzing with React Developer Tools, I found that when the message search was returned in a streaming fashion, the Sidebar component on the left side of the page was being updated frequently, which piqued my curiosity.
+
+To confirm whether it was related to the Sidebar component, I tested it in the Edge browser and discovered that the ultra-long code was generated normally. The data for the Sidebar component mainly consists of search history; in Chrome, my local store had hundreds of messages, while in Edge, there were only a few messages.
+
+At this point, I checked the local store code and identified the problem:
+
+```ts
+            updateActiveSearch: (updatedSearch) => {
+                set((state) => {
+                    if (!state.activeSearch) return state;
+                    const newSearch = {
+                        ...state.activeSearch,
+                        ...updatedSearch,
+                    };
+                    return {
+                        activeSearch: newSearch,
+                        searches: state.searches.map((s) => (s.id === newSearch.id ? newSearch : s)),
+                    };
+                });
+            },
+```
+
+When the answer text from the search is returned in a streaming manner, I call `updateActiveSearch` to update the current search record. The issue here is that I update the entire `searches` array every time. When there are many historical search messages and the current answer text is long, it results in frequent updates to a long array, leading to a massive allocation and release of memory, ultimately causing the Chrome page to crash.
+
+### Solution
+
+During `updateActiveSearch`, only update `activeSearch` and avoid updating the entire `searches` array. It is sufficient to update the `searches` array once after the search has concluded.
+
+### SidebarList still constantly updates when the search answer returns
+
+After implementing the above optimization, I expected that the SidebarList would no longer update when the search answers were returned; however, I found that SidebarList continued to update.
+
+```ts
+export function SidebarList({ user }: SidebarListProps) {
+    const { searches, addSearches } = useSearchStore();
+
+interface SearchStore {
+    searches: Search[];
+    activeId: string | undefined;
+    activeSearch: Search | undefined;
+    addSearch: (search: Search) => void;
+    addSearches: (searches: Search[]) => void;
+    setSearches: (searches: Search[]) => void;
+    removeSearch: (id: string) => void;
+    clearSearches: () => void;
+    setActiveSearch: (id: string) => void;
+    updateActiveSearch: (updatedSearch: Partial<Search>) => void;
+    deleteMessage: (messageId: string) => void;
+    syncActiveSearchToSearches: () => void;
+}
+```
+
+I asked MemFree, and MemFree quickly provided an answer:
+
+It was caused by the subscription mechanism of the Zustand store. When you use `useSearchStore` in a component to obtain multiple states, as long as any one of the states changes, the component will re-render.
+
+```ts
+// 1. First, separate the store selectors
+const useSearchesSelector = () => useSearchStore((state) => state.searches);
+const useAddSearchesSelector = () => useSearchStore((state) => state.addSearches);
+
+// 2. Optimized SidebarList component
+export function SidebarList({ user }: SidebarListProps) {
+    // Subscribe to different states separately
+    const searches = useSearchesSelector();
+    const addSearches = useAddSearchesSelector();
+}
+```
+
+With this alteration, the problem was finally resolved: the SidebarList component would no longer update when the search answers were returned in streaming fashion.
+
+The complete code for this optimization: [Improve the SidebarList performance when search streaming response](https://github.com/memfreeme/memfree/commit/3b5ca84c3fcd4ab3f9d4c38c94000f4ac9df659c)
+
+## Why does Zustand cause unrelated components to re-render when one state changes?
+
+This is because Zustand uses strict equality comparison (`===`) by default to determine if the state has changed. When using `useSearchStore()` to get the entire store state, if any part of the state in the store changes, it triggers a re-render of the component.
+
+### Example of Zustand's Default Behavior:
+
+```typescript
+// Every time updateActiveSearch is called, even if searches haven't changed, the component will re-render
+const { searches, activeSearch } = useSearchStore();
+```
+
+### Solutions:
+
+1. **Use shallow comparison**
+
+```typescript
+import { shallow } from 'zustand/shallow';
+
+// Only re-render when the selected state actually changes
+const { searches, activeSearch } = useSearchStore(
+    (state) => ({
+        searches: state.searches,
+        activeSearch: state.activeSearch,
+    }),
+    shallow,
+);
+```
+
+2. **Manual selectors**
+
+```typescript
+// Subscribe to specific states
+const searches = useSearchStore((state) => state.searches);
+const activeSearch = useSearchStore((state) => state.activeSearch);
+```
+
+### In-depth Explanation of Zustand's Principles:
+
+Zustand's state update mechanism:
+
+```typescript
+// Simplified Zustand state update logic
+function createStore() {
+    let state = initialState;
+    const listeners = new Set();
+
+    return {
+        getState: () => state,
+        setState: (newState) => {
+            // Even if only one property changes, all listeners will be triggered
+            state = { ...state, ...newState };
+
+            // Notify all subscribers
+            listeners.forEach((listener) => listener(state));
+        },
+        subscribe: (listener) => {
+            listeners.add(listener);
+            return () => listeners.delete(listener);
+        },
+    };
+}
+```
+
+### Complete Zustand Optimization Example:
+
+```typescript
+import { create } from 'zustand';
+import { shallow } from 'zustand/shallow';
+
+interface SearchStore {
+    searches: Search[];
+    activeSearch?: Search;
+    updateActiveSearch: (update: Partial<Search>) => void;
+}
+
+export const useSearchStore = create<SearchStore>()((set) => ({
+    searches: [],
+    activeSearch: undefined,
+    updateActiveSearch: (update) => {
+        set((state) => ({
+            activeSearch: state.activeSearch ? { ...state.activeSearch, ...update } : undefined,
+        }));
+    },
+}));
+
+// Usage in a component
+function SearchComponent() {
+    // Method 1: Use shallow comparison
+    const { searches, activeSearch } = useSearchStore(
+        (state) => ({
+            searches: state.searches,
+            activeSearch: state.activeSearch,
+        }),
+        shallow,
+    );
+
+    // Method 2: Individual selectors
+    const searches = useSearchStore((state) => state.searches);
+    const activeSearch = useSearchStore((state) => state.activeSearch);
+
+    // Method 3: Using useMemo and useCallback
+    const memoizedSearches = useMemo(() => searches, [searches]);
+    const handleUpdateSearch = useCallback((update) => {
+        useSearchStore.getState().updateActiveSearch(update);
+    }, []);
+}
+```
+
+### Zustand Performance Optimization Suggestions:
+
+1. **Use selectors**
+
+```typescript
+// Precisely control subscribed states
+const searches = useSearchStore((state) => state.searches);
+const activeSearchId = useSearchStore((state) => state.activeSearch?.id);
+```
+
+2. **Avoid unnecessary states**
+
+```typescript
+// Do not store derived state in the store
+const useSearchStore = create((set) => ({
+    // ❌ Not recommended
+    searchCount: state.searches.length,
+
+    // ✅ Recommended
+    // Calculate when needed
+    getSearchCount: () => useSearchStore.getState().searches.length,
+}));
+```
+
+3. **Split Store**
+
+```typescript
+// Separate states with different responsibilities into different stores
+const useSearchStore = create((set) => ({
+    searches: [],
+    // Related to search state
+}));
+
+const useUIStore = create((set) => ({
+    isLoading: false,
+    // Related to UI state
+}));
+```
+
+## Summary:
+
+Zustand's default behavior leads to full updates when state changes. You can optimize using:
+
+-   Use `shallow` comparison
+-   Use precise selectors
+-   Update only strongly related, minimally granular states each time
+-   Reasonably design store structure
+-   Use `useMemo` and `useCallback`
+
+I hope this article helps friends using Zustand.

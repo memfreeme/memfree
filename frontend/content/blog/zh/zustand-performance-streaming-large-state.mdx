@@ -1,0 +1,252 @@
+---
+title: 在 Streaming 和大状态下 Zustand 性能优化的两个关键点
+description: MemFree Zustand 性能优化的真实案例分析
+image: https://fal.media/files/lion/mrbqpdraj3w3PWfNuk9SV_image.webp
+date: '2024-12-23'
+---
+
+## 背景
+
+最近我在利用 MemFree 生成超长代码时发现 Chrome 会占用大量内存，最终页面直接 Crash。
+
+## 问题分析
+
+### 搜索
+
+我一开始以为是代码高亮引起的问题，经过搜索，也的确发现了一个可疑点，[rehype-highlight v7.0.0 memory leak](https://github.com/remarkjs/react-markdown/issues/791) ，
+但是修改 rehype-highlight 版本后，依然没有解决这个问题。
+
+### 利用 React Developer Tools 分析
+
+在利用 React Developer Tools 分析后，我发现当搜索消息流式返回时，页面左边的 Sidebar 组件频繁更新，这引起了我的好奇。
+
+为了确定是否和 Sidebar 组件有关，我在Edge 浏览器进行了测试，结果发现超长的代码正常生成了。因为 Sidebar 组件的数据主要是搜索的历史信息，在Chrome中我的 local store 有上百条消息，在 Edge 浏览器中，只有几条消息。
+
+此时，再查看local store的代码，我发现了问题:
+
+```ts
+            updateActiveSearch: (updatedSearch) => {
+                set((state) => {
+                    if (!state.activeSearch) return state;
+                    const newSearch = {
+                        ...state.activeSearch,
+                        ...updatedSearch,
+                    };
+                    return {
+                        activeSearch: newSearch,
+                        searches: state.searches.map((s) => (s.id === newSearch.id ? newSearch : s)),
+                    };
+                });
+            },
+```
+
+当搜索的答案文本 streaming 返回时，我会调用 `updateActiveSearch` 更新当前 search 记录的信息，这里的问题是我每次都更新了全量的 `searches` 数组，这样当历史搜索消息很多，当前的答案文本又很长时，就会触发超长数组的频繁更新，进而导致大量的内存申请释放，最终导致 Chrome页面的crash。
+
+### 解决方案
+
+在 updateActiveSearch 时，只更新 activeSearch，而不更新 searches 的全量数据。因为在搜索结束时再更新一次 searches 数组是足够的。
+
+### 搜索答案返回时 SidebarList 依然会不断更新
+
+进行上面的优化后，我预期 SidebarList 在搜索答案返回时就不会更新，结果发现 SidebarList 依然在不断更新。
+
+```ts
+export function SidebarList({ user }: SidebarListProps) {
+    const { searches, addSearches } = useSearchStore();
+
+
+interface SearchStore {
+    searches: Search[];
+    activeId: string | undefined;
+    activeSearch: Search | undefined;
+    addSearch: (search: Search) => void;
+    addSearches: (searches: Search[]) => void;
+    setSearches: (searches: Search[]) => void;
+    removeSearch: (id: string) => void;
+    clearSearches: () => void;
+    setActiveSearch: (id: string) => void;
+    updateActiveSearch: (updatedSearch: Partial<Search>) => void;
+    deleteMessage: (messageId: string) => void;
+    syncActiveSearchToSearches: () => void;
+}
+```
+
+我问 MemFree 后，MemFree 很快给出了答案：
+
+Zustand store 的订阅机制导致的。当您在组件中使用 useSearchStore 获取多个状态时，只要其中任何一个状态发生变化，组件就会重新渲染。
+
+```ts
+// 1. 首先，分离 store 选择器
+const useSearchesSelector = () => useSearchStore((state) => state.searches);
+const useAddSearchesSelector = () => useSearchStore((state) => state.addSearches);
+
+// 2. 优化后的 SidebarList 组件
+export function SidebarList({ user }: SidebarListProps) {
+    // 分别订阅不同的状态
+    const searches = useSearchesSelector();
+    const addSearches = useAddSearchesSelector();
+}
+```
+
+这次问题终于解决，SidebarList 组件在搜索答案 streaming 返回时 不会再更新。
+
+这次优化的完整代码：[Improve the SidebarList performance when search streaming response](https://github.com/memfreeme/memfree/commit/3b5ca84c3fcd4ab3f9d4c38c94000f4ac9df659c)
+
+## Zustand 为什么默认一个状态变化，其他不相关的状态的组件也会重新渲染
+
+这是因为 Zustand 默认使用严格相等性比较（`===`）来判断状态是否发生变化。当使用 `useSearchStore()` 获取整个 store 状态时，只要 store 中的任何状态发生变化，就会触发组件重新渲染。
+
+### Zustand 默认行为示例：
+
+```typescript
+// 每次调用 updateActiveSearch 时，即使 searches 没变，组件也会重新渲染
+const { searches, activeSearch } = useSearchStore();
+```
+
+### 解决方案：
+
+1. **使用 shallow 比较**
+
+```typescript
+import { shallow } from 'zustand/shallow';
+
+// 只有选择的状态发生实际变化时才重新渲染
+const { searches, activeSearch } = useSearchStore(
+    (state) => ({
+        searches: state.searches,
+        activeSearch: state.activeSearch,
+    }),
+    shallow,
+);
+```
+
+2. **手动选择器**
+
+```typescript
+// 只订阅特定状态
+const searches = useSearchStore((state) => state.searches);
+const activeSearch = useSearchStore((state) => state.activeSearch);
+```
+
+### Zustand 深入原理解释：
+
+Zustand 的状态更新机制：
+
+```typescript
+// 简化的 Zustand 状态更新逻辑
+function createStore() {
+    let state = initialState;
+    const listeners = new Set();
+
+    return {
+        getState: () => state,
+        setState: (newState) => {
+            // 即使只有一个属性变化，也会触发所有监听器
+            state = { ...state, ...newState };
+
+            // 通知所有订阅者
+            listeners.forEach((listener) => listener(state));
+        },
+        subscribe: (listener) => {
+            listeners.add(listener);
+            return () => listeners.delete(listener);
+        },
+    };
+}
+```
+
+### Zustand 完整优化示例：
+
+```typescript
+import { create } from 'zustand';
+import { shallow } from 'zustand/shallow';
+
+interface SearchStore {
+    searches: Search[];
+    activeSearch?: Search;
+    updateActiveSearch: (update: Partial<Search>) => void;
+}
+
+export const useSearchStore = create<SearchStore>()((set) => ({
+    searches: [],
+    activeSearch: undefined,
+    updateActiveSearch: (update) => {
+        set((state) => ({
+            activeSearch: state.activeSearch ? { ...state.activeSearch, ...update } : undefined,
+        }));
+    },
+}));
+
+// 组件中的使用
+function SearchComponent() {
+    // 方法1：使用 shallow 比较
+    const { searches, activeSearch } = useSearchStore(
+        (state) => ({
+            searches: state.searches,
+            activeSearch: state.activeSearch,
+        }),
+        shallow,
+    );
+
+    // 方法2：单独选择器
+    const searches = useSearchStore((state) => state.searches);
+    const activeSearch = useSearchStore((state) => state.activeSearch);
+
+    // 方法3：使用 useMemo 和 useCallback
+    const memoizedSearches = useMemo(() => searches, [searches]);
+    const handleUpdateSearch = useCallback((update) => {
+        useSearchStore.getState().updateActiveSearch(update);
+    }, []);
+}
+```
+
+### Zustand 性能优化建议：
+
+1. **使用选择器**
+
+```typescript
+// 精确控制订阅的状态
+const searches = useSearchStore((state) => state.searches);
+const activeSearchId = useSearchStore((state) => state.activeSearch?.id);
+```
+
+2. **避免不必要的状态**
+
+```typescript
+// 不要在 store 中存储派生状态
+const useSearchStore = create((set) => ({
+    // ❌ 不推荐
+    searchCount: state.searches.length,
+
+    // ✅ 推荐
+    // 需要时再计算
+    getSearchCount: () => useSearchStore.getState().searches.length,
+}));
+```
+
+3. **拆分 Store**
+
+```typescript
+// 将不同职责的状态拆分到不同的 store
+const useSearchStore = create((set) => ({
+    searches: [],
+    // 搜索相关状态
+}));
+
+const useUIStore = create((set) => ({
+    isLoading: false,
+    // UI 相关状态
+}));
+```
+
+## 总结：
+
+Zustand 默认行为会导致状态变化时全量更新。通过以下方法可以优化：
+
+-   使用 `shallow` 比较
+-   使用精确的选择器
+-   每次更新只更新强相关的，粒度最小的状态
+-   合理设计 Store 结构
+-   使用 `useMemo` 和 `useCallback`
+
+希望这篇文章 对使用 Zustand的小伙伴有帮助。
