@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 import { absoluteUrl, cn, formatDate } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
-import { PageGenUrl, siteConfig } from '@/config';
+import { siteConfig } from '@/config';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import { type Locale, routing } from '@/i18n/routing';
 import { ProductFooter } from '@/components/layout/product-footer';
@@ -100,14 +100,14 @@ export default async function PostPage({ params }: PostPageProps) {
                         Published on {formatDate(post.date)}
                     </time>
                 )}
-                <h1 className="mt-2 inline-block  font-heading text-2xl leading-tight">{post.title}</h1>
+                <h1 className="mt-2 inline-block font-heading text-2xl leading-tight font-bold">{post.title}</h1>
             </div>
             {post.image && (
                 <Image src={post.image} alt={post.title} width={720} height={405} className="my-8 rounded-md border bg-muted transition-colors" priority />
             )}
             <Mdx code={post.body.code} />
 
-            <ProductFooter/>
+            <ProductFooter />
             <div className="flex justify-center py-10">
                 <Link href="/blog" prefetch={false} className={cn(buttonVariants({ size: 'lg', rounded: 'full' }), 'gap-2')}>
                     See all posts

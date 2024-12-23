@@ -1,0 +1,202 @@
+---
+title: 利用 PageGen + Resend 替换 Featurebase
+description: 为什么以及如何使用 PageGen + Resend 替换 Featurebase
+image: https://fal.media/files/lion/esh4TXXmeysMuX8QMSxTD_image.webp
+date: '2024-12-23'
+---
+
+## 1 Featurebase 是什么
+
+[Featurebase](https://www.featurebase.app/) 是一个用户反馈工具，但是有很多附加功能，比如 Changelog, Roadmap。MemFree 主要用到了 Featurebase的Feedback,Changelog 和 Roadmap 功能
+
+## 2 PageGen 是什么
+
+[PageGen](https://pagegen.ai/) 是可以 AI Page Generator, 支持从文本，截图，模板一键生成精美的网页。PageGen 使用 Claude AI，并使用React, Shadcn UI, Twilwind 等最流行的技术栈生成网页。 PageGen 内置了大量精美的网页模板。
+
+## 3 Resend 是什么
+
+[Resend](https://resend.com/) 是可以对开发者优化的邮件发送服务，每月可以免费发送3000封邮件。
+
+## 4 为什么要替换 Featurebase
+
+-   太贵了。 Featurebase 的 Starter 版本就需要49 美金，但是并没有带来真实的额外价值
+-   性能差。 集成 Featurebase 会给网页本身带来不小的性能开销
+-   独立的用户管理系统。 使用 Featurebase 时，需要将我们的网站用户信息和 Featurebase 的用户系统打通，这很不方便
+
+## 5 如何用 PageGen + Resend 替换 Featurebase
+
+### 5.1 利用 NextJS + Resend 替换 Featurebase Feedback 功能
+
+Feedback 功能主要由 Feedback 页面和 Feedback API 两部分组成，我们会在 Feedback API 中将用户的 Feedback 信息发送到我们的邮箱
+
+#### 5.1.1 Feedback 页面 实现
+
+```ts
+        <div className="bg-background px-4 py-10">
+            <div className="max-w-2xl mx-auto">
+                <div className="space-y-6">
+                    <div>
+                        <h1 className="text-3xl font-bold tracking-tight">MemFree Feedback</h1>
+                        <p className="text-muted-foreground mt-2">We value your feedback. Please share your thoughts with us.</p>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="space-y-4">
+                            <div>
+                                <label htmlFor="name" className="block text-sm font-medium mb-2">
+                                    Name
+                                </label>
+                                <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your name" />
+                            </div>
+
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium mb-2">
+                                    Email
+                                </label>
+                                <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" />
+                            </div>
+
+                            <div>
+                                <label htmlFor="type" className="block text-sm font-medium mb-2">
+                                    Feedback Type
+                                </label>
+                                <Select value={type} onValueChange={setType}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select feedback type" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="bug">Bug Report</SelectItem>
+                                        <SelectItem value="feature">Feature Request</SelectItem>
+                                        <SelectItem value="improvement">Improvement</SelectItem>
+                                        <SelectItem value="pricing">Pricing</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div>
+                                <label htmlFor="content" className="block text-sm font-medium mb-2">
+                                    Your Feedback
+                                </label>
+                                <Textarea
+                                    id="content"
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                    placeholder="Please share your feedback here..."
+                                    className="min-h-[150px]"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label htmlFor="content" className="block text-sm font-medium mb-2">
+                                Screenshot
+                            </label>
+                            <ImageUploader value={''} onChange={(e) => setFile(e)} showGeneratedImage={false} />
+                        </div>
+
+                        <Button type="submit" className="w-full md:w-auto rounded-full">
+                            {loading ? (
+                                <Icons.spinner size={20} strokeWidth={2} className="animate-spin" />
+                            ) : (
+                                <div className="items-center flex space-x-2 justify-center">
+                                    <span className="font-serif text-sm">Submit Feedback</span>
+                                    <SendHorizonal className="size-4" />
+                                </div>
+                            )}
+                        </Button>
+                    </form>
+                </div>
+            </div>
+        </div>
+```
+
+完成代码实现在 [MemFree feedback.tsx](https://github.com/memfreeme/memfree/blob/main/frontend/components/layout/feedback.tsx)
+
+#### 5.1.2 Feedback API 实现
+
+```ts
+// app/api/feedback/route.ts
+import { NextResponse } from 'next/server';
+
+interface FeedbackData {
+    name: string;
+    email: string;
+    message: string;
+    type: string;
+    file?: string;
+}
+
+export const runtime = 'edge';
+
+export async function POST(request: Request) {
+    try {
+        const email = process.env.FEEDBACK_EMAIL;
+        console.log('email', email);
+        const data: FeedbackData = await request.json();
+
+        const res = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.AUTH_RESEND_KEY}`,
+            },
+            body: JSON.stringify({
+                from: 'MemFree <email@email.memfree.me>',
+                to: email,
+                subject: `MemFree FeedBack - From ${data.name}`,
+                html: `
+          <h2>New FeedBack</h2>
+          <p><strong>Name: </strong> ${data.name}</p>
+          <p><strong>Email</strong> ${data.email}</p>
+          <p><strong>Type</strong> ${data.type}</p>
+          <p><strong>Image: </strong> ${data.file}</p>
+          <img src=${data.file}> </img>
+          <p><strong>Messages:</strong></p>
+          <p>${data.message}</p>
+        `,
+            }),
+        });
+
+        if (!res.ok) {
+            console.error('Failed to send feedback email:', await res.text());
+            return NextResponse.json({ error: 'failed' }, { status: 500 });
+        }
+
+        return NextResponse.json({ status: 200 });
+    } catch (error) {
+        console.error('Failed to send feedback email:', error);
+        return NextResponse.json({ error: 'failed' }, { status: 500 });
+    }
+}
+```
+
+完成代码实现在 [MemFree feedback API](https://github.com/memfreeme/memfree/blob/main/frontend/app/api/feedback/route.ts)
+
+### 5.2 利用 PageGen ChangeLog 页面 替换 Featurebase ChangeLog 功能
+
+**在线实例**：
+
+-   [PageGen ChangeLog](https://pagegen.ai/changelog)
+-   [MemFree ChangeLog](https://www.memfree.me/changelog)
+
+**如何利用 PageGen 生成 ChangeLog 页面**：
+
+可以参考 [Generate Page with PageGen Templates](https://pagegen.ai/how-to-generate-travel-landing-page)
+
+只需要输入必要的信息，就可以一键生成你的 ChangeLog 页面，并支持在线直接修改 AI 生成的内容
+
+### 5.3 利用 PageGen Roadmap 页面 替换 Featurebase ChangeLog 功能
+
+**在线实例**：
+
+-   [MemFree Roadmap](https://www.memfree.me/roadmap)
+
+**如何利用 PageGen 生成 Roadmap 页面**：
+
+可以参考 [Generate Page with PageGen Templates](https://pagegen.ai/how-to-generate-travel-landing-page)
+
+只需要输入必要的信息，就可以一键生成你的 Roadmap 页面，并支持在线直接修改 AI 生成的内容
+
+## 6 总结
+
+利用 PageGen + Resend 替换 Featurebase 后，你就可以将 Featurebase 每月至少49美金的费用减到零。

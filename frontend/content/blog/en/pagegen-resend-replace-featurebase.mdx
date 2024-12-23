@@ -1,0 +1,202 @@
+---
+title: Replacing Featurebase with PageGen + Resend
+description: Why and how to use PageGen + Resend to replace Featurebase
+image: https://fal.media/files/lion/esh4TXXmeysMuX8QMSxTD_image.webp
+date: '2024-12-23'
+---
+
+## 1 What is Featurebase
+
+[Featurebase](https://www.featurebase.app/) is a user feedback tool that comes with many additional features, such as Changelog and Roadmap. MemFree primarily utilizes Featurebase's Feedback, Changelog, and Roadmap features.
+
+## 2 What is PageGen
+
+[PageGen](https://pagegen.ai/) is an AI Page Generator that allows you to create beautiful web pages from text, screenshots, and templates with just one click. PageGen uses Claude AI and popular tech stacks like React, Shadcn UI, and Twilwind to generate web pages. It comes with a large number of beautiful web templates built-in.
+
+## 3 What is Resend
+
+[Resend](https://resend.com/) is an email sending service optimized for developers, allowing you to send 3000 emails for free each month.
+
+## 4 Why Replace Featurebase
+
+-   **Too Expensive**: The Starter version of Featurebase costs $49, which does not provide real additional value.
+-   **Poor Performance**: Integrating Featurebase brings considerable performance overhead to the webpage.
+-   **Separate User Management System**: When using Featurebase, we need to connect our website's user information with Featurebase's user system, which is inconvenient.
+
+## 5 How to Replace Featurebase with PageGen + Resend
+
+### 5.1 Replacing Featurebase Feedback Functionality with NextJS + Resend
+
+The Feedback functionality consists of two parts: the Feedback page and the Feedback API. We will send user Feedback information to our email through the Feedback API.
+
+#### 5.1.1 Implementing the Feedback Page
+
+```ts
+        <div className="bg-background px-4 py-10">
+            <div className="max-w-2xl mx-auto">
+                <div className="space-y-6">
+                    <div>
+                        <h1 className="text-3xl font-bold tracking-tight">MemFree Feedback</h1>
+                        <p className="text-muted-foreground mt-2">We value your feedback. Please share your thoughts with us.</p>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="space-y-4">
+                            <div>
+                                <label htmlFor="name" className="block text-sm font-medium mb-2">
+                                    Name
+                                </label>
+                                <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your name" />
+                            </div>
+
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium mb-2">
+                                    Email
+                                </label>
+                                <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" />
+                            </div>
+
+                            <div>
+                                <label htmlFor="type" className="block text-sm font-medium mb-2">
+                                    Feedback Type
+                                </label>
+                                <Select value={type} onValueChange={setType}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select feedback type" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="bug">Bug Report</SelectItem>
+                                        <SelectItem value="feature">Feature Request</SelectItem>
+                                        <SelectItem value="improvement">Improvement</SelectItem>
+                                        <SelectItem value="pricing">Pricing</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div>
+                                <label htmlFor="content" className="block text-sm font-medium mb-2">
+                                    Your Feedback
+                                </label>
+                                <Textarea
+                                    id="content"
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                    placeholder="Please share your feedback here..."
+                                    className="min-h-[150px]"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label htmlFor="content" className="block text-sm font-medium mb-2">
+                                Screenshot
+                            </label>
+                            <ImageUploader value={''} onChange={(e) => setFile(e)} showGeneratedImage={false} />
+                        </div>
+
+                        <Button type="submit" className="w-full md:w-auto rounded-full">
+                            {loading ? (
+                                <Icons.spinner size={20} strokeWidth={2} className="animate-spin" />
+                            ) : (
+                                <div className="items-center flex space-x-2 justify-center">
+                                    <span className="font-serif text-sm">Submit Feedback</span>
+                                    <SendHorizonal className="size-4" />
+                                </div>
+                            )}
+                        </Button>
+                    </form>
+                </div>
+            </div>
+        </div>
+```
+
+The complete code implementation can be found at [MemFree feedback.tsx](https://github.com/memfreeme/memfree/blob/main/frontend/components/layout/feedback.tsx).
+
+#### 5.1.2 Implementing the Feedback API
+
+```ts
+// app/api/feedback/route.ts
+import { NextResponse } from 'next/server';
+
+interface FeedbackData {
+    name: string;
+    email: string;
+    message: string;
+    type: string;
+    file?: string;
+}
+
+export const runtime = 'edge';
+
+export async function POST(request: Request) {
+    try {
+        const email = process.env.FEEDBACK_EMAIL;
+        console.log('email', email);
+        const data: FeedbackData = await request.json();
+
+        const res = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.AUTH_RESEND_KEY}`,
+            },
+            body: JSON.stringify({
+                from: 'MemFree <email@email.memfree.me>',
+                to: email,
+                subject: `MemFree FeedBack - From ${data.name}`,
+                html: `
+          <h2>New FeedBack</h2>
+          <p><strong>Name: </strong> ${data.name}</p>
+          <p><strong>Email</strong> ${data.email}</p>
+          <p><strong>Type</strong> ${data.type}</p>
+          <p><strong>Image: </strong> ${data.file}</p>
+          <img src=${data.file}> </img>
+          <p><strong>Messages:</strong></p>
+          <p>${data.message}</p>
+        `,
+            }),
+        });
+
+        if (!res.ok) {
+            console.error('Failed to send feedback email:', await res.text());
+            return NextResponse.json({ error: 'failed' }, { status: 500 });
+        }
+
+        return NextResponse.json({ status: 200 });
+    } catch (error) {
+        console.error('Failed to send feedback email:', error);
+        return NextResponse.json({ error: 'failed' }, { status: 500 });
+    }
+}
+```
+
+The complete code implementation can be found at [MemFree feedback API](https://github.com/memfreeme/memfree/blob/main/frontend/app/api/feedback/route.ts).
+
+### 5.2 Replacing Featurebase Changelog Functionality with PageGen Changelog Page
+
+**Online Examples**:
+
+-   [PageGen Changelog](https://pagegen.ai/changelog)
+-   [MemFree Changelog](https://www.memfree.me/changelog)
+
+**How to Use PageGen to Generate a Changelog Page**:
+
+You can refer to [Generate Page with PageGen Templates](https://pagegen.ai/how-to-generate-travel-landing-page).
+
+Just input the necessary information, and you can generate your Changelog page with just one click, allowing for real-time edits to the AI-generated content.
+
+### 5.3 Replacing Featurebase Roadmap Functionality with PageGen Roadmap Page
+
+**Online Example**:
+
+-   [MemFree Roadmap](https://www.memfree.me/roadmap)
+
+**How to Use PageGen to Generate a Roadmap Page**:
+
+You can refer to [Generate Page with PageGen Templates](https://pagegen.ai/how-to-generate-travel-landing-page).
+
+Simply enter the necessary information, and you can create your Roadmap page with a single click, with online editing capabilities for the AI-generated content.
+
+## 6 Conclusion
+
+By utilizing PageGen + Resend to replace Featurebase, you can reduce your costs from at least $49 per month down to zero.
