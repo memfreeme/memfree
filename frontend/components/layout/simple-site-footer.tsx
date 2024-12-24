@@ -50,6 +50,39 @@ export function SimpleSiteFooter() {
                 <span className="text-gray-300">|</span>
                 <Link
                     className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:font-semibold"
+                    href="/blog"
+                    target="_blank"
+                    aria-label="MemFree Docs"
+                    data-umami-event="Doc Link Click"
+                    prefetch={false}
+                >
+                    Blog
+                </Link>
+                <span className="text-gray-300">|</span>
+                <Link
+                    className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:font-semibold"
+                    href="/changelog"
+                    target="_blank"
+                    aria-label="MemFree Docs"
+                    data-umami-event="Doc Link Click"
+                    prefetch={false}
+                >
+                    ChangeLog
+                </Link>
+                <span className="text-gray-300">|</span>
+                <Link
+                    className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:font-semibold"
+                    href="/roadmap"
+                    target="_blank"
+                    aria-label="MemFree Docs"
+                    data-umami-event="Doc Link Click"
+                    prefetch={false}
+                >
+                    Roadmap
+                </Link>
+                <span className="text-gray-300">|</span>
+                <Link
+                    className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:font-semibold"
                     href={siteConfig.links.twitter}
                     target="_blank"
                     rel="noopener noreferrer"

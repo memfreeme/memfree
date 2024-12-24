@@ -18,7 +18,7 @@ export const PageGenUrl = 'https://pagegen.ai';
 export const AhaToolUrl = 'https://www.ahatool.ai';
 export const StorySnapUrl = 'https://www.snapstoryai.com';
 export const SearchUrl = 'https://www.memfree.me';
-export const ReactShadcnUrl = 'https://reactshadcn.com';
+export const ImageGenerateUrl = 'https://pagegen.ai/generate-image';
 
 export const siteConfig: SiteConfig = {
     name: 'MemFree',
@@ -36,6 +36,10 @@ export const siteConfig: SiteConfig = {
 
 export const mainNavConfig: MarketingConfig = {
     mainNav: [
+        {
+            title: 'AI Search',
+            href: '/',
+        },
         {
             title: 'Pricing',
             href: '/pricing',
