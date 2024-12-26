@@ -90,3 +90,19 @@ export function extractErrorMessage(error: unknown): string {
         return String(error);
     }
 }
+
+// Replace the util.format function with this one, this method could work on edge environment
+export function format(template, ...args) {
+    if (args.length === 0) return template;
+
+    if (args.length === 1 && typeof args[0] === 'object') {
+        return template.replace(/%[sdj]/g, (match) => String(args[0]));
+    }
+
+    let index = 0;
+    return template.replace(/%[sdj]/g, () => {
+        if (index >= args.length) return '';
+        const arg = args[index++];
+        return String(arg);
+    });
+}
