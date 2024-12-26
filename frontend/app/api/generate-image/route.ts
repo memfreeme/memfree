@@ -5,6 +5,8 @@ import { handleRateLimit } from '@/lib/ratelimit';
 import { fal } from '@fal-ai/client';
 import { generatePrompt } from '@/lib/tools/improve-image-prompt';
 import { logError } from '@/lib/log';
+import { saveImage } from '@/lib/store/image';
+import { generateId } from '@/lib/shared-utils';
 
 export const runtime = 'edge';
 
@@ -68,7 +70,14 @@ export async function POST(req: NextRequest) {
             },
         });
         const image = result.data?.images?.[0]?.url;
-        // console.log('image', image);
+        await saveImage({
+            id: generateId(),
+            userId,
+            isPublic: false,
+            prompt,
+            createdAt: new Date(),
+            imageUrl: image,
+        });
         return NextResponse.json({ image });
     } catch (error) {
         console.error('Error generating image:', error);

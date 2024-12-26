@@ -7,14 +7,12 @@ import { Redis } from '@upstash/redis';
 import { auth } from '@/auth';
 import { log } from '@/lib/log';
 import { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } from '@/lib/env';
+import { SEARCH_KEY, USER_SEARCH_KEY } from '@/lib/db';
 
 const redis = new Redis({
     url: UPSTASH_REDIS_REST_URL || '',
     token: UPSTASH_REDIS_REST_TOKEN || '',
 });
-
-const SEARCH_KEY = 'search:';
-const USER_SEARCH_KEY = 'user:search:';
 
 export async function getSearches(userId: string, offset: number = 0, limit: number = 20) {
     console.log('getSearches all userId', userId, offset, limit);

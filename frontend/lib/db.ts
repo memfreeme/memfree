@@ -3,6 +3,13 @@ import { Redis } from '@upstash/redis';
 import { ScoredURL, User } from '@/lib/types';
 import { UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN } from '@/lib/env';
 
+export const SEARCH_KEY = 'search:';
+export const USER_SEARCH_KEY = 'user:search:';
+
+export const IMAGE_KEY = 'image:';
+export const USER_IMAGE_KEY = 'user:image:';
+export const PUBLIC_IMAGE_KEY = 'public:image:';
+
 // search cache
 export const CACHE_KEY = 'cache:';
 
