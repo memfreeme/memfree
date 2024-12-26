@@ -1,9 +1,8 @@
-// components/AIImageGenerator.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
-import { Check, Palette } from 'lucide-react';
+import { Check, Loader2, Palette } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -14,11 +13,8 @@ import { Label } from '@/components/ui/label';
 import ImageUseCaseSelector from '@/components/image/image-use-case-selector';
 import { useSigninModal } from '@/hooks/use-signin-modal';
 import { useUserStore } from '@/lib/store/local-store';
-
-interface AIImageGeneratorProps {
-    onImageGenerated: (imageUrl: string) => void;
-    onCancel?: () => void;
-}
+import useCopyToClipboard from '@/hooks/use-copy-clipboard';
+import { useDownloadImage } from '@/hooks/use-download-image';
 
 const imageStyles = [
     { value: 'digital_illustration', label: 'Digital' },
@@ -36,7 +32,7 @@ const imageColors = [
     { value: 'violet', name: 'Violet', color: 'bg-violet-500' },
 ];
 
-export function AIImageGenerator({ onImageGenerated, onCancel }: AIImageGeneratorProps) {
+export function AIImageGenerator() {
     const [prompt, setPrompt] = useState('');
     const [useCase, setUseCase] = useState('social_media_post');
     const [style, setStyle] = useState('realistic_image');
@@ -47,6 +43,7 @@ export function AIImageGenerator({ onImageGenerated, onCancel }: AIImageGenerato
     const [showText, setShowText] = useState(true);
     const user = useUserStore((state) => state.user);
     const signInModal = useSigninModal();
+    const { hasCopied, copyToClipboard } = useCopyToClipboard();
 
     const [imageSize, setImageSize] = useState({
         selectedSize: 'landscape',
@@ -54,13 +51,15 @@ export function AIImageGenerator({ onImageGenerated, onCancel }: AIImageGenerato
         height: '576',
     });
 
+    const handleCopy = useCallback(() => {
+        copyToClipboard(generatedImage);
+    }, [generatedImage, copyToClipboard]);
+
     const handleSizeChange = (size: { selectedSize: string; width: string; height: string }) => {
         setImageSize(size);
     };
 
     const handleUseCaseChange = (useCase) => {
-        console.log(useCase.selectedUseCase);
-        console.log(useCase.customUseCase);
         if (useCase.selectedUseCase === 'custom') {
             setUseCase(useCase.customUseCase || 'social_media_post');
         } else {
@@ -68,6 +67,8 @@ export function AIImageGenerator({ onImageGenerated, onCancel }: AIImageGenerato
         }
         console.log('Use case changed', useCase);
     };
+
+    const { downloadImage, isDownloading } = useDownloadImage();
 
     const handleGenerateImage = async () => {
         if (!prompt) return;
@@ -223,7 +224,7 @@ export function AIImageGenerator({ onImageGenerated, onCancel }: AIImageGenerato
             {isGenerating && (
                 <div className="space-y-2">
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
-                        <div className="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out" style={{ width: `${progress}%` }}></div>
+                        <div className="bg-primary h-2.5 rounded-full transition-all duration-300 ease-out" style={{ width: `${progress}%` }}></div>
                     </div>
                     <p className="text-sm text-muted-foreground text-center animate-pulse">
                         {progress < 30
@@ -246,13 +247,22 @@ export function AIImageGenerator({ onImageGenerated, onCancel }: AIImageGenerato
                             Regenerate
                         </Button>
 
-                        {/* <Button onClick={() => onImageGenerated(generatedImage)}>Save Image</Button> */}
+                        <Button onClick={handleCopy}>{hasCopied ? 'Copied' : 'Copy Image Link'}</Button>
 
-                        {onCancel && (
-                            <Button variant="outline" onClick={onCancel}>
-                                Cancel
-                            </Button>
-                        )}
+                        <Button
+                            variant="secondary"
+                            onClick={() => downloadImage(generatedImage, `memfree-generate-image-${Date.now()}.png`)}
+                            disabled={isDownloading}
+                        >
+                            {isDownloading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Downloading...
+                                </>
+                            ) : (
+                                'Download Image'
+                            )}
+                        </Button>
                     </div>
                 </div>
             )}
