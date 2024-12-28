@@ -3,10 +3,10 @@ import 'server-only';
 import { CoreMessage, CoreUserMessage, ImagePart, LanguageModel, TextPart } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from '@ai-sdk/anthropic';
-import { Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/model';
+import { Claude_35_Sonnet, DEEPSEEK, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/model';
 import { google } from '@ai-sdk/google';
 import { Message } from '@/lib/types';
-import { OPENAI_BASE_URL } from '@/lib/env';
+import { DEEPSEEK_API_KEY, OPENAI_BASE_URL } from '@/lib/env';
 
 export type RoleType = 'user' | 'assistant' | 'system';
 
@@ -35,6 +35,12 @@ export function getMaxOutputToken(isPro: boolean, model: string) {
 const openai = createOpenAI({
     baseURL: OPENAI_BASE_URL,
 });
+
+const deepseek = createOpenAI({
+    baseURL: 'https://api.deepseek.com/v1',
+    apiKey: DEEPSEEK_API_KEY,
+});
+
 const anthropic = createAnthropic({});
 
 export function getLLM(model: string): LanguageModel {
@@ -44,6 +50,8 @@ export function getLLM(model: string): LanguageModel {
         });
     } else if (model.startsWith('models/gemini')) {
         return google(model);
+    } else if (model == DEEPSEEK) {
+        return deepseek(model);
     } else {
         return openai(model);
     }

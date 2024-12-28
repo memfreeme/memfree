@@ -80,7 +80,7 @@ export async function autoAnswer(
             profileInstructions = util.format(ProfilePrompt, profile);
         }
 
-        console.log('questionLanguage', questionLanguage);
+        // console.log('questionLanguage', questionLanguage);
         let searchWebInstructions = '';
         if (questionLanguage !== 'auto') {
             searchWebInstructions = util.format(WebSearchPromptWithTranslate, questionLanguage);
@@ -88,7 +88,7 @@ export async function autoAnswer(
             searchWebInstructions = WebSearchPrompt;
         }
 
-        console.log('answerLanguage', answerLanguage);
+        // console.log('answerLanguage', answerLanguage);
         let languageInstructions = '';
         if (answerLanguage !== 'auto') {
             languageInstructions = util.format(UserLanguagePrompt, answerLanguage);
@@ -97,7 +97,7 @@ export async function autoAnswer(
         }
 
         const systemPrompt = util.format(AutoAnswerPrompt, searchWebInstructions, profileInstructions, languageInstructions);
-        console.log('system prompt', systemPrompt);
+        // console.log('system prompt', systemPrompt);
 
         const userMessages = convertToCoreMessages(newMessages);
         const maxTokens = getMaxOutputToken(isPro, model);

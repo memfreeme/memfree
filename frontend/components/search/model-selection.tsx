@@ -4,7 +4,7 @@ import { RowSelectItem, Select, SelectContent, SelectItem, SelectTrigger, Select
 import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store/local-store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { Claude_35_Haiku, Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/model';
+import { Claude_35_Haiku, Claude_35_Sonnet, DEEPSEEK, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/model';
 import { isProUser, isPremiumUser } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
@@ -18,6 +18,11 @@ export const modelMap: Record<string, Model> = {
     [GPT_4o_MIMI]: {
         name: 'GPT-4o mini',
         value: GPT_4o_MIMI,
+    },
+    [DEEPSEEK]: {
+        name: 'DeepSeek V3',
+        flag: 'New & Fastest',
+        value: DEEPSEEK,
     },
     [GPT_4o]: {
         name: 'GPT-4o',
@@ -46,15 +51,23 @@ export const modelMap: Record<string, Model> = {
     },
 };
 
+const getFlagClassName = (flag: string) => {
+    if (!flag) {
+        return '';
+    }
+    if (flag?.toLowerCase().includes('new')) {
+        return 'text-green-600 bg-green-200 rounded-xl px-2';
+    }
+    if (flag === 'Pro' || flag === 'Premium') {
+        return 'text-primary bg-purple-300 rounded-xl px-2';
+    }
+};
+
 const ModelItem: React.FC<{ model: Model }> = ({ model }) => (
     <RowSelectItem key={model.value} value={model.value} className="w-full p-2 block">
         <div className="flex w-full justify-between">
             <span className="text-md mr-2">{model.name}</span>
-            <span
-                className={`text-xs flex items-center justify-center ${model.flag === 'Pro' || model.flag === 'Premium' ? ' text-primary bg-purple-300 rounded-xl px-2' : ''}`}
-            >
-                {model.flag}
-            </span>
+            <span className={`text-xs flex items-center justify-center ${getFlagClassName(model.flag)}`}>{model.flag}</span>
         </div>
     </RowSelectItem>
 );

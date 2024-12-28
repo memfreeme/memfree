@@ -1,10 +1,6 @@
 import 'server-only';
 
-const {
-  VECTOR_INDEX_HOST: indexHost,
-  VECTOR_HOST: vectorHost,
-  MEMFREE_HOST: memfreeHost,
-} = process.env;
+const { VECTOR_INDEX_HOST: indexHost, VECTOR_HOST: vectorHost, MEMFREE_HOST: memfreeHost } = process.env;
 
 // Set VECTOR_INDEX_HOST with precedence
 export let VECTOR_INDEX_HOST = indexHost || vectorHost || (memfreeHost ? `${memfreeHost}/vector` : '');
@@ -25,6 +21,8 @@ export const UPSTASH_REDIS_REST_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || 
 export const SERPER_API_KEY = process.env.SERPER_API_KEY;
 export const EXA_API_KEY = process.env.EXA_API_KEY || '';
 export const OPENAI_BASE_URL = process.env.OPENAI_BASE_URL ?? 'https://api.openai.com/v1';
+export const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
+export const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || '';
 
 // Log
 export const AXIOM_TOKEN = process.env.AXIOM_TOKEN || '';
