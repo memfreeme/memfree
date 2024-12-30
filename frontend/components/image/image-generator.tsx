@@ -15,6 +15,7 @@ import { useSigninModal } from '@/hooks/use-signin-modal';
 import { useUserStore } from '@/lib/store/local-store';
 import useCopyToClipboard from '@/hooks/use-copy-clipboard';
 import { useDownloadImage } from '@/hooks/use-download-image';
+import { isProUser } from '@/lib/shared-utils';
 
 const imageStyles = [
     { value: 'digital_illustration', label: 'Digital' },
@@ -42,6 +43,7 @@ export function AIImageGenerator() {
     const [progress, setProgress] = useState(0);
     const [showText, setShowText] = useState(true);
     const user = useUserStore((state) => state.user);
+    const [isPublic, setIsPublic] = useState(true);
     const signInModal = useSigninModal();
     const { hasCopied, copyToClipboard } = useCopyToClipboard();
 
@@ -68,6 +70,15 @@ export function AIImageGenerator() {
         console.log('Use case changed', useCase);
     };
 
+    const handleIspublicChange = (checked) => {
+        if (!isProUser(user)) {
+            toast.error('This feature is only available for Pro users, please upgrade your plan');
+            setIsPublic(true);
+            return;
+        }
+        setIsPublic(checked);
+    };
+
     const { downloadImage, isDownloading } = useDownloadImage();
 
     const handleGenerateImage = async () => {
@@ -92,6 +103,7 @@ export function AIImageGenerator() {
                     style,
                     color: imageColor,
                     size: imageSize,
+                    isPublic: isPublic,
                     showText,
                     useCase: useCase,
                 }),
@@ -215,6 +227,10 @@ export function AIImageGenerator() {
             <div className="flex items-center space-x-2 mb-1">
                 <Switch id="showText" checked={showText} onCheckedChange={(checked) => setShowText(checked)} />
                 <Label htmlFor="showText">Show Text In The Image</Label>
+            </div>
+            <div className="flex items-center space-x-2 mb-1">
+                <Switch id="isPublic" checked={isPublic} onCheckedChange={handleIspublicChange} />
+                <Label htmlFor="isPublic">Public</Label>
             </div>
 
             <Button onClick={handleGenerateImage} disabled={!prompt || isGenerating} className="w-full">

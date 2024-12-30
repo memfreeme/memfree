@@ -6,7 +6,7 @@ import { fal } from '@fal-ai/client';
 import { generatePrompt } from '@/lib/tools/improve-image-prompt';
 import { logError } from '@/lib/log';
 import { saveImage } from '@/lib/store/image';
-import { generateId } from '@/lib/shared-utils';
+import { generateId, isProUser } from '@/lib/shared-utils';
 
 export const runtime = 'edge';
 
@@ -17,6 +17,7 @@ interface RequestBody {
     size?: any;
     showText?: boolean;
     useCase?: string;
+    isPublic?: boolean;
 }
 
 const imageColorToRGB = {
@@ -33,8 +34,10 @@ const imageColorToRGB = {
 export async function POST(req: NextRequest) {
     const session = await auth();
     let userId = '';
+    let isPro = false;
     if (session) {
         userId = session.user.id;
+        isPro = isProUser(session.user);
         const rateLimitResponse = await handleRateLimit(session.user);
         if (rateLimitResponse) {
             return rateLimitResponse;
@@ -48,9 +51,18 @@ export async function POST(req: NextRequest) {
         );
     }
 
-    let { prompt, style, color, size, showText, useCase } = (await req.json()) as RequestBody;
+    let { prompt, style, color, size, showText, useCase, isPublic } = (await req.json()) as RequestBody;
 
-    console.log('prompt', prompt, 'style', style, 'color', color, 'size:', size, 'showText', showText, 'useCase', useCase);
+    if (!isPublic && !isPro) {
+        return NextResponse.json(
+            {
+                error: 'You need to be a pro user to make images private',
+            },
+            { status: 400 },
+        );
+    }
+
+    console.log('prompt', prompt, 'style', style, 'color', color, 'size:', size, 'showText', showText, 'useCase', useCase, 'public', isPublic);
 
     try {
         const newPrompt = await generatePrompt(prompt, showText, useCase);
@@ -74,7 +86,7 @@ export async function POST(req: NextRequest) {
             id: generateId(),
             title: prompt,
             userId,
-            isPublic: false,
+            isPublic: isPublic,
             prompt: newPrompt.replace(/^```\n/, ''),
             createdAt: new Date(),
             imageUrl: image,
