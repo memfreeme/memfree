@@ -28,8 +28,12 @@ export async function getUserImages(userId: string, offset: number = 0, limit: n
         rev: true,
     });
 
+    if (imageIds.length === 0) {
+        return [];
+    }
+
     for (const id of imageIds) {
-        pipeline.hgetall(id);
+        pipeline.hgetall(IMAGE_KEY + id);
     }
 
     const results = await pipeline.exec();
@@ -41,9 +45,13 @@ export async function getLatestPublicImages(offset: number = 0, limit: number = 
         rev: true,
     });
 
+    if (imageIds.length === 0) {
+        return [];
+    }
+
     const pipeline = redisDB.pipeline();
     for (const id of imageIds) {
-        pipeline.hgetall(id);
+        pipeline.hgetall(IMAGE_KEY + id);
     }
 
     const results = await pipeline.exec();

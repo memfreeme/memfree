@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 export default async function Page() {
     return (
         <div className="min-h-screen flex flex-col w-full items-center justify-center bg-gradient-to-b from-primary/[0.04] to-transparen">
-            <h1 className="text-2xl font-bold text-center pt-24 md:pt-32">Generate Image With AI</h1>
+            <h1 className="text-2xl font-bold text-center">Generate Image With AI</h1>
             <div className="container mx-auto px-4 py-12">
                 <AIImageGenerator />
             </div>

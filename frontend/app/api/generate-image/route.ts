@@ -72,9 +72,10 @@ export async function POST(req: NextRequest) {
         const image = result.data?.images?.[0]?.url;
         await saveImage({
             id: generateId(),
+            title: prompt,
             userId,
             isPublic: false,
-            prompt,
+            prompt: newPrompt.replace(/^```\n/, ''),
             createdAt: new Date(),
             imageUrl: image,
         });

@@ -99,6 +99,7 @@ export interface Search extends Record<string, any> {
 export interface GenImage extends Record<string, any> {
     id: string;
     userId: string;
+    title: string;
     prompt: string;
     createdAt: Date;
     isPublic: boolean;

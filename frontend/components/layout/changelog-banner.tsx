@@ -27,7 +27,7 @@ export default function ChangelogBanner() {
                 <p>
                     <span>MemFree Supports DeepSeek-V3 and Google Gemini-2.0 AI Models Now 🎉 </span>
                 </p>
-                <Link href="/changelog" prefetch={false} className="underline">
+                <Link href="/changelog" target="_black" className="underline">
                     Learn More
                 </Link>
             </div>

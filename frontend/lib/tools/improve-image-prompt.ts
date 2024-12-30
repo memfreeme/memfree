@@ -43,7 +43,7 @@ export async function generatePrompt(query: string, showText: boolean, useCase: 
     }
     try {
         const prompt = format(PROMPT, query, useCase, showTextInstructions);
-        // console.log("generatePrompt", prompt);
+        // console.log('generatePrompt', prompt);
         const { text } = await generateText({
             model: getLLM(GPT_4o_MIMI),
             prompt: prompt,
