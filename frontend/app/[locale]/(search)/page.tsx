@@ -7,6 +7,7 @@ import { DemoQuestions } from '@/components/search/demo-questions';
 import { generateId } from '@/lib/shared-utils';
 import { HeroLanding } from '@/components/layout/hero-landing';
 import PromotionBanner from '@/components/layout/banner';
+import ChangelogBanner from '@/components/layout/changelog-banner';
 
 const SearchWindow = dynamic(() => import('@/components/search/search-window'), {
     loading: () => <SearchWindowFallBack />,
@@ -19,6 +20,7 @@ export default async function IndexPage() {
     return (
         <div className="group w-full flex flex-col flex-1 h-lvh mx-auto overflow-auto peer-[[data-state=open]]:lg:pl-[300px] peer-[[data-state=open]]:xl:pl-[320px]">
             {/* <PromotionBanner /> */}
+            <ChangelogBanner />
             <div className="grow">
                 <HeroLanding />
                 <SearchWindow id={id} user={user} initialMessages={[]} demoQuestions={<DemoQuestions />} />

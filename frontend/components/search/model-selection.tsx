@@ -21,7 +21,7 @@ export const modelMap: Record<string, Model> = {
     },
     [DEEPSEEK]: {
         name: 'DeepSeek V3',
-        flag: 'New & Fastest',
+        flag: 'New',
         value: DEEPSEEK,
     },
     [GPT_4o]: {
