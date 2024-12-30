@@ -48,7 +48,7 @@ export function getLLM(model: string): LanguageModel {
         return anthropic(model, {
             cacheControl: true,
         });
-    } else if (model.startsWith('models/gemini')) {
+    } else if (model.startsWith('gemini')) {
         return google(model);
     } else if (model == DEEPSEEK) {
         return deepseek(model);
