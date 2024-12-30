@@ -22,9 +22,9 @@ export default function ChangelogBanner() {
     if (!isVisible) return null;
 
     return (
-        <div className="relative text-sm isolate flex items-center gap-x-6 overflow-hidden bg-primary text-violet-100 px-6 py-2.5 sm:px-3.5">
+        <div className="hidden md:flex relative text-sm isolate  items-center gap-x-6 overflow-hidden bg-primary text-violet-100 px-6 py-2.5 sm:px-3.5">
             <div className="flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-2 font-bold">
-                <p className="leading-6">
+                <p>
                     <span>MemFree Supports DeepSeek-V3 and Google Gemini-2.0 AI Models Now 🎉 </span>
                 </p>
                 <Link href="/changelog" prefetch={false} className="underline">
