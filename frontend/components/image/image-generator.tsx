@@ -16,6 +16,8 @@ import { useUserStore } from '@/lib/store/local-store';
 import useCopyToClipboard from '@/hooks/use-copy-clipboard';
 import { useDownloadImage } from '@/hooks/use-download-image';
 import { isProUser } from '@/lib/shared-utils';
+import { GenImage } from '@/lib/types';
+import ImageCard from '@/components/dashboard/image-card';
 
 const imageStyles = [
     { value: 'digital_illustration', label: 'Digital' },
@@ -33,7 +35,11 @@ const imageColors = [
     { value: 'violet', name: 'Violet', color: 'bg-violet-500' },
 ];
 
-export function AIImageGenerator() {
+interface ImageProps {
+    images?: GenImage[];
+}
+
+export function AIImageGenerator({ images }: ImageProps) {
     const [prompt, setPrompt] = useState('');
     const [useCase, setUseCase] = useState('social_media_post');
     const [style, setStyle] = useState('realistic_image');
@@ -147,142 +153,160 @@ export function AIImageGenerator() {
     }, [isGenerating]);
 
     return (
-        <div className="space-y-6 w-full max-w-3xl mx-auto flex-grow overflow-auto">
-            <div className="space-y-2">
-                <label className="text-sm font-medium">
-                    Image Description
-                    <span className="text-red-500 ml-1">*</span>
-                </label>
-                <TextareaAutosize
-                    value={prompt}
-                    placeholder="Please give some description or keywords for the image"
-                    minRows={3}
-                    maxRows={6}
-                    className="w-full border p-2 text-sm rounded-xl placeholder:text-muted-foreground overflow-y-auto outline-0 ring-0 focus-visible:outline-none focus-visible:ring-0 resize-none"
-                    onChange={(e) => setPrompt(e.target.value)}
-                />
-            </div>
+        <div className="flex flex-col items-center justify-between space-y-20 px-4 mx-auto max-w-7xl">
+            <div className="space-y-6 w-full max-w-3xl mx-auto px-4 flex-grow overflow-auto">
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">
+                        Image Description
+                        <span className="text-red-500 ml-1">*</span>
+                    </label>
+                    <TextareaAutosize
+                        value={prompt}
+                        placeholder="Please give some description or keywords for the image"
+                        minRows={3}
+                        maxRows={6}
+                        className="w-full border p-2 text-sm rounded-xl placeholder:text-muted-foreground overflow-y-auto outline-0 ring-0 focus-visible:outline-none focus-visible:ring-0 resize-none"
+                        onChange={(e) => setPrompt(e.target.value)}
+                    />
+                </div>
 
-            <div className="space-y-2">
-                <label className="text-sm font-medium">Image Use Case</label>
-                <ImageUseCaseSelector onUseCaseChange={handleUseCaseChange} />
-            </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">Image Use Case</label>
+                    <ImageUseCaseSelector onUseCaseChange={handleUseCaseChange} />
+                </div>
 
-            <div className="space-y-2">
-                <label className="text-sm font-medium">Image Style</label>
-                <Select value={style} onValueChange={setStyle}>
-                    <SelectTrigger>
-                        <SelectValue placeholder="Select Style" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {imageStyles.map((imageStyle) => (
-                            <SelectItem key={imageStyle.value} value={imageStyle.value}>
-                                {imageStyle.label}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-            </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">Image Style</label>
+                    <Select value={style} onValueChange={setStyle}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select Style" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {imageStyles.map((imageStyle) => (
+                                <SelectItem key={imageStyle.value} value={imageStyle.value}>
+                                    {imageStyle.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
 
-            <div className="space-y-2">
-                <label className="text-sm font-medium">Image Size</label>
-                <ImageSizeSelector onSizeChange={handleSizeChange} />
-            </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">Image Size</label>
+                    <ImageSizeSelector onSizeChange={handleSizeChange} />
+                </div>
 
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <div className="flex flex-col space-y-2">
-                        <label className="text-sm font-medium">Image Color</label>
-                        <div className="flex items-center gap-2">
-                            <Button variant="outline" size="icon" className="size-7 rounded-[6px]">
-                                <Palette className="size-4" />
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <div className="flex flex-col space-y-2">
+                            <label className="text-sm font-medium">Image Color</label>
+                            <div className="flex items-center gap-2">
+                                <Button variant="outline" size="icon" className="size-7 rounded-[6px]">
+                                    <Palette className="size-4" />
+                                </Button>
+                                <Button variant="outline" className="h-7 px-2 rounded-[6px] flex items-center gap-2">
+                                    <div
+                                        className={`size-4 rounded-full ${imageColor ? imageColors.find((c) => c.value === imageColor)?.color : 'bg-gray-300'}`}
+                                    />
+                                    <span className="text-xs">{imageColor ? imageColors.find((c) => c.value === imageColor)?.name : 'Auto'}</span>
+                                </Button>
+                            </div>
+                        </div>
+                    </DropdownMenuTrigger>
+
+                    <DropdownMenuContent align="start" className="w-72">
+                        <div className="grid grid-cols-2 gap-4 p-2">
+                            {imageColors.map((color) => (
+                                <DropdownMenuItem
+                                    key={color.value}
+                                    onClick={() => setImageColor(color.value)}
+                                    className="group flex items-center gap-1 cursor-pointer p-2 min-w-[100px] hover:bg-accent hover:text-accent-foreground"
+                                >
+                                    <div className="flex items-center justify-center w-8">
+                                        <div
+                                            className={`size-6 rounded-full ${color.color} shrink-0 ring-1 ring-border group-hover:ring-border/60 transition-shadow duration-200`}
+                                            aria-hidden="true"
+                                        />
+                                    </div>
+                                    <span className="flex-1 truncate text-sm">{color.name}</span>
+                                    {imageColor === color.value && <Check className="size-4 shrink-0 ml-auto text-primary" />}
+                                </DropdownMenuItem>
+                            ))}
+                        </div>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+
+                <div className="flex items-center space-x-2 mb-1">
+                    <Switch id="showText" checked={showText} onCheckedChange={(checked) => setShowText(checked)} />
+                    <Label htmlFor="showText">Show Text In The Image</Label>
+                </div>
+                <div className="flex items-center space-x-2 mb-1">
+                    <Switch id="isPublic" checked={isPublic} onCheckedChange={handleIspublicChange} />
+                    <Label htmlFor="isPublic">Public</Label>
+                </div>
+
+                <Button onClick={handleGenerateImage} disabled={!prompt || isGenerating} className="w-full">
+                    {isGenerating ? 'Generating...' : 'Generate Image'}
+                </Button>
+
+                {isGenerating && (
+                    <div className="space-y-2">
+                        <div className="w-full bg-gray-200 rounded-full h-2.5">
+                            <div className="bg-primary h-2.5 rounded-full transition-all duration-300 ease-out" style={{ width: `${progress}%` }}></div>
+                        </div>
+                        <p className="text-sm text-muted-foreground text-center animate-pulse">
+                            {progress < 30
+                                ? 'AI is warming up the creative engines...'
+                                : progress < 60
+                                  ? 'Imagination in progress, almost there...'
+                                  : progress < 90
+                                    ? 'Final touches being added...'
+                                    : 'Image generation is completing...'}
+                        </p>
+                    </div>
+                )}
+
+                {generatedImage && (
+                    <div className="flex flex-col space-y-8">
+                        <img src={generatedImage} alt="Generated Image" className="object-contain rounded-lg" />
+
+                        <div className="flex justify-center space-x-4 items-center">
+                            <Button variant="outline" onClick={handleGenerateImage}>
+                                Regenerate
                             </Button>
-                            <Button variant="outline" className="h-7 px-2 rounded-[6px] flex items-center gap-2">
-                                <div className={`size-4 rounded-full ${imageColor ? imageColors.find((c) => c.value === imageColor)?.color : 'bg-gray-300'}`} />
-                                <span className="text-xs">{imageColor ? imageColors.find((c) => c.value === imageColor)?.name : 'Auto'}</span>
+
+                            <Button onClick={handleCopy}>{hasCopied ? 'Copied' : 'Copy Image Link'}</Button>
+
+                            <Button
+                                variant="secondary"
+                                onClick={() => downloadImage(generatedImage, `memfree-generate-image-${Date.now()}.png`)}
+                                disabled={isDownloading}
+                            >
+                                {isDownloading ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Downloading...
+                                    </>
+                                ) : (
+                                    'Download Image'
+                                )}
                             </Button>
                         </div>
                     </div>
-                </DropdownMenuTrigger>
-
-                <DropdownMenuContent align="start" className="w-72">
-                    <div className="grid grid-cols-2 gap-4 p-2">
-                        {imageColors.map((color) => (
-                            <DropdownMenuItem
-                                key={color.value}
-                                onClick={() => setImageColor(color.value)}
-                                className="group flex items-center gap-1 cursor-pointer p-2 min-w-[100px] hover:bg-accent hover:text-accent-foreground"
-                            >
-                                <div className="flex items-center justify-center w-8">
-                                    <div
-                                        className={`size-6 rounded-full ${color.color} shrink-0 ring-1 ring-border group-hover:ring-border/60 transition-shadow duration-200`}
-                                        aria-hidden="true"
-                                    />
-                                </div>
-                                <span className="flex-1 truncate text-sm">{color.name}</span>
-                                {imageColor === color.value && <Check className="size-4 shrink-0 ml-auto text-primary" />}
-                            </DropdownMenuItem>
-                        ))}
-                    </div>
-                </DropdownMenuContent>
-            </DropdownMenu>
-
-            <div className="flex items-center space-x-2 mb-1">
-                <Switch id="showText" checked={showText} onCheckedChange={(checked) => setShowText(checked)} />
-                <Label htmlFor="showText">Show Text In The Image</Label>
-            </div>
-            <div className="flex items-center space-x-2 mb-1">
-                <Switch id="isPublic" checked={isPublic} onCheckedChange={handleIspublicChange} />
-                <Label htmlFor="isPublic">Public</Label>
+                )}
             </div>
 
-            <Button onClick={handleGenerateImage} disabled={!prompt || isGenerating} className="w-full">
-                {isGenerating ? 'Generating...' : 'Generate Image'}
-            </Button>
-
-            {isGenerating && (
-                <div className="space-y-2">
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
-                        <div className="bg-primary h-2.5 rounded-full transition-all duration-300 ease-out" style={{ width: `${progress}%` }}></div>
-                    </div>
-                    <p className="text-sm text-muted-foreground text-center animate-pulse">
-                        {progress < 30
-                            ? 'AI is warming up the creative engines...'
-                            : progress < 60
-                              ? 'Imagination in progress, almost there...'
-                              : progress < 90
-                                ? 'Final touches being added...'
-                                : 'Image generation is completing...'}
-                    </p>
+            {!generatedImage && images?.length > 0 && (
+                <div className="flex items-center justify-between">
+                    <h2 className="text-3xl font-bold">Latest Generated Public Images</h2>
                 </div>
             )}
 
-            {generatedImage && (
-                <div className="flex flex-col space-y-8">
-                    <img src={generatedImage} alt="Generated Image" className="object-contain rounded-lg" />
-
-                    <div className="flex justify-center space-x-4 items-center">
-                        <Button variant="outline" onClick={handleGenerateImage}>
-                            Regenerate
-                        </Button>
-
-                        <Button onClick={handleCopy}>{hasCopied ? 'Copied' : 'Copy Image Link'}</Button>
-
-                        <Button
-                            variant="secondary"
-                            onClick={() => downloadImage(generatedImage, `memfree-generate-image-${Date.now()}.png`)}
-                            disabled={isDownloading}
-                        >
-                            {isDownloading ? (
-                                <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Downloading...
-                                </>
-                            ) : (
-                                'Download Image'
-                            )}
-                        </Button>
-                    </div>
+            {!generatedImage && images?.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {images.map((item, index) => (
+                        <ImageCard key={item.id} item={item} isPriority={false} ischeck={true} />
+                    ))}
                 </div>
             )}
         </div>

@@ -1,5 +1,6 @@
 import { AIImageGenerator } from '@/components/image/image-generator';
 import { siteConfig } from '@/config';
+import { getLatestPublicImages } from '@/lib/store/image';
 import { Metadata } from 'next/types';
 
 const seoTitle = 'Generate Image With Recraft-v3 AI | MemFree AI';
@@ -23,11 +24,12 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
+    const images = await getLatestPublicImages();
     return (
         <div className="min-h-screen flex flex-col w-full items-center justify-center bg-gradient-to-b from-primary/[0.04] to-transparen">
-            <h1 className="text-2xl font-bold text-center pt-10">Generate Image With AI</h1>
+            <h1 className="text-3xl font-bold text-center pt-10">Generate Image With AI</h1>
             <div className="container mx-auto px-4 py-12">
-                <AIImageGenerator />
+                <AIImageGenerator images={images} />
             </div>
         </div>
     );

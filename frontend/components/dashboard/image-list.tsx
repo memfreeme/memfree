@@ -56,7 +56,7 @@ export const ImageList: React.FC<ImageListProps> = ({ fetcher, images, user }) =
             {items?.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {items.map((item, index) => (
-                        <ImageCard key={item.id} item={item} isPriority={index <= 2} />
+                        <ImageCard key={item.id} item={item} isPriority={index <= 2} ischeck={!user} />
                     ))}
                 </div>
             )}

@@ -10,14 +10,36 @@ import Link from 'next/link';
 import useCopyToClipboard from '@/hooks/use-copy-clipboard';
 import { useDownloadImage } from '@/hooks/use-download-image';
 import { toast } from 'sonner';
+import { useUserStore } from '@/lib/store/local-store';
+import { isProUser } from '@/lib/shared-utils';
 
-const ImageCard = ({ item, isPriority }: { item: GenImage; isPriority: boolean }) => {
+const ImageCard = ({ item, isPriority, ischeck }: { item: GenImage; isPriority: boolean; ischeck: boolean }) => {
     const { copyToClipboard } = useCopyToClipboard();
     const { downloadImage, isDownloading } = useDownloadImage();
+    const user = useUserStore((state) => state.user);
 
     const handleCopyToClipboard = async () => {
+        if (ischeck && !isProUser(user)) {
+            toast.error('You need to be a pro user to copy public image url, please upgrade your plan');
+            return;
+        }
         await copyToClipboard(item.imageUrl);
         toast.success('Image url copied to clipboard');
+    };
+
+    const handleDownloadImage = async () => {
+        if (ischeck && !isProUser(user)) {
+            toast.error('You need to be a pro user to download public images, please upgrade your plan');
+            return;
+        }
+        await downloadImage(item.imageUrl, `memfree-${item.title.substring(0, 50)}.png`);
+    };
+
+    const handlePreview = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (ischeck && !isProUser(user)) {
+            e.preventDefault();
+            toast.error('You need to be a pro user to preview public images, please upgrade your plan');
+        }
     };
 
     return (
@@ -44,7 +66,7 @@ const ImageCard = ({ item, isPriority }: { item: GenImage; isPriority: boolean }
 
             <div className="px-2 pb-4">
                 <div className="grid grid-cols-3 gap-1">
-                    <Link href={item.imageUrl} target="_blank">
+                    <Link href={item.imageUrl} target="_blank" onClick={handlePreview}>
                         <Button variant="outline" size="icon" className="text-xs w-full">
                             <Fullscreen className="w-4 h-4 mr-1" />
                             Preview
@@ -54,12 +76,7 @@ const ImageCard = ({ item, isPriority }: { item: GenImage; isPriority: boolean }
                         <LinkIcon className="w-4 h-4 mr-1" />
                         Copy
                     </Button>
-                    <Button
-                        variant="outline"
-                        className="text-xs"
-                        onClick={() => downloadImage(item.imageUrl, `memfree-${item.title.substring(0, 50)}.png`)}
-                        disabled={isDownloading}
-                    >
+                    <Button variant="outline" className="text-xs" onClick={handleDownloadImage} disabled={isDownloading}>
                         {isDownloading ? (
                             <>
                                 <Loader2 className="mr-1 h-4 w-4 animate-spin" />
