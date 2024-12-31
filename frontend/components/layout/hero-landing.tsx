@@ -1,4 +1,4 @@
-import { AhaToolUrl, PageGenUrl, StorySnapUrl } from '@/config';
+import { ImageGenerateUrl, PageGenUrl } from '@/config';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -20,12 +20,12 @@ export async function HeroLanding() {
     );
 
     const AhaToolElement = (
-        <Link href={AhaToolUrl} target="_blank">
+        <Link href={ImageGenerateUrl} target="_blank">
             <div className="rounded-full px-6 py-2 flex items-center gap-2 hover:bg-primary/10 transition-all duration-300">
-                <Image src="/ahatool.png" alt="Ahatool" width={30} height={30} className="size-6" />
-                <span>Discover the Best AI Tools Daily</span>
+                <Image src="/logo.png" alt="AI Image Generator" width={30} height={30} className="size-6" />
+                <span>New: AI Image Generator</span>
                 <span className="ml-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-1 rounded-full text-sm font-medium hover:shadow-lg transition-all">
-                    Free Submit Your Tool
+                    Try Free Now
                 </span>
             </div>
         </Link>

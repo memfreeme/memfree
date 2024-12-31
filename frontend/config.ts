@@ -18,7 +18,7 @@ export const PageGenUrl = 'https://pagegen.ai';
 export const AhaToolUrl = 'https://www.ahatool.ai';
 export const StorySnapUrl = 'https://www.snapstoryai.com';
 export const SearchUrl = 'https://www.memfree.me';
-export const ImageGenerateUrl = 'https://pagegen.ai/generate-image';
+export const ImageGenerateUrl = 'https://www.memfree.me/generate-image';
 
 export const siteConfig: SiteConfig = {
     name: 'MemFree',
