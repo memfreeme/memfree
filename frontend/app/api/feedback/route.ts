@@ -1,4 +1,3 @@
-// app/api/feedback/route.ts
 import { NextResponse } from 'next/server';
 
 interface FeedbackData {
@@ -10,11 +9,9 @@ interface FeedbackData {
 }
 
 export const runtime = 'edge';
-
 export async function POST(request: Request) {
     try {
         const email = process.env.FEEDBACK_EMAIL;
-        console.log('email', email);
         const data: FeedbackData = await request.json();
 
         const res = await fetch('https://api.resend.com/emails', {

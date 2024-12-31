@@ -6,7 +6,7 @@ import Google from 'next-auth/providers/google';
 import Resend from 'next-auth/providers/resend';
 import Credentials from 'next-auth/providers/credentials';
 import { UpstashRedisAdapter } from '@auth/upstash-redis-adapter';
-import { sendVerificationRequest } from '@/lib/auth/auth-sind-request';
+import { sendVerificationRequest } from '@/lib/auth/auth-send-request';
 import { NEXT_PUBLIC_APP_URL } from '@/lib/env';
 import { NODE_ENV } from '@/lib/env';
 
