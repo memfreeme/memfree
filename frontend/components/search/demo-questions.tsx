@@ -1,5 +1,3 @@
-'use server';
-
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 

@@ -6,30 +6,40 @@ import { useState } from 'react';
 import { GenImage } from '@/lib/types';
 import React from 'react';
 import { type User } from 'next-auth';
-import { getUserImages } from '@/lib/store/image';
 import InfiniteScroll from '@/components/ui/infinite-scroll';
 import ImageCard from '@/components/dashboard/image-card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
+interface ImageListProps {
+    fetcher: (offset: number, limit: number) => Promise<GenImage[]>;
+    images?: GenImage[];
+    user?: User;
+}
+
 const limit = 20;
-export const ImageList = ({ items, user }: { items: GenImage[]; user: User }) => {
+export const ImageList: React.FC<ImageListProps> = ({ fetcher, images, user }) => {
     const [loading, setLoading] = useState(false);
-    const [offset, setOffset] = useState(0);
+    const [offset, setOffset] = useState(20);
     const [hasMore, setHasMore] = useState(true);
+    const [items, setItems] = useState<GenImage[]>(images || []);
 
     const next = async () => {
-        if (!user) {
-            setHasMore(false);
-            return;
-        }
+        if (!hasMore || loading) return;
         setLoading(true);
-        const newSearches = await getUserImages(user.id, offset);
-        if (newSearches.length < limit) {
+        try {
+            const newImages = await fetcher(offset, limit);
+            if (newImages.length < limit) {
+                setHasMore(false);
+            }
+            setItems((prevItems) => [...prevItems, ...newImages]);
+            setOffset((prev) => prev + limit);
+        } catch (error) {
+            console.error('Failed to fetch images:', error);
             setHasMore(false);
+        } finally {
+            setLoading(false);
         }
-        setOffset((prev) => prev + limit);
-        setLoading(false);
     };
 
     return (

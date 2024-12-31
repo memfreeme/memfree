@@ -1,9 +1,22 @@
 'use server';
 
+import { auth } from '@/auth';
 import { IMAGE_KEY, PUBLIC_IMAGE_KEY, redisDB, USER_IMAGE_KEY } from '@/lib/db';
 import { GenImage } from '@/lib/types';
 
 export async function saveImage(genImage: GenImage) {
+    const session = await auth();
+    if (!session) {
+        return {
+            error: 'Unauthorized, please retry',
+        };
+    }
+    if (session.user.id !== genImage.userId) {
+        return {
+            error: 'Unauthorized, you cannot save this image',
+        };
+    }
+
     const pipeline = redisDB.pipeline();
 
     pipeline.hset(IMAGE_KEY + genImage.id, genImage);
@@ -22,9 +35,14 @@ export async function saveImage(genImage: GenImage) {
     await pipeline.exec();
 }
 
-export async function getUserImages(userId: string, offset: number = 0, limit: number = 20) {
+export async function getUserImages(offset: number = 0, limit: number = 20) {
+    const session = await auth();
+    if (!session) {
+        return [];
+    }
+
     const pipeline = redisDB.pipeline();
-    const imageIds: string[] = await redisDB.zrange(USER_IMAGE_KEY + userId, offset, offset + limit - 1, {
+    const imageIds: string[] = await redisDB.zrange(USER_IMAGE_KEY + session.user.id, offset, offset + limit - 1, {
         rev: true,
     });
 

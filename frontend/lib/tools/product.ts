@@ -1,4 +1,4 @@
-'use server';
+import 'server-only';
 
 import { incSearchCount } from '@/lib/db';
 import { getLLM } from '@/lib/llm/llm';
