@@ -149,7 +149,10 @@ export function AIImageGenerator() {
     return (
         <div className="space-y-6 w-full max-w-3xl mx-auto flex-grow overflow-auto">
             <div className="space-y-2">
-                <label className="text-sm font-medium">Image Description</label>
+                <label className="text-sm font-medium">
+                    Image Description
+                    <span className="text-red-500 ml-1">*</span>
+                </label>
                 <TextareaAutosize
                     value={prompt}
                     placeholder="Please give some description or keywords for the image"

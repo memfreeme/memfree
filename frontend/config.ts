@@ -41,6 +41,10 @@ export const mainNavConfig: MarketingConfig = {
             href: '/',
         },
         {
+            title: 'AI Image',
+            href: '/generate-image',
+        },
+        {
             title: 'Pricing',
             href: '/pricing',
         },
