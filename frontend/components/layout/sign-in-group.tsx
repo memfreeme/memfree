@@ -8,6 +8,7 @@ import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { siteConfig } from '@/config';
 import { EmailForm } from '@/components/email-form';
+import Image from 'next/image';
 
 export function SignInGroup() {
     const [signInClicked, setSignInClicked] = useState(false);
@@ -15,7 +16,7 @@ export function SignInGroup() {
         <div className="w-full">
             <div className="flex flex-col items-center justify-center space-y-3 bg-background py-6 text-center md:px-16">
                 <a href={siteConfig.url}>
-                    <Icons.brain className="size-10 text-primary" />
+                    <Image src={'/logo.png'} width="24" height="24" alt="MemFree Logo"></Image>
                 </a>
                 <h3 className="font-urban text-2xl font-bold">MemFree</h3>
                 <p className="text-md font-medium">Sign in to unlock more features</p>

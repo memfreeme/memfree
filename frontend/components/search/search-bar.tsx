@@ -94,10 +94,10 @@ const SearchBar: React.FC<Props> = ({
     };
 
     const handleClick = () => {
-        if (!user) {
-            signInModal.onOpen();
-            return;
-        }
+        // if (!user) {
+        //     signInModal.onOpen();
+        //     return;
+        // }
         if (checkEmptyInput()) {
             return;
         }

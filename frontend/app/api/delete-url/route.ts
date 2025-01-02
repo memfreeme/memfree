@@ -2,6 +2,7 @@ import { auth } from '@/auth';
 import { removeUrlFromErrorUrls } from '@/lib/db';
 import { NextResponse } from 'next/server';
 
+export const runtime = 'edge';
 export async function POST(req: Request) {
     try {
         const { url } = await req.json();

@@ -33,23 +33,12 @@ const imageColorToRGB = {
 
 export async function POST(req: NextRequest) {
     const session = await auth();
-    let userId = '';
-    let isPro = false;
-    if (session) {
-        userId = session.user.id;
-        isPro = isProUser(session.user);
-        const rateLimitResponse = await handleRateLimit(session.user);
-        if (rateLimitResponse) {
-            return rateLimitResponse;
-        }
-    } else {
-        return NextResponse.json(
-            {
-                error: 'Unauthorized',
-            },
-            { status: 401 },
-        );
+    const rateLimitResponse = await handleRateLimit(req, session?.user);
+    if (rateLimitResponse) {
+        return rateLimitResponse;
     }
+    const userId = session?.user?.id ?? '';
+    const isPro = session?.user ? isProUser(session.user) : false;
 
     let { prompt, style, color, size, showText, useCase, isPublic } = (await req.json()) as RequestBody;
 

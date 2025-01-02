@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     if (session) {
         userId = session.user.id;
         isPro = isProUser(session.user);
-        const rateLimitResponse = await handleRateLimit(session.user);
+        const rateLimitResponse = await handleRateLimit(req, session.user);
         if (rateLimitResponse) {
             return rateLimitResponse;
         }

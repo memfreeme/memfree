@@ -38,23 +38,13 @@ const updateSource = function (model, source, messages, isSearch) {
 
 export async function POST(req: NextRequest) {
     const session = await auth();
-    let userId = '';
-    let isPro = false;
-    if (session) {
-        userId = session.user.id;
-        isPro = isProUser(session.user);
-        const rateLimitResponse = await handleRateLimit(session.user);
-        if (rateLimitResponse) {
-            return rateLimitResponse;
-        }
-    } else {
-        return NextResponse.json(
-            {
-                error: 'You need to sign in',
-            },
-            { status: 429 },
-        );
+    const rateLimitResponse = await handleRateLimit(req, session?.user);
+    if (rateLimitResponse) {
+        return rateLimitResponse;
     }
+    const userId = session?.user?.id ?? '';
+    const isPro = session?.user ? isProUser(session.user) : false;
+
     let { model, source, messages, profile, isSearch, questionLanguage, answerLanguage } = await req.json();
 
     console.log(
