@@ -142,9 +142,9 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
 
     return (
         <section className="container flex flex-col items-center text-center">
-            <div className="flex flex-col items-center text-center">
-                <h1 className="text-gradient_indigo-purple mb-4 font-semibold">{t('title')}</h1>
-                <h2 className="font-heading text-3xl md:text-4xl lg:text-[40px]">{t('description')}</h2>
+            <div className="flex flex-col items-center text-center pt-10 space-y-4">
+                <h1 className="text-5xl font-bold">{t('title')}</h1>
+                <h2 className="text-lg max-w-2xl mx-auto">{t('description')}</h2>
             </div>
 
             <div className="mb-4 mt-10 flex items-center gap-5">

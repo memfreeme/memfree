@@ -88,8 +88,6 @@ export default function SidebarOpen({ user }: NavBarProps) {
                         <TooltipTrigger asChild>
                             <Link
                                 href="/pricing"
-                                prefetch={false}
-                                rel="nofollow"
                                 aria-label="Upgrade Plan"
                                 className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 m-2"
                             >
@@ -105,7 +103,6 @@ export default function SidebarOpen({ user }: NavBarProps) {
                         <TooltipTrigger asChild>
                             <Link
                                 href="/settings"
-                                prefetch={false}
                                 aria-label="MemFree Settings"
                                 className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 m-2"
                             >
@@ -121,7 +118,6 @@ export default function SidebarOpen({ user }: NavBarProps) {
                         <TooltipTrigger asChild>
                             <Link
                                 href="/docs/memfree-user-guide"
-                                prefetch={false}
                                 aria-label="Doc & Help"
                                 className="inline-flex items-center justify-center hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 m-2"
                             >
