@@ -6,7 +6,7 @@ export async function DemoQuestions() {
     const demoQuestions = [
         {
             title: t('title1'),
-            link: '/share/Ed21pa5',
+            link: '/share/gc0cx4oBbj',
         },
         // {
         //     title: t('title2'),
