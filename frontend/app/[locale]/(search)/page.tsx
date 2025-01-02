@@ -6,7 +6,6 @@ import SearchWindowFallBack from '@/components/search/search-window-fallback';
 import { DemoQuestions } from '@/components/search/demo-questions';
 import { generateId } from '@/lib/shared-utils';
 import { HeroLanding } from '@/components/layout/hero-landing';
-import PromotionBanner from '@/components/layout/banner';
 import ChangelogBanner from '@/components/layout/changelog-banner';
 
 const SearchWindow = dynamic(() => import('@/components/search/search-window'), {

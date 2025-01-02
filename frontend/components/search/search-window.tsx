@@ -49,11 +49,19 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
             setActiveSearch(searchId);
             return;
         }
-        if (!searchId && id && id != activeId) {
+        if (!searchId && id && id !== activeId) {
             setActiveSearch(id);
             return;
         }
     }, [id, activeId, searchParams, setActiveSearch]);
+
+    useEffect(() => {
+        const searchId = searchParams.get('id');
+        const qParam = searchParams.get('q');
+        if (!isLoading && !searchId && qParam) {
+            sendMessage(qParam);
+        }
+    }, []);
 
     const { incrementSearchCount, canSearch } = useSearchLimit();
 
