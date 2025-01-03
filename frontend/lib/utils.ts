@@ -128,3 +128,18 @@ export async function logClientError(error: string, action: string) {
         console.error('Failed to log client error:', error);
     }
 }
+
+export const monitorMemoryUsage = () => {
+    const performance = window.performance as any;
+    if (performance.memory) {
+        const used = performance.memory.usedJSHeapSize;
+        const limit = performance.memory.jsHeapSizeLimit;
+        const usageRatio = used / limit;
+
+        console.log('HeapSizeLimit', performance.memory.jsHeapSizeLimit);
+        console.log('usedJSHeapSize', performance.memory.usedJSHeapSize);
+        console.log(`Memory usage: ${(usageRatio * 100).toFixed(2)}%`);
+        return usageRatio;
+    }
+    return null;
+};

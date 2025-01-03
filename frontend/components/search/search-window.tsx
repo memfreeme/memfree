@@ -63,6 +63,8 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
         }
     }, []);
 
+    // monitorMemoryUsage();
+
     const { incrementSearchCount, canSearch } = useSearchLimit();
 
     const sendMessage = useCallback(
