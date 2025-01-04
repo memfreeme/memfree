@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@axiomhq/js": "^1.1.0",
-    "@lancedb/lancedb": "0.8.0",
+    "@lancedb/lancedb": "0.14.0",
     "@langchain/openai": "^0.2.5",
     "@langchain/textsplitters": "^0.0.2",
     "@panva/hkdf": "^1.2.1",

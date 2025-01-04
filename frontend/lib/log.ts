@@ -8,6 +8,10 @@ export const axiom = new Axiom({
 
 export const log = async (message: any) => {
     try {
+        if (process.env.NODE_ENV !== 'production') {
+            console.log('logClient:', message);
+            return;
+        }
         axiom.ingest('memfree', [message]);
     } catch (error) {
         console.error('Error logging to Axiom:', error);

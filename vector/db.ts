@@ -1,210 +1,250 @@
 import * as lancedb from "@lancedb/lancedb";
-import {
-  Schema,
-  Field,
-  Float32,
-  FixedSizeList,
-  Utf8,
-  Float64,
-} from "apache-arrow";
-import { DIMENSIONS } from "./config";
 import { getEmbedding } from "./embedding/embedding";
 import { retryAsync } from "./util";
+import type { LocalConfig, DatabaseConfig, S3Config, DBSchema } from "./type";
 
-const schema = new Schema([
-  new Field("create_time", new Float64(), true),
-  new Field("title", new Utf8(), true),
-  new Field("url", new Utf8(), true),
-  new Field("image", new Utf8(), true),
-  new Field("text", new Utf8(), true),
-  new Field(
-    "vector",
-    new FixedSizeList(DIMENSIONS, new Field("item", new Float32())),
-    true
-  ),
-]);
+export class LanceDB {
+  private config: DatabaseConfig;
+  private db: any;
+  private dbSchema: DBSchema;
 
-async function getConnection() {
-  const bucket = process.env.AWS_BUCKET || "";
-  if (bucket) {
-    return lancedb.connect(bucket, {
-      storageOptions: {
-        awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
-        s3Express: "true",
-        region: process.env.AWS_REGION || "",
-        awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
-      },
+  constructor(config: DatabaseConfig, schema: DBSchema) {
+    this.config = config;
+    this.dbSchema = schema;
+  }
+
+  private isS3Config(options: any): options is S3Config {
+    return "bucket" in options;
+  }
+
+  async connect(): Promise<any> {
+    if (this.config.type === "s3") {
+      if (!this.isS3Config(this.config.options)) {
+        throw new Error("Invalid S3 configuration");
+      }
+
+      const { bucket, awsAccessKeyId, awsSecretAccessKey, region, s3Express } =
+        this.config.options || {};
+      this.db = await lancedb.connect(bucket, {
+        storageOptions: {
+          awsAccessKeyId,
+          awsSecretAccessKey,
+          region,
+          s3Express,
+        },
+      });
+    } else {
+      const { localDirectory } =
+        (this.config.options as LocalConfig) || process.cwd();
+      this.db = await lancedb.connect(localDirectory);
+    }
+    return this.db;
+  }
+
+  async getTable(tableName: string): Promise<lancedb.Table> {
+    if (!this.db) {
+      await this.connect();
+    }
+
+    if ((await this.db.tableNames()).includes(tableName)) {
+      return this.db.openTable(tableName);
+    } else {
+      return this.db.createEmptyTable(tableName, this.dbSchema.schema);
+    }
+  }
+
+  async openTable(tableName: string): Promise<lancedb.Table> {
+    if (!this.db) {
+      await this.connect();
+    }
+
+    return this.db.openTable(tableName);
+  }
+
+  async exists(tableName: string): Promise<boolean> {
+    if (!this.db) {
+      await this.connect();
+    }
+
+    return (await this.db.tableNames()).includes(tableName);
+  }
+
+  async dropTable(tableName: string) {
+    if (!this.db) {
+      await this.connect();
+    }
+
+    await this.db.dropTable(tableName);
+  }
+
+  async deleteUrls(tableName: string, urls: string[]) {
+    await retryAsync(async () => {
+      const table = await this.getTable(tableName);
+      const predicate = `url IN (${urls.map((url) => `'${url}'`).join(", ")})`;
+      await table.delete(predicate);
     });
-  } else {
-    // Let open source users could one click deploy
-    const localDirectory = process.cwd();
-    return lancedb.connect(localDirectory);
   }
-}
 
-async function getTable(db: any, tableName: string): Promise<lancedb.Table> {
-  if ((await db.tableNames()).includes(tableName)) {
-    return db.openTable(tableName);
-  } else {
-    return db.createEmptyTable(tableName, schema);
+  async append(tableName: string, data: lancedb.Data): Promise<lancedb.Table> {
+    const table = await this.getTable(tableName);
+    await table.add(data);
+    return table;
   }
-}
 
-export async function deleteUrls(tableName: string, urls: string[]) {
-  const db = await getConnection();
-  await retryAsync(async () => {
-    const table = await getTable(db, tableName);
-    const predicate = `url IN (${urls.map((url) => `'${url}'`).join(", ")})`;
-    await table.delete(predicate);
-  });
-  console.log("urls", urls, "already exists for user", tableName, "deleted");
-}
+  async compact(tableName: string) {
+    const table = await this.getTable(tableName);
+    await table.optimize({ cleanupOlderThan: new Date() });
+  }
 
-export async function append(tableName: string, data: lancedb.Data) {
-  const db = await getConnection();
-  const table = await getTable(db, tableName);
-  await table.add(data);
-  return table;
-}
+  async search(
+    tableName: string,
+    query: string,
+    options: {
+      selectFields?: string[];
+      predicate?: string;
+      limit?: number;
+    } = {}
+  ) {
+    const {
+      selectFields = ["title", "text", "url", "image"],
+      predicate,
+      limit = 10,
+    } = options;
 
-export async function search(query: string, table: string, url?: string) {
-  const db = await getConnection();
-  const tbl = await db.openTable(table);
+    const tbl = await this.openTable(tableName);
 
-  console.time("embedding");
-  const query_embedding = await getEmbedding().embedQuery(query);
-  console.timeEnd("embedding");
+    console.time("embedding");
+    const query_embedding = await getEmbedding().embedQuery(query);
+    console.timeEnd("embedding");
 
-  console.time("search");
-  let results: any[] = [];
-  if (url) {
-    results = await tbl
+    console.time("search");
+    const vectorSearch = tbl
       .vectorSearch(query_embedding)
-      .where(`url == '${url}'`)
-      .select(["title", "text", "url", "image"])
+      .select(selectFields)
       .distanceType("cosine")
-      .limit(10)
-      .toArray();
-  } else {
-    results = await tbl
-      .vectorSearch(query_embedding)
-      .select(["title", "text", "url", "image"])
-      .distanceType("cosine")
-      .limit(10)
-      .toArray();
+      .limit(limit);
+
+    const results = predicate
+      ? await vectorSearch.where(predicate).toArray()
+      : await vectorSearch.toArray();
+
+    console.timeEnd("search");
+    return results;
   }
-
-  console.timeEnd("search");
-  return results;
 }
 
-interface Document {
-  title: string;
-  url: string;
-  image: string;
-  create_time: number;
-  text: string;
+export class DatabaseFactory {
+  static createDatabase(config: DatabaseConfig, schema: DBSchema) {
+    switch (config.type) {
+      case "local":
+      case "s3":
+        return new LanceDB(config, schema);
+      default:
+        throw new Error(`Unsupported database type: ${config.type}`);
+    }
+  }
 }
 
-export async function changeEmbedding(tableName: string) {
-  const db = await getConnection();
-  const table = await getTable(db, tableName);
+// interface Document {
+//   title: string;
+//   url: string;
+//   image: string;
+//   create_time: number;
+//   text: string;
+// }
 
-  console.time("select-text");
-  const documents: Document[] = (await table
-    .query()
-    .select(["title", "url", "image", "create_time", "text"])
-    .toArray()) as Document[];
-  console.timeEnd("select-text");
-  console.log("Embedding", documents.length);
+// export async function changeEmbedding(tableName: string) {
+//   const db = await getConnection();
+//   const table = await getTable(db, tableName);
 
-  const texts = documents.map((item) => item.text);
+//   console.time("select-text");
+//   const documents: Document[] = (await table
+//     .query()
+//     .select(["title", "url", "image", "create_time", "text"])
+//     .toArray()) as Document[];
+//   console.timeEnd("select-text");
+//   console.log("Embedding", documents.length);
 
-  console.time("embedding");
-  const embeddings = await getEmbedding().embedDocuments(texts);
-  console.timeEnd("embedding");
+//   const texts = documents.map((item) => item.text);
 
-  const documentsWithVectors = documents.map((doc, i) => ({
-    ...doc,
-    vector: embeddings[i] as number[],
-  }));
+//   console.time("embedding");
+//   const embeddings = await getEmbedding().embedDocuments(texts);
+//   console.timeEnd("embedding");
 
-  console.time("createTable");
-  const newTable = await db.createTable(tableName, documentsWithVectors, {
-    mode: "overwrite",
-    schema: schema,
-  });
-  console.timeEnd("createTable");
+//   const documentsWithVectors = documents.map((doc, i) => ({
+//     ...doc,
+//     vector: embeddings[i] as number[],
+//   }));
 
-  console.log("Table size", await newTable.countRows());
+//   console.time("createTable");
+//   const newTable = await db.createTable(tableName, documentsWithVectors, {
+//     mode: "overwrite",
+//     schema: schema,
+//   });
+//   console.timeEnd("createTable");
 
-  await newTable.optimize({ cleanupOlderThan: new Date() });
-  return newTable;
-}
+//   console.log("Table size", await newTable.countRows());
+
+//   await newTable.optimize({ cleanupOlderThan: new Date() });
+//   return newTable;
+// }
 
 // unused now:
+// export async function dropTable(tableName: string) {
+//   const db = await getConnection();
+//   await db.dropTable(tableName);
+// }
 
-export async function dropTable(tableName: string) {
-  const db = await getConnection();
-  await db.dropTable(tableName);
-}
+// export async function createEmptyTable(tableName: string) {
+//   const db = await getConnection();
+//   return db.createEmptyTable(tableName, schema);
+// }
 
-export async function createEmptyTable(tableName: string) {
-  const db = await getConnection();
-  return db.createEmptyTable(tableName, schema);
-}
+// export async function reCreateEmptyTable(tableName: string) {
+//   const db = await getConnection();
+//   return db.createEmptyTable(tableName, schema, { mode: "overwrite" });
+// }
 
-export async function reCreateEmptyTable(tableName: string) {
-  const db = await getConnection();
-  return db.createEmptyTable(tableName, schema, { mode: "overwrite" });
-}
+// export async function size(tableName: string) {
+//   const db = await getConnection();
+//   const table = await getTable(db, tableName);
+//   return table.countRows();
+// }
 
-export async function size(tableName: string) {
-  const db = await getConnection();
-  const table = await getTable(db, tableName);
-  return table.countRows();
-}
+// export async function update(tableName: string) {
+//   const db = await getConnection();
+//   const table = await getTable(db, tableName);
+//   await table.update(
+//     { price: "100000" },
+//     {
+//       where: "id == 3",
+//     }
+//   );
+// }
 
-export async function compact(tableName: string) {
-  const db = await getConnection();
-  const table = await getTable(db, tableName);
-  await table.optimize({ cleanupOlderThan: new Date() });
-}
+// export async function checkout(tableName: string, version: number) {
+//   const db = await getConnection();
+//   const table = await getTable(db, tableName);
+//   await table.checkout(version);
+//   await table.restore();
+// }
 
-export async function update(tableName: string) {
-  const db = await getConnection();
-  const table = await getTable(db, tableName);
-  await table.update(
-    { price: "100000" },
-    {
-      where: "id == 3",
-    }
-  );
-}
+// export async function version(tableName: string) {
+//   const db = await getConnection();
+//   const table = await getTable(db, tableName);
+//   return table.version();
+// }
 
-export async function checkout(tableName: string, version: number) {
-  const db = await getConnection();
-  const table = await getTable(db, tableName);
-  await table.checkout(version);
-  await table.restore();
-}
+// export async function selectDetail(table: string) {
+//   const db = await getConnection();
+//   const tbl = await db.openTable(table);
 
-export async function version(tableName: string) {
-  const db = await getConnection();
-  const table = await getTable(db, tableName);
-  return table.version();
-}
-
-export async function selectDetail(table: string) {
-  const db = await getConnection();
-  const tbl = await db.openTable(table);
-
-  console.time("select");
-  const result = await tbl
-    .query()
-    .select(["title", "text"])
-    .limit(100)
-    .toArray();
-  console.timeEnd("select");
-  return result;
-}
+//   console.time("select");
+//   const result = await tbl
+//     .query()
+//     .select(["title", "text"])
+//     .limit(100)
+//     .toArray();
+//   console.timeEnd("select");
+//   return result;
+// }

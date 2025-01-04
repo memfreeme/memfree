@@ -1,10 +1,12 @@
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
 
-import { append } from "./db";
 import { getMd, readFromJsonlFile } from "./util";
 import { getEmbedding } from "./embedding/embedding";
 import { processTweet } from "./tweet";
+import { DatabaseFactory } from "./db";
+import { dbConfig } from "./config";
+import { documentSchema } from "./schema";
 
 const mdSplitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
   chunkSize: 400,
@@ -22,9 +24,11 @@ function extractImage(markdown: string) {
   return match ? match[1] : null;
 }
 
+const db = DatabaseFactory.createDatabase(dbConfig, documentSchema);
+
 export async function ingest_jsonl(url: string, userId: string) {
   const data = await readFromJsonlFile(url);
-  const table = await append(userId, data);
+  const table = await db.append(userId, data);
 }
 
 export async function ingest_text_content(
@@ -35,7 +39,7 @@ export async function ingest_text_content(
 ) {
   const documents = await textSplitter.createDocuments([content]);
   const data = await addVectors("", title, url, documents);
-  const table = await append(userId, data);
+  const table = await db.append(userId, data);
 }
 
 async function processIngestion(
@@ -49,7 +53,7 @@ async function processIngestion(
     appendChunkOverlapHeader: false,
   });
   const data = await addVectors(image, title, url, documents);
-  const table = await append(userId, data);
+  const table = await db.append(userId, data);
 }
 
 export async function ingest_md(

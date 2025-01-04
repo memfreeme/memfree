@@ -1,4 +1,3 @@
-import { changeEmbedding, compact, deleteUrls, search } from "./db";
 import { log, logError } from "./log";
 import { addErrorUrl, addUrl, urlExists } from "./redis";
 import { isValidUrl } from "./util";
@@ -11,8 +10,13 @@ import {
 
 import { getFileContent } from "./parser";
 import { checkAuth, getToken } from "./auth";
+import { DatabaseFactory } from "./db";
+import { dbConfig } from "./config";
+import { documentSchema } from "./schema";
 
 const allowedOrigins = ["http://localhost:3000", "https://www.memfree.me"];
+
+const db = DatabaseFactory.createDatabase(dbConfig, documentSchema);
 
 async function handleRequest(req: Request): Promise<Response> {
   const path = new URL(req.url).pathname;
@@ -41,7 +45,10 @@ async function handleRequest(req: Request): Promise<Response> {
   if (path === "/api/vector/search" && method === "POST") {
     const { query, userId, url } = await req.json();
     try {
-      const result = await search(query, userId, url);
+      const result = await db.search(userId, query, {
+        selectFields: ["title", "text", "url", "image"],
+        predicate: url ? `url == '${url}'` : undefined,
+      });
       return Response.json(result);
     } catch (unknownError) {
       let errorMessage: string | null = null;
@@ -67,15 +74,16 @@ async function handleRequest(req: Request): Promise<Response> {
         query: query,
         userId: userId,
       });
-      if (errorMessage)
+      if (errorMessage) {
         return Response.json("Failed to search", { status: 500 });
+      }
     }
   }
 
   if (path === "/api/vector/delete" && method === "POST") {
     const { urls, userId } = await req.json();
     try {
-      await deleteUrls(userId, urls);
+      await db.deleteUrls(userId, urls);
       return Response.json("Success");
     } catch (error) {
       log({
@@ -93,7 +101,7 @@ async function handleRequest(req: Request): Promise<Response> {
     const { userId } = await req.json();
     try {
       console.time(`compact-${userId}`);
-      await compact(userId);
+      await db.compact(userId);
       console.timeEnd(`compact-${userId}`);
       return Response.json("Success");
     } catch (error) {
@@ -150,7 +158,7 @@ async function handleRequest(req: Request): Promise<Response> {
 
       const existedUrl = await urlExists(userId, url);
       if (existedUrl) {
-        await deleteUrls(userId, [url]);
+        await db.deleteUrls(userId, [url]);
         log({
           service: "vector-index",
           action: "delete-local-file",
@@ -174,7 +182,7 @@ async function handleRequest(req: Request): Promise<Response> {
 
       const indexCount = await addUrl(userId, url);
       if (indexCount % 50 === 0) {
-        await compact(userId);
+        await db.compact(userId);
         log({
           service: "vector-index",
           action: "compact-local-file",
@@ -290,16 +298,16 @@ async function handleRequest(req: Request): Promise<Response> {
     }
   }
 
-  if (path === "/api/vector/change-embedding" && method === "POST") {
-    const { userId } = await req.json();
-    try {
-      await changeEmbedding(userId);
-      return Response.json("Success");
-    } catch (error) {
-      logError(error as Error, "change-embedding");
-      return Response.json("Failed to change embedding", { status: 500 });
-    }
-  }
+  // if (path === "/api/vector/change-embedding" && method === "POST") {
+  //   const { userId } = await req.json();
+  //   try {
+  //     await changeEmbedding(userId);
+  //     return Response.json("Success");
+  //   } catch (error) {
+  //     logError(error as Error, "change-embedding");
+  //     return Response.json("Failed to change embedding", { status: 500 });
+  //   }
+  // }
 
   if (path === "/") return Response.json("Welcome to memfree vector service!");
   return Response.json("Page not found", { status: 404 });

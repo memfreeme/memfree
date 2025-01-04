@@ -1,6 +1,5 @@
 import { describe, it, expect } from "bun:test";
 import { getEmbedding } from "../embedding/embedding";
-import * as lancedb from "@lancedb/lancedb";
 import {
   Schema,
   Field,
@@ -9,17 +8,25 @@ import {
   Utf8,
   Float64,
 } from "apache-arrow";
-import { DIMENSIONS } from "../config";
+import { DIMENSIONS, testConfig } from "../config";
+import { SchemaFactory } from "../schema";
+import type { DBSchema } from "../type";
+import { DatabaseFactory } from "../db";
 
-const schema = new Schema([
-  new Field("create_time", new Float64(), true),
-  new Field("text", new Utf8(), true),
-  new Field(
-    "vector",
-    new FixedSizeList(DIMENSIONS, new Field("item", new Float32())),
-    true
-  ),
-]);
+const testSchema: DBSchema = {
+  name: "test",
+  schema: new Schema([
+    new Field("create_time", new Float64(), true),
+    new Field("text", new Utf8(), true),
+    new Field(
+      "vector",
+      new FixedSizeList(DIMENSIONS, new Field("item", new Float32())),
+      true
+    ),
+  ]),
+};
+SchemaFactory.registerSchema(testSchema.name, testSchema);
+const db = DatabaseFactory.createDatabase(testConfig, testSchema);
 
 describe("vector test", () => {
   it("should index and search successfully", async () => {
@@ -43,30 +50,20 @@ describe("vector test", () => {
     }
     console.timeEnd("embeddings");
 
-    // console.log("inedx data", data);
+    console.log("inedx data", data);
 
     const tableName = "memfree";
-    const db = await lancedb.connect("database");
-    if ((await db.tableNames()).includes(tableName)) {
+    if (await db.exists(tableName)) {
       await db.dropTable(tableName);
     }
 
-    const table = await db.createEmptyTable(tableName, schema);
-    await table.add(data);
+    await db.append(tableName, data);
 
     const query = "ai search engine";
-    console.time("embedding");
-    const query_embedding = await getEmbedding().embedQuery(query);
-    console.timeEnd("embedding");
 
-    console.time("search");
-    const results = await table
-      .vectorSearch(query_embedding)
-      // .where("_distance <= 0.11")
-      .select(["text", "create_time"])
-      .limit(10)
-      .toArray();
-    console.timeEnd("search");
+    const results = await db.search(tableName, query, {
+      selectFields: ["text", "create_time"],
+    });
     console.log(results);
   });
 });
