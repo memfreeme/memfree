@@ -50,7 +50,6 @@ export async function saveMessages(
     videos?: VideoSource[],
     related?: string,
     type?: string,
-    title?: string,
 ) {
     if (!userId) {
         return;
@@ -72,7 +71,7 @@ export async function saveMessages(
     await saveSearch(
         {
             id: messages[0].id,
-            title: title ?? messages[0].content.substring(0, 50),
+            title: messages[0].title,
             createdAt: new Date(),
             userId: userId,
             messages: messages,

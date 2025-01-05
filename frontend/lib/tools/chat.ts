@@ -64,9 +64,9 @@ export async function chat(
             onStream?.(JSON.stringify({ answer: text }));
         }
 
-        let title = messages[0].content.substring(0, 50);
-        if (messages.length === 1) {
-            title = await generateTitle(query);
+        if (!messages[0].title) {
+            const title = await generateTitle(query);
+            messages[0].title = title;
             await streamResponse({ title: title }, onStream);
         }
 
@@ -74,7 +74,7 @@ export async function chat(
             console.error(`Failed to increment search count for user ${userId}:`, error);
         });
 
-        await saveMessages(userId, messages, fullAnswer, [], [], [], '', SearchCategory.ALL, title);
+        await saveMessages(userId, messages, fullAnswer, [], [], [], '', SearchCategory.ALL);
         onStream?.(null, true);
     } catch (error) {
         const errorMessage = extractErrorMessage(error);

@@ -22,3 +22,22 @@ export interface DBSchema {
   name: string;
   schema: Schema;
 }
+
+export type Message = {
+  id: string;
+  role: "system" | "user" | "assistant" | "tool";
+  content: string;
+  type?: string;
+  imageFile?: string;
+  attachments?: string[];
+  related?: string;
+};
+
+export interface Search extends Record<string, any> {
+  id: string;
+  title: string;
+  createdAt: Date;
+  userId: string;
+  messages: Message[];
+  sharePath?: string;
+}

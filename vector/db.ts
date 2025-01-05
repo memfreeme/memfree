@@ -49,7 +49,10 @@ export class LanceDB {
     if ((await this.db.tableNames()).includes(tableName)) {
       return this.db.openTable(tableName);
     } else {
-      return this.db.createEmptyTable(tableName, this.dbSchema.schema);
+      return this.db.createEmptyTable(tableName, this.dbSchema.schema, {
+        mode: "create",
+        existOk: true,
+      });
     }
   }
 

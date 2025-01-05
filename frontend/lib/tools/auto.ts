@@ -263,9 +263,9 @@ export async function autoAnswer(
             await streamResponse({ videos: videos }, onStream);
         }
 
-        let title = messages[0].content.substring(0, 50);
-        if (titlePromise) {
-            title = await titlePromise;
+        if (!messages[0].title) {
+            const title = await generateTitle(query);
+            messages[0].title = title;
             await streamResponse({ title: title }, onStream);
         }
 
@@ -273,7 +273,7 @@ export async function autoAnswer(
             console.error(`Failed to increment search count for user ${userId}:`, error);
         });
 
-        await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated, SearchCategory.ALL, title);
+        await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated, SearchCategory.ALL);
         onStream?.(null, true);
     } catch (error) {
         console.error('Error:', error);

@@ -42,7 +42,7 @@ export async function ingest_text_content(
   const table = await db.append(userId, data);
 }
 
-async function processIngestion(
+export async function processIngestion(
   url: string,
   userId: string,
   markdown: string,

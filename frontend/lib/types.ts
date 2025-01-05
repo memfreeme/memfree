@@ -85,6 +85,7 @@ export type Message = {
     images?: ImageSource[];
     videos?: VideoSource[];
     related?: string;
+    title?: string;
 };
 
 export interface Search extends Record<string, any> {
