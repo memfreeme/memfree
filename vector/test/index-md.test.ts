@@ -9,7 +9,7 @@ describe("/api/index/md endpoint", () => {
     const response = await fetch(`${host}/api/index/md`, {
       method: "POST",
       body: JSON.stringify({
-        url: "https://www.memfree.com/",
+        url: "https://www.memfree.me/",
         userId: testUser,
         markdown: "# Sample Markdown",
         title: "Sample Title",
@@ -29,7 +29,7 @@ describe("/api/index/md endpoint", () => {
     const response = await fetch(`${host}/api/index/md`, {
       method: "POST",
       body: JSON.stringify({
-        url: "https://www.memfree.com/",
+        url: "https://www.memfree.me/",
         userId: testUser,
       }),
       headers: {
@@ -83,7 +83,7 @@ console.log("Hello, world!");
     const response = await fetch(`${host}/api/index/md`, {
       method: "POST",
       body: JSON.stringify({
-        url: "https://www.memfree.com/",
+        url: "https://www.memfree.me/",
         userId: testUser,
         markdown: complexMarkdown,
         title: "Complex Markdown Title",
