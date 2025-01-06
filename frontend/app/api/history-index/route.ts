@@ -8,7 +8,7 @@ export async function POST(req: Request) {
             return Response.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const response = await fetch(`${VECTOR_INDEX_HOST}/api/index/full`, {
+        const response = await fetch(`${VECTOR_INDEX_HOST}/api/history/full`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

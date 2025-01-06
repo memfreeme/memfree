@@ -1,5 +1,14 @@
-import { log, logError } from "./log";
-import { addErrorUrl, addUrl, urlExists } from "./redis";
+import { log } from "./log";
+import {
+  addErrorUrl,
+  addUrl,
+  clearUserIndexing,
+  isUserFullIndexed,
+  isUserIndexing,
+  markUserFullIndexed,
+  markUserIndexing,
+  urlExists,
+} from "./redis";
 import { isValidUrl } from "./util";
 import {
   ingest_url,
@@ -13,6 +22,7 @@ import { checkAuth, getToken } from "./auth";
 import { DatabaseFactory } from "./db";
 import { dbConfig } from "./config";
 import { documentSchema } from "./schema";
+import { processAllUserSearchMessages } from "./memfree_index";
 
 const allowedOrigins = ["http://localhost:3000", "https://www.memfree.me"];
 
@@ -43,12 +53,19 @@ async function handleRequest(req: Request): Promise<Response> {
   }
 
   if (path === "/api/vector/search" && method === "POST") {
-    const { query, userId, url } = await req.json();
+    const { query, userId, selectFields, limit, url } = await req.json();
     try {
-      const result = await db.search(userId, query, {
-        selectFields: ["title", "text", "url", "image"],
-        predicate: url ? `url == '${url}'` : undefined,
-      });
+      const searchOptions: any = {};
+      if (limit) {
+        searchOptions.limit = limit;
+      }
+      if (selectFields) {
+        searchOptions.selectFields = selectFields;
+      }
+      if (url) {
+        searchOptions.predicate = `url == '${url}'`;
+      }
+      const result = await db.search(userId, query, searchOptions);
       return Response.json(result);
     } catch (unknownError) {
       let errorMessage: string | null = null;
@@ -290,6 +307,67 @@ async function handleRequest(req: Request): Promise<Response> {
       log({
         service: "vector-index",
         action: "error-index-jsonl",
+        error: `${error}`,
+        url: url,
+        userId: userId,
+      });
+      return Response.json("Failed to index markdown", { status: 500 });
+    }
+  }
+
+  if (path === "/api/history/full" && method === "POST") {
+    const { userId } = await req.json();
+    try {
+      const indexed = await isUserFullIndexed(userId);
+      if (indexed) {
+        return Response.json("Already indexed", { status: 200 });
+      }
+
+      const indexing = await isUserIndexing(userId);
+      if (indexing) {
+        return Response.json("Indexing in progress", { status: 409 }); // 409 Conflict
+      }
+
+      await markUserIndexing(userId);
+
+      Promise.resolve().then(async () => {
+        try {
+          const success = await processAllUserSearchMessages(userId);
+          if (success) {
+            await markUserFullIndexed(userId);
+          }
+        } catch (error) {
+          console.error("Background indexing error:", error);
+        } finally {
+          await clearUserIndexing(userId);
+        }
+      });
+      return Response.json("Success");
+    } catch (error) {
+      log({
+        service: "vector-index",
+        action: "history-full-index",
+        error: `${error}`,
+        userId: userId,
+      });
+      await clearUserIndexing(userId);
+      return Response.json(`Failed to search ${error}`, { status: 500 });
+    }
+  }
+
+  if (path === "/api/history/single" && method === "POST") {
+    const { url, userId, text, title } = await req.json();
+    try {
+      if (!userId || !text || !title) {
+        return Response.json("Invalid parameters", { status: 400 });
+      }
+      console.log("Indexing single", url, userId, text.length, title);
+      await ingest_text_content(url, userId, text, title);
+      return Response.json("Success");
+    } catch (error) {
+      log({
+        service: "vector-index",
+        action: "error-index-md",
         error: `${error}`,
         url: url,
         userId: userId,

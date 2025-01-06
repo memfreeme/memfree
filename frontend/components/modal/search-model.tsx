@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Loader2, MessageCircle } from 'lucide-react';
 import { isUserFullIndexed } from '@/lib/store/search';
 import { User } from '@/lib/types';
@@ -26,7 +26,6 @@ interface SearchDialogProps {
 }
 
 interface SearchResult {
-    id: string;
     title: string;
     url: string;
     text: string;
@@ -44,6 +43,7 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
         const checkIndexStatus = async () => {
             if (open && user?.id) {
                 const indexed = await isUserFullIndexed(user?.id);
+                console.log('isIndexed:', indexed);
                 setIsIndexed(indexed);
             }
         };
@@ -64,6 +64,7 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
             }
 
             const result = await response.json();
+            console.log('Full index result:', result);
             if (result === 'Success') {
                 toast.success('Historical messages have started to index', {
                     description:
@@ -109,6 +110,7 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
             <DialogContent className="max-w-3xl">
                 <DialogHeader>
                     <DialogTitle>AI-Powered Search History</DialogTitle>
+                    <DialogDescription>You can perform AI search based on title, question, and answer content.</DialogDescription>
                 </DialogHeader>
 
                 {isIndexed === false && (
@@ -152,9 +154,9 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
                                 </div>
                             ) : (
                                 <div>
-                                    {results.map((result) => (
+                                    {results.map((result, index) => (
                                         <div
-                                            key={result.id}
+                                            key={index}
                                             className="flex items-center gap-3 p-4 hover:bg-primary/20 cursor-pointer rounded-md relative group"
                                             onClick={() => handleResultClick(result.url)}
                                         >

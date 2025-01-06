@@ -19,11 +19,13 @@ export async function GET(request: Request) {
         },
         body: JSON.stringify({
             userId: session?.user.id,
+            selectFields: ['title', 'url', 'text', 'create_time'],
             query,
         }),
     });
 
     if (!response.ok) {
+        console.error(`Error! status: ${response.status}`);
         throw new Error(`Error! status: ${response.status}`);
     }
 
