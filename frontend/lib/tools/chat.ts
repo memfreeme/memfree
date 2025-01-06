@@ -29,7 +29,7 @@ export async function chat(
         const newMessages = getHistoryMessages(isPro, messages);
         const query = newMessages[newMessages.length - 1].content;
 
-        console.log('answerLanguage', answerLanguage);
+        // console.log('answerLanguage', answerLanguage);
         let languageInstructions = '';
         if (answerLanguage !== 'auto') {
             languageInstructions = util.format(UserLanguagePrompt, answerLanguage);
@@ -38,7 +38,7 @@ export async function chat(
         }
 
         const prompt = util.format(ChatPrompt, profile, languageInstructions);
-        console.log('chat prompt', prompt);
+        // console.log('chat prompt', prompt);
         const userMessages = convertToCoreMessages(newMessages);
         const maxTokens = getMaxOutputToken(isPro, model);
 
