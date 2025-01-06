@@ -55,7 +55,7 @@ export function SidebarItem({ search: search, children }: SidebarItemProps) {
                         <span>{search.messages.length}</span>
                         <span className="ml-1">{search.messages.length > 1 ? 'messages' : 'message'}</span>
                     </div>
-                    {!isActive && <span>{resolveTime(search)}</span>}
+                    {!isActive && <span>{resolveTime(search.createdAt)}</span>}
                 </div>
             </div>
             {isActive && <div className="absolute right-2 top-1/2 transform -translate-y-1/2">{children}</div>}

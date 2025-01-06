@@ -67,6 +67,7 @@ export async function processAllUserSearchMessages(
   try {
     let lastIndexedTime =
       Number(await redis.get(LAST_INDEXED_TIME_KEY + userId)) || 0;
+    let hasError = false;
 
     console.time("processSearchMessages");
     while (true) {
@@ -111,7 +112,8 @@ export async function processAllUserSearchMessages(
               "",
               search.title,
               search.id,
-              documents
+              documents,
+              new Date(search.createdAt).getTime()
             );
             console.log("data length", data.length);
             await appendData(userId, data);
@@ -119,14 +121,17 @@ export async function processAllUserSearchMessages(
             console.log("search title ", search.title, "search id ", search.id);
           } catch (error) {
             console.error(`Failed to process search ${search.id}:`, error);
+            hasError = true;
           }
         })
       );
 
-      lastIndexedTime = lastTimestamp;
-      await redis.set(LAST_INDEXED_TIME_KEY + userId, lastIndexedTime);
+      if (!hasError) {
+        lastIndexedTime = lastTimestamp;
+        await redis.set(LAST_INDEXED_TIME_KEY + userId, lastIndexedTime);
+      }
 
-      if (!hasMore) {
+      if (!hasMore || hasError) {
         break;
       }
     }
@@ -135,7 +140,7 @@ export async function processAllUserSearchMessages(
 
     await compact(userId);
 
-    return true;
+    return !hasError;
   } catch (error) {
     console.error("Failed to process search messages:", error);
     return false;

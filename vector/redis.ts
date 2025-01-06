@@ -19,8 +19,8 @@ export const TOTAL_SEARCH_COUNT_KEY = "t_s_count:";
 
 export const SEARCH_KEY = "search:";
 export const USER_SEARCH_KEY = "user:search:";
-export const LAST_INDEXED_TIME_KEY = "user:last_indexed_time:";
 
+export const LAST_INDEXED_TIME_KEY = "user:last_indexed_time:";
 export const USER_FULL_INDEXED = "user:f-indexed:";
 export const USER_INDEXING = "user:indexing:";
 
@@ -42,6 +42,10 @@ export async function markUserIndexing(userId: string): Promise<void> {
 
 export async function clearUserIndexing(userId: string): Promise<void> {
   await redis.del(USER_INDEXING + userId);
+}
+
+export async function clearUserIndexTime(userId: string): Promise<void> {
+  await redis.del(LAST_INDEXED_TIME_KEY + userId);
 }
 
 export async function markUserFullIndexed(userId: string): Promise<void> {

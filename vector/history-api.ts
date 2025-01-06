@@ -22,21 +22,6 @@ async function handleRequest(req: Request): Promise<Response> {
   const path = new URL(req.url).pathname;
   const { method } = req;
 
-  // if (method === "OPTIONS") {
-  //   const origin = req.headers.get("Origin");
-  //   if (origin && allowedOrigins.includes(origin)) {
-  //     return new Response("OK", {
-  //       headers: {
-  //         "Access-Control-Allow-Origin": origin,
-  //         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  //         "Access-Control-Allow-Headers": "Authorization, Content-Type, Token",
-  //       },
-  //     });
-  //   } else {
-  //     return new Response("Forbidden", { status: 403 });
-  //   }
-  // }
-
   let authResponse = checkAuth(req, path);
   if (authResponse) {
     return authResponse;
@@ -46,7 +31,7 @@ async function handleRequest(req: Request): Promise<Response> {
     const { query, userId } = await req.json();
     try {
       const result = await db.search(userId, query, {
-        selectFields: ["title", "text", "url", "image"],
+        selectFields: ["title", "text", "url", "image", "create_time"],
       });
       return Response.json(result);
     } catch (unknownError) {
@@ -129,12 +114,18 @@ async function handleRequest(req: Request): Promise<Response> {
 
       await markUserIndexing(userId);
 
-      const success = await processAllUserSearchMessages(userId);
-      if (!success) {
-        return Response.json("Failed to index all users", { status: 500 });
-      }
-      await markUserFullIndexed(userId);
-      await clearUserIndexing(userId);
+      Promise.resolve().then(async () => {
+        try {
+          const success = await processAllUserSearchMessages(userId);
+          if (success) {
+            await markUserFullIndexed(userId);
+          }
+        } catch (error) {
+          console.error("Background indexing error:", error);
+        } finally {
+          await clearUserIndexing(userId);
+        }
+      });
       return Response.json("Success");
     } catch (error) {
       log({

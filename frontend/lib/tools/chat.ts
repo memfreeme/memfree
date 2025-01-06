@@ -75,9 +75,9 @@ export async function chat(
         //     console.error(`Failed to increment search count for user ${userId}:`, error);
         // });
         await saveMessages(userId, messages, fullAnswer, [], [], [], '', SearchCategory.ALL);
-        // indexMessage(userId, messages[0].title, messages[0].id, query + '\n\n' + fullAnswer).catch((error) => {
-        //     console.error(`Failed to index message for user ${userId}:`, error);
-        // });
+        indexMessage(userId, messages[0].title, messages[0].id, query + '\n\n' + fullAnswer).catch((error) => {
+            console.error(`Failed to index message for user ${userId}:`, error);
+        });
 
         onStream?.(null, true);
     } catch (error) {

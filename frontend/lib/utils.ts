@@ -19,8 +19,8 @@ export function formatDate(input: string | number): string {
     });
 }
 
-export function resolveTime(search) {
-    const createdAt = new Date(search.createdAt);
+export function resolveTime(timestamp: Date | number): string {
+    const createdAt = new Date(timestamp);
     const now = new Date();
 
     const timeDiff = now.getTime() - createdAt.getTime();
@@ -33,7 +33,7 @@ export function resolveTime(search) {
     if (diffInHours <= 24) return `${diffInHours} hours ago`;
     if (diffInDays <= 7) return `${diffInDays} days ago`;
 
-    return format(new Date(search.createdAt), 'MMM d, yyyy h:mm a');
+    return format(new Date(timestamp), 'MMM d, yyyy');
 }
 
 export function formatDateTime(input: string | number): string {

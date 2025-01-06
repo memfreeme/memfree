@@ -7,10 +7,11 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Loader2, MessageCircle } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { isUserFullIndexed } from '@/lib/store/search';
 import { User } from '@/lib/types';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { resolveTime } from '@/lib/utils';
+import { toast } from 'sonner';
 
 interface SearchResult {
     id: string;
@@ -29,6 +30,7 @@ interface SearchResult {
     title: string;
     url: string;
     text: string;
+    create_time: Date;
 }
 
 export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange, user: user }: SearchDialogProps) {
@@ -50,6 +52,7 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
 
     const [isIndexing, setIsIndexing] = useState(false);
     const handleFullIndex = async () => {
+        if (isIndexing) return;
         setIsIndexing(true);
         try {
             const response = await fetch('/api/history-index', {
@@ -62,7 +65,12 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
 
             const result = await response.json();
             if (result === 'Success') {
-                setIsIndexed(true);
+                toast.success('Historical messages have started to index', {
+                    description:
+                        'MemFre is building your search index in the background. It will take several minutes to complete. You can use the search function after it is completed.',
+                    duration: 5000,
+                });
+                onOpenChange(false);
             }
         } catch (error) {
             console.error('Failed to trigger full index:', error);
@@ -137,31 +145,36 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
                             </Button>
                         </div>
 
-                        <ScrollArea className="h-[400px] rounded-md border">
+                        <div className="h-[400px] overflow-y-auto">
                             {isLoading ? (
                                 <div className="flex items-center justify-center h-full">
                                     <div className="text-sm text-muted-foreground">Searching ...</div>
                                 </div>
                             ) : (
-                                <div className="divide-y">
+                                <div>
                                     {results.map((result) => (
                                         <div
                                             key={result.id}
-                                            className="flex items-start gap-3 p-4 hover:bg-muted/50 cursor-pointer transition-colors"
+                                            className="flex items-center gap-3 p-4 hover:bg-primary/20 cursor-pointer rounded-md relative group"
                                             onClick={() => handleResultClick(result.url)}
                                         >
-                                            <div className="mt-1">
+                                            <div className="flex items-center justify-center">
                                                 <MessageCircle className="h-5 w-5 text-muted-foreground" />
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <h4 className="text-sm font-medium leading-none mb-1 truncate">{result.title}</h4>
-                                                <p className="text-sm text-muted-foreground line-clamp-2">{result.text}</p>
+                                                <p className="text-sm text-muted-foreground line-clamp-2 relative">
+                                                    <span className="group-hover:mr-[100px] transition-all duration-200 block">{result.text}</span>
+                                                </p>
+                                            </div>
+                                            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <span className="text-sm text-muted-foreground px-2 py-1 rounded">{resolveTime(result.create_time)}</span>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
                             )}
-                        </ScrollArea>
+                        </div>
                     </div>
                 )}
             </DialogContent>

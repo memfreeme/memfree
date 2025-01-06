@@ -20,6 +20,7 @@ export async function indexMessage(userId: string, title: string, url: string, t
                 title: title,
                 text: text,
                 url: url,
+                timestamp: new Date(),
             }),
         });
 

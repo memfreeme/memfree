@@ -112,7 +112,8 @@ export async function addVectors(
   image: string,
   title: string,
   url: string,
-  documents: Document[]
+  documents: Document[],
+  timestamp?: number
 ): Promise<Array<Record<string, unknown>>> {
   const texts = documents.map(({ pageContent }) => pageContent);
   if (texts.length === 0) {
@@ -121,17 +122,19 @@ export async function addVectors(
 
   const embeddings = await getEmbedding().embedDocuments(texts);
   const data: Array<Record<string, unknown>> = [];
+
   for (let i = 0; i < documents.length; i += 1) {
     if (documents[i].pageContent.length < 10) {
       continue;
     }
+
     const newImage = image ? extractImage(documents[i].pageContent) : null;
 
     const record = {
-      create_time: Date.now(),
+      create_time: timestamp || Date.now(),
       title: title,
       url: url,
-      image: newImage ? newImage : image,
+      image: newImage || image,
       text: documents[i].pageContent,
       vector: embeddings[i] as number[],
     };

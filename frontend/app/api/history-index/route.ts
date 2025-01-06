@@ -26,7 +26,7 @@ export async function POST(req: Request) {
         }
 
         const result = await response.json();
-        return Response.json(result);
+        return Response.json('Success');
     } catch (error) {
         console.error('Full index error:', error);
         return Response.json({ error: 'Failed to process full index' }, { status: 500 });
