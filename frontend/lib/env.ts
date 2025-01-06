@@ -43,3 +43,6 @@ export const STRIPE_PREMIUM_MONTHLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PRE
 export const STRIPE_PREMIUM_YEARLY_PLAN_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_YEARLY_PLAN_ID || '';
 
 export const NEXT_PUBLIC_APP_URL = process.env.NEXT_PUBLIC_APP_URL || '';
+
+// HISTORY SEARCH
+export const HISTORY_HOST = process.env.HISTORY_HOST || '';

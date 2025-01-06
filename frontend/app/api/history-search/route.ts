@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { API_TOKEN, VECTOR_HOST } from '@/lib/env';
+import { API_TOKEN, HISTORY_HOST } from '@/lib/env';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
@@ -10,7 +10,7 @@ export async function GET(request: Request) {
     if (!session?.user) {
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
-    const searchUrl = `${VECTOR_HOST}/api/vector/search`;
+    const searchUrl = `${HISTORY_HOST}/api/vector/search`;
     const response = await fetch(searchUrl, {
         method: 'POST',
         headers: {

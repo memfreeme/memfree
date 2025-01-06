@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { API_TOKEN, VECTOR_INDEX_HOST } from '@/lib/env';
+import { API_TOKEN, HISTORY_HOST } from '@/lib/env';
 
 export async function POST(req: Request) {
     try {
@@ -8,7 +8,7 @@ export async function POST(req: Request) {
             return Response.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const response = await fetch(`${VECTOR_INDEX_HOST}/api/history/full`, {
+        const response = await fetch(`${HISTORY_HOST}/api/history/full`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
