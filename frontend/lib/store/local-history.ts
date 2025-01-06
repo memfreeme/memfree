@@ -17,6 +17,10 @@ interface SearchStore {
     syncActiveSearchToSearches: () => void;
 }
 
+const validateSearch = (search: any): search is Search => {
+    return search && typeof search === 'object' && 'id' in search && typeof search.id === 'string' && Array.isArray(search.messages) && 'createdAt' in search;
+};
+
 export const useSearchStore = create<SearchStore>()(
     persist(
         (set) => ({
@@ -25,7 +29,7 @@ export const useSearchStore = create<SearchStore>()(
             activeSearch: undefined,
             addSearch: (search) => {
                 set((state) => {
-                    const existingSearchIndex = state.searches.findIndex((s) => s.id === search.id);
+                    const existingSearchIndex = state.searches.filter((s) => s != null).findIndex((s) => s.id === search.id);
                     if (existingSearchIndex !== -1) {
                         const updatedSearches = [...state.searches];
                         updatedSearches[existingSearchIndex] = search;
@@ -69,16 +73,18 @@ export const useSearchStore = create<SearchStore>()(
             },
             setSearches: (searches) => set({ searches }),
             removeSearch: (id) => {
-                set((state) => ({
-                    searches: state.searches.filter((search) => search.id !== id),
-                }));
+                set((state) => {
+                    return {
+                        searches: state.searches.filter((search) => search != null).filter((search) => search.id !== id),
+                    };
+                });
             },
             clearSearches: () => {
                 set({ searches: [] });
             },
             setActiveSearch: (id) => {
                 set((state) => {
-                    const search = state.searches.find((s) => s.id === id);
+                    const search = state.searches.find((s) => s && 'id' in s && s.id === id);
                     return { activeSearch: search || undefined, activeId: id };
                 });
             },
@@ -121,7 +127,7 @@ export const useSearchStore = create<SearchStore>()(
             name: 'search-storage',
             storage: createJSONStorage(() => localStorage),
             partialize: (state) => ({
-                searches: state.searches.slice(0, 100),
+                searches: state.searches.filter(validateSearch).slice(0, 100),
             }),
         },
     ),

@@ -25,16 +25,16 @@ export function SidebarHeader({ user }: UserProps) {
                 <span className=" mx-2 font-urban text-xl font-bold">{siteConfig.name}</span>
             </Link>
             <div className="flex ml-auto space-x-2">
-                <Button
+                {/* <Button
                     variant="ghost"
                     className="hidden border-solid shadow-sm border-gray-200 dark:text-white dark:hover:bg-gray-700 rounded-full size-9 p-0 lg:flex"
                     onClick={() => setOpen(true)}
                 >
                     <Search className="size-4" />
-                </Button>
+                </Button> */}
                 <SidebarClose />
             </div>
-            <SearchDialog openSearch={open} onOpenModelChange={setOpen} user={user} />
+            {/* <SearchDialog openSearch={open} onOpenModelChange={setOpen} user={user} /> */}
         </div>
     );
 }

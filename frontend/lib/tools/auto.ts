@@ -275,9 +275,9 @@ export async function autoAnswer(
         // });
 
         await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated, SearchCategory.ALL);
-        indexMessage(userId, messages[0].title, messages[0].id, query + '\n\n' + fullAnswer).catch((error) => {
-            console.error(`Failed to index message for user ${userId}:`, error);
-        });
+        // indexMessage(userId, messages[0].title, messages[0].id, query + '\n\n' + fullAnswer).catch((error) => {
+        //     console.error(`Failed to index message for user ${userId}:`, error);
+        // });
         onStream?.(null, true);
     } catch (error) {
         console.error('Error:', error);

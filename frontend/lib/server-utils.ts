@@ -71,7 +71,7 @@ export async function saveMessages(
     await saveSearch(
         {
             id: messages[0].id,
-            title: messages[0].title,
+            title: messages[0].title ?? messages[0].content.substring(0, 50),
             createdAt: new Date(),
             userId: userId,
             messages: messages,
