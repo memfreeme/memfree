@@ -179,6 +179,11 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                                 videos: newVideos || msg.videos,
                                 related: newRelated || msg.related,
                             };
+                        } else if (index === 0) {
+                            return {
+                                ...msg,
+                                title: title ?? msg.title,
+                            };
                         }
                         return msg;
                     }),

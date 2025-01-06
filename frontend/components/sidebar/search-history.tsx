@@ -19,7 +19,7 @@ interface SearchHistoryProps {
 export async function SearchHistory({ user }: SearchHistoryProps) {
     return (
         <div className="flex flex-col h-full">
-            <SidebarHeader />
+            <SidebarHeader user={user} />
             {!user && <SignInButton />}
 
             <div className="flex flex-col my-2 px-4 space-y-2">

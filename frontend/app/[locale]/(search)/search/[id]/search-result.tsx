@@ -12,7 +12,7 @@ export interface SearchPageProps {
 }
 
 export default function SearchResult({ id, user }: SearchPageProps) {
-    const { searches } = useSearchStore();
+    const { searches, addSearch } = useSearchStore();
     const [search, setSearch] = useState(searches.find((s) => s.id === id));
 
     useEffect(() => {
@@ -21,6 +21,7 @@ export default function SearchResult({ id, user }: SearchPageProps) {
                 const search = await getSearch(id, user.id);
                 if (search) {
                     setSearch(search as Search);
+                    addSearch(search as Search);
                 }
             };
             fetchSearch();

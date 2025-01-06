@@ -1,10 +1,6 @@
 import { addVectors, appendData, compact, textSplitter } from "./ingest";
-import { redis } from "./redis";
+import { LAST_INDEXED_TIME_KEY, redis, USER_SEARCH_KEY } from "./redis";
 import type { Search } from "./type";
-
-export const SEARCH_KEY = "search:";
-export const USER_SEARCH_KEY = "user:search:";
-export const LAST_INDEXED_TIME_KEY = "user:last_indexed_time:";
 
 interface BatchSearchResult {
   searches: Search[];
@@ -52,7 +48,7 @@ async function getBatchSearchesByTimestamp(
     return {
       searches: results,
       lastTimestamp: lastSearchScore || fromTimestamp,
-      hasMore: searchIds.length === batchSize,
+      hasMore: false,
     };
   } catch (error) {
     console.error("Failed to get batch searches:", error);
@@ -145,5 +141,3 @@ export async function processAllUserSearchMessages(
     return false;
   }
 }
-
-await processAllUserSearchMessages(process.env.TEST_USER!, 20);

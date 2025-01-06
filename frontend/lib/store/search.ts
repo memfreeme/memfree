@@ -7,7 +7,7 @@ import { Redis } from '@upstash/redis';
 import { auth } from '@/auth';
 import { log } from '@/lib/log';
 import { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } from '@/lib/env';
-import { SEARCH_KEY, USER_SEARCH_KEY } from '@/lib/db';
+import { SEARCH_KEY, USER_FULL_INDEXED, USER_SEARCH_KEY } from '@/lib/db';
 
 const redis = new Redis({
     url: UPSTASH_REDIS_REST_URL || '',
@@ -203,4 +203,9 @@ export async function getSearch(id: string, userId: string) {
         console.error('Failed to get search:', error, id, userId);
         return null;
     }
+}
+
+export async function isUserFullIndexed(userId: string): Promise<boolean> {
+    const indexed = await redis.get(USER_FULL_INDEXED + userId);
+    return Boolean(indexed);
 }

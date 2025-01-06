@@ -10,6 +10,10 @@ export const IMAGE_KEY = 'image:';
 export const USER_IMAGE_KEY = 'user:image:';
 export const PUBLIC_IMAGE_KEY = 'public:image:';
 
+export const LAST_INDEXED_TIME_KEY = 'user:last_indexed_time:';
+
+export const USER_FULL_INDEXED = 'user:f-indexed:';
+
 // search cache
 export const CACHE_KEY = 'cache:';
 

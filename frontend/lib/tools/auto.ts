@@ -17,6 +17,7 @@ import { ImageSource, Message as StoreMessage, SearchCategory, TextSource, Video
 import { streamText, tool } from 'ai';
 import { z } from 'zod';
 import util from 'util';
+import { indexMessage } from '@/lib/tools/index-message';
 
 const ProfilePrompt = `Please use the information in the User Profile to give a more specific and personalized answer:
 \`\`\`
@@ -269,11 +270,14 @@ export async function autoAnswer(
             await streamResponse({ title: title }, onStream);
         }
 
-        incSearchCount(userId).catch((error) => {
-            console.error(`Failed to increment search count for user ${userId}:`, error);
-        });
+        // incSearchCount(userId).catch((error) => {
+        //     console.error(`Failed to increment search count for user ${userId}:`, error);
+        // });
 
         await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated, SearchCategory.ALL);
+        indexMessage(userId, messages[0].title, messages[0].id, query + '\n\n' + fullAnswer).catch((error) => {
+            console.error(`Failed to index message for user ${userId}:`, error);
+        });
         onStream?.(null, true);
     } catch (error) {
         console.error('Error:', error);

@@ -11,6 +11,7 @@ import { Message as StoreMessage, SearchCategory, TextSource, VideoSource } from
 import { streamText } from 'ai';
 import util from 'util';
 import { generateTitle } from '@/lib/tools/generate-title';
+import { indexMessage } from '@/lib/tools/index-message';
 
 const AutoLanguagePrompt = `Your answer MUST be written in the same language as the user question, For example, if the user QUESTION is written in chinese, your answer should be written in chinese too, if user's QUESTION is written in english, your answer should be written in english too.`;
 const UserLanguagePrompt = `Your answer MUST be written in %s language.`;
@@ -70,11 +71,14 @@ export async function chat(
             await streamResponse({ title: title }, onStream);
         }
 
-        incSearchCount(userId).catch((error) => {
-            console.error(`Failed to increment search count for user ${userId}:`, error);
+        // incSearchCount(userId).catch((error) => {
+        //     console.error(`Failed to increment search count for user ${userId}:`, error);
+        // });
+        await saveMessages(userId, messages, fullAnswer, [], [], [], '', SearchCategory.ALL);
+        indexMessage(userId, messages[0].title, messages[0].id, query + '\n\n' + fullAnswer).catch((error) => {
+            console.error(`Failed to index message for user ${userId}:`, error);
         });
 
-        await saveMessages(userId, messages, fullAnswer, [], [], [], '', SearchCategory.ALL);
         onStream?.(null, true);
     } catch (error) {
         const errorMessage = extractErrorMessage(error);

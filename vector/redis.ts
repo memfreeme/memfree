@@ -17,6 +17,37 @@ export const TOTAL_INDEX_COUNT_KEY = "t_index_count:";
 export const SEARCH_COUNT_KEY = "s_count:";
 export const TOTAL_SEARCH_COUNT_KEY = "t_s_count:";
 
+export const SEARCH_KEY = "search:";
+export const USER_SEARCH_KEY = "user:search:";
+export const LAST_INDEXED_TIME_KEY = "user:last_indexed_time:";
+
+export const USER_FULL_INDEXED = "user:f-indexed:";
+export const USER_INDEXING = "user:indexing:";
+
+export async function isUserFullIndexed(userId: string): Promise<boolean> {
+  const indexed = await redis.get(USER_FULL_INDEXED + userId);
+  return Boolean(indexed);
+}
+
+export async function isUserIndexing(userId: string): Promise<boolean> {
+  const indexing = await redis.get(USER_INDEXING + userId);
+  return Boolean(indexing);
+}
+
+export async function markUserIndexing(userId: string): Promise<void> {
+  await redis.set(USER_INDEXING + userId, "1", {
+    ex: 1800,
+  });
+}
+
+export async function clearUserIndexing(userId: string): Promise<void> {
+  await redis.del(USER_INDEXING + userId);
+}
+
+export async function markUserFullIndexed(userId: string): Promise<void> {
+  await redis.set(USER_FULL_INDEXED + userId, "1");
+}
+
 export async function addUrl(userId: string, url: string): Promise<number> {
   const date = Date.now();
   const [zaddResult, incrIndexCountResult, incrTotalIndexCountResult] =

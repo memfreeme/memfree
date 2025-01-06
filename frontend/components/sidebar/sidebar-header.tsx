@@ -10,8 +10,13 @@ import { SidebarClose } from '@/components/sidebar/sidebar-close';
 import { Button } from '@/components/ui/button';
 import { SearchDialog } from '@/components/modal/search-model';
 import { Search } from 'lucide-react';
+import { User } from '@/lib/types';
 
-export async function SidebarHeader() {
+interface UserProps {
+    user: User;
+}
+
+export function SidebarHeader({ user }: UserProps) {
     const [open, setOpen] = React.useState(false);
     return (
         <div className="flex items-center mt-4 md:col-span-1 mx-4">
@@ -29,7 +34,7 @@ export async function SidebarHeader() {
                 </Button>
                 <SidebarClose />
             </div>
-            <SearchDialog openSearch={open} onOpenModelChange={setOpen} />
+            <SearchDialog openSearch={open} onOpenModelChange={setOpen} user={user} />
         </div>
     );
 }
