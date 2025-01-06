@@ -1,17 +1,21 @@
 export const memfreeHost = process.env.MEMFREE_HOST;
 export const embeddingHost = process.env.EMBEDDING_HOST;
 
-let host = "";
-// Let open source users could one click deploy
-if (embeddingHost) {
-  host = embeddingHost;
-} else if (memfreeHost) {
-  host = `${memfreeHost}/embedding`;
-} else {
-  throw new Error("Neither MEMFREE_HOST nor EMBEDDING_HOST is defined");
+function getHost(): string {
+  const memfreeHost = process.env.MEMFREE_HOST;
+  const embeddingHost = process.env.EMBEDDING_HOST;
+
+  if (embeddingHost) {
+    return embeddingHost;
+  } else if (memfreeHost) {
+    return `${memfreeHost}/embedding`;
+  } else {
+    throw new Error("Neither MEMFREE_HOST nor EMBEDDING_HOST is defined");
+  }
 }
 
 async function embed(documents: string[]) {
+  const host = getHost();
   const url = `${host}/embed`;
 
   try {
@@ -39,6 +43,7 @@ async function embed(documents: string[]) {
 }
 
 async function rerank(query: string, documents: string[]) {
+  const host = getHost();
   const url = `${host}/rerank`;
 
   try {
