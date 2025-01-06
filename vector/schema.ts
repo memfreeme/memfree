@@ -42,4 +42,18 @@ export const documentSchema: DBSchema = {
   ]),
 };
 
-SchemaFactory.registerSchema("document", documentSchema);
+SchemaFactory.registerSchema(documentSchema.name, documentSchema);
+
+export const testSchema: DBSchema = {
+  name: "test",
+  schema: new Schema([
+    new Field("create_time", new Float64(), true),
+    new Field("text", new Utf8(), true),
+    new Field(
+      "vector",
+      new FixedSizeList(DIMENSIONS, new Field("item", new Float32())),
+      true
+    ),
+  ]),
+};
+SchemaFactory.registerSchema(testSchema.name, testSchema);

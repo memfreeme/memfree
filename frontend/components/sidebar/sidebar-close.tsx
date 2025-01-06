@@ -19,8 +19,7 @@ export function SidebarClose() {
                         toggleSidebar();
                     }}
                 >
-                    <ArrowLeftToLine className="size-3 text-inherit" strokeWidth={1.5} />
-                    <span className="sr-only">Toggle Sidebar</span>
+                    <ArrowLeftToLine className="size-4" />
                 </Button>
             )}
         </>

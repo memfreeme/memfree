@@ -1,31 +1,10 @@
 import { describe, it, expect } from "bun:test";
 import { getEmbedding } from "../embedding/embedding";
-import {
-  Schema,
-  Field,
-  Float32,
-  FixedSizeList,
-  Utf8,
-  Float64,
-} from "apache-arrow";
 import { DIMENSIONS, testConfig } from "../config";
-import { SchemaFactory } from "../schema";
+import { SchemaFactory, testSchema } from "../schema";
 import type { DBSchema } from "../type";
 import { DatabaseFactory } from "../db";
 
-const testSchema: DBSchema = {
-  name: "test",
-  schema: new Schema([
-    new Field("create_time", new Float64(), true),
-    new Field("text", new Utf8(), true),
-    new Field(
-      "vector",
-      new FixedSizeList(DIMENSIONS, new Field("item", new Float32())),
-      true
-    ),
-  ]),
-};
-SchemaFactory.registerSchema(testSchema.name, testSchema);
 const db = DatabaseFactory.createDatabase(testConfig, testSchema);
 
 describe("vector test", () => {

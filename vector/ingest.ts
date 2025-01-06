@@ -13,7 +13,7 @@ const mdSplitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
   chunkOverlap: 40,
 });
 
-const textSplitter = new RecursiveCharacterTextSplitter({
+export const textSplitter = new RecursiveCharacterTextSplitter({
   chunkSize: 400,
   chunkOverlap: 40,
 });
@@ -54,6 +54,17 @@ export async function processIngestion(
   });
   const data = await addVectors(image, title, url, documents);
   const table = await db.append(userId, data);
+}
+
+export async function appendData(
+  userId: string,
+  data: Array<Record<string, unknown>>
+) {
+  const table = await db.append(userId, data);
+}
+
+export async function compact(userId: string) {
+  await db.compact(userId);
 }
 
 export async function ingest_md(
@@ -97,7 +108,7 @@ export async function ingest_url(url: string, userId: string) {
   await processIngestion(url, userId, markdown, title, image ?? "");
 }
 
-async function addVectors(
+export async function addVectors(
   image: string,
   title: string,
   url: string,

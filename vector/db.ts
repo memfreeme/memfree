@@ -7,10 +7,60 @@ export class LanceDB {
   private config: DatabaseConfig;
   private db: any;
   private dbSchema: DBSchema;
+  private tableCreationLocks = new Map<string, Promise<lancedb.Table>>();
 
   constructor(config: DatabaseConfig, schema: DBSchema) {
     this.config = config;
     this.dbSchema = schema;
+  }
+
+  private async withLock<T>(
+    key: string,
+    fn: () => Promise<lancedb.Table>
+  ): Promise<lancedb.Table> {
+    if (this.tableCreationLocks.has(key)) {
+      return this.tableCreationLocks.get(key)! as Promise<lancedb.Table>;
+    }
+
+    const promise = fn().finally(() => {
+      this.tableCreationLocks.delete(key);
+    });
+    this.tableCreationLocks.set(key, promise);
+    return promise;
+  }
+
+  async getTable(tableName: string): Promise<lancedb.Table> {
+    try {
+      if (!this.db) {
+        await this.connect();
+      }
+
+      if (!this.db) {
+        throw new Error("Database connection not established.");
+      }
+
+      if ((await this.db.tableNames()).includes(tableName)) {
+        return this.db.openTable(tableName);
+      } else {
+        // to avoid Conflicting Append and Overwrite Transactions
+        return this.withLock(tableName, async () => {
+          // double check if table is created by another thread
+          const currentTableNames = await this.db.tableNames();
+          if (currentTableNames.includes(tableName)) {
+            return this.db.openTable(tableName);
+          }
+
+          console.log("Creating table", tableName);
+          return this.db.createEmptyTable(tableName, this.dbSchema.schema, {
+            mode: "create",
+            existOk: false,
+          });
+        });
+      }
+    } catch (error) {
+      console.error("Error getting table", tableName, error);
+      throw error;
+    }
   }
 
   private isS3Config(options: any): options is S3Config {
@@ -18,41 +68,35 @@ export class LanceDB {
   }
 
   async connect(): Promise<any> {
-    if (this.config.type === "s3") {
-      if (!this.isS3Config(this.config.options)) {
-        throw new Error("Invalid S3 configuration");
-      }
+    try {
+      if (this.config.type === "s3") {
+        if (!this.isS3Config(this.config.options)) {
+          throw new Error("Invalid S3 configuration");
+        }
 
-      const { bucket, awsAccessKeyId, awsSecretAccessKey, region, s3Express } =
-        this.config.options || {};
-      this.db = await lancedb.connect(bucket, {
-        storageOptions: {
+        const {
+          bucket,
           awsAccessKeyId,
           awsSecretAccessKey,
           region,
           s3Express,
-        },
-      });
-    } else {
-      const { localDirectory } =
-        (this.config.options as LocalConfig) || process.cwd();
-      this.db = await lancedb.connect(localDirectory);
-    }
-    return this.db;
-  }
-
-  async getTable(tableName: string): Promise<lancedb.Table> {
-    if (!this.db) {
-      await this.connect();
-    }
-
-    if ((await this.db.tableNames()).includes(tableName)) {
-      return this.db.openTable(tableName);
-    } else {
-      return this.db.createEmptyTable(tableName, this.dbSchema.schema, {
-        mode: "create",
-        existOk: true,
-      });
+        } = this.config.options || {};
+        this.db = await lancedb.connect(bucket, {
+          storageOptions: {
+            awsAccessKeyId,
+            awsSecretAccessKey,
+            region,
+            s3Express,
+          },
+        });
+      } else {
+        const { localDirectory } =
+          (this.config.options as LocalConfig) || process.cwd();
+        this.db = await lancedb.connect(localDirectory);
+      }
+    } catch (error) {
+      console.error("Error connecting to database", error);
+      throw error;
     }
   }
 
