@@ -133,14 +133,14 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
                 )}
 
                 {isIndexed === true && (
-                    <div className="space-y-4">
+                    <div className="space-y-4 overflow-hidden">
                         <div className="flex gap-2">
                             <Input
                                 type="text"
                                 placeholder="Search your search history"
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                className="flex-1"
+                                className="flex-1 border outline-0 ring-0  focus-visible:outline-none focus-visible:ring-0 resize-none focus-within:border-primary"
                                 autoFocus
                             />
                             <Button onClick={() => handleSearch(query)} disabled={isLoading}>

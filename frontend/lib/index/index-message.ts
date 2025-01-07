@@ -5,7 +5,7 @@ export async function indexMessage(userId: string, title: string, url: string, t
     try {
         const indexed = await isUserFullIndexed(userId);
         if (!indexed) {
-            console.error('User is not fully indexed');
+            console.log('User is not fully indexed', userId);
             return;
         }
 
