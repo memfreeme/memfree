@@ -20,6 +20,7 @@ export async function GET(request: Request) {
         body: JSON.stringify({
             userId: session?.user.id,
             selectFields: ['title', 'url', 'text', 'create_time'],
+            limit: 20,
             query,
         }),
     });
@@ -30,7 +31,5 @@ export async function GET(request: Request) {
     }
 
     const result = await response.json();
-    console.log(result);
-
     return NextResponse.json(result);
 }

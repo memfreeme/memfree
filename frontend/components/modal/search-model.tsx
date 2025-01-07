@@ -12,6 +12,7 @@ import { User } from '@/lib/types';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { resolveTime } from '@/lib/utils';
 import { toast } from 'sonner';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface SearchResult {
     id: string;
@@ -68,7 +69,7 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
             if (result === 'Success') {
                 toast.success('Historical messages have started to index', {
                     description:
-                        'MemFre is building your search index in the background. It will take several minutes to complete. You can use the search function after it is completed.',
+                        'MemFreeq is building your search index in the background. It will take several minutes to complete. You can use the search function after it is completed.',
                     duration: 5000,
                 });
                 onOpenChange(false);
@@ -110,7 +111,7 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
             <DialogContent className="max-w-3xl">
                 <DialogHeader>
                     <DialogTitle>AI-Powered Search History</DialogTitle>
-                    <DialogDescription>You can perform AI search based on title, question, and answer content.</DialogDescription>
+                    <DialogDescription>AI-powered search available across titles, questions, and answers</DialogDescription>
                 </DialogHeader>
 
                 {isIndexed === false && (
@@ -149,8 +150,24 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
 
                         <div className="h-[400px] overflow-y-auto">
                             {isLoading ? (
-                                <div className="flex items-center justify-center h-full">
+                                <div className="flex flex-col items-center justify-center h-full">
                                     <div className="text-sm text-muted-foreground">Searching ...</div>
+                                    <div className="space-y-4 p-4">
+                                        {Array.from({ length: 5 }).map((_, index) => (
+                                            <div key={index} className="flex items-center gap-3 w-full">
+                                                <Skeleton className="h-5 w-5 rounded-full" />
+
+                                                <div className="flex-1">
+                                                    <Skeleton className="h-4 w-[400px] mb-2" />
+
+                                                    <Skeleton className="h-3 w-full mb-1" />
+                                                    <Skeleton className="h-3 w-[80%]" />
+                                                </div>
+
+                                                <Skeleton className="h-4 w-[100px]" />
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             ) : (
                                 <div>
