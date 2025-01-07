@@ -13,6 +13,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { resolveTime } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useIndexStore } from '@/lib/store/local-store';
 
 interface SearchResult {
     id: string;
@@ -39,19 +40,20 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
     const [results, setResults] = useState<SearchResult[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    const [isIndexed, setIsIndexed] = useState<boolean>(false);
+    const { isIndexed, isIndexing, setIsIndexed, setIsIndexing } = useIndexStore();
     useEffect(() => {
         const checkIndexStatus = async () => {
-            if (open && user?.id) {
+            if (open && user?.id && !isIndexed) {
                 const indexed = await isUserFullIndexed(user?.id);
-                console.log('isIndexed:', indexed);
-                setIsIndexed(indexed);
+                if (indexed) {
+                    setIsIndexed(indexed);
+                    setIsIndexing(false);
+                }
             }
         };
         checkIndexStatus();
-    }, [open, user?.id]);
+    }, [open, user?.id, isIndexed]);
 
-    const [isIndexing, setIsIndexing] = useState(false);
     const handleFullIndex = async () => {
         if (isIndexing) return;
         setIsIndexing(true);
@@ -76,7 +78,6 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
             }
         } catch (error) {
             console.error('Failed to trigger full index:', error);
-        } finally {
             setIsIndexing(false);
         }
     };
@@ -122,7 +123,7 @@ export function SearchDialog({ openSearch: open, onOpenModelChange: onOpenChange
                                 {isIndexing ? (
                                     <>
                                         <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                                        Indexing...
+                                        We are indexing your search history, please wait ...
                                     </>
                                 ) : (
                                     'Index All Search History'

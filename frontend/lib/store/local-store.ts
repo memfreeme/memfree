@@ -95,3 +95,24 @@ export const useUserStore = create<UserState>((set) => ({
     user: null,
     setUser: (user: User) => set({ user }),
 }));
+
+interface IndexState {
+    isIndexed: boolean;
+    isIndexing: boolean;
+    setIsIndexed: (status: boolean) => void;
+    setIsIndexing: (status: boolean) => void;
+}
+
+export const useIndexStore = create<IndexState>()(
+    persist(
+        (set) => ({
+            isIndexed: false,
+            isIndexing: false,
+            setIsIndexed: (status: boolean) => set({ isIndexed: status }),
+            setIsIndexing: (status: boolean) => set({ isIndexing: status }),
+        }),
+        {
+            name: 'his-index-storage',
+        },
+    ),
+);
