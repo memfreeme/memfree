@@ -55,6 +55,13 @@ export class LanceDB {
             mode: "create",
             existOk: false,
           });
+          // await table.createIndex("vector", {
+          //   config: lancedb.Index.ivfPq({
+          //     numPartitions: 10,
+          //     numSubVectors: 16,
+          //     distanceType: "cosine",
+          //   }),
+          // });
         });
       }
     } catch (error) {

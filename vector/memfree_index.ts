@@ -48,7 +48,7 @@ async function getBatchSearchesByTimestamp(
     return {
       searches: results,
       lastTimestamp: lastSearchScore || fromTimestamp,
-      hasMore: false,
+      hasMore: searchIds.length === batchSize,
     };
   } catch (error) {
     console.error("Failed to get batch searches:", error);
@@ -80,11 +80,11 @@ export async function processAllUserSearchMessages(
         break;
       }
 
-      await Promise.all(
+      const results = await Promise.all(
         searches.map(async (search) => {
           try {
             if (!search?.messages || !Array.isArray(search.messages)) {
-              return;
+              return [];
             }
 
             const messageDocumentsPromises = search.messages
@@ -115,18 +115,25 @@ export async function processAllUserSearchMessages(
               documents,
               new Date(search.createdAt).getTime()
             );
-            console.log("data length", data.length);
-            await appendData(userId, data);
 
+            console.log("data length", data.length);
             console.log("search title ", search.title, "search id ", search.id);
+
+            return data;
           } catch (error) {
             console.error(`Failed to process search ${search.id}:`, error);
             hasError = true;
+            return [];
           }
         })
       );
 
       if (!hasError) {
+        const allData = results.flat();
+        console.log("allData length", allData.length);
+        console.time("appendData");
+        await appendData(userId, allData);
+        console.timeEnd("appendData");
         lastIndexedTime = lastTimestamp;
         await redis.set(LAST_INDEXED_TIME_KEY + userId, lastIndexedTime);
       }
