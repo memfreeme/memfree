@@ -11,7 +11,7 @@ import { Message as StoreMessage, SearchCategory, TextSource, VideoSource } from
 import { streamText } from 'ai';
 import util from 'util';
 import { generateTitle } from '@/lib/tools/generate-title';
-import { indexMessage } from '@/lib/tools/index-message';
+import { indexMessage } from '@/lib/index/index-message';
 
 const AutoLanguagePrompt = `Your answer MUST be written in the same language as the user question, For example, if the user QUESTION is written in chinese, your answer should be written in chinese too, if user's QUESTION is written in english, your answer should be written in english too.`;
 const UserLanguagePrompt = `Your answer MUST be written in %s language.`;

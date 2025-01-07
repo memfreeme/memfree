@@ -1,10 +1,10 @@
 import 'server-only';
 
-import { API_TOKEN, VECTOR_INDEX_HOST } from '@/lib/env';
+import { API_TOKEN } from '@/lib/env';
 import { log } from '@/lib/log';
 
-export async function remove(userId: string, urls: string[]) {
-    const deleteUrl = `${VECTOR_INDEX_HOST}/api/vector/delete`;
+export async function removeIndex(host: string, userId: string, urls: string[]) {
+    const deleteUrl = `${host}/api/vector/delete`;
     try {
         const response = await fetch(deleteUrl, {
             method: 'POST',
@@ -19,7 +19,7 @@ export async function remove(userId: string, urls: string[]) {
             throw new Error(`remove url Error! Status: ${response.status}, StatusText: ${response.statusText}`);
         }
         const result = await response.json();
-        console.log(`remove url ${urls} for user ${userId}`);
+        console.log(`remove url ${urls} for user ${userId}, result: ${result}`);
     } catch (error) {
         console.error(`remove url Error! ${error} for user ${userId}`);
         log({

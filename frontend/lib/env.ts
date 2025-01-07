@@ -46,3 +46,4 @@ export const NEXT_PUBLIC_APP_URL = process.env.NEXT_PUBLIC_APP_URL || '';
 
 // HISTORY SEARCH
 export const HISTORY_HOST = process.env.HISTORY_HOST || '';
+export const HISTORY_SEARCH_HOST = process.env.HISTORY_SEARCH_HOST || process.env.HISTORY_HOST || '';

@@ -6,8 +6,9 @@ import { type Search } from '@/lib/types';
 import { Redis } from '@upstash/redis';
 import { auth } from '@/auth';
 import { log } from '@/lib/log';
-import { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } from '@/lib/env';
+import { HISTORY_HOST, UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } from '@/lib/env';
 import { SEARCH_KEY, USER_FULL_INDEXED, USER_SEARCH_KEY } from '@/lib/db';
+import { removeIndex } from '@/lib/index/remove';
 
 const redis = new Redis({
     url: UPSTASH_REDIS_REST_URL || '',
@@ -115,6 +116,9 @@ export async function removeSearch({ id, path }: { id: string; path: string }) {
         }
         await redis.del(SEARCH_KEY + id);
         await redis.zrem(USER_SEARCH_KEY + search.userId, SEARCH_KEY + id);
+
+        // Decoupled Logic
+        await removeIndex(HISTORY_HOST, search.userId, [id]);
     } catch (error) {
         console.error('Failed to remove search:', error, id, path);
         return {

@@ -1,6 +1,6 @@
 import { addUrl, getUserById, urlsExists } from '@/lib/db';
 import { compact } from '@/lib/index/compact';
-import { remove } from '@/lib/index/remove';
+import { removeIndex } from '@/lib/index/remove';
 import { log } from '@/lib/log';
 import { isValidUrl } from '@/lib/shared-utils';
 import { NextResponse } from 'next/server';
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
         const existedUrl = await urlsExists(userId, urls);
         if (existedUrl && existedUrl.length > 0) {
-            await remove(userId, existedUrl);
+            await removeIndex(VECTOR_INDEX_HOST, userId, existedUrl);
         }
 
         const fullUrl = `${VECTOR_INDEX_HOST}/api/index/url`;

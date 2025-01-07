@@ -1,4 +1,4 @@
-import { API_TOKEN, VECTOR_INDEX_HOST } from '@/lib/env';
+import { API_TOKEN, HISTORY_HOST } from '@/lib/env';
 import { isUserFullIndexed } from '@/lib/store/search';
 
 export async function indexMessage(userId: string, title: string, url: string, text: string) {
@@ -9,7 +9,7 @@ export async function indexMessage(userId: string, title: string, url: string, t
             return;
         }
 
-        const response = await fetch(`${VECTOR_INDEX_HOST}/api/index/single`, {
+        const response = await fetch(`${HISTORY_HOST}/api/history/single`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
