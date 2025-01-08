@@ -82,6 +82,10 @@ export const docsConfig: DocsConfig = {
                     href: '/docs/extension-user-guide',
                 },
                 {
+                    title: 'History AI Search',
+                    href: '/docs/ai-search-history-search',
+                },
+                {
                     title: 'Index BookMarks',
                     href: '/docs/index-bookmarks',
                 },
