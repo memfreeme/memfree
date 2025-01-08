@@ -1,0 +1,73 @@
+---
+title: 利用 LanceDB 实现历史消息的 AI Search
+description: 如何基于 LanceDB + S3 Express 实现分布式 Vector Service
+image: https://fal.media/files/lion/SFhARLgEAkLIy1oIaOrSW_image.webp
+date: '2025-01-08'
+---
+
+## 1 为什么需要历史消息的搜索
+
+主要目的是快速找回之前重要的搜索记录，快速定位之前查找过的技术文档和解决方案，避免重复搜索，提升效率：
+
+-   例如，你可以快速搜索到之前 MemFree 给出的代码片段
+-   例如，你可以快速搜索到之前 MemFree 生成的文档
+-   例如，你可以快速搜索到之前 MemFree 生成的 Shell 命令
+
+## 2 为什么需要 AI 搜索
+
+AI 搜索 也称向量搜索或者语义化搜索。AI 搜索拥有以下优势：
+
+1. **AI 搜索 有跨语言理解能力**：输入 "AI Semantic Search" 也能找到 "AI 智能搜索" 的相关结果
+2. **智能纠错功能**：你可以通过 "MemFrre" 搜索到 "MemFree" 相关的结果
+3. **语义理解能力**：搜索 "搜索引擎" 也能找到与 "查询工具" 相关的内容
+4. **上下文感知**： 搜索"苹果"可以智能区分是在讨论水果还是科技公司
+
+## 3 如何实现 AI 搜索
+
+参考 [混合 AI 搜索 2 - 如何使用 LanceDB 构建无服务器向量搜索](https://www.memfree.me/blog/serverless-vector-search-lancedb) 和 [混合 AI 搜索 3 - 完整技术栈](https://www.memfree.me/blog/hybrid-ai-search-tech-stack) ，以下是实现 AI 搜索的关键组件和技术选择：
+
+-   **Vector DataBase**：由于 MemFree 之前已经使用 LanceDB 作为向量数据库支持向量搜索，所以这次的历史消息依然采用 LanceDB。
+-   **Embeddding Model**： 使用 OpenAI的 text-embedding-3-large Model
+-   **数据存储**： S3 Express
+-   **AI Search Index 服务部署**：Flyio 节点，原因参考 [在 Fly.io 上部署的优势](https://www.memfree.me/docs/deploy-searxng-fly-io)
+-   **AI Search Query 服务部署**： AWS EC2 节点。 原因主要是减少和S3 Express 的网络延迟
+
+## 4 如何基于 LanceDB + S3 Express 实现分布式 Vector Service
+
+![memfree-vector-service-lancedb](https://image.memfree.me/1736333256374-memfree-vector-service-lancedb.png)
+
+### 4.1 S3 不支持分布式多进程并发写入
+
+因为 S3 不提供原生的原子性重命名或条件性写入操作，所以 LanceDB 推荐借助外部的DynamoDB，或者 Redis 等有事务保证的存储来是不是分布式并发写入。 但显然， 这样成本比较高，而且维护也比较麻烦。
+
+我的解决方案如下：
+
+1. **一个用户一个 Table**：每个用户的数据存储在一个独立的 Table 中。
+2. **单节点写入**：同一个用户的写入请求在同一时刻只由一个写入节点负责。
+
+这样就可以实现多用户的分布式写入。 对一个用户来说，由于 LanceDB 的批量写入性能不错，一个节点是可以完全Cover 住。
+
+### 4.2 读写分离
+
+-   **查询延迟优化**: 为了尽可能降低查询延迟，查询节点部署在与 S3 Express 相同的 AWS 区域。在 AWS EC2 上，查询延迟约为 150 ms，而在 Fly.io 或 Vercel 上，即使与 S3 Express 在同一区域，查询延迟也会达到 450~500 ms。
+-   **查询与导入分离**：查询和导入操作相互独立，避免相互干扰。
+-   **导入弹性**：导入操作需要更大的弹性，Fly.io 的自动伸缩功能非常适合这一需求。
+
+### 4.3 分布式元数据的一致性
+
+Memfree 会利用 Redis 来记录 构建 Index 相关的元数据：
+
+-   每个用户构建 Index的状态信息，进度信息。
+-   每个用户table的导入次数，这是为了实现当版本数足够多时，及时 Compact。
+
+## 5 LanceDB Search Query 性能优化点
+
+1. **批量写入**: 尽可能一次写入足够多的数据, MemFree 对历史消息构建索引时，会几十个消息并发 Embedding，然后将得到的所有数据一次 Append 到 Lancedb
+2. **及时 Compact**: 利用 Redis 控制 Compact 操作的时机。
+3. **列裁剪**： 只 Select 必要的字段，减少IO 次数
+4. **查询节点部署优化**: 查询节点部署在和存储节点相同的 Region
+5. **硬件配置优化**: 成本允许的情况，Query 节点可以增大CPU和内存配置
+
+## 6 MemFree Vector Search 源码
+
+[MemFree Vector Search 的所有源码已经开源](https://github.com/memfreeme/memfree)，欢迎给个 Star, 谢谢。
