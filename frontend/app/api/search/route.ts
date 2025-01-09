@@ -19,15 +19,12 @@ const updateSource = function (model, source, messages, isSearch) {
     if (model === O1_MIMI || model === O1_PREVIEW) {
         return SearchCategory.O1;
     }
+    const file = messages[0].attachments?.[0];
+    if (file && file.startsWith('local-')) {
+        return SearchCategory.KNOWLEDGE_BASE;
+    }
     if (!isSearch) {
         return SearchCategory.CHAT;
-    }
-    const file = messages[0].attachments?.[0];
-    if (file) {
-        if (file.startsWith('local-')) {
-            return SearchCategory.KNOWLEDGE_BASE;
-        }
-        return SearchCategory.ALL;
     }
     const query = messages[messages.length - 1].content;
     if (containsValidUrl(query)) {

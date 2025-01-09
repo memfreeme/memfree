@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Gem, Images, LogOut, Settings } from 'lucide-react';
+import { Gem, Images, LogOut, Settings, SquareLibrary } from 'lucide-react';
 import type { User } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -50,9 +50,9 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                    <Link prefetch={false} href="/images" className="flex items-center space-x-2.5">
-                        <Images className="size-4" />
-                        <p className="text-sm">Images</p>
+                    <Link prefetch={false} href="/pricing" className="flex items-center space-x-2.5">
+                        <Gem className="size-4" />
+                        <p className="text-sm">Upgrade Plan</p>
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -62,9 +62,15 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link prefetch={false} href="/pricing" className="flex items-center space-x-2.5">
-                        <Gem className="size-4" />
-                        <p className="text-sm">Upgrade Plan</p>
+                    <Link prefetch={false} href="/indexes" className="flex items-center space-x-2.5">
+                        <SquareLibrary className="size-4" />
+                        <p className="text-sm">Indexes</p>
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link prefetch={false} href="/images" className="flex items-center space-x-2.5">
+                        <Images className="size-4" />
+                        <p className="text-sm">Images</p>
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
