@@ -31,7 +31,7 @@ export default async function SettingsPage() {
                     <BillingInfo userSubscriptionPlan={userSubscriptionPlan} />
                     <ThemeCard></ThemeCard>
                     <LanguageCard></LanguageCard>
-                    <DeleteHistoryCard></DeleteHistoryCard>
+                    {/* <DeleteHistoryCard></DeleteHistoryCard> */}
                 </div>
             </DashboardShell>
         </div>
