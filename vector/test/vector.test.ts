@@ -2,7 +2,6 @@ import { describe, it, expect } from "bun:test";
 import { getEmbedding } from "../embedding/embedding";
 import { DIMENSIONS, testConfig } from "../config";
 import { SchemaFactory, testSchema } from "../schema";
-import type { DBSchema } from "../type";
 import { DatabaseFactory } from "../db";
 
 const db = DatabaseFactory.createDatabase(testConfig, testSchema);

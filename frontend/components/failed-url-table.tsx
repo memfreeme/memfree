@@ -21,7 +21,7 @@ export function FailedUrlTable(props: { urls: ScoredURL[] }) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ url: url.value }),
+            body: JSON.stringify({ url: url.value, isSuccess: false }),
         })
             .then((response) => {
                 if (!response.ok) {

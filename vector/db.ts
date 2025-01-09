@@ -185,6 +185,32 @@ export class LanceDB {
     console.timeEnd("search");
     return results;
   }
+
+  async searchDetail(
+    tableName: string,
+    options: {
+      selectFields?: string[];
+      predicate?: string;
+      limit?: number;
+      offset?: number;
+    } = {}
+  ) {
+    const tbl = await this.openTable(tableName);
+
+    console.time("search");
+    const search = tbl
+      .query()
+      .select(options.selectFields ?? ["url"])
+      .offset(options.offset ?? 0)
+      .limit(options.limit ?? 20);
+
+    const results = options.predicate
+      ? await search.where(options.predicate).toArray()
+      : await search.toArray();
+
+    console.timeEnd("search");
+    return results;
+  }
 }
 
 export class DatabaseFactory {
@@ -287,18 +313,4 @@ export class DatabaseFactory {
 //   const db = await getConnection();
 //   const table = await getTable(db, tableName);
 //   return table.version();
-// }
-
-// export async function selectDetail(table: string) {
-//   const db = await getConnection();
-//   const tbl = await db.openTable(table);
-
-//   console.time("select");
-//   const result = await tbl
-//     .query()
-//     .select(["title", "text"])
-//     .limit(100)
-//     .toArray();
-//   console.timeEnd("select");
-//   return result;
 // }

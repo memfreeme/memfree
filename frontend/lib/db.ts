@@ -71,13 +71,22 @@ export async function incSearchCount(userId: string): Promise<void> {
 
 export async function removeUrlFromErrorUrls(userId: string, url: string) {
     const result = await redisDB.zrem(ERROR_URLS_KEY + userId, url);
+    console.log('removeUrlFromErrorUrls:', result);
     return result;
 }
 
-export type UserStatistics = [ScoredURL[], ScoredURL[], number | null, string | null];
+export async function removeIndexedUrls(userId: string, urls: string | string[]): Promise<number> {
+    const key = URLS_KEY + userId;
+    const urlsArray = Array.isArray(urls) ? urls : [urls];
+    const result = await redisDB.zrem(key, ...urlsArray);
+    console.log('removeIndexedUrls:', result);
+    return result;
+}
+
+export type UserStatistics = [ScoredURL[], ScoredURL[], number];
 
 export async function getUserStatistics(userId: string): Promise<UserStatistics> {
-    const [urls, failedUrls, indexCount, searchCount] = await Promise.all([
+    const [urls, failedUrls, count] = await Promise.all([
         redisDB.zrange(URLS_KEY + userId, 0, 19, {
             rev: true,
             withScores: true,
@@ -87,7 +96,6 @@ export async function getUserStatistics(userId: string): Promise<UserStatistics>
             withScores: true,
         }),
         redisDB.zcard(URLS_KEY + userId),
-        redisDB.get(SEARCH_COUNT_KEY + userId),
     ]);
 
     const scoredURLs: ScoredURL[] = [];
@@ -106,7 +114,7 @@ export async function getUserStatistics(userId: string): Promise<UserStatistics>
         });
     }
 
-    return [scoredURLs as ScoredURL[], failedUrlss as ScoredURL[], indexCount as number, searchCount as string];
+    return [scoredURLs as ScoredURL[], failedUrlss as ScoredURL[], count];
 }
 
 export async function getUserIndexCount(userId: string): Promise<number> {

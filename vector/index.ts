@@ -55,16 +55,12 @@ async function handleRequest(req: Request): Promise<Response> {
   if (path === "/api/vector/search" && method === "POST") {
     const { query, userId, selectFields, limit, url } = await req.json();
     try {
-      const searchOptions: any = {};
-      if (limit) {
-        searchOptions.limit = limit;
-      }
-      if (selectFields) {
-        searchOptions.selectFields = selectFields;
-      }
-      if (url) {
-        searchOptions.predicate = `url == '${url}'`;
-      }
+      const searchOptions = {
+        ...(limit && { limit }),
+        ...(selectFields && { selectFields }),
+        ...(url && { predicate: `url == '${url}'` }),
+      };
+
       const result = await db.search(userId, query, searchOptions);
       return Response.json(result);
     } catch (unknownError) {
@@ -89,6 +85,47 @@ async function handleRequest(req: Request): Promise<Response> {
         action: `error-search`,
         error: `${errorMessage}`,
         query: query,
+        userId: userId,
+      });
+      if (errorMessage) {
+        return Response.json("Failed to search", { status: 500 });
+      }
+    }
+  }
+
+  if (path === "/api/detail/search" && method === "POST") {
+    const { userId, selectFields, limit, offset, url } = await req.json();
+    try {
+      const searchOptions = {
+        ...(limit && { limit }),
+        ...(offset && { offset }),
+        ...(selectFields && { selectFields }),
+        ...(url && { predicate: `url == '${url}'` }),
+      };
+
+      const result = await db.searchDetail(userId, searchOptions);
+      return Response.json(result);
+    } catch (unknownError) {
+      let errorMessage: string | null = null;
+
+      if (unknownError instanceof Error) {
+        errorMessage = unknownError.message;
+      } else if (typeof unknownError === "string") {
+        errorMessage = unknownError;
+      }
+
+      if (
+        errorMessage &&
+        errorMessage.includes("Table") &&
+        errorMessage.includes("was not found")
+      ) {
+        return new Response(JSON.stringify([]), { status: 200 });
+      }
+
+      log({
+        service: "detail-search",
+        action: `error-search`,
+        error: `${errorMessage}`,
         userId: userId,
       });
       if (errorMessage) {

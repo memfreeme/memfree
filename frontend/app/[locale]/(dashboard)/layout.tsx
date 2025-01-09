@@ -7,6 +7,10 @@ import { DashBoardSidebarNav } from '@/components/dashboard/sidebar-nav';
 
 const sidebarNavItems = [
     {
+        title: 'Indexes',
+        href: '/indexes',
+    },
+    {
         title: 'Images',
         href: '/images',
     },

@@ -37,10 +37,8 @@ export function resolveTime(timestamp: Date | number): string {
 }
 
 export function formatDateTime(input: string | number): string {
-    const date = new Date(input);
-    const formattedDate = date.toLocaleDateString('en-US');
-    const formattedTime = date.toLocaleTimeString('en-US', { hour12: false });
-    return `${formattedDate}, ${formattedTime}`;
+    const timestamp = typeof input === 'string' ? parseInt(input) : input;
+    return format(new Date(timestamp), 'yyyy-MM-dd HH:mm:ss');
 }
 
 export function absoluteUrl(path: string) {
