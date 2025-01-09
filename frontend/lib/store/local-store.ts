@@ -116,3 +116,21 @@ export const useIndexStore = create<IndexState>()(
         },
     ),
 );
+
+interface SearchState {
+    isTyping: boolean;
+    isCompressHistory: boolean;
+    isSearching: boolean;
+    setIsSearching: (status: boolean) => void;
+    setIsTyping: (status: boolean) => void;
+    setIsCompressHistory: (status: boolean) => void;
+}
+
+export const useSearchState = create<SearchState>()((set) => ({
+    isTyping: false,
+    isCompressHistory: false,
+    isSearching: false,
+    setIsSearching: (status: boolean) => set({ isSearching: status }),
+    setIsTyping: (status: boolean) => set({ isTyping: status }),
+    setIsCompressHistory: (status: boolean) => set({ isCompressHistory: status }),
+}));

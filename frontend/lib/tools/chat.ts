@@ -21,15 +21,15 @@ export async function chat(
     isPro: boolean,
     userId: string,
     profile?: string,
+    summary?: string,
     onStream?: (...args: any[]) => void,
     answerLanguage?: string,
     model = GPT_4o_MIMI,
 ) {
     try {
-        const newMessages = getHistoryMessages(isPro, messages);
+        const newMessages = getHistoryMessages(isPro, messages, summary);
         const query = newMessages[newMessages.length - 1].content;
 
-        // console.log('answerLanguage', answerLanguage);
         let languageInstructions = '';
         if (answerLanguage !== 'auto') {
             languageInstructions = util.format(UserLanguagePrompt, answerLanguage);

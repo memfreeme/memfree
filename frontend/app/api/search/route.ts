@@ -42,24 +42,9 @@ export async function POST(req: NextRequest) {
     const userId = session?.user?.id ?? '';
     const isPro = session?.user ? isProUser(session.user) : false;
 
-    let { model, source, messages, profile, isSearch, questionLanguage, answerLanguage } = await req.json();
+    let { model, source, messages, profile, isSearch, questionLanguage, answerLanguage, summary } = await req.json();
 
-    console.log(
-        'model',
-        model,
-        'source',
-        source,
-        'messages',
-        messages,
-        'userId',
-        userId,
-        'isSearch',
-        isSearch,
-        'questionLanguage',
-        questionLanguage,
-        'answerLanguage',
-        answerLanguage,
-    );
+    console.log('model', model, 'source', source, 'messages', messages.length, 'userId', userId, 'isSearch', isSearch, 'summary', summary);
 
     if (isProModel(model) && !isPro) {
         return NextResponse.json(
@@ -90,7 +75,7 @@ export async function POST(req: NextRequest) {
                         break;
                     }
                     case SearchCategory.CHAT: {
-                        await chat(messages, isPro, userId, profile, streamController(controller), answerLanguage, model);
+                        await chat(messages, isPro, userId, profile, summary, streamController(controller), answerLanguage, model);
                         break;
                     }
                     case SearchCategory.PRODUCT_HUNT: {
@@ -106,7 +91,18 @@ export async function POST(req: NextRequest) {
                         break;
                     }
                     default: {
-                        await autoAnswer(messages, isPro, userId, profile, streamController(controller), questionLanguage, answerLanguage, model, source);
+                        await autoAnswer(
+                            messages,
+                            isPro,
+                            userId,
+                            profile,
+                            summary,
+                            streamController(controller),
+                            questionLanguage,
+                            answerLanguage,
+                            model,
+                            source,
+                        );
                     }
                 }
             },

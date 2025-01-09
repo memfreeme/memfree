@@ -66,9 +66,9 @@ export async function knowledgeBaseSearch(messages: StoreMessage[], isPro: boole
             return;
         }
 
-        incSearchCount(userId).catch((error) => {
-            console.error(`Failed to increment search count for user ${userId}:`, error);
-        });
+        // incSearchCount(userId).catch((error) => {
+        //     console.error(`Failed to increment search count for user ${userId}:`, error);
+        // });
 
         await saveMessages(userId, messages, fullAnswer, texts, [], [], '');
         onStream?.(null, true);

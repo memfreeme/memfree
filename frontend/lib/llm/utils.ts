@@ -1,9 +1,30 @@
+import { Message } from '@/lib/types';
 import 'server-only';
 
-export function getHistoryMessages(isPro: boolean, messages: any[]) {
+export function getHistoryMessages(isPro: boolean, messages: any[], summary?: string) {
     const sliceNum = isPro ? -7 : -3;
-    return messages?.slice(sliceNum);
+    const slicedMessages = messages?.slice(sliceNum);
+    if (summary) {
+        return [
+            {
+                content: summary,
+                role: 'system',
+            },
+            ...slicedMessages.slice(-2),
+        ];
+    }
+    return slicedMessages;
 }
+
+const formatMessage = (message: Message) => {
+    return `<${message.role}>${message.content}</${message.role}>`;
+};
+
+export const formatHistoryMessages = (messages: Message[]) => {
+    return `<history>
+  ${messages.map((m) => formatMessage(m)).join('\n')}
+  </history>`;
+};
 
 export function getHistory(isPro: boolean, messages: any[]) {
     const sliceNum = isPro ? -7 : -3;

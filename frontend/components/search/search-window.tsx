@@ -6,7 +6,7 @@ import SearchMessage from '@/components/search/search-message';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useSearchParams } from 'next/navigation';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { useConfigStore, useProfileStore, useUIStore } from '@/lib/store/local-store';
+import { useConfigStore, useProfileStore, useSearchState, useUIStore } from '@/lib/store/local-store';
 
 import { ImageSource, Message, SearchType, TextSource, User, VideoSource } from '@/lib/types';
 import { LoaderCircle } from 'lucide-react';
@@ -66,6 +66,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
     // monitorMemoryUsage();
 
     const { incrementSearchCount, canSearch } = useSearchLimit();
+    const { isCompressHistory } = useSearchState();
 
     const sendMessage = useCallback(
         async (question?: string, attachments?: string[], messageIdToUpdate?: string) => {
@@ -119,6 +120,24 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
             if (!messageValue && attachments && searchType === 'ui') {
                 messageValue = 'Please generate the same UI as the image';
             }
+
+            const waitForCompression = async () => {
+                if (!isCompressHistory) return;
+
+                return new Promise<void>((resolve) => {
+                    const checkCompressionStatus = () => {
+                        if (!isCompressHistory) {
+                            resolve();
+                        } else {
+                            console.log('Waiting for compression to finish...');
+                            setTimeout(checkCompressionStatus, 100);
+                        }
+                    };
+                    checkCompressionStatus();
+                });
+            };
+            await waitForCompression();
+
             // const imageUrls = extractAllImageUrls(messageValue);
             // if (imageUrls.length > 1 && user && !isProUser(user)) {
             //     toast.error(t('multi-image-free-limit'));
@@ -200,6 +219,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                         title: title,
                         createdAt: new Date(),
                         userId: user?.id,
+                        lastCompressIndex: 0,
                         messages: [
                             {
                                 id: activeId,
@@ -244,6 +264,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                         isSearch: useUIStore.getState().isSearch,
                         isShadcnUI: useUIStore.getState().isShadcnUI,
                         messages: useSearchStore.getState().activeSearch.messages,
+                        summary: useSearchStore.getState().activeSearch.summary,
                     }),
                     openWhenHidden: true,
                     onerror(err) {

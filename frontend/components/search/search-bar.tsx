@@ -23,6 +23,7 @@ import { SearchType } from '@/lib/types';
 import WebImageModal, { WebImageFile } from '@/components/modal/web-images-model';
 import { isImageInputModel } from '@/lib/model';
 import { SearchSettingsDialog } from '@/components/search/search-settings';
+import { useCompressHistory } from '@/hooks/use-compress-history';
 
 interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
@@ -120,6 +121,12 @@ const SearchBar: React.FC<Props> = ({
             e.preventDefault();
             handleClick();
         }
+    };
+
+    const { compressHistoryMessages } = useCompressHistory();
+    const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setContent(e.target.value);
+        compressHistoryMessages();
     };
 
     const [files, setFiles] = useState<FileWithPreview[]>([]);
@@ -268,7 +275,7 @@ const SearchBar: React.FC<Props> = ({
                     aria-label="Search"
                     className="w-full border-0 bg-transparent p-4 mb-8 text-sm placeholder:text-muted-foreground overflow-y-auto  outline-0 ring-0  focus-visible:outline-none focus-visible:ring-0 resize-none"
                     onKeyDown={handleInputKeydown}
-                    onChange={(e) => setContent(e.target.value)}
+                    onChange={handleContentChange}
                 ></TextareaAutosize>
                 <div className="flex relative">
                     <div className="absolute left-0 bottom-0 mb-1 ml-2 mt-6 flex items-center space-x-4">

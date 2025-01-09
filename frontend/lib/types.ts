@@ -95,6 +95,8 @@ export interface Search extends Record<string, any> {
     userId: string;
     messages: Message[];
     sharePath?: string;
+    summary?: string;
+    lastCompressIndex?: number;
 }
 
 export interface GenImage extends Record<string, any> {

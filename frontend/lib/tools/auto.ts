@@ -62,6 +62,7 @@ export async function autoAnswer(
     isPro: boolean,
     userId: string,
     profile?: string,
+    summary?: string,
     onStream?: (...args: any[]) => void,
     questionLanguage?: string,
     answerLanguage?: string,
@@ -69,7 +70,7 @@ export async function autoAnswer(
     source = SearchCategory.ALL,
 ) {
     try {
-        const newMessages = getHistoryMessages(isPro, messages);
+        const newMessages = getHistoryMessages(isPro, messages, summary);
         const query = newMessages[newMessages.length - 1].content;
 
         let texts: TextSource[] = [];

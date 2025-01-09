@@ -69,6 +69,10 @@ export function convertToCoreMessages(messages: Message[]): CoreMessage[] {
                 coreMessages.push({ role: 'assistant', content: message.content });
                 break;
             }
+            case 'system': {
+                coreMessages.push({ role: 'system', content: message.content });
+                break;
+            }
             default: {
                 throw new Error(`Unhandled role: ${message.role}`);
             }
