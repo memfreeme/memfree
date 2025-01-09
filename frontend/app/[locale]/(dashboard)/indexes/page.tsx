@@ -1,4 +1,4 @@
-import { FailedUrlTable } from '@/components/failed-url-table';
+import { FailedUrlTable } from '@/components/failed-indexes-table';
 import { IndexesTable } from '@/components/indexes-table';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';

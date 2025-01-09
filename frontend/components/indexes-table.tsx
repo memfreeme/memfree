@@ -3,11 +3,12 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatDateTime } from '@/lib/utils';
 import { ScoredURL } from '@/lib/types';
-import { Loader2, Send, Trash2 } from 'lucide-react';
+import { Loader2, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { getIndexedUrls } from '@/lib/store/indexes';
 import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { isValidUrl } from '@/lib/shared-utils';
 
 interface IndexesTableProps {
     userId: string;
@@ -40,10 +41,6 @@ export function IndexesTable({ userId, initialUrls, totalCount }: IndexesTablePr
         if (newPage < 1 || newPage > totalPages) return;
         setCurrentPage(newPage);
         await fetchPageData(newPage);
-    };
-
-    const handleVisit = (url: ScoredURL) => {
-        window.open(url.value, '_blank');
     };
 
     const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -81,7 +78,6 @@ export function IndexesTable({ userId, initialUrls, totalCount }: IndexesTablePr
                     <TableRow>
                         <TableHead>Url</TableHead>
                         <TableHead>Indexed Date</TableHead>
-                        <TableHead>Visit</TableHead>
                         <TableHead>Delete</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -89,14 +85,27 @@ export function IndexesTable({ userId, initialUrls, totalCount }: IndexesTablePr
                     {urls.map((url, index) => (
                         <TableRow key={index}>
                             <TableCell>
-                                <div className="font-medium">{url.value}</div>
+                                {isValidUrl(url.value) ? (
+                                    <a
+                                        href={url.value}
+                                        target="_blank"
+                                        className="text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1"
+                                    >
+                                        {url.value}
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                            />
+                                        </svg>
+                                    </a>
+                                ) : (
+                                    url.value
+                                )}
                             </TableCell>
                             <TableCell>{formatDateTime(url.score)}</TableCell>
-                            <TableCell>
-                                <button onClick={() => handleVisit(url)} title="visit" aria-label="Visit link">
-                                    <Send size={24} />
-                                </button>
-                            </TableCell>
                             <TableCell>
                                 <button onClick={() => handleDelete(url)} title="Delete" aria-label="Delete">
                                     {deletingId === url.value ? (
