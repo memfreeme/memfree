@@ -5,12 +5,13 @@ export function getHistoryMessages(isPro: boolean, messages: any[], summary?: st
     const sliceNum = isPro ? -7 : -3;
     const slicedMessages = messages?.slice(sliceNum);
     if (summary) {
+        console.log('summary', summary, 'isPro', isPro);
         return [
             {
                 content: summary,
                 role: 'system',
             },
-            ...slicedMessages.slice(-2),
+            ...slicedMessages.slice(-4),
         ];
     }
     return slicedMessages;

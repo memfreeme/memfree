@@ -66,7 +66,6 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
     // monitorMemoryUsage();
 
     const { incrementSearchCount, canSearch } = useSearchLimit();
-    const { isCompressHistory } = useSearchState();
 
     const sendMessage = useCallback(
         async (question?: string, attachments?: string[], messageIdToUpdate?: string) => {
@@ -122,11 +121,11 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
             }
 
             const waitForCompression = async () => {
-                if (!isCompressHistory) return;
+                if (!useSearchState.getState().isCompressHistory) return;
 
                 return new Promise<void>((resolve) => {
                     const checkCompressionStatus = () => {
-                        if (!isCompressHistory) {
+                        if (!useSearchState.getState().isCompressHistory) {
                             resolve();
                         } else {
                             console.log('Waiting for compression to finish...');

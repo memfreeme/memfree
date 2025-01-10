@@ -3,7 +3,7 @@ import 'server-only';
 import { incSearchCount } from '@/lib/db';
 import { getLLM } from '@/lib/llm/llm';
 import { DirectAnswerPrompt } from '@/lib/llm/prompt';
-import { getHistory, streamResponse } from '@/lib/llm/utils';
+import { getHistoryMessages, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI } from '@/lib/model';
 import { getSearchEngine } from '@/lib/search/search';
@@ -20,6 +20,7 @@ export async function o1Answer(
     isPro: boolean,
     userId: string,
     profile?: string,
+    summary?: string,
     onStream?: (...args: any[]) => void,
     model = GPT_4o_MIMI,
     source = SearchCategory.ALL,
@@ -32,7 +33,7 @@ export async function o1Answer(
         let images: ImageSource[] = [];
         let videos: VideoSource[] = [];
 
-        let history = getHistory(isPro, messages);
+        let history = getHistoryMessages(isPro, messages, summary);
 
         let imageFetchPromise;
         let videoFetchPromise;

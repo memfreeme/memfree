@@ -44,8 +44,6 @@ export async function POST(req: NextRequest) {
 
     let { model, source, messages, profile, isSearch, questionLanguage, answerLanguage, summary } = await req.json();
 
-    console.log('model', model, 'source', source, 'messages', messages.length, 'userId', userId, 'isSearch', isSearch, 'summary', summary);
-
     if (isProModel(model) && !isPro) {
         return NextResponse.json(
             {
@@ -71,7 +69,7 @@ export async function POST(req: NextRequest) {
             async start(controller) {
                 switch (source) {
                     case SearchCategory.O1: {
-                        await o1Answer(isSearch, messages, isPro, userId, profile, streamController(controller), model);
+                        await o1Answer(isSearch, messages, isPro, userId, profile, summary, streamController(controller), model);
                         break;
                     }
                     case SearchCategory.CHAT: {
