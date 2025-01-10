@@ -3,7 +3,6 @@ import { log, logError } from '@/lib/log';
 import { streamText } from 'ai';
 import { SearchCategory, Message as StoreMessage } from '@/lib/types';
 import { Claude_35_Sonnet } from '@/lib/model';
-import { incSearchCount } from '@/lib/db';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { getSearchEngine, TEXT_LIMIT } from '@/lib/search/search';
 import util from 'util';
@@ -106,10 +105,6 @@ export async function generateUI(
             fullAnswer += text;
             onStream?.(JSON.stringify({ answer: text }));
         }
-
-        // incSearchCount(userId).catch((error) => {
-        //     console.error(`Failed to increment search count for user ${userId}:`, error);
-        // });
 
         await saveMessages(userId, messages, fullAnswer, [], [], [], '', SearchCategory.UI);
     } catch (error) {

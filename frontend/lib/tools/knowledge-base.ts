@@ -1,6 +1,5 @@
 import 'server-only';
 
-import { incSearchCount } from '@/lib/db';
 import { getLLM } from '@/lib/llm/llm';
 import { getHistory, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
@@ -65,10 +64,6 @@ export async function knowledgeBaseSearch(messages: StoreMessage[], isPro: boole
         if (hasError) {
             return;
         }
-
-        // incSearchCount(userId).catch((error) => {
-        //     console.error(`Failed to increment search count for user ${userId}:`, error);
-        // });
 
         await saveMessages(userId, messages, fullAnswer, texts, [], [], '');
         onStream?.(null, true);

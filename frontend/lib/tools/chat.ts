@@ -1,6 +1,5 @@
 import 'server-only';
 
-import { incSearchCount } from '@/lib/db';
 import { convertToCoreMessages, getLLM, getMaxOutputToken } from '@/lib/llm/llm';
 import { ChatPrompt } from '@/lib/llm/prompt';
 import { getHistoryMessages, streamResponse } from '@/lib/llm/utils';
@@ -71,9 +70,6 @@ export async function chat(
             await streamResponse({ title: title }, onStream);
         }
 
-        // incSearchCount(userId).catch((error) => {
-        //     console.error(`Failed to increment search count for user ${userId}:`, error);
-        // });
         await saveMessages(userId, messages, fullAnswer, [], [], [], '', SearchCategory.ALL);
         indexMessage(userId, messages[0].title, messages[0].id, query + '\n\n' + fullAnswer).catch((error) => {
             console.error(`Failed to index message for user ${userId}:`, error);

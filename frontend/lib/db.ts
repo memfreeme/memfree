@@ -24,10 +24,6 @@ export const RATE_LIMIT_KEY = 'ratelimit';
 export const URLS_KEY = 'urls:';
 export const ERROR_URLS_KEY = 'error_urls:';
 export const INDEX_COUNT_KEY = 'index_count:';
-export const TOTAL_INDEX_COUNT_KEY = 't_index_count:';
-
-export const SEARCH_COUNT_KEY = 's_count:';
-export const TOTAL_SEARCH_COUNT_KEY = 't_s_count:';
 
 export const redisDB = new Redis({
     url: UPSTASH_REDIS_REST_URL!,
@@ -60,13 +56,6 @@ export async function getUserIdByEmail(email: string) {
     } catch {
         return null;
     }
-}
-
-export async function incSearchCount(userId: string): Promise<void> {
-    if (!userId) {
-        userId = 'guest';
-    }
-    const result = await Promise.all([redisDB.incr(SEARCH_COUNT_KEY + userId), redisDB.incr(TOTAL_SEARCH_COUNT_KEY)]);
 }
 
 export async function removeUrlFromErrorUrls(userId: string, url: string) {
@@ -124,13 +113,12 @@ export async function getUserIndexCount(userId: string): Promise<number> {
 
 export async function addUrl(userId: string, url: string): Promise<number> {
     const date = Date.now();
-    const [zaddResult, incrIndexCountResult, incrTotalIndexCountResult] = await Promise.all([
+    const [zaddResult, incrIndexCountResult] = await Promise.all([
         redisDB.zadd(URLS_KEY + userId, { score: date, member: url }),
         redisDB.incr(INDEX_COUNT_KEY + userId),
-        redisDB.incr(TOTAL_INDEX_COUNT_KEY),
     ]);
 
-    console.log('Result of all operations:', zaddResult, incrIndexCountResult, incrTotalIndexCountResult);
+    console.log('Result of all operations:', zaddResult, incrIndexCountResult);
     return incrIndexCountResult;
 }
 

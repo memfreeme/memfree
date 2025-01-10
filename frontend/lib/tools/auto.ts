@@ -1,6 +1,5 @@
 import 'server-only';
 
-import { incSearchCount } from '@/lib/db';
 import { convertToCoreMessages, getLLM, getMaxOutputToken } from '@/lib/llm/llm';
 import { AutoAnswerPrompt } from '@/lib/llm/prompt';
 import { getHistory, getHistoryMessages, streamResponse } from '@/lib/llm/utils';
@@ -270,10 +269,6 @@ export async function autoAnswer(
             messages[0].title = title;
             await streamResponse({ title: title }, onStream);
         }
-
-        // incSearchCount(userId).catch((error) => {
-        //     console.error(`Failed to increment search count for user ${userId}:`, error);
-        // });
 
         await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated, SearchCategory.ALL);
         indexMessage(userId, messages[0].title, messages[0].id, query + '\n\n' + fullAnswer).catch((error) => {

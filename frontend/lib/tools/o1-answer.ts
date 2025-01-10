@@ -1,6 +1,5 @@
 import 'server-only';
 
-import { incSearchCount } from '@/lib/db';
 import { getLLM } from '@/lib/llm/llm';
 import { DirectAnswerPrompt } from '@/lib/llm/prompt';
 import { getHistoryMessages, streamResponse } from '@/lib/llm/utils';
@@ -88,10 +87,6 @@ export async function o1Answer(
             videos = fetchedVideos.videos.slice(0, 8);
             await streamResponse({ videos: videos }, onStream);
         }
-
-        incSearchCount(userId).catch((error) => {
-            console.error(`Failed to increment search count for user ${userId}:`, error);
-        });
 
         await saveMessages(userId, messages, fullAnswer, texts, images, videos, fullRelated);
         onStream?.(null, true);
