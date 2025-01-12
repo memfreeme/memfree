@@ -4,7 +4,7 @@ import { convertToCoreMessages, getLLM, getMaxOutputToken } from '@/lib/llm/llm'
 import { AutoAnswerPrompt } from '@/lib/llm/prompt';
 import { getHistory, getHistoryMessages, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
-import { GPT_4o_MIMI } from '@/lib/model';
+import { GPT_4o_MIMI } from '@/lib/llm/model';
 import { getSearchEngine } from '@/lib/search/search';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { accessWebPage } from '@/lib/tools/access';

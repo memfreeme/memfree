@@ -3,7 +3,7 @@ import 'server-only';
 import { getLLM } from '@/lib/llm/llm';
 import { getHistory, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
-import { GPT_4o_MIMI } from '@/lib/model';
+import { GPT_4o_MIMI } from '@/lib/llm/model';
 import { getVectorSearch } from '@/lib/search/search';
 import { saveMessages } from '@/lib/server-utils';
 import { directlyAnswer } from '@/lib/tools/answer';

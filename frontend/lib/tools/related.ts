@@ -1,7 +1,7 @@
 import { getLLM, StreamHandler } from '@/lib/llm/llm';
 import { MoreQuestionsPrompt } from '@/lib/llm/prompt';
 import { logError } from '@/lib/log';
-import { GPT_4o_MIMI } from '@/lib/model';
+import { GPT_4o_MIMI } from '@/lib/llm/model';
 import { TextSource } from '@/lib/types';
 import { streamText } from 'ai';
 import util from 'util';

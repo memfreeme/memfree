@@ -1,5 +1,7 @@
 // The utility functions in this file are shared between the client and the server.
 
+import { getModelAccess, ModelType } from '@/lib/llm/model';
+
 export function isValidUrl(input: string): boolean {
     // return early if the url cannot be parsed
     if ('canParse' in URL && !URL.canParse(input)) return false;
@@ -63,6 +65,22 @@ export function isProUser(user: any): boolean {
 
 export function isPremiumUser(user: any): boolean {
     return user?.level === 2 && isSubscriptionActive(user);
+}
+
+export function checkModelAccess(model: string, user: any): boolean {
+    const access = getModelAccess(model);
+    if (!access) return false;
+
+    switch (access.type) {
+        case ModelType.FREE:
+            return true;
+        case ModelType.PRO:
+            return isProUser(user);
+        case ModelType.PREMIUM:
+            return isPremiumUser(user);
+        default:
+            return false;
+    }
 }
 
 export function extractFirstImageUrl(text: string): string | null {

@@ -2,7 +2,7 @@
 
 import { getLLM } from '@/lib/llm/llm';
 import { formatHistoryMessages } from '@/lib/llm/utils';
-import { GPT_4o_MIMI } from '@/lib/model';
+import { GPT_4o_MIMI } from '@/lib/llm/model';
 import { Message } from '@/lib/types';
 import { generateText } from 'ai';
 

@@ -1,5 +1,5 @@
 import { getLLM } from '@/lib/llm/llm';
-import { GPT_4o_MIMI } from '@/lib/model';
+import { GPT_4o_MIMI } from '@/lib/llm/model';
 import { generateText } from 'ai';
 
 export async function generateTitle(query: string): Promise<string> {

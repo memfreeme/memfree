@@ -4,7 +4,7 @@ import { RowSelectItem, Select, SelectContent, SelectItem, SelectTrigger, Select
 import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store/local-store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { Claude_35_Haiku, Claude_35_Sonnet, DEEPSEEK, GEMIMI_2, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/model';
+import { Claude_35_Haiku, Claude_35_Sonnet, DEEPSEEK, GEMIMI_2, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/llm/model';
 import { isProUser, isPremiumUser } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 

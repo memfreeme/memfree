@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { User } from '@/lib/types';
-import { GPT_4o_MIMI } from '@/lib/model';
+import { GPT_4o_MIMI } from '@/lib/llm/model';
 import { persist } from 'zustand/middleware';
 
 interface ProfileState {

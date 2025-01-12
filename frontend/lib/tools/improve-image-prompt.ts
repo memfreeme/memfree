@@ -1,5 +1,5 @@
 import { getLLM } from '@/lib/llm/llm';
-import { GPT_4o_MIMI } from '@/lib/model';
+import { GPT_4o_MIMI } from '@/lib/llm/model';
 import { format } from '@/lib/server-utils';
 import { generateText } from 'ai';
 

@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { isProModel, O1_MIMI, O1_PREVIEW, validModel } from '@/lib/model';
+import { O1_MIMI, O1_PREVIEW, validModel } from '@/lib/llm/model';
 import { logError } from '@/lib/log';
 import { streamController } from '@/lib/llm/utils';
 import { SearchCategory } from '@/lib/types';
@@ -12,7 +12,7 @@ import { o1Answer } from '@/lib/tools/o1-answer';
 import { productSearch } from '@/lib/tools/product';
 import { indieMakerSearch } from '@/lib/tools/indie';
 import { handleRateLimit } from '@/lib/ratelimit';
-import { isProUser } from '@/lib/shared-utils';
+import { checkModelAccess, isProUser } from '@/lib/shared-utils';
 import { chat } from '@/lib/tools/chat';
 
 const updateSource = function (model, source, messages, isSearch) {
@@ -44,22 +44,12 @@ export async function POST(req: NextRequest) {
 
     let { model, source, messages, profile, isSearch, questionLanguage, answerLanguage, summary } = await req.json();
 
-    if (isProModel(model) && !isPro) {
-        return NextResponse.json(
-            {
-                error: 'You need to upgrade a pro plan',
-            },
-            { status: 429 },
-        );
+    if (!validModel(model)) {
+        return NextResponse.json({ error: 'Please choose a valid model' }, { status: 400 });
     }
 
-    if (!validModel(model)) {
-        return NextResponse.json(
-            {
-                error: 'Please choose a valid model',
-            },
-            { status: 400 },
-        );
+    if (!checkModelAccess(model, session?.user)) {
+        return NextResponse.json({ error: 'You need to upgrade your plan to use this model' }, { status: 429 });
     }
 
     source = updateSource(model, source, messages, isSearch);

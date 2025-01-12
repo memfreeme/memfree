@@ -2,7 +2,7 @@ import { convertToCoreMessages, getLLM } from '@/lib/llm/llm';
 import { log, logError } from '@/lib/log';
 import { streamText } from 'ai';
 import { SearchCategory, Message as StoreMessage } from '@/lib/types';
-import { Claude_35_Sonnet } from '@/lib/model';
+import { Claude_35_Sonnet } from '@/lib/llm/model';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { getSearchEngine, TEXT_LIMIT } from '@/lib/search/search';
 import util from 'util';

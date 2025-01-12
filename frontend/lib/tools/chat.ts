@@ -4,7 +4,7 @@ import { convertToCoreMessages, getLLM, getMaxOutputToken } from '@/lib/llm/llm'
 import { ChatPrompt } from '@/lib/llm/prompt';
 import { getHistoryMessages, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
-import { GPT_4o_MIMI } from '@/lib/model';
+import { GPT_4o_MIMI } from '@/lib/llm/model';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { Message as StoreMessage, SearchCategory, TextSource, VideoSource } from '@/lib/types';
 import { streamText } from 'ai';

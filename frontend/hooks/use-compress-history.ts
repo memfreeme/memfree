@@ -1,4 +1,4 @@
-import { isProModel } from '@/lib/model';
+import { isProModel } from '@/lib/llm/model';
 import { useSearchStore } from '@/lib/store/local-history';
 import { useConfigStore, useSearchState } from '@/lib/store/local-store';
 import { compressHistory } from '@/lib/tools/compress-history';

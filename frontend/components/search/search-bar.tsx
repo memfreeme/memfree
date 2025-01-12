@@ -21,7 +21,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { SearchType } from '@/lib/types';
 import WebImageModal, { WebImageFile } from '@/components/modal/web-images-model';
-import { isImageInputModel } from '@/lib/model';
+import { isImageInputModel } from '@/lib/llm/model';
 import { SearchSettingsDialog } from '@/components/search/search-settings';
 import { useCompressHistory } from '@/hooks/use-compress-history';
 
