@@ -21,7 +21,7 @@ export default async function Changelog() {
         <div className="min-h-screen">
             <div className="py-10 max-w-4xl mx-auto px-4">
                 <div className="max-w-4xl mx-auto">
-                    <h1 className="text-2xl sm:text-3xl font-bold">{data.text.title}</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bold">MemFree Changelog</h1>
                     <h2 className="text-muted-foreground pt-6 font-bold">
                         MemFree is committed to becoming the <strong>ultimate AI assistant</strong> for <strong>Indie Makers</strong> and{' '}
                         <strong>Full-Stack Developers</strong>. Our vision is to boost product development efficiency by <strong>10x</strong> through
@@ -46,7 +46,7 @@ export default async function Changelog() {
                         <div className="absolute left-24 top-0 bottom-0 w-0.5 bg-muted hidden sm:block" />
 
                         <div className="space-y-8 sm:space-y-12">
-                            {data.changelog.map((release, index) => {
+                            {data?.changelog?.map((release, index) => {
                                 const date = formatDate(release.date);
                                 return (
                                     <div key={index} className="relative">
