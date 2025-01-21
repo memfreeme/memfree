@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { siteConfig } from '@/config';
 import { SidebarClose } from '@/components/sidebar/sidebar-close';
 import { Button } from '@/components/ui/button';
-import { SearchDialog } from '@/components/modal/search-model';
+import { SearchDialog } from '@/components/modal/search-modal';
 import { Search } from 'lucide-react';
 import { User } from '@/lib/types';
 

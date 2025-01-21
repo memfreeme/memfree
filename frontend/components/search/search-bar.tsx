@@ -20,7 +20,7 @@ import dynamic from 'next/dynamic';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { SearchType } from '@/lib/types';
-import WebImageModal, { WebImageFile } from '@/components/modal/web-images-model';
+import WebImageModal, { WebImageFile } from '@/components/modal/web-images-modal';
 import { isImageInputModel } from '@/lib/llm/model';
 import { SearchSettingsDialog } from '@/components/search/search-settings';
 import { useCompressHistory } from '@/hooks/use-compress-history';
@@ -234,7 +234,7 @@ const SearchBar: React.FC<Props> = ({
 
     const t = useTranslations('SearchBar');
 
-    const IndexModal = dynamic(() => import('@/components/index/index-model').then((mod) => mod.IndexModal), {
+    const IndexModal = dynamic(() => import('@/components/index/index-modal').then((mod) => mod.IndexModal), {
         loading: () => <></>,
     });
 

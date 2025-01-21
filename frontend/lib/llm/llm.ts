@@ -50,7 +50,7 @@ export function getLLM(model: string): LanguageModel {
         });
     } else if (model.startsWith('gemini')) {
         return google(model);
-    } else if (model == DEEPSEEK) {
+    } else if (model.startsWith('deepseek')) {
         return deepseek(model);
     } else {
         return openai(model);

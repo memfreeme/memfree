@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { RowSelectItem, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RowSelectItem, Select, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store/local-store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { Claude_35_Haiku, Claude_35_Sonnet, DEEPSEEK, GEMIMI_2, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/llm/model';
+import { Claude_35_Haiku, Claude_35_Sonnet, DEEPSEEK, DEEPSEEK_R1, GEMIMI_2, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/llm/model';
 import { isProUser, isPremiumUser } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
@@ -43,6 +43,11 @@ export const modelMap: Record<string, Model> = {
         name: 'Gemini 2.0',
         flag: 'Pro',
         value: GEMIMI_2,
+    },
+    [DEEPSEEK_R1]: {
+        name: 'DeepSeek R1',
+        flag: 'New & Pro',
+        value: DEEPSEEK_R1,
     },
     [O1_MIMI]: {
         name: 'O1-Mini',

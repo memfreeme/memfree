@@ -52,7 +52,9 @@ export async function o1Answer(
         }
 
         await streamResponse(
-            { status: 'OpenAI latest O1 model does not support streaming results, so the entire answer will be returned at once. Please wait.' },
+            {
+                status: 'The Open O1 and DeepSeek R1 reasoning models will return all answers at once. Please wait.',
+            },
             onStream,
         );
 
