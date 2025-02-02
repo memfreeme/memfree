@@ -4,7 +4,7 @@ import { convertToCoreMessages, getLLM, getMaxOutputToken } from '@/lib/llm/llm'
 import { AutoAnswerPrompt } from '@/lib/llm/prompt';
 import { getHistory, getHistoryMessages, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
-import { GPT_4o_MIMI } from '@/lib/llm/model';
+import { GPT_4o_MIMI, O3_MIMI } from '@/lib/llm/model';
 import { getSearchEngine } from '@/lib/search/search';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { accessWebPage } from '@/lib/tools/access';
@@ -65,7 +65,7 @@ export async function autoAnswer(
     onStream?: (...args: any[]) => void,
     questionLanguage?: string,
     answerLanguage?: string,
-    model = GPT_4o_MIMI,
+    modelName = GPT_4o_MIMI,
     source = SearchCategory.ALL,
 ) {
     try {
@@ -101,13 +101,12 @@ export async function autoAnswer(
         // console.log('system prompt', systemPrompt);
 
         const userMessages = convertToCoreMessages(newMessages);
-        const maxTokens = getMaxOutputToken(isPro, model);
         // const mexSteps = isPro ? 2 : 1;
         // const isContinued = isPro ? true : false;
         // console.log('auto answer', { maxTokens, mexSteps, isContinued });
 
         const result = streamText({
-            model: getLLM(model),
+            model: getLLM(modelName),
             maxSteps: 1,
             maxRetries: 0,
             messages: [
@@ -120,8 +119,10 @@ export async function autoAnswer(
                 },
                 ...userMessages,
             ],
-            maxTokens: maxTokens,
-            temperature: 0.1,
+            ...(modelName !== O3_MIMI && {
+                maxTokens: getMaxOutputToken(isPro, modelName),
+                temperature: 0.1,
+            }),
             tools: {
                 searchWeb: tool({
                     description: `search web to answer user's question, rephrase and translate the question before calling this tool.`,
@@ -230,7 +231,7 @@ export async function autoAnswer(
                 source,
                 history,
                 profile,
-                getLLM(model),
+                getLLM(modelName),
                 query,
                 texts,
                 (msg) => {
@@ -278,7 +279,7 @@ export async function autoAnswer(
     } catch (error) {
         console.error('Error:', error);
         const errorMessage = extractErrorMessage(error);
-        logError(new Error(errorMessage), `llm-auto-${model}`);
+        logError(new Error(errorMessage), `llm-auto-${modelName}`);
         onStream?.(JSON.stringify({ error: errorMessage }));
         onStream?.(null, true);
     }

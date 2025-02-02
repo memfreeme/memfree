@@ -4,7 +4,7 @@ import { convertToCoreMessages, getLLM, getMaxOutputToken } from '@/lib/llm/llm'
 import { ChatPrompt } from '@/lib/llm/prompt';
 import { getHistoryMessages, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
-import { GPT_4o_MIMI } from '@/lib/llm/model';
+import { GPT_4o_MIMI, O3_MIMI } from '@/lib/llm/model';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { Message as StoreMessage, SearchCategory, TextSource, VideoSource } from '@/lib/types';
 import { streamText } from 'ai';
@@ -23,7 +23,7 @@ export async function chat(
     summary?: string,
     onStream?: (...args: any[]) => void,
     answerLanguage?: string,
-    model = GPT_4o_MIMI,
+    modelName = GPT_4o_MIMI,
 ) {
     try {
         const newMessages = getHistoryMessages(isPro, messages, summary);
@@ -39,10 +39,9 @@ export async function chat(
         const prompt = util.format(ChatPrompt, profile, languageInstructions);
         // console.log('chat prompt', prompt);
         const userMessages = convertToCoreMessages(newMessages);
-        const maxTokens = getMaxOutputToken(isPro, model);
 
         const result = await streamText({
-            model: getLLM(model),
+            model: getLLM(modelName),
             maxRetries: 0,
             messages: [
                 {
@@ -54,8 +53,10 @@ export async function chat(
                 },
                 ...userMessages,
             ],
-            maxTokens: maxTokens,
-            temperature: 0.1,
+            ...(modelName !== O3_MIMI && {
+                maxTokens: getMaxOutputToken(isPro, modelName),
+                temperature: 0.1,
+            }),
         });
 
         let fullAnswer = '';
@@ -78,7 +79,7 @@ export async function chat(
         onStream?.(null, true);
     } catch (error) {
         const errorMessage = extractErrorMessage(error);
-        logError(new Error(errorMessage), `llm-o1-${model}`);
+        logError(new Error(errorMessage), `llm-chat-${modelName}`);
         onStream?.(JSON.stringify({ error: errorMessage }));
     } finally {
         onStream?.(null, true);

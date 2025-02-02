@@ -4,7 +4,7 @@ import { RowSelectItem, Select, SelectContent, SelectTrigger, SelectValue } from
 import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store/local-store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { Claude_35_Haiku, Claude_35_Sonnet, DEEPSEEK, DEEPSEEK_R1, GEMIMI_2, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/llm/model';
+import { Claude_35_Haiku, Claude_35_Sonnet, DEEPSEEK, DEEPSEEK_R1, GEMIMI_2, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW, O3_MIMI } from '@/lib/llm/model';
 import { isProUser, isPremiumUser } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
@@ -21,7 +21,6 @@ export const modelMap: Record<string, Model> = {
     },
     [DEEPSEEK]: {
         name: 'DeepSeek V3',
-        flag: 'New',
         value: DEEPSEEK,
     },
     [GPT_4o]: {
@@ -46,13 +45,13 @@ export const modelMap: Record<string, Model> = {
     },
     [DEEPSEEK_R1]: {
         name: 'DeepSeek R1',
-        flag: 'New & Pro',
+        flag: 'Pro',
         value: DEEPSEEK_R1,
     },
-    [O1_MIMI]: {
-        name: 'O1-Mini',
-        flag: 'Pro',
-        value: O1_MIMI,
+    [O3_MIMI]: {
+        name: 'O3 Mini',
+        flag: 'New & Pro',
+        value: O3_MIMI,
     },
     [O1_PREVIEW]: {
         name: 'O1-Preview',

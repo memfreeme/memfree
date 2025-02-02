@@ -3,7 +3,7 @@ import 'server-only';
 import { CoreMessage, CoreUserMessage, ImagePart, LanguageModel, TextPart } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from '@ai-sdk/anthropic';
-import { Claude_35_Sonnet, DEEPSEEK, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/llm/model';
+import { Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/llm/model';
 import { google } from '@ai-sdk/google';
 import { Message } from '@/lib/types';
 import { DEEPSEEK_API_KEY, OPENAI_BASE_URL } from '@/lib/env';

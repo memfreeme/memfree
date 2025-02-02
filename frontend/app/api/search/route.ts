@@ -43,6 +43,24 @@ export async function POST(req: NextRequest) {
     const isPro = session?.user ? isProUser(session.user) : false;
 
     let { model, source, messages, profile, isSearch, questionLanguage, answerLanguage, summary } = await req.json();
+    console.log(
+        'model',
+        model,
+        'source',
+        source,
+        'messages',
+        messages,
+        'profile',
+        profile,
+        'isSearch',
+        isSearch,
+        'questionLanguage',
+        questionLanguage,
+        'answerLanguage',
+        answerLanguage,
+        'summary',
+        summary,
+    );
 
     if (!validModel(model)) {
         return NextResponse.json({ error: 'Please choose a valid model' }, { status: 400 });
