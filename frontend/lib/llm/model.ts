@@ -3,6 +3,7 @@ export const GPT_4o = 'gpt-4o';
 export const O1_MIMI = 'o1-mini';
 export const O3_MIMI = 'o3-mini';
 export const O1_PREVIEW = 'o1-preview';
+export const O1 = 'o1';
 export const Claude_35_Haiku = 'claude-3-5-haiku-20241022';
 export const Claude_35_Sonnet = 'claude-3-5-sonnet-20241022';
 export const DEEPSEEK = 'deepseek-chat';
@@ -22,6 +23,7 @@ export const MODEL_CONFIG = {
     [O1_MIMI]: { type: ModelType.PRO, hasImageInput: false },
     [O3_MIMI]: { type: ModelType.PRO, hasImageInput: false },
     [O1_PREVIEW]: { type: ModelType.PREMIUM, hasImageInput: false },
+    [O1]: { type: ModelType.PREMIUM, hasImageInput: false },
     [Claude_35_Sonnet]: { type: ModelType.PRO, hasImageInput: true },
     [Claude_35_Haiku]: { type: ModelType.PRO, hasImageInput: false },
     [DEEPSEEK_R1]: { type: ModelType.PRO, hasImageInput: false },

@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { DEEPSEEK_R1, O1_MIMI, O1_PREVIEW, validModel } from '@/lib/llm/model';
+import { DEEPSEEK_R1, O1, O1_MIMI, O1_PREVIEW, validModel } from '@/lib/llm/model';
 import { logError } from '@/lib/log';
 import { streamController } from '@/lib/llm/utils';
 import { SearchCategory } from '@/lib/types';
@@ -16,7 +16,7 @@ import { checkModelAccess, isProUser } from '@/lib/shared-utils';
 import { chat } from '@/lib/tools/chat';
 
 const updateSource = function (model, source, messages, isSearch) {
-    if (model === O1_MIMI || model === O1_PREVIEW || model === DEEPSEEK_R1) {
+    if (model === O1_MIMI || model === O1_PREVIEW || model === O1 || model === DEEPSEEK_R1) {
         return SearchCategory.O1;
     }
     const file = messages[0].attachments?.[0];
