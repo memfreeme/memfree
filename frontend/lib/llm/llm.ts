@@ -3,10 +3,11 @@ import 'server-only';
 import { CoreMessage, CoreUserMessage, ImagePart, LanguageModel, TextPart } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from '@ai-sdk/anthropic';
+import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { Claude_35_Sonnet, GPT_4o, GPT_4o_MIMI, O1_MIMI, O1_PREVIEW } from '@/lib/llm/model';
 import { google } from '@ai-sdk/google';
 import { Message } from '@/lib/types';
-import { DEEPSEEK_API_KEY, OPENAI_BASE_URL } from '@/lib/env';
+import { DEEPSEEK_API_KEY, OPENAI_BASE_URL, OPENROUTER_API_KEY } from '@/lib/env';
 
 export type RoleType = 'user' | 'assistant' | 'system';
 
@@ -41,6 +42,10 @@ const deepseek = createOpenAI({
     apiKey: DEEPSEEK_API_KEY,
 });
 
+const openrouter = createOpenRouter({
+    apiKey: OPENROUTER_API_KEY,
+});
+
 const anthropic = createAnthropic({});
 
 export function getLLM(model: string): LanguageModel {
@@ -55,6 +60,12 @@ export function getLLM(model: string): LanguageModel {
     } else {
         return openai(model);
     }
+}
+
+export function getFreeModel() {
+    return openrouter('google/gemini-2.0-flash-exp:free', {
+        models: ['deepseek/deepseek-r1-distill-llama-70b:free', 'google/gemini-2.0-pro-exp-02-05:free', 'qwen/qwen2.5-vl-72b-instruct:free'],
+    });
 }
 
 export function convertToCoreMessages(messages: Message[]): CoreMessage[] {

@@ -1,15 +1,13 @@
-import { getLLM, StreamHandler } from '@/lib/llm/llm';
+import { getFreeModel, StreamHandler } from '@/lib/llm/llm';
 import { MoreQuestionsPrompt } from '@/lib/llm/prompt';
 import { logError } from '@/lib/log';
-import { GPT_4o_MIMI } from '@/lib/llm/model';
 import { TextSource } from '@/lib/types';
 import { streamText } from 'ai';
 import util from 'util';
 
-const model = getLLM(GPT_4o_MIMI);
-
 export async function getRelatedQuestions(query: string, contexts: TextSource[], onStream: StreamHandler) {
     const system = promptFormatterRelated(contexts);
+    const model = getFreeModel();
     try {
         const result = await streamText({
             model: model,
