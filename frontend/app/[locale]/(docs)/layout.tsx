@@ -14,7 +14,7 @@ export default async function DocsLayout({ children }: DocsLayoutProps) {
 
     return (
         <div className="flex min-h-screen flex-col">
-            <SiteHeader user={user} items={mainNavConfig.mainNav}>
+            <SiteHeader user={user} items={mainNavConfig.mainNav} isStatic={true}>
                 <DocsSidebarNav items={docsConfig.sidebarNav} />
             </SiteHeader>
             <div className="container flex-1">{children}</div>
