@@ -1,4 +1,4 @@
-import RoadmapPage from '@/app/[locale]/(marketing)/roadmap/client-wapper';
+import RoadmapPage from '@/app/[locale]/(static)/roadmap/client-wapper';
 import { siteConfig } from '@/config';
 
 export const metadata = {

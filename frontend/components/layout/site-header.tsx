@@ -21,9 +21,10 @@ interface NavBarProps {
     children?: React.ReactNode;
     rightElements?: React.ReactNode;
     scroll?: boolean;
+    isStatic?: boolean;
 }
 
-export default function SiteHeader({ user, items }: NavBarProps) {
+export default function SiteHeader({ user, items, isStatic = false }: NavBarProps) {
     const pathname = usePathname();
     const signInModal = useSigninModal();
     const setUser = useUserStore((state) => state.setUser);
@@ -62,15 +63,17 @@ export default function SiteHeader({ user, items }: NavBarProps) {
             <div className="block md:hidden ml-auto mr-4">
                 <MarketingMenu items={items} user={user} />
             </div>
-            <div className="hidden md:flex items-center  gap-3 md:col-span-1 pr-4 mr-0">
-                {user?.id ? (
-                    <UserAccountNav user={user} />
-                ) : (
-                    <Button className="rounded-full" onClick={signInModal.onOpen} aria-label="Open sign-in modal">
-                        <span>Sign In</span>
-                    </Button>
-                )}
-            </div>
+            {!isStatic && (
+                <div className="hidden md:flex items-center  gap-3 md:col-span-1 pr-4 mr-0">
+                    {user?.id ? (
+                        <UserAccountNav user={user} />
+                    ) : (
+                        <Button className="rounded-full" onClick={signInModal.onOpen} aria-label="Open sign-in modal">
+                            <span>Sign In</span>
+                        </Button>
+                    )}
+                </div>
+            )}
         </header>
     );
 }
