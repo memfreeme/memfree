@@ -17,13 +17,13 @@ enum UserLevel {
 const rateLimits = {
     [UserLevel.Guest]: new Ratelimit({
         redis: redisDB,
-        limiter: Ratelimit.slidingWindow(3, '1 d'),
+        limiter: Ratelimit.slidingWindow(10, '1 d'),
         prefix: `${RATE_LIMIT_KEY}:guest`,
         analytics: false,
     }),
     [UserLevel.Basic]: new Ratelimit({
         redis: redisDB,
-        limiter: Ratelimit.slidingWindow(5, '1 d'),
+        limiter: Ratelimit.slidingWindow(10, '1 d'),
         prefix: `${RATE_LIMIT_KEY}:free`,
         analytics: false,
     }),

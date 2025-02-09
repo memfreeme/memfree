@@ -14,6 +14,7 @@ import { siteConfig } from '@/config';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import { type Locale, routing } from '@/i18n/routing';
 import { ProductFooter } from '@/components/layout/product-footer';
+import GoogleAdsense from '@/components/google-ad';
 
 interface PostPageProps {
     params: {
@@ -113,6 +114,7 @@ export default async function PostPage({ params }: PostPageProps) {
                     See all posts
                 </Link>
             </div>
+            <GoogleAdsense isProUser={false} />
         </article>
     );
 }
