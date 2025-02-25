@@ -181,4 +181,5 @@ local_cache
 *.lance
 
 fly.toml
+fly-his.toml
 drop-table.ts
