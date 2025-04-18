@@ -103,8 +103,8 @@ export default async function RootLayout({ children, params: { locale } }: { chi
                 <Script defer src="https://accounts.google.com/gsi/client" strategy="lazyOnload" />
                 <Script
                     defer
-                    src="https://umami-memfree.fly.dev/script.js"
-                    data-website-id="ab239486-e4d4-416b-baa5-9174338a1bf6"
+                    src="https://cloud.umami.is/script.js"
+                    data-website-id="140cd119-ac77-46df-b502-01816c5adf14"
                     data-domains="memefree.me,www.memfree.me"
                 ></Script>
             </body>
