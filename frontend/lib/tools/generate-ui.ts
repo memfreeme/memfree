@@ -2,7 +2,7 @@ import { convertToCoreMessages, getLLM } from '@/lib/llm/llm';
 import { log, logError } from '@/lib/log';
 import { streamText } from 'ai';
 import { SearchCategory, Message as StoreMessage } from '@/lib/types';
-import { Claude_35_Sonnet } from '@/lib/llm/model';
+import { Claude_37_Sonnet } from '@/lib/llm/model';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { getSearchEngine, TEXT_LIMIT } from '@/lib/search/search';
 import util from 'util';
@@ -92,7 +92,7 @@ export async function generateUI(
         // console.log('newPrompt', prompt);
 
         const result = await streamText({
-            model: getLLM(Claude_35_Sonnet),
+            model: getLLM(Claude_37_Sonnet),
             maxRetries: 0,
             system: prompt,
             messages: historyMessages,

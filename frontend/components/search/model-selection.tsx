@@ -16,7 +16,7 @@ type Model = {
 
 export const modelMap: Record<string, Model> = {
     [GPT_41_NANO]: {
-        name: 'GPT-41 nano',
+        name: 'GPT-4.1 nano',
         value: GPT_41_NANO,
         flag: 'New',
     },
@@ -75,7 +75,7 @@ const ModelItem: React.FC<{ model: Model }> = ({ model }) => (
 
 export function ModelSelection() {
     const { model, setModel } = useModelStore();
-    const selectedModel = modelMap[model] ?? modelMap[GPT_4o_MIMI];
+    const selectedModel = modelMap[model] ?? modelMap[GPT_41_NANO];
 
     const signInModal = useSigninModal();
     const upgradeModal = useUpgradeModal();
