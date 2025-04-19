@@ -4,7 +4,7 @@ import { convertToCoreMessages, getLLM, getMaxOutputToken } from '@/lib/llm/llm'
 import { ChatPrompt } from '@/lib/llm/prompt';
 import { getHistoryMessages, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
-import { GPT_4o_MIMI, O3_MIMI } from '@/lib/llm/model';
+import { GPT_4o_MIMI, O3_MIMI, O4_MIMI } from '@/lib/llm/model';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { Message as StoreMessage, SearchCategory, TextSource, VideoSource } from '@/lib/types';
 import { streamText } from 'ai';
@@ -40,6 +40,11 @@ export async function chat(
         // console.log('chat prompt', prompt);
         const userMessages = convertToCoreMessages(newMessages);
 
+        let temperature = 1;
+        if (modelName !== O4_MIMI) {
+            temperature = 0.1;
+        }
+
         const result = await streamText({
             model: getLLM(modelName),
             maxRetries: 0,
@@ -53,9 +58,9 @@ export async function chat(
                 },
                 ...userMessages,
             ],
-            ...(modelName !== O3_MIMI && {
+            temperature: temperature,
+            ...(modelName !== O4_MIMI && {
                 maxTokens: getMaxOutputToken(isPro, modelName),
-                temperature: 0.1,
             }),
         });
 

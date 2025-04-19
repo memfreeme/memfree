@@ -53,7 +53,7 @@ export async function o1Answer(
 
         await streamResponse(
             {
-                status: 'The OpenAI O1 and DeepSeek R1 reasoning models will return all answers at once. Please wait.',
+                status: 'The OpenAI O3 and DeepSeek R1 reasoning models will return all answers at once. Please wait.',
             },
             onStream,
         );
