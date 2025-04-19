@@ -227,6 +227,7 @@ export class DatabaseFactory {
     console.log("Creating database with config", config);
     switch (config.type) {
       case "local":
+      case "lambda":
       case "s3":
         return new LanceDB(config, schema);
       default:

@@ -16,11 +16,6 @@ function getLocaleName(locale: string): string {
     const localeMap: { [key: string]: string } = {
         en: 'English',
         zh: '中文',
-        de: 'Deutsch',
-        fr: 'Français',
-        es: 'Español',
-        ja: '日本語',
-        ar: 'العربية',
     };
     return localeMap[locale] || locale;
 }
@@ -53,11 +48,6 @@ export default function LocaleSelect({ className, showCurrentLocale = false }: L
             <SelectContent>
                 <SelectItem value="en"> English </SelectItem>
                 <SelectItem value="zh"> 中文 </SelectItem>
-                <SelectItem value="de"> Deutsch </SelectItem>
-                <SelectItem value="fr"> Français </SelectItem>
-                <SelectItem value="es"> Español </SelectItem>
-                <SelectItem value="ja"> 日本語 </SelectItem>
-                <SelectItem value="ar"> العربية </SelectItem>
             </SelectContent>
         </Select>
     );
