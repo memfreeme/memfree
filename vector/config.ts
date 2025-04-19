@@ -1,4 +1,4 @@
-import type { DatabaseConfig, S3Config } from "./type";
+import type { DatabaseConfig, S3Config, LambdaConfig } from "./type";
 
 export const DIMENSIONS = 384;
 
@@ -25,8 +25,26 @@ export function validateS3Config(config: Partial<S3Config>): S3Config {
     awsAccessKeyId: config.awsAccessKeyId,
     awsSecretAccessKey: config.awsSecretAccessKey,
     region: config.region,
-    s3Express: config.s3Express || "false",
+    s3Express: config.s3Express || false,
   };
+}
+
+export function validateLambdaConfig(
+  config: Partial<LambdaConfig>
+): LambdaConfig {
+  if (!config.bucket) {
+    throw new Error("AWS bucket is required");
+  }
+
+  return {
+    bucket: config.bucket,
+    s3Express: config.s3Express || false,
+  };
+}
+
+function isS3Express(): boolean {
+  const bucket = process.env.AWS_BUCKET || "";
+  return bucket.includes("--x-s3");
 }
 
 const createS3Config = (): DatabaseConfig => {
@@ -35,12 +53,26 @@ const createS3Config = (): DatabaseConfig => {
     awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
     awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     region: process.env.AWS_REGION,
-    s3Express: "true",
+    s3Express: isS3Express(),
   });
 
   return {
     type: "s3",
     options: s3Config,
+  };
+};
+
+const createLambdaConfig = (): DatabaseConfig => {
+  const s3Config = validateLambdaConfig({
+    bucket: process.env.AWS_BUCKET,
+    s3Express: isS3Express(),
+  });
+  return {
+    type: "lambda",
+    options: {
+      bucket: s3Config.bucket,
+      s3Express: s3Config.s3Express,
+    },
   };
 };
 
@@ -54,7 +86,9 @@ const createLocalConfig = (): DatabaseConfig => {
 };
 
 export const dbConfig = process.env.AWS_BUCKET
-  ? createS3Config()
+  ? process.env.AWS_LAMBDA_FUNCTION_NAME
+    ? createLambdaConfig()
+    : createS3Config()
   : createLocalConfig();
 
 export const testConfig = createLocalConfig();

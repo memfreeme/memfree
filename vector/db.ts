@@ -1,7 +1,13 @@
 import * as lancedb from "@lancedb/lancedb";
 import { getEmbedding } from "./embedding/embedding";
 import { retryAsync } from "./util";
-import type { LocalConfig, DatabaseConfig, S3Config, DBSchema } from "./type";
+import type {
+  LocalConfig,
+  DatabaseConfig,
+  S3Config,
+  DBSchema,
+  LambdaConfig,
+} from "./type";
 
 export class LanceDB {
   private config: DatabaseConfig;
@@ -70,30 +76,30 @@ export class LanceDB {
     }
   }
 
-  private isS3Config(options: any): options is S3Config {
-    return "bucket" in options;
-  }
-
   async connect(): Promise<any> {
     try {
       if (this.config.type === "s3") {
-        if (!this.isS3Config(this.config.options)) {
-          throw new Error("Invalid S3 configuration");
-        }
-
         const {
           bucket,
           awsAccessKeyId,
           awsSecretAccessKey,
           region,
           s3Express,
-        } = this.config.options || {};
+        } = (this.config.options as S3Config) || {};
         this.db = await lancedb.connect(bucket, {
           storageOptions: {
             awsAccessKeyId,
             awsSecretAccessKey,
             region,
-            s3Express,
+            s3Express: s3Express ? "true" : "false",
+          },
+        });
+      } else if (this.config.type === "lambda") {
+        const { bucket, s3Express } =
+          (this.config.options as LambdaConfig) || {};
+        this.db = await lancedb.connect(bucket, {
+          storageOptions: {
+            s3Express: s3Express ? "true" : "false",
           },
         });
       } else {
@@ -166,9 +172,11 @@ export class LanceDB {
     } = options;
 
     const tbl = await this.openTable(tableName);
+    // console.log("Searching table", tbl.countRows());
 
     console.time("embedding");
     const query_embedding = await getEmbedding().embedQuery(query);
+    // console.log("query_embedding", query_embedding);
     console.timeEnd("embedding");
 
     console.time("search");
@@ -181,6 +189,7 @@ export class LanceDB {
     const results = predicate
       ? await vectorSearch.where(predicate).toArray()
       : await vectorSearch.toArray();
+    // console.log("results", results.length);
 
     console.timeEnd("search");
     return results;
@@ -215,6 +224,7 @@ export class LanceDB {
 
 export class DatabaseFactory {
   static createDatabase(config: DatabaseConfig, schema: DBSchema) {
+    console.log("Creating database with config", config);
     switch (config.type) {
       case "local":
       case "s3":

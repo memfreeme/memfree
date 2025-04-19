@@ -54,6 +54,7 @@ async function handleRequest(req: Request): Promise<Response> {
 
   if (path === "/api/vector/search" && method === "POST") {
     const { query, userId, selectFields, limit, url } = await req.json();
+    console.log("search", query, userId, selectFields, limit, url);
     try {
       const searchOptions = {
         ...(limit && { limit }),
@@ -64,6 +65,7 @@ async function handleRequest(req: Request): Promise<Response> {
       const result = await db.search(userId, query, searchOptions);
       return Response.json(result);
     } catch (unknownError) {
+      console.error("Error in search:", unknownError);
       let errorMessage: string | null = null;
 
       if (unknownError instanceof Error) {
@@ -192,7 +194,7 @@ async function handleRequest(req: Request): Promise<Response> {
 
   if (path === "/api/index/local-file" && method === "POST") {
     const startTime = new Date().getTime();
-    const token = await getToken(req, server.development);
+    const token = await getToken(req, server?.development || false);
     if (!token) {
       return Response.json("Unauthorized", { status: 401 });
     }
@@ -428,9 +430,46 @@ async function handleRequest(req: Request): Promise<Response> {
   return Response.json("Page not found", { status: 404 });
 }
 
-export const server = Bun.serve({
-  port: process.env.PORT || 3000,
-  fetch: handleRequest,
-});
+import type { Server } from "bun";
+export let server: Server | undefined;
 
-console.log(`Listening on ${server.url}, is dev: ${server.development}`);
+function startLocalServer(port: number): Server {
+  return Bun.serve({
+    port,
+    fetch: handleRequest,
+    error(error: Error) {
+      console.error("Server error:", error);
+      return new Response("Server Error", { status: 500 });
+    },
+  });
+}
+
+const lambdaHandler = {
+  async fetch(request: Request): Promise<Response> {
+    try {
+      if (process.env.AWS_LAMBDA_FUNCTION_NAME) {
+        return await handleRequest(request);
+      } else {
+        return new Response("Not a Lambda request", { status: 400 });
+      }
+    } catch (error) {
+      console.error("Lambda handler error:", error);
+      return new Response("Internal Server Error", {
+        status: 500,
+        headers: { "Content-Type": "text/plain" },
+      });
+    }
+  },
+};
+
+if (!process.env.AWS_LAMBDA_FUNCTION_NAME) {
+  // local server
+  const port = parseInt(process.env.PORT || "3000", 10);
+  server = startLocalServer(port);
+  console.log(`Listening on ${server.url}, is dev: ${server.development}`);
+}
+
+let defaultExport = process.env.AWS_LAMBDA_FUNCTION_NAME
+  ? lambdaHandler
+  : server;
+export default defaultExport;

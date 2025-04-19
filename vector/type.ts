@@ -6,7 +6,12 @@ export interface S3Config {
   awsAccessKeyId: string;
   awsSecretAccessKey: string;
   region: string;
-  s3Express: string;
+  s3Express: boolean;
+}
+
+export interface LambdaConfig {
+  bucket: string;
+  s3Express: boolean;
 }
 
 export interface LocalConfig {
@@ -14,8 +19,8 @@ export interface LocalConfig {
 }
 
 export interface DatabaseConfig {
-  type: "local" | "s3";
-  options: S3Config | LocalConfig;
+  type: "local" | "s3" | "lambda";
+  options: S3Config | LocalConfig | LambdaConfig;
 }
 
 export interface DBSchema {
