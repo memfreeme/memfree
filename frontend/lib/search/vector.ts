@@ -48,6 +48,8 @@ export class VectorSearch implements SearchSource {
             const texts: TextSource[] = [];
             const images: ImageSource[] = [];
 
+            // console.log('VectorSearch result:', result);
+
             result.forEach((item) => {
                 if (item._distance <= distance) {
                     texts.push({

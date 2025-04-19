@@ -1,6 +1,7 @@
 'use server';
 
-import { getFreeModel } from '@/lib/llm/llm';
+import { GPT_41_NANO } from '@/lib/llm/model';
+import { getLLM } from '@/lib/llm/llm';
 import { formatHistoryMessages } from '@/lib/llm/utils';
 import { Message } from '@/lib/types';
 import { generateText } from 'ai';
@@ -29,7 +30,7 @@ export async function compressHistory(messages: Message[], previousSummary?: str
 Please summarize the above conversation and retain key information. The summarized content will be used as context for subsequent prompts, and should be limited to 400 tokens.`;
 
         const { text } = await generateText({
-            model: getFreeModel(),
+            model: getLLM(GPT_41_NANO),
             messages: [
                 {
                     content: systemPrompt,

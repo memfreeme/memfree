@@ -4,7 +4,7 @@ import { RowSelectItem, Select, SelectContent, SelectTrigger, SelectValue } from
 import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store/local-store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { Claude_35_Haiku, Claude_35_Sonnet, Claude_37_Sonnet, DEEPSEEK, DEEPSEEK_R1, GEMIMI_2, GPT_4o, GPT_4o_MIMI, O1, O3_MIMI } from '@/lib/llm/model';
+import { GPT_41_NANO, Claude_37_Sonnet, DEEPSEEK_R1, GEMIMI_2, GPT_41, GPT_4o_MIMI, O3, O4_MIMI } from '@/lib/llm/model';
 import { isProUser, isPremiumUser } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
@@ -15,23 +15,19 @@ type Model = {
 };
 
 export const modelMap: Record<string, Model> = {
-    [GPT_4o_MIMI]: {
-        name: 'GPT-4o mini',
-        value: GPT_4o_MIMI,
+    [GPT_41_NANO]: {
+        name: 'GPT-41 nano',
+        value: GPT_41_NANO,
+        flag: 'New',
     },
-    [GPT_4o]: {
-        name: 'GPT-4o',
-        flag: 'Pro',
-        value: GPT_4o,
-    },
-    [Claude_35_Haiku]: {
-        name: 'Claude 3.5 Haiku',
-        flag: 'Pro',
-        value: Claude_35_Haiku,
+    [GPT_41]: {
+        name: 'GPT-4.1',
+        flag: 'New & Pro',
+        value: GPT_41,
     },
     [Claude_37_Sonnet]: {
         name: 'Claude 3.7 Sonnet',
-        flag: 'New & Pro',
+        flag: 'Pro',
         value: Claude_37_Sonnet,
     },
     [GEMIMI_2]: {
@@ -44,15 +40,15 @@ export const modelMap: Record<string, Model> = {
         flag: 'Pro',
         value: DEEPSEEK_R1,
     },
-    [O3_MIMI]: {
-        name: 'O3 Mini',
-        flag: 'Pro',
-        value: O3_MIMI,
+    [O4_MIMI]: {
+        name: 'O4 Mini',
+        flag: 'New & Pro',
+        value: O4_MIMI,
     },
-    [O1]: {
-        name: 'O1',
-        flag: 'Premium',
-        value: O1,
+    [O3]: {
+        name: 'O3',
+        flag: 'New & Premium',
+        value: O3,
     },
 };
 

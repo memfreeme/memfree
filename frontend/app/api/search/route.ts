@@ -20,7 +20,7 @@ const updateSource = function (model, source, messages, isSearch) {
         return SearchCategory.O1;
     }
     const file = messages[0].attachments?.[0];
-    if (file && file.startsWith('local-')) {
+    if (source === SearchCategory.KNOWLEDGE_BASE || (file && file.startsWith('local-'))) {
         return SearchCategory.KNOWLEDGE_BASE;
     }
     if (!isSearch) {

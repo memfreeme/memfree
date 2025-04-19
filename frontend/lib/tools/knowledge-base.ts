@@ -17,6 +17,8 @@ export async function knowledgeBaseSearch(messages: StoreMessage[], isPro: boole
 
         await streamResponse({ status: 'Searching ...' }, onStream);
 
+        // console.log('Knowledge Base Search:', query, url);
+
         const { texts } = await getVectorSearch(userId, url).search(query);
 
         if (texts.length > 0) {

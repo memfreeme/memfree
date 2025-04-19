@@ -1,5 +1,6 @@
-import { getFreeModel, StreamHandler } from '@/lib/llm/llm';
+import { getLLM, StreamHandler } from '@/lib/llm/llm';
 import { MoreQuestionsPrompt } from '@/lib/llm/prompt';
+import { GPT_41_NANO } from '@/lib/llm/model';
 import { logError } from '@/lib/log';
 import { TextSource } from '@/lib/types';
 import { streamText } from 'ai';
@@ -7,7 +8,7 @@ import util from 'util';
 
 export async function getRelatedQuestions(query: string, contexts: TextSource[], onStream: StreamHandler) {
     const system = promptFormatterRelated(contexts);
-    const model = getFreeModel();
+    const model = getLLM(GPT_41_NANO);
     try {
         const result = await streamText({
             model: model,
