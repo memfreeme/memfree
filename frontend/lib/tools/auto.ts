@@ -74,7 +74,7 @@ export async function autoAnswer(
 
         let texts: TextSource[] = [];
         let images: ImageSource[] = [];
-        let videos: VideoSource[] = [];
+        // let videos: VideoSource[] = [];
 
         let profileInstructions = '';
         if (profile) {
@@ -219,9 +219,9 @@ export async function autoAnswer(
                 .search(rewriteQuery)
                 .then((results) => results.images.filter((img) => img.image.startsWith('https')));
 
-            const videoFetchPromise = getSearchEngine({
-                categories: [SearchCategory.VIDEOS],
-            }).search(rewriteQuery);
+            // const videoFetchPromise = getSearchEngine({
+            //     categories: [SearchCategory.VIDEOS],
+            // }).search(rewriteQuery);
 
             fullAnswer = '';
             await streamResponse({ status: 'Answering ...', clear: true }, onStream);
@@ -260,9 +260,9 @@ export async function autoAnswer(
             images = [...images, ...fetchedImages];
             await streamResponse({ images: images }, onStream);
 
-            const fetchedVideos = await videoFetchPromise;
-            videos = fetchedVideos.videos.slice(0, 8);
-            await streamResponse({ videos: videos }, onStream);
+            // const fetchedVideos = await videoFetchPromise;
+            // videos = fetchedVideos.videos.slice(0, 8);
+            // await streamResponse({ videos: videos }, onStream);
         }
 
         if (!messages[0].title) {
