@@ -74,7 +74,7 @@ export async function autoAnswer(
 
         let texts: TextSource[] = [];
         let images: ImageSource[] = [];
-        // let videos: VideoSource[] = [];
+        let videos: VideoSource[] = [];
 
         let profileInstructions = '';
         if (profile) {
