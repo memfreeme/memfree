@@ -11,6 +11,7 @@ export const Claude_37_Sonnet = 'claude-3-7-sonnet-20250219';
 export const DEEPSEEK = 'deepseek-chat';
 export const DEEPSEEK_R1 = 'deepseek-reasoner';
 export const GEMIMI_2 = 'gemini-2.0-flash-exp';
+export const GEMIMI_25 = 'gemini-2.5-pro-exp-03-25';
 
 export enum ModelType {
     FREE = 'FREE',
@@ -35,6 +36,7 @@ export const MODEL_CONFIG = {
     [Claude_35_Haiku]: { type: ModelType.PRO, hasImageInput: false },
     [DEEPSEEK_R1]: { type: ModelType.PRO, hasImageInput: false },
     [GEMIMI_2]: { type: ModelType.PRO, hasImageInput: true },
+    [GEMIMI_25]: { type: ModelType.PRO, hasImageInput: true },
 } as const;
 
 export function getModelAccess(model: string) {
