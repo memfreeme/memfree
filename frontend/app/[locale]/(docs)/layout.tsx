@@ -22,7 +22,7 @@ export default async function DocsLayout({ children }: DocsLayoutProps) {
             <div className="container flex-1">{children}</div>
             <SimpleSiteFooter />
             <MobileFooter />
-            <GoogleAdsense isProUser={isProUser(user)} />
+            {/* <GoogleAdsense isProUser={isProUser(user)} /> */}
         </div>
     );
 }

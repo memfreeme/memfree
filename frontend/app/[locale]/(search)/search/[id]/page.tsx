@@ -4,8 +4,6 @@ import { SimpleSiteFooter } from '@/components/layout/simple-site-footer';
 import { HeroLanding } from '@/components/layout/hero-landing';
 import { getCurrentUser } from '@/lib/session';
 import SearchResult from '@/app/[locale]/(search)/search/[id]/search-result';
-import GoogleAdsense from '@/components/google-ad';
-import { isProUser } from '@/lib/shared-utils';
 
 export interface SearchPageProps {
     params: {
@@ -24,7 +22,6 @@ export default async function SearchPage({ params }: SearchPageProps) {
             <HeroLanding />
             <SearchResult id={params.id} user={user}></SearchResult>
             <SimpleSiteFooter />
-            <GoogleAdsense isProUser={isProUser(user)} />
         </div>
     );
 }

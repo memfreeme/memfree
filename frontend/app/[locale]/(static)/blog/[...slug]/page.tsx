@@ -114,7 +114,7 @@ export default async function PostPage({ params }: PostPageProps) {
                     See all posts
                 </Link>
             </div>
-            <GoogleAdsense isProUser={false} />
+            {/* <GoogleAdsense isProUser={false} /> */}
         </article>
     );
 }

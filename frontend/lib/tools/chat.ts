@@ -1,7 +1,8 @@
 import 'server-only';
 
 import { convertToCoreMessages, getLLM, getMaxOutputToken } from '@/lib/llm/llm';
-import { ChatPrompt } from '@/lib/llm/prompt';
+import { ChatPrompt, ProjectPrompt } from '@/lib/llm/prompt';
+import { addSearchToProject, getProjectById } from '@/lib/store/project';
 import { getHistoryMessages, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
 import { GPT_4o_MIMI, O3_MIMI, O4_MIMI } from '@/lib/llm/model';
@@ -23,6 +24,7 @@ export async function chat(
     summary?: string,
     onStream?: (...args: any[]) => void,
     answerLanguage?: string,
+    projectId?: string,
     modelName = GPT_4o_MIMI,
 ) {
     try {
@@ -36,7 +38,24 @@ export async function chat(
             languageInstructions = AutoLanguagePrompt;
         }
 
-        const prompt = util.format(ChatPrompt, profile, languageInstructions);
+        let prompt = '';
+        if (projectId) {
+            const project = await getProjectById(projectId);
+            if (project) {
+                const projectTitle = project.title || '';
+                const projectDescription = project.description || '';
+                const projectContext = project.context || '';
+                const projectRules = project.rules.join('\n') || '';
+
+                if (messages[0]?.id) {
+                    await addSearchToProject(projectId, messages[0].id);
+                }
+                prompt = util.format(ProjectPrompt, projectTitle, projectDescription, projectContext, projectRules);
+            }
+        } else {
+            prompt = util.format(ChatPrompt, profile, languageInstructions);
+        }
+
         // console.log('chat prompt', prompt);
         const userMessages = convertToCoreMessages(newMessages);
 

@@ -19,6 +19,7 @@ import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
 import useSearchLimit from '@/lib/store/local-limit';
 import { useTranslations } from 'next-intl';
 import SearchBar from '@/components/search/search-bar';
+import { useProjectStore } from '@/lib/store/local-project';
 
 export interface SearchProps extends React.ComponentProps<'div'> {
     id?: string;
@@ -264,6 +265,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                         isShadcnUI: useUIStore.getState().isShadcnUI,
                         messages: useSearchStore.getState().activeSearch.messages,
                         summary: useSearchStore.getState().activeSearch.summary,
+                        projectId: useProjectStore.getState().activeProjectId,
                     }),
                     openWhenHidden: true,
                     onerror(err) {

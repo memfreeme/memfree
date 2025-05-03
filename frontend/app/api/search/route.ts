@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     const userId = session?.user?.id ?? '';
     const isPro = session?.user ? isProUser(session.user) : false;
 
-    let { model, source, messages, profile, isSearch, questionLanguage, answerLanguage, summary } = await req.json();
+    let { model, source, messages, profile, isSearch, questionLanguage, answerLanguage, summary, projectId } = await req.json();
     console.log(
         'model',
         model,
@@ -60,6 +60,8 @@ export async function POST(req: NextRequest) {
         answerLanguage,
         'summary',
         summary,
+        'projectId',
+        projectId,
     );
 
     if (!validModel(model)) {
@@ -81,7 +83,7 @@ export async function POST(req: NextRequest) {
                         break;
                     }
                     case SearchCategory.CHAT: {
-                        await chat(messages, isPro, userId, profile, summary, streamController(controller), answerLanguage, model);
+                        await chat(messages, isPro, userId, profile, summary, streamController(controller), answerLanguage, projectId, model);
                         break;
                     }
                     case SearchCategory.PRODUCT_HUNT: {

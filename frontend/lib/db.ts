@@ -14,6 +14,10 @@ export const LAST_INDEXED_TIME_KEY = 'user:last_indexed_time:';
 
 export const USER_FULL_INDEXED = 'user:f-indexed:';
 
+// project
+export const PROJECT_KEY_PREFIX = 'project:';
+export const USER_PROJECT_KEY = 'user:projects:';
+
 // search cache
 export const CACHE_KEY = 'cache:';
 

@@ -1,29 +1,30 @@
 'use client';
 
-import React, { KeyboardEvent, useMemo, useRef, useState } from 'react';
-import { useSigninModal } from '@/hooks/use-signin-modal';
-import { SendHorizontal, FileTextIcon, Image as ImageIcon, Link, Settings } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { ModelSelection } from '@/components/search/model-selection';
-import { SourceSelection } from '@/components/search/source-selection';
-import TextareaAutosize from 'react-textarea-autosize';
-import { useConfigStore, useUIStore, useUserStore } from '@/lib/store/local-store';
-import { toast } from 'sonner';
-import { Icons } from '@/components/shared/icons';
-import { type FileRejection, useDropzone } from 'react-dropzone';
-import { useUploadFile } from '@/hooks/use-upload-file';
-import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
-import { getFileSizeLimit, hasImageInput, processImageFiles } from '@/lib/utils';
-import { useTranslations } from 'next-intl';
-import { isProUser } from '@/lib/shared-utils';
-import dynamic from 'next/dynamic';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { SearchType } from '@/lib/types';
 import WebImageModal, { WebImageFile } from '@/components/modal/web-images-modal';
-import { isImageInputModel } from '@/lib/llm/model';
+import { ModelSelection } from '@/components/search/model-selection';
 import { SearchSettingsDialog } from '@/components/search/search-settings';
+import { SourceSelection } from '@/components/search/source-selection';
+import { Icons } from '@/components/shared/icons';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useCompressHistory } from '@/hooks/use-compress-history';
+import { useSigninModal } from '@/hooks/use-signin-modal';
+import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
+import { useUploadFile } from '@/hooks/use-upload-file';
+import { isImageInputModel } from '@/lib/llm/model';
+import { isProUser } from '@/lib/shared-utils';
+import { useConfigStore, useUIStore, useUserStore } from '@/lib/store/local-store';
+import { SearchType } from '@/lib/types';
+import { getFileSizeLimit, hasImageInput, processImageFiles } from '@/lib/utils';
+import { FileTextIcon, Image as ImageIcon, Link, SendHorizontal, Settings } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
+import React, { KeyboardEvent, useMemo, useRef, useState } from 'react';
+import { type FileRejection, useDropzone } from 'react-dropzone';
+import TextareaAutosize from 'react-textarea-autosize';
+import { toast } from 'sonner';
+import ProjectSelector from '@/components/project/ProjectSelector';
 
 interface Props {
     handleSearch: (key: string, attachments?: string[]) => void;
@@ -279,6 +280,7 @@ const SearchBar: React.FC<Props> = ({
                 ></TextareaAutosize>
                 <div className="flex relative">
                     <div className="absolute left-0 bottom-0 mb-1 ml-2 mt-6 flex items-center space-x-4">
+                        <ProjectSelector />
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <div>

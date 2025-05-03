@@ -99,6 +99,17 @@ export interface Search extends Record<string, any> {
     lastCompressIndex?: number;
 }
 
+export interface Project extends Record<string, any> {
+    id: string;
+    title: string;
+    description?: string;
+    createdAt: Date;
+    userId: string;
+    context: string;
+    rules: string[];
+    searches: string[];
+}
+
 export interface GenImage extends Record<string, any> {
     id: string;
     userId: string;
