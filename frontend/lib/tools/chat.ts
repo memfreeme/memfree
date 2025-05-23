@@ -47,9 +47,9 @@ export async function chat(
                 const projectContext = project.context || '';
                 const projectRules = project.rules.join('\n') || '';
 
-                if (messages[0]?.id) {
-                    await addSearchToProject(projectId, messages[0].id);
-                }
+                // if (messages[0]?.id) {
+                //     await addSearchToProject(projectId, messages[0].id);
+                // }
                 prompt = util.format(ProjectPrompt, projectTitle, projectDescription, projectContext, projectRules);
             }
         } else {

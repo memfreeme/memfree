@@ -4,7 +4,7 @@ import { RowSelectItem, Select, SelectContent, SelectTrigger, SelectValue } from
 import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store/local-store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { GPT_41_NANO, Claude_37_Sonnet, DEEPSEEK_R1, GEMIMI_25, GPT_41, GPT_4o_MIMI, O3, O4_MIMI } from '@/lib/llm/model';
+import { GPT_41_NANO, Claude_37_Sonnet, DEEPSEEK_R1, GEMIMI_25, GPT_41, GPT_4o_MIMI, O3, O4_MIMI, Claude_4 } from '@/lib/llm/model';
 import { isProUser, isPremiumUser } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
@@ -24,14 +24,14 @@ export const modelMap: Record<string, Model> = {
         flag: 'Pro',
         value: GPT_41,
     },
-    [Claude_37_Sonnet]: {
-        name: 'Claude 3.7 Sonnet',
-        flag: 'Pro',
-        value: Claude_37_Sonnet,
+    [Claude_4]: {
+        name: 'Claude Sonnet 4',
+        flag: 'New & Pro',
+        value: Claude_4,
     },
     [GEMIMI_25]: {
         name: 'Gemini 2.5 Pro',
-        flag: 'New & Pro',
+        flag: 'Pro',
         value: GEMIMI_25,
     },
     [DEEPSEEK_R1]: {
