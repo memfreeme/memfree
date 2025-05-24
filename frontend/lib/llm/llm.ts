@@ -3,7 +3,7 @@ import 'server-only';
 import { CoreMessage, CoreUserMessage, ImagePart, LanguageModel, TextPart } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from '@ai-sdk/anthropic';
-import { GPT_41, GPT_41_NANO, Claude_4, O4_MIMI, O3, GEMIMI_25 } from '@/lib/llm/model';
+import { GPT_41, GPT_41_NANO, Claude_4, O4_MIMI, O3, GEMIMI_25, Claude_4_Thinking } from '@/lib/llm/model';
 import { google } from '@ai-sdk/google';
 import { Message } from '@/lib/types';
 import { DEEPSEEK_API_KEY, OPENAI_BASE_URL } from '@/lib/env';
@@ -21,8 +21,9 @@ export function getMaxOutputToken(isPro: boolean, model: string) {
     switch (model) {
         case GPT_41:
         case GPT_41_NANO:
-            return 16384;
         case Claude_4:
+        case Claude_4_Thinking:
+            return 16384;
         case GEMIMI_25:
         case O4_MIMI:
         case O3:
@@ -45,6 +46,9 @@ const anthropic = createAnthropic({});
 
 export function getLLM(model: string): LanguageModel {
     if (model.startsWith('claude')) {
+        if (model.endsWith('thinking')) {
+            model = model.replace('-thinking', '');
+        }
         return anthropic(model, {
             cacheControl: true,
         });

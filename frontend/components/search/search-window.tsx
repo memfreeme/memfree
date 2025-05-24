@@ -31,6 +31,13 @@ export interface SearchProps extends React.ComponentProps<'div'> {
     searchType?: SearchType;
 }
 
+function cleanReasoningFromMessage(content: string): string {
+    return content
+        .split('\n')
+        .filter((line) => !line.startsWith('> '))
+        .join('\n');
+}
+
 export default function SearchWindow({ id, initialMessages, user, isReadOnly = false, demoQuestions, searchBar, searchType = SearchType.SEARCH }: SearchProps) {
     const t = useTranslations('Search');
     const searchParams = useSearchParams();
@@ -248,7 +255,15 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
 
             try {
                 const url = searchType === 'ui' || useSearchStore.getState().activeSearch?.messages[0]?.type === 'ui' ? '/api/generate-ui' : '/api/search';
-
+                const processedMessages = useSearchStore.getState().activeSearch?.messages?.map((message) => {
+                    if (message.role === 'assistant') {
+                        return {
+                            ...message,
+                            content: cleanReasoningFromMessage(message.content),
+                        };
+                    }
+                    return message;
+                });
                 await fetchEventSource(url, {
                     method: 'post',
                     headers: {
@@ -263,7 +278,7 @@ export default function SearchWindow({ id, initialMessages, user, isReadOnly = f
                         profile: useProfileStore.getState().profile,
                         isSearch: useUIStore.getState().isSearch,
                         isShadcnUI: useUIStore.getState().isShadcnUI,
-                        messages: useSearchStore.getState().activeSearch.messages,
+                        messages: processedMessages,
                         summary: useSearchStore.getState().activeSearch.summary,
                         projectId: useProjectStore.getState().activeProjectId,
                     }),

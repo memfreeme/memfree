@@ -66,7 +66,7 @@ export async function saveMessages(
         type: type ?? 'all',
     });
 
-    // console.log('title', title, 'saving search', messages);
+    console.log('id' + messages[0].id + 'saving search', messages);
 
     await saveSearch(
         {

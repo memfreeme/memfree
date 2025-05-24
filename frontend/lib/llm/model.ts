@@ -9,6 +9,7 @@ export const O3 = 'o3';
 export const Claude_35_Haiku = 'claude-3-5-haiku-20241022';
 export const Claude_37_Sonnet = 'claude-3-7-sonnet-20250219';
 export const Claude_4 = 'claude-4-sonnet-20250514';
+export const Claude_4_Thinking = 'claude-4-sonnet-20250514-thinking';
 export const DEEPSEEK = 'deepseek-chat';
 export const DEEPSEEK_R1 = 'deepseek-reasoner';
 export const GEMIMI_2 = 'gemini-2.0-flash-exp';
@@ -35,6 +36,7 @@ export const MODEL_CONFIG = {
     // [Claude_35_Sonnet]: { type: ModelType.PRO, hasImageInput: true },
     [Claude_37_Sonnet]: { type: ModelType.PRO, hasImageInput: true },
     [Claude_4]: { type: ModelType.PRO, hasImageInput: true },
+    [Claude_4_Thinking]: { type: ModelType.PRO, hasImageInput: true },
     [Claude_35_Haiku]: { type: ModelType.PRO, hasImageInput: false },
     [DEEPSEEK_R1]: { type: ModelType.PRO, hasImageInput: false },
     [GEMIMI_2]: { type: ModelType.PRO, hasImageInput: true },
