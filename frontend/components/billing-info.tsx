@@ -27,8 +27,8 @@ export function BillingInfo({ userSubscriptionPlan }: BillingInfoProps) {
                 {isPaid && stripeCustomerId ? (
                     <CustomerPortalButton userStripeId={stripeCustomerId} />
                 ) : (
-                    <Link prefetch={false} href="/pricing" className={cn(buttonVariants())}>
-                        Upgrade your plan
+                    <Link prefetch={false} href="https://github.com/memfreeme/memfree" className={cn(buttonVariants())}>
+                        One-click deployment from open source MemFree
                     </Link>
                 )}
 

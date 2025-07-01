@@ -14,7 +14,7 @@ export const UpgradeModal = () => {
     const router = useRouter();
 
     const handleRouter = async () => {
-        router.push('/pricing');
+        window.open('https://github.com/memfreeme/memfree', '_blank');
         upgradeModal.onClose();
     };
     const t = useTranslations('Pricing');
@@ -37,7 +37,7 @@ export const UpgradeModal = () => {
                 </div>
 
                 <Button className="rounded-full mt-6 mx-10 sm:mx-4" onClick={handleRouter} data-umami-event="Upgrade Click" aria-label={t('upgrade-button')}>
-                    {t('upgrade-button')}
+                    One-click deployment from open source MemFree
                 </Button>
             </div>
         </Modal>
