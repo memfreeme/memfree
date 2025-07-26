@@ -5,7 +5,7 @@ export function SimpleSiteFooter() {
     return (
         <footer className="hidden md:block mx-auto py-10">
             <div className="flex justify-center items-center h-5 space-x-2 text-sm">
-                <Link
+                {/* <Link
                     className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:font-semibold"
                     href={siteConfig.links.discord}
                     target="_blank"
@@ -14,8 +14,8 @@ export function SimpleSiteFooter() {
                     data-umami-event="Discord Click"
                 >
                     Discord
-                </Link>
-                <span className="text-gray-300">|</span>
+                </Link> */}
+                {/* <span className="text-gray-300">|</span> */}
                 <Link
                     className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:font-semibold"
                     href={siteConfig.links.github}
@@ -58,8 +58,8 @@ export function SimpleSiteFooter() {
                 >
                     Blog
                 </Link>
-                <span className="text-gray-300">|</span>
-                <Link
+                {/* <span className="text-gray-300">|</span> */}
+                {/* <Link
                     className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:font-semibold"
                     href="/changelog"
                     target="_blank"
@@ -68,8 +68,8 @@ export function SimpleSiteFooter() {
                     prefetch={false}
                 >
                     ChangeLog
-                </Link>
-                <span className="text-gray-300">|</span>
+                </Link> */}
+                {/* <span className="text-gray-300">|</span>
                 <Link
                     className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:font-semibold"
                     href="/roadmap"
@@ -79,8 +79,8 @@ export function SimpleSiteFooter() {
                     prefetch={false}
                 >
                     Roadmap
-                </Link>
-                <span className="text-gray-300">|</span>
+                </Link> */}
+                {/* <span className="text-gray-300">|</span>
                 <Link
                     className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:font-semibold"
                     href={siteConfig.links.twitter}
@@ -90,7 +90,7 @@ export function SimpleSiteFooter() {
                     data-umami-event="Twitter Click"
                 >
                     Twitter
-                </Link>
+                </Link> */}
             </div>
         </footer>
     );

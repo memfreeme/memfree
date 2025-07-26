@@ -68,7 +68,7 @@ export default function SidebarOpen({ user }: NavBarProps) {
                         </TooltipContent>
                     </Tooltip>
 
-                    <Tooltip>
+                    {/* <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
                                 href={PageGenUrl}
@@ -82,7 +82,7 @@ export default function SidebarOpen({ user }: NavBarProps) {
                         <TooltipContent className="bg-black text-white">
                             <p>Generate New UI</p>
                         </TooltipContent>
-                    </Tooltip>
+                    </Tooltip> */}
 
                     <Tooltip>
                         <TooltipTrigger asChild>
