@@ -3,10 +3,11 @@ import 'server-only';
 import { CoreMessage, CoreUserMessage, ImagePart, LanguageModel, TextPart } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from '@ai-sdk/anthropic';
-import { GPT_41, GPT_41_NANO, Claude_4, O4_MIMI, O3, GEMIMI_25, Claude_4_Thinking } from '@/lib/llm/model';
+import { GPT_41, GPT_41_NANO, Claude_4, O4_MIMI, O3, GEMIMI_25, Claude_4_Thinking, QWEN3_CODER } from '@/lib/llm/model';
 import { google } from '@ai-sdk/google';
+import { createQwen } from 'qwen-ai-provider';
 import { Message } from '@/lib/types';
-import { DEEPSEEK_API_KEY, OPENAI_BASE_URL } from '@/lib/env';
+import { DEEPSEEK_API_KEY, OPENAI_BASE_URL, QWEN_API_KEY } from '@/lib/env';
 
 export type RoleType = 'user' | 'assistant' | 'system';
 
@@ -25,6 +26,7 @@ export function getMaxOutputToken(isPro: boolean, model: string) {
         case Claude_4_Thinking:
             return 16384;
         case GEMIMI_25:
+        case QWEN3_CODER:
         case O4_MIMI:
         case O3:
             return 32768;
@@ -42,6 +44,11 @@ const deepseek = createOpenAI({
     apiKey: DEEPSEEK_API_KEY,
 });
 
+const qwen = createQwen({
+    baseURL: 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',
+    apiKey: QWEN_API_KEY,
+});
+
 const anthropic = createAnthropic({});
 
 export function getLLM(model: string): LanguageModel {
@@ -56,6 +63,8 @@ export function getLLM(model: string): LanguageModel {
         return google(model);
     } else if (model.startsWith('deepseek')) {
         return deepseek(model);
+    } else if (model.startsWith('qwen')) {
+        return qwen(model);
     } else {
         return openai(model);
     }

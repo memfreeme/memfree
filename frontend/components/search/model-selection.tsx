@@ -4,7 +4,7 @@ import { RowSelectItem, Select, SelectContent, SelectTrigger, SelectValue } from
 import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store/local-store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { GPT_41_NANO, DEEPSEEK_R1, GEMIMI_25, GPT_41, O3, O4_MIMI, Claude_4, Claude_4_Thinking } from '@/lib/llm/model';
+import { GPT_41_NANO, DEEPSEEK_R1, GEMIMI_25, GPT_41, O3, O4_MIMI, Claude_4, Claude_4_Thinking, QWEN3_CODER } from '@/lib/llm/model';
 import { isProUser, isPremiumUser } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
@@ -19,25 +19,20 @@ export const modelMap: Record<string, Model> = {
         name: 'GPT-4.1 nano',
         value: GPT_41_NANO,
     },
-    [GPT_41]: {
-        name: 'GPT-4.1',
-        flag: 'Pro',
-        value: GPT_41,
-    },
     [Claude_4]: {
         name: 'Claude Sonnet 4',
-        flag: 'New & Pro',
+        flag: 'Pro',
         value: Claude_4,
     },
     [Claude_4_Thinking]: {
         name: 'Claude Sonnet 4 Thinking',
-        flag: 'New & Pro',
+        flag: 'Pro',
         value: Claude_4_Thinking,
     },
-    [GEMIMI_25]: {
-        name: 'Gemini 2.5 Pro',
-        flag: 'Pro',
-        value: GEMIMI_25,
+    [QWEN3_CODER]: {
+        name: 'Qwen3 Coder Plus',
+        flag: 'New & Pro',
+        value: QWEN3_CODER,
     },
     [DEEPSEEK_R1]: {
         name: 'DeepSeek R1',
@@ -48,11 +43,6 @@ export const modelMap: Record<string, Model> = {
         name: 'O4 Mini',
         flag: 'Pro',
         value: O4_MIMI,
-    },
-    [O3]: {
-        name: 'O3',
-        flag: 'Premium',
-        value: O3,
     },
 };
 

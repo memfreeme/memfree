@@ -6,11 +6,11 @@ import { logError } from '@/lib/log';
 import { O4_MIMI } from '@/lib/llm/model';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { Message as StoreMessage, SearchCategory, ImageSource, TextSource, VideoSource } from '@/lib/types';
-import { streamText } from 'ai';
 import { AnthropicProviderOptions } from '@ai-sdk/anthropic';
 import { generateTitle } from '@/lib/tools/generate-title';
 import { indexMessage } from '@/lib/index/index-message';
 import { streamResponse } from '@/lib/llm/utils';
+import { smoothStream, streamText } from 'ai';
 
 export interface LLMConfig {
     modelName: string;
@@ -45,6 +45,10 @@ export class LLMService {
         const baseConfig = {
             model: getLLM(config.modelName),
             maxRetries: 0,
+            experimental_transform: smoothStream({
+                delayInMs: 30, // optional: defaults to 10ms
+                chunking: 'line', // optional: defaults to 'word'
+            }),
             messages: [
                 {
                     role: 'system' as const,
@@ -74,7 +78,7 @@ export class LLMService {
     }
 
     static shouldEnableThinking(modelName: string, enableThinking?: boolean): boolean {
-        return enableThinking || modelName.endsWith('-thinking');
+        return enableThinking || modelName.endsWith('-thinking') || modelName === 'deepseek-reasoner';
     }
 
     static getTemperature(modelName: string): number {
@@ -132,6 +136,7 @@ export class LLMService {
                 }
                 case 'error': {
                     hasError = true;
+                    console.error(`LLM error: ${delta.error}`);
                     handler.onError?.(String(delta.error));
                     break;
                 }
@@ -206,6 +211,7 @@ export class LLMService {
                 await this.postProcess(messages, query, llmResult, userId, handler.onStatus, source);
             }
         } catch (error) {
+            console.error('LLM execution error:', error);
             const errorMessage = extractErrorMessage(error);
             logError(new Error(errorMessage), `llm-${config.modelName}`);
             handler.onError?.(errorMessage);

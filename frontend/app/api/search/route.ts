@@ -16,9 +16,6 @@ import { checkModelAccess, isProUser } from '@/lib/shared-utils';
 import { chat } from '@/lib/tools/chat';
 
 const updateSource = function (model, source, messages, isSearch) {
-    if (model === O1 || model === O3 || model === DEEPSEEK_R1) {
-        return SearchCategory.O1;
-    }
     const file = messages[0].attachments?.[0];
     if (source === SearchCategory.KNOWLEDGE_BASE || (file && file.startsWith('local-'))) {
         return SearchCategory.KNOWLEDGE_BASE;
@@ -65,10 +62,12 @@ export async function POST(req: NextRequest) {
     );
 
     if (!validModel(model)) {
+        console.error('Invalid model:', model);
         return NextResponse.json({ error: 'Please choose a valid model' }, { status: 400 });
     }
 
     if (!checkModelAccess(model, session?.user)) {
+        console.error('Model access denied for user:', session?.user?.email, 'Model:', model);
         return NextResponse.json({ error: 'You need to upgrade your plan to use this model' }, { status: 429 });
     }
 

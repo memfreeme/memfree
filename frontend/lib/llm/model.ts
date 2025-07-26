@@ -14,6 +14,7 @@ export const DEEPSEEK = 'deepseek-chat';
 export const DEEPSEEK_R1 = 'deepseek-reasoner';
 export const GEMIMI_2 = 'gemini-2.0-flash-exp';
 export const GEMIMI_25 = 'gemini-2.5-pro-exp-03-25';
+export const QWEN3_CODER = 'qwen3-coder-plus';
 
 export enum ModelType {
     FREE = 'FREE',
@@ -24,23 +25,17 @@ export enum ModelType {
 export const MODEL_CONFIG = {
     [GPT_4o_MIMI]: { type: ModelType.FREE, hasImageInput: true },
     [GPT_41_NANO]: { type: ModelType.FREE, hasImageInput: true },
-    [DEEPSEEK]: { type: ModelType.FREE, hasImageInput: false },
-    [GPT_4o]: { type: ModelType.PRO, hasImageInput: true },
     [GPT_41]: { type: ModelType.PRO, hasImageInput: true },
-    // [O1_MIMI]: { type: ModelType.PRO, hasImageInput: false },
-    [O3_MIMI]: { type: ModelType.PRO, hasImageInput: false },
     [O4_MIMI]: { type: ModelType.PRO, hasImageInput: true },
-    // [O1_PREVIEW]: { type: ModelType.PREMIUM, hasImageInput: false },
     [O1]: { type: ModelType.PREMIUM, hasImageInput: false },
     [O3]: { type: ModelType.PREMIUM, hasImageInput: true },
-    // [Claude_35_Sonnet]: { type: ModelType.PRO, hasImageInput: true },
-    [Claude_37_Sonnet]: { type: ModelType.PRO, hasImageInput: true },
     [Claude_4]: { type: ModelType.PRO, hasImageInput: true },
     [Claude_4_Thinking]: { type: ModelType.PRO, hasImageInput: true },
     [Claude_35_Haiku]: { type: ModelType.PRO, hasImageInput: false },
     [DEEPSEEK_R1]: { type: ModelType.PRO, hasImageInput: false },
     [GEMIMI_2]: { type: ModelType.PRO, hasImageInput: true },
     [GEMIMI_25]: { type: ModelType.PRO, hasImageInput: true },
+    [QWEN3_CODER]: { type: ModelType.PRO, hasImageInput: false },
 } as const;
 
 export function getModelAccess(model: string) {
