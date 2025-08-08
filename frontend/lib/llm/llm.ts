@@ -3,7 +3,7 @@ import 'server-only';
 import { CoreMessage, CoreUserMessage, ImagePart, LanguageModel, TextPart } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from '@ai-sdk/anthropic';
-import { GPT_41, GPT_41_NANO, Claude_4, O4_MIMI, O3, GEMIMI_25, Claude_4_Thinking, QWEN3_CODER } from '@/lib/llm/model';
+import { GPT_5, GPT_41_NANO, Claude_4, O4_MIMI, O3, GEMIMI_25, Claude_4_Thinking, QWEN3_CODER } from '@/lib/llm/model';
 import { google } from '@ai-sdk/google';
 import { createQwen } from 'qwen-ai-provider';
 import { Message } from '@/lib/types';
@@ -20,7 +20,7 @@ export function getMaxOutputToken(isPro: boolean, model: string) {
         return 2048;
     }
     switch (model) {
-        case GPT_41:
+        case GPT_5:
         case GPT_41_NANO:
         case Claude_4:
         case Claude_4_Thinking:

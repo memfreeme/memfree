@@ -1,5 +1,5 @@
 import { getLLM } from '@/lib/llm/llm';
-import { GPT_4o_MIMI } from '@/lib/llm/model';
+import { GPT_5_MIMI } from '@/lib/llm/model';
 import { format } from '@/lib/server-utils';
 import { generateText } from 'ai';
 
@@ -45,7 +45,7 @@ export async function generatePrompt(query: string, showText: boolean, useCase: 
         const prompt = format(PROMPT, query, useCase, showTextInstructions);
         // console.log('generatePrompt', prompt);
         const { text } = await generateText({
-            model: getLLM(GPT_4o_MIMI),
+            model: getLLM(GPT_5_MIMI),
             prompt: prompt,
         });
         newPrompt = text;

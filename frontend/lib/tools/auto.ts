@@ -4,7 +4,7 @@ import 'server-only';
 import { convertToCoreMessages, getLLM } from '@/lib/llm/llm';
 import { AutoAnswerPrompt } from '@/lib/llm/prompt';
 import { getHistory, getHistoryMessages, streamResponse } from '@/lib/llm/utils';
-import { GPT_4o_MIMI } from '@/lib/llm/model';
+import { GPT_5_MIMI } from '@/lib/llm/model';
 import { getSearchEngine } from '@/lib/search/search';
 import { accessWebPage } from '@/lib/tools/access';
 import { directlyAnswer } from '@/lib/tools/answer';
@@ -41,7 +41,7 @@ export async function autoAnswer(
     onStream?: (...args: any[]) => void,
     questionLanguage?: string,
     answerLanguage?: string,
-    modelName = GPT_4o_MIMI,
+    modelName = GPT_5_MIMI,
     source = SearchCategory.ALL,
     enableThinking = false,
 ) {

@@ -1,7 +1,8 @@
-export const GPT_4o_MIMI = 'gpt-4o-mini';
+export const GPT_5_MIMI = 'gpt-5-mini';
 export const GPT_41_NANO = 'gpt-4.1-nano';
+export const GPT_5_NANO = 'gpt-5-nano';
 export const GPT_4o = 'gpt-4o';
-export const GPT_41 = 'gpt-4.1';
+export const GPT_5 = 'gpt-5';
 export const O3_MIMI = 'o3-mini';
 export const O4_MIMI = 'o4-mini';
 export const O1 = 'o1';
@@ -23,9 +24,10 @@ export enum ModelType {
 }
 
 export const MODEL_CONFIG = {
-    [GPT_4o_MIMI]: { type: ModelType.FREE, hasImageInput: true },
+    [GPT_5_MIMI]: { type: ModelType.FREE, hasImageInput: true },
     [GPT_41_NANO]: { type: ModelType.FREE, hasImageInput: true },
-    [GPT_41]: { type: ModelType.PRO, hasImageInput: true },
+    [GPT_5_NANO]: { type: ModelType.FREE, hasImageInput: true },
+    [GPT_5]: { type: ModelType.PRO, hasImageInput: true },
     [O4_MIMI]: { type: ModelType.PRO, hasImageInput: true },
     [O1]: { type: ModelType.PREMIUM, hasImageInput: false },
     [O3]: { type: ModelType.PREMIUM, hasImageInput: true },

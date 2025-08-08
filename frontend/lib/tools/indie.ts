@@ -3,7 +3,7 @@ import 'server-only';
 import { getLLM } from '@/lib/llm/llm';
 import { getHistory, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
-import { GPT_4o_MIMI } from '@/lib/llm/model';
+import { GPT_5_MIMI } from '@/lib/llm/model';
 import { getSearchEngine, TEXT_LIMIT } from '@/lib/search/search';
 import { saveMessages } from '@/lib/server-utils';
 import { directlyAnswer } from '@/lib/tools/answer';
@@ -22,7 +22,7 @@ export async function indieMakerSearch(
     userId: string,
     profile: string,
     onStream?: (...args: any[]) => void,
-    model = GPT_4o_MIMI,
+    model = GPT_5_MIMI,
 ) {
     try {
         const newMessages = messages.slice(-1);

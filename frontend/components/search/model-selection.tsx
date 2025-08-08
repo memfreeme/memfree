@@ -4,7 +4,7 @@ import { RowSelectItem, Select, SelectContent, SelectTrigger, SelectValue } from
 import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store/local-store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { GPT_41_NANO, DEEPSEEK_R1, GEMIMI_25, GPT_41, O3, O4_MIMI, Claude_4, Claude_4_Thinking, QWEN3_CODER } from '@/lib/llm/model';
+import { GPT_41_NANO, DEEPSEEK_R1, GEMIMI_25, GPT_5, O3, O4_MIMI, Claude_4, Claude_4_Thinking, QWEN3_CODER, GPT_5_NANO, GPT_5_MIMI } from '@/lib/llm/model';
 import { isProUser, isPremiumUser } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
@@ -15,9 +15,20 @@ type Model = {
 };
 
 export const modelMap: Record<string, Model> = {
-    [GPT_41_NANO]: {
-        name: 'GPT-4.1 nano',
-        value: GPT_41_NANO,
+    [GPT_5_NANO]: {
+        name: 'GPT-5 Nano',
+        value: GPT_5_NANO,
+        flag: 'New',
+    },
+    [GPT_5_MIMI]: {
+        name: 'GPT-5 Mimi',
+        value: GPT_5_MIMI,
+        flag: 'New',
+    },
+    [GPT_5]: {
+        name: 'GPT-5',
+        value: GPT_5,
+        flag: 'New & Pro',
     },
     [Claude_4]: {
         name: 'Claude Sonnet 4',
@@ -31,7 +42,7 @@ export const modelMap: Record<string, Model> = {
     },
     [QWEN3_CODER]: {
         name: 'Qwen3 Coder Plus',
-        flag: 'New & Pro',
+        flag: 'Pro',
         value: QWEN3_CODER,
     },
     [DEEPSEEK_R1]: {
@@ -69,7 +80,7 @@ const ModelItem: React.FC<{ model: Model }> = ({ model }) => (
 
 export function ModelSelection() {
     const { model, setModel } = useModelStore();
-    const selectedModel = modelMap[model] ?? modelMap[GPT_41_NANO];
+    const selectedModel = modelMap[model] ?? modelMap[GPT_5_NANO];
 
     const signInModal = useSigninModal();
     const upgradeModal = useUpgradeModal();

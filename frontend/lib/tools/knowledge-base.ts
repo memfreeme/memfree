@@ -3,13 +3,13 @@ import 'server-only';
 import { getLLM } from '@/lib/llm/llm';
 import { getHistory, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
-import { GPT_4o_MIMI } from '@/lib/llm/model';
+import { GPT_5_MIMI } from '@/lib/llm/model';
 import { getVectorSearch } from '@/lib/search/search';
 import { saveMessages } from '@/lib/server-utils';
 import { directlyAnswer } from '@/lib/tools/answer';
 import { Message as StoreMessage, SearchCategory } from '@/lib/types';
 
-export async function knowledgeBaseSearch(messages: StoreMessage[], isPro: boolean, userId: string, onStream?: (...args: any[]) => void, model = GPT_4o_MIMI) {
+export async function knowledgeBaseSearch(messages: StoreMessage[], isPro: boolean, userId: string, onStream?: (...args: any[]) => void, model = GPT_5_MIMI) {
     try {
         const url = messages[messages.length - 1].attachments?.[0];
         const newMessages = messages.slice(-1);

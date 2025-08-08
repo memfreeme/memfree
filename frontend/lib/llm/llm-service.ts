@@ -1,9 +1,9 @@
 // lib/llm/llm-service.ts
 import 'server-only';
 
-import { convertToCoreMessages, getLLM, getMaxOutputToken } from '@/lib/llm/llm';
+import { getLLM, getMaxOutputToken } from '@/lib/llm/llm';
 import { logError } from '@/lib/log';
-import { O4_MIMI } from '@/lib/llm/model';
+import { GPT_5, GPT_5_MIMI, GPT_5_NANO, O4_MIMI } from '@/lib/llm/model';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { Message as StoreMessage, SearchCategory, ImageSource, TextSource, VideoSource } from '@/lib/types';
 import { AnthropicProviderOptions } from '@ai-sdk/anthropic';
@@ -69,9 +69,7 @@ export class LLMService {
                     } satisfies AnthropicProviderOptions,
                 },
             }),
-            ...(config.modelName !== O4_MIMI && {
-                maxTokens: getMaxOutputToken(config.isPro, config.modelName),
-            }),
+            ...this.getMaxTokensConfig(config.modelName, config.isPro),
         };
 
         return baseConfig;
@@ -81,8 +79,28 @@ export class LLMService {
         return enableThinking || modelName.endsWith('-thinking') || modelName === 'deepseek-reasoner';
     }
 
+    static getMaxTokensConfig(modelName: string, isPro: boolean | undefined) {
+        const excludedModels = [O4_MIMI, GPT_5_NANO, GPT_5_MIMI, GPT_5];
+
+        if (!excludedModels.includes(modelName)) {
+            return {
+                maxTokens: getMaxOutputToken(isPro, modelName),
+            };
+        }
+
+        return {};
+    }
+
     static getTemperature(modelName: string): number {
-        return modelName !== O4_MIMI ? 0.1 : 1;
+        switch (modelName) {
+            case O4_MIMI:
+            case GPT_5:
+            case GPT_5_NANO:
+            case GPT_5_MIMI:
+                return 1;
+            default:
+                return 0.1;
+        }
     }
 
     static async handleStreamResponse(result: any, handler: StreamHandler): Promise<LLMResult> {

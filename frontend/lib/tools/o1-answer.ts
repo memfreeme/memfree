@@ -4,7 +4,7 @@ import { getLLM } from '@/lib/llm/llm';
 import { DirectAnswerPrompt } from '@/lib/llm/prompt';
 import { getHistoryMessages, streamResponse } from '@/lib/llm/utils';
 import { logError } from '@/lib/log';
-import { GPT_4o_MIMI } from '@/lib/llm/model';
+import { GPT_5_MIMI } from '@/lib/llm/model';
 import { getSearchEngine } from '@/lib/search/search';
 import { extractErrorMessage, saveMessages } from '@/lib/server-utils';
 import { getRelatedQuestions } from '@/lib/tools/related';
@@ -21,7 +21,7 @@ export async function o1Answer(
     profile?: string,
     summary?: string,
     onStream?: (...args: any[]) => void,
-    model = GPT_4o_MIMI,
+    model = GPT_5_MIMI,
     source = SearchCategory.ALL,
 ) {
     try {

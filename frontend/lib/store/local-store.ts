@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { User } from '@/lib/types';
-import { GPT_4o_MIMI } from '@/lib/llm/model';
+import { GPT_5_MIMI } from '@/lib/llm/model';
 import { persist } from 'zustand/middleware';
 
 interface ProfileState {
@@ -59,7 +59,7 @@ interface ConfigState {
 export const useConfigStore = create<ConfigState>()(
     persist(
         (set) => ({
-            model: GPT_4o_MIMI,
+            model: GPT_5_MIMI,
             source: 'all',
             questionLanguage: 'auto',
             answerLanguage: 'auto',

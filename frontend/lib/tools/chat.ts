@@ -5,7 +5,7 @@ import { convertToCoreMessages } from '@/lib/llm/llm';
 import { ChatPrompt, ProjectPrompt } from '@/lib/llm/prompt';
 import { getProjectById } from '@/lib/store/project';
 import { getHistoryMessages } from '@/lib/llm/utils';
-import { GPT_4o_MIMI } from '@/lib/llm/model';
+import { GPT_5_MIMI } from '@/lib/llm/model';
 import { Message as StoreMessage } from '@/lib/types';
 import util from 'util';
 import { LLMService, LLMConfig, StreamHandler } from '@/lib/llm/llm-service';
@@ -22,7 +22,7 @@ export async function chat(
     onStream?: (...args: any[]) => void,
     answerLanguage?: string,
     projectId?: string,
-    modelName = GPT_4o_MIMI,
+    modelName = GPT_5_MIMI,
     enableThinking = false,
 ) {
     // 1.
