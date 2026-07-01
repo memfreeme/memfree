@@ -15,7 +15,7 @@ function useCopyToClipboard() {
         navigator.clipboard
             .writeText(text)
             .then(() => setHasCopied(true))
-            .catch((error) => console.error('Copy falied:', error));
+            .catch((error) => console.error('Copy failed:', error));
     };
 
     return { hasCopied, copyToClipboard };
