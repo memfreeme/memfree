@@ -20,6 +20,7 @@ export const UPSTASH_REDIS_REST_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || 
 // Search
 export const SERPER_API_KEY = process.env.SERPER_API_KEY;
 export const EXA_API_KEY = process.env.EXA_API_KEY || '';
+export const YDC_API_KEY = process.env.YDC_API_KEY || '';
 export const OPENAI_BASE_URL = process.env.OPENAI_BASE_URL ?? 'https://api.openai.com/v1';
 export const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
 export const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || '';
