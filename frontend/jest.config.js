@@ -5,6 +5,9 @@ module.exports = {
     transform: {
         '^.+\\.(ts|tsx)$': 'ts-jest',
     },
+    moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/$1',
+    },
     setupFilesAfterEnv: ['<rootDir>/lib/store/tests/setupTests.ts'],
     testEnvironment: 'jest-environment-jsdom',
 };

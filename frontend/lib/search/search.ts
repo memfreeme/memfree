@@ -3,6 +3,7 @@ import 'server-only';
 import { SerperSearch } from '@/lib/search/serper';
 import { VectorSearch } from '@/lib/search/vector';
 import { EXASearch } from '@/lib/search/exa';
+import { YouComSearch } from '@/lib/search/youcom';
 import { ImageSource, SearchCategory, TextSource, VideoSource } from '@/lib/types';
 
 export interface SearchOptions {
@@ -47,7 +48,11 @@ export function getVectorSearch(userId: string, url?: string): SearchSource {
  * @returns An instance of the appropriate search engine.
  */
 export function getSearchEngine(options: SearchOptions = {}): SearchSource {
-    const { categories = [] } = options;
+    const { categories = [], engines = [] } = options;
+
+    if (engines.includes('youcom')) {
+        return new YouComSearch(options);
+    }
 
     const categoryEngines: Record<string, () => SearchSource> = {
         [SearchCategory.ALL]: () => new SerperSearch(options),

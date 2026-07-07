@@ -15,6 +15,15 @@ UPSTASH_REDIS_REST_TOKEN=
 
 SERPER_API_KEY=
 
+# Exa API Key (Optional) https://exa.ai
+
+EXA_API_KEY=
+
+# You.com API Key (Optional) https://you.com
+# Free tier: 100 searches/day. Get a key at https://api.you.com
+
+YDC_API_KEY=
+
 # Auth (Required)
 
 # The AUTH_SECRET is a random string, you could use `openssl rand -base64 32` to generate it
