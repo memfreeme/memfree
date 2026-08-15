@@ -220,4 +220,4 @@ MemFree wird unterstützt von[MemFree](https://www.memfree.me/)und lizenziert un
 
 ## Sternengeschichte
 
-[![Star History Chart](https://api.star-history.com/svg?repos=memfreeme/memfree&type=Date)](https://star-history.com/#memfreeme/memfree&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=memfreeme/memfree&type=Date)](https://star-history.dera.page/#memfreeme/memfree&Date)

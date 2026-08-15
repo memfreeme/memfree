@@ -222,4 +222,4 @@ MemFree 由 [MemFree](https://www.memfree.me/) 支持，并遵循 [MIT](https://
 
 ## Star 历史
 
-[![Star History Chart](https://api.star-history.com/svg?repos=memfreeme/memfree&type=Date)](https://star-history.com/#memfreeme/memfree&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=memfreeme/memfree&type=Date)](https://star-history.dera.page/#memfreeme/memfree&Date)

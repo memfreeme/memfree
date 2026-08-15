@@ -218,4 +218,4 @@ MemFree を支援しているのは、[メムフリー](https://www.memfree.me/)
 
 ## スターの歴史
 
-[![Star History Chart](https://api.star-history.com/svg?repos=memfreeme/memfree&type=Date)](https://star-history.com/#memfreeme/memfree&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=memfreeme/memfree&type=Date)](https://star-history.dera.page/#memfreeme/memfree&Date)
