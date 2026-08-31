@@ -4,7 +4,20 @@ import { RowSelectItem, Select, SelectContent, SelectTrigger, SelectValue } from
 import { Box } from 'lucide-react';
 import { useModelStore, useUserStore } from '@/lib/store/local-store';
 import { useSigninModal } from '@/hooks/use-signin-modal';
-import { GPT_41_NANO, DEEPSEEK_R1, GEMIMI_25, GPT_5, O3, O4_MIMI, Claude_4, Claude_4_Thinking, QWEN3_CODER, GPT_5_NANO, GPT_5_MIMI } from '@/lib/llm/model';
+import {
+    GPT_41_NANO,
+    DEEPSEEK_R1,
+    GEMIMI_25,
+    GPT_5,
+    O3,
+    O4_MIMI,
+    Claude_4,
+    Claude_4_Thinking,
+    QWEN3_CODER,
+    GPT_5_NANO,
+    GPT_5_MIMI,
+    ORCAROUTER_AUTO,
+} from '@/lib/llm/model';
 import { isProUser, isPremiumUser } from '@/lib/shared-utils';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 
@@ -49,6 +62,11 @@ export const modelMap: Record<string, Model> = {
         name: 'DeepSeek R1',
         flag: 'Pro',
         value: DEEPSEEK_R1,
+    },
+    [ORCAROUTER_AUTO]: {
+        name: 'OrcaRouter Auto',
+        value: ORCAROUTER_AUTO,
+        flag: 'New',
     },
     [O4_MIMI]: {
         name: 'O4 Mini',

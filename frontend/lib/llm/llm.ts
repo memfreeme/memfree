@@ -7,7 +7,7 @@ import { GPT_5, GPT_41_NANO, Claude_4, O4_MIMI, O3, GEMIMI_25, Claude_4_Thinking
 import { google } from '@ai-sdk/google';
 import { createQwen } from 'qwen-ai-provider';
 import { Message } from '@/lib/types';
-import { DEEPSEEK_API_KEY, OPENAI_BASE_URL, QWEN_API_KEY } from '@/lib/env';
+import { DEEPSEEK_API_KEY, OPENAI_BASE_URL, ORCAROUTER_API_KEY, QWEN_API_KEY } from '@/lib/env';
 
 export type RoleType = 'user' | 'assistant' | 'system';
 
@@ -49,6 +49,13 @@ const qwen = createQwen({
     apiKey: QWEN_API_KEY,
 });
 
+// OrcaRouter is an OpenAI-compatible AI gateway; models are addressed as "provider/slug"
+// (e.g. "orcarouter/auto").
+const orcarouter = createOpenAI({
+    baseURL: 'https://api.orcarouter.ai/v1',
+    apiKey: ORCAROUTER_API_KEY,
+});
+
 const anthropic = createAnthropic({});
 
 export function getLLM(model: string): LanguageModel {
@@ -65,6 +72,8 @@ export function getLLM(model: string): LanguageModel {
         return deepseek(model);
     } else if (model.startsWith('qwen')) {
         return qwen(model);
+    } else if (model.startsWith('orcarouter')) {
+        return orcarouter(model);
     } else {
         return openai(model);
     }
