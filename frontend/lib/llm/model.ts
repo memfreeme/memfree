@@ -16,6 +16,7 @@ export const DEEPSEEK_R1 = 'deepseek-reasoner';
 export const GEMIMI_2 = 'gemini-2.0-flash-exp';
 export const GEMIMI_25 = 'gemini-2.5-pro-exp-03-25';
 export const QWEN3_CODER = 'qwen3-coder-plus';
+export const ORCAROUTER_AUTO = 'orcarouter/auto';
 
 export enum ModelType {
     FREE = 'FREE',
@@ -38,6 +39,7 @@ export const MODEL_CONFIG = {
     [GEMIMI_2]: { type: ModelType.PRO, hasImageInput: true },
     [GEMIMI_25]: { type: ModelType.PRO, hasImageInput: true },
     [QWEN3_CODER]: { type: ModelType.PRO, hasImageInput: false },
+    [ORCAROUTER_AUTO]: { type: ModelType.FREE, hasImageInput: true },
 } as const;
 
 export function getModelAccess(model: string) {
