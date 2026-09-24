@@ -134,6 +134,10 @@ MemFree is equipped with powerful features that cater to various search and prod
 
 - [How to migrate MemFree from Vercel to Cloudflare next-on-pages](https://www.memfree.me/blog/couldflare-next-on-page-edge)
 
+### 7 Deploy with ZopDay
+
+<a href="https://zop.dev/zopday/app/deploy"><img src="https://zop.dev/deploytozopday-inkhard.svg" alt="Deploy to ZopDay"/></a>
+
 ## Self-Hosted Installations
 
 ### Prerequisites
