@@ -133,7 +133,10 @@
         "multi-image-free-limit": "请升级到Pro以在一条消息中附加多个图像",
         "multi-image-pro-limit": "每条消息最多附加5个图像。如果需要更多支持，请提供反馈",
         "status-think": "思考中...",
-        "search-error": "搜索时发生错误，请刷新页面重试"
+        "search-error": "搜索时发生错误，请刷新页面重试",
+        "copy-url": "复制链接",
+        "copy-url-success": "链接已复制到剪贴板",
+        "copy-url-error": "复制链接到剪贴板失败"
     },
     "Share": {
         "title": "通过链接分享搜索",

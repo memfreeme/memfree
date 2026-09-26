@@ -136,7 +136,10 @@
         "multi-image-free-limit": "Bitte upgraden Sie auf Pro, um mehrere Bilder in einer Nachricht anzuhängen",
         "multi-image-pro-limit": "Fügen Sie bis zu 5 Bilder pro Nachricht hinzu. Geben Sie Feedback, wenn mehr Unterstützung benötigt wird",
         "status-think": "Denken...",
-        "search-error": "Beim Suchen ist ein Fehler aufgetreten, bitte aktualisieren Sie Ihre Seite und versuchen Sie es erneut"
+        "search-error": "Beim Suchen ist ein Fehler aufgetreten, bitte aktualisieren Sie Ihre Seite und versuchen Sie es erneut",
+        "copy-url": "URL kopieren",
+        "copy-url-success": "URL in die Zwischenablage kopiert",
+        "copy-url-error": "URL konnte nicht in die Zwischenablage kopiert werden"
     },
     "Share": {
         "title": "Suche über Link teilen",

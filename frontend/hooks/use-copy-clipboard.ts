@@ -11,11 +11,18 @@ function useCopyToClipboard() {
         return () => clearTimeout(id);
     }, [hasCopied]);
 
-    const copyToClipboard = (text: string) => {
-        navigator.clipboard
-            .writeText(text)
-            .then(() => setHasCopied(true))
-            .catch((error) => console.error('Copy failed:', error));
+    // Resolves to true on success, false on failure, so callers can show feedback (e.g. a toast).
+    const copyToClipboard = (text: string): Promise<boolean> => {
+        return Promise.resolve()
+            .then(() => navigator.clipboard.writeText(text))
+            .then(() => {
+                setHasCopied(true);
+                return true;
+            })
+            .catch((error) => {
+                console.error('Copy failed:', error);
+                return false;
+            });
     };
 
     return { hasCopied, copyToClipboard };

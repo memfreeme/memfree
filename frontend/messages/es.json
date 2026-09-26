@@ -136,7 +136,10 @@
         "multi-image-free-limit": "Por favor, actualiza a Pro para adjuntar múltiples imágenes en un mensaje",
         "multi-image-pro-limit": "Adjunta hasta 5 imágenes por mensaje. Proporciona comentarios si necesitas más apoyo",
         "status-think": "Pensando...",
-        "search-error": "Ocurrió un error al buscar, por favor actualiza tu página e intenta de nuevo"
+        "search-error": "Ocurrió un error al buscar, por favor actualiza tu página e intenta de nuevo",
+        "copy-url": "Copiar URL",
+        "copy-url-success": "URL copiada al portapapeles",
+        "copy-url-error": "No se pudo copiar la URL al portapapeles"
     },
     "Share": {
         "title": "Compartir búsqueda a través de enlace",
