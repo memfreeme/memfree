@@ -133,7 +133,10 @@
         "multi-image-free-limit": "Please upgrade to Pro to attach multiple images in one message",
         "multi-image-pro-limit": "Attach up to 5 images per message. Provide feedback if more support is needed",
         "status-think": "Thinking...",
-        "search-error": "An error occurred while searching, please refresh your page and try again"
+        "search-error": "An error occurred while searching, please refresh your page and try again",
+        "copy-url": "Copy URL",
+        "copy-url-success": "URL copied to clipboard",
+        "copy-url-error": "Failed to copy URL to clipboard"
     },
     "Share": {
         "title": "Share Search via Link",

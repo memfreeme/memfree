@@ -136,7 +136,10 @@
         "multi-image-free-limit": "Veuillez mettre à niveau vers Pro pour joindre plusieurs images dans un message",
         "multi-image-pro-limit": "Joindre jusqu'à 5 images par message. Fournissez des commentaires si un soutien supplémentaire est nécessaire",
         "status-think": "Réflexion...",
-        "search-error": "Une erreur s'est produite lors de la recherche, veuillez actualiser votre page et réessayer"
+        "search-error": "Une erreur s'est produite lors de la recherche, veuillez actualiser votre page et réessayer",
+        "copy-url": "Copier l'URL",
+        "copy-url-success": "URL copiée dans le presse-papiers",
+        "copy-url-error": "Échec de la copie de l'URL dans le presse-papiers"
     },
     "Share": {
         "title": "Partager la recherche via un lien",
